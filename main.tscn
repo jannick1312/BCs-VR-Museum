@@ -83,7 +83,7 @@ gravity_scale = 0.0
 linear_damp = 100.0
 angular_damp = 100.0
 
-[node name="CollisionShape3D" parent="PickableKeyboard" index="0" unique_id=1988093479]
+[node name="CollisionShape3D" parent="PickableKeyboard" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7808208, -2.425245)
 shape = SubResource("BoxShape3D_getpj")
 
@@ -101,6 +101,7 @@ visible = true
 
 [node name="VirtualKeyboard" parent="PickableKeyboard" unique_id=516408739 instance=ExtResource("5_272bh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7808208, -2.419245)
+scene_properties_keys = PackedStringArray("virtual_keyboard_2d.gd")
 
 [node name="KeyboardSubmitter" type="Node" parent="PickableKeyboard/VirtualKeyboard" unique_id=1181191759]
 script = ExtResource("8_5vw27")
@@ -118,7 +119,7 @@ gravity_scale = 0.0
 linear_damp = 100.0
 angular_damp = 100.0
 
-[node name="CollisionShape3D" parent="PickableOutput" index="0" unique_id=1988093479]
+[node name="CollisionShape3D" parent="PickableOutput" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, -3.506)
 shape = SubResource("BoxShape3D_dg77c")
 
@@ -138,18 +139,20 @@ visible = true
 transform = Transform3D(0.59999996, 0, 0, 0, 0.59999996, 0, 0, 0, 0.59999996, 2, 2, -3.5)
 scene = ExtResource("7_5vw27")
 viewport_size = Vector2(1200, 800)
+transparent = 1
+scene_properties_keys = PackedStringArray()
 
-[node name="Viewport" parent="PickableOutput/OutputScreen" index="0" unique_id=1613883107]
+[node name="Viewport" parent="PickableOutput/OutputScreen" index="0"]
 size = Vector2i(1200, 800)
 
-[node name="Screen" parent="PickableOutput/OutputScreen" index="1" unique_id=1315607640]
+[node name="Screen" parent="PickableOutput/OutputScreen" index="1"]
 mesh = SubResource("QuadMesh_ycdy4")
 surface_material_override/0 = SubResource("StandardMaterial3D_vivmo")
 
-[node name="StaticBody3D" parent="PickableOutput/OutputScreen" index="2" unique_id=1878338525]
+[node name="StaticBody3D" parent="PickableOutput/OutputScreen" index="2"]
 viewport_size = Vector2(1200, 800)
 
-[node name="CollisionShape3D" parent="PickableOutput/OutputScreen/StaticBody3D" index="0" unique_id=88192732]
+[node name="CollisionShape3D" parent="PickableOutput/OutputScreen/StaticBody3D" index="0"]
 shape = SubResource("BoxShape3D_2cqfq")
 
 [node name="OutputScreenBridge" type="Node" parent="PickableOutput/OutputScreen" unique_id=1016518479]
@@ -160,7 +163,7 @@ gravity_scale = 0.0
 linear_damp = 100.0
 angular_damp = 100.0
 
-[node name="CollisionShape3D" parent="PickableInput" index="0" unique_id=1988093479]
+[node name="CollisionShape3D" parent="PickableInput" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -3.506)
 shape = SubResource("BoxShape3D_dg77c")
 
@@ -180,18 +183,20 @@ visible = true
 transform = Transform3D(0.59999996, 0, 0, 0, 0.59999996, 0, 0, 0, 0.59999996, -2, 2, -3.5)
 scene = ExtResource("7_272bh")
 viewport_size = Vector2(1200, 800)
+transparent = 1
+scene_properties_keys = PackedStringArray()
 
-[node name="Viewport" parent="PickableInput/InputScreen" index="0" unique_id=1613883107]
+[node name="Viewport" parent="PickableInput/InputScreen" index="0"]
 size = Vector2i(1200, 800)
 
-[node name="Screen" parent="PickableInput/InputScreen" index="1" unique_id=1315607640]
+[node name="Screen" parent="PickableInput/InputScreen" index="1"]
 mesh = SubResource("QuadMesh_yaehf")
 surface_material_override/0 = SubResource("StandardMaterial3D_cegan")
 
-[node name="StaticBody3D" parent="PickableInput/InputScreen" index="2" unique_id=1878338525]
+[node name="StaticBody3D" parent="PickableInput/InputScreen" index="2"]
 viewport_size = Vector2(1200, 800)
 
-[node name="CollisionShape3D" parent="PickableInput/InputScreen/StaticBody3D" index="0" unique_id=88192732]
+[node name="CollisionShape3D" parent="PickableInput/InputScreen/StaticBody3D" index="0"]
 shape = SubResource("BoxShape3D_82xsv")
 
 [node name="InputScreenBridge" type="Node" parent="PickableInput/InputScreen" unique_id=842459898]
