@@ -3,15 +3,15 @@ using Godot;
 public partial class VisibilityController : Node
 {
 	[Export] public NodePath PickableKeyboardPath;
-	[Export] public NodePath PickableOutputPath;
+	[Export] public NodePath OutputFramePath;
 
 	private Node3D _keyboardPickable;
-	private Node3D _outputPickable;
+	private Node3D _outputFrame;
 
 	public override void _Ready()
 	{
 		_keyboardPickable = GetNode<Node3D>(PickableKeyboardPath);
-		_outputPickable = GetNode<Node3D>(PickableOutputPath);
+		_outputFrame = GetNode<Node3D>(OutputFramePath);
 
 		HideKeyboard();
 		HideOutput();
@@ -19,52 +19,37 @@ public partial class VisibilityController : Node
 
 	public void ShowKeyboard()
 	{
-		SetPickableVisible(_keyboardPickable, true);
+		SetTreeVisible(_keyboardPickable, true);
 		HideOutput();
 	}
 
 	public void HideKeyboard()
 	{
-		SetPickableVisible(_keyboardPickable, false);
+		SetTreeVisible(_keyboardPickable, false);
 	}
 
 	public void ShowOutput()
 	{
-		SetPickableVisible(_outputPickable, true);
+		SetTreeVisible(_outputFrame, true);
 	}
 
 	public void HideOutput()
 	{
-		SetPickableVisible(_outputPickable, false);
+		SetTreeVisible(_outputFrame, false);
 	}
 
-	private void SetPickableVisible(Node node, bool visible)
+	private void SetTreeVisible(Node node, bool visible)
 	{
-		foreach (Node child in node.GetChildren())
-		{
-			if (child is MeshInstance3D mesh)
-				mesh.Visible = visible;
+		if (node is Node3D node3D)
+			node3D.Visible = visible;
 
-			if (child is CollisionShape3D collisionShape)
-				collisionShape.Disabled = !visible;
+		if (node is CollisionShape3D collisionShape)
+			collisionShape.Disabled = !visible;
 
-			if (child.Name == "VirtualKeyboard" || child.Name == "OutputScreen")
-				SetScreenVisible(child, visible);
-		}
-	}
-
-	private void SetScreenVisible(Node screenRoot, bool visible)
-	{
-		var screenMesh = screenRoot.GetNodeOrNull<Node3D>("Screen");
-		if (screenMesh != null)
-			screenMesh.Visible = visible;
-
-		var collision = screenRoot.GetNodeOrNull<CollisionShape3D>("StaticBody3D/CollisionShape3D");
-		if (collision != null)
-			collision.Disabled = !visible;
-
-		var viewport = screenRoot.GetNodeOrNull<Viewport>("Viewport");
-		if (viewport != null)
+		if (node is Viewport viewport)
 			viewport.SetProcessInput(visible);
+
+		foreach (Node child in node.GetChildren())
+			SetTreeVisible(child, visible);
 	}
 }

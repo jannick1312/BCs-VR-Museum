@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://btiji2omr7n2t"]
+
+[ext_resource type="Script" uid="uid://bfrlpbsqg5lqr" path="res://addons/godot-xr-tools/objects/pickable.gd" id="1_n5f4q"]
+[ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="2_4tsnk"]
+[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="3_3swmx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dg77c"]
+size = Vector3(1, 1, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ycdy4"]
+albedo_color = Color(0.6392157, 0.6392157, 0.6392157, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w48qg"]
+material = SubResource("StandardMaterial3D_ycdy4")
+size = Vector3(1, 1, 0.01)
+
+[sub_resource type="QuadMesh" id="QuadMesh_dg77c"]
+
+[node name="PickableOutput" type="RigidBody3D" unique_id=636980356]
+collision_layer = 4
+collision_mask = 196615
+gravity_scale = 0.0
+freeze_mode = 1
+linear_damp = 100.0
+angular_damp = 100.0
+script = ExtResource("1_n5f4q")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=245808451]
+shape = SubResource("BoxShape3D_dg77c")
+
+[node name="Frame" type="MeshInstance3D" parent="." unique_id=1352063248]
+mesh = SubResource("BoxMesh_w48qg")
+
+[node name="Picture" type="MeshInstance3D" parent="." unique_id=826166903]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.006)
+mesh = SubResource("QuadMesh_dg77c")
+
+[node name="GrabPointHandLeft" parent="." unique_id=1549483528 instance=ExtResource("2_4tsnk")]
+
+[node name="GrabPointHandRight" parent="." unique_id=1097402214 instance=ExtResource("3_3swmx")]

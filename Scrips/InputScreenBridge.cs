@@ -9,7 +9,7 @@ public partial class InputScreenBridge : Node
 		for (int i = 0; i < 4; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		var viewport = GetNodeOrNull<Viewport>("../Viewport");
+		var viewport = GetNodeOrNull<Viewport>("../InputScreen/Viewport");
 
 		InputLineEdit = FindFirstLineEdit(viewport);
 	}
