@@ -1021,316 +1021,316 @@ offset_top = 4.0
 offset_right = 394.0
 offset_bottom = 149.0
 
-[node name="VirtualKeyUpperQ" type="Button" parent="Panel/Alternate" unique_id=240121251]
+[node name="VirtualKeyPlus" type="Button" parent="Panel/Alternate" unique_id=74157990]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_top = 40.0
 offset_right = 32.0
 offset_bottom = 32.0
-text = "Q"
+text = "+"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "Q"
-Unicode = 81
+ScanCodeText = "Plus"
+Unicode = 43
 
-[node name="VirtualKeyUpperW" type="Button" parent="Panel/Alternate" unique_id=214945470]
+[node name="VirtualKeyAsterisk" type="Button" parent="Panel/Alternate" unique_id=846729796]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 40.0
 offset_top = 40.0
 offset_right = 72.0
 offset_bottom = 32.0
-text = "W"
+text = "*"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "W"
-Unicode = 87
+ScanCodeText = "Asterisk"
+Unicode = 42
 
-[node name="VirtualKeyUpperE" type="Button" parent="Panel/Alternate" unique_id=2131151283]
+[node name="VirtualKeyDivision" type="Button" parent="Panel/Alternate" unique_id=10487207]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 80.0
 offset_top = 40.0
 offset_right = 112.0
 offset_bottom = 32.0
-text = "E"
+text = "÷"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "E"
-Unicode = 69
+ScanCodeText = "Division"
+Unicode = 247
 
-[node name="VirtualKeyUpperR" type="Button" parent="Panel/Alternate" unique_id=1833714203]
+[node name="VirtualKeyEqual" type="Button" parent="Panel/Alternate" unique_id=694220445]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 120.0
 offset_top = 40.0
 offset_right = 152.0
 offset_bottom = 32.0
-text = "R"
+text = "="
 script = ExtResource("2_cnmmc")
-ScanCodeText = "R"
-Unicode = 82
+ScanCodeText = "Equal"
+Unicode = 61
 
-[node name="VirtualKeyUpperT" type="Button" parent="Panel/Alternate" unique_id=1184045278]
+[node name="VirtualKeySlash" type="Button" parent="Panel/Alternate" unique_id=405894165]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 160.0
 offset_top = 40.0
 offset_right = 192.0
 offset_bottom = 32.0
-text = "T"
+text = "/"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "T"
-Unicode = 84
+ScanCodeText = "Slash"
+Unicode = 47
 
-[node name="VirtualKeyUpperY" type="Button" parent="Panel/Alternate" unique_id=2135409382]
+[node name="VirtualKeyUnderScore" type="Button" parent="Panel/Alternate" unique_id=922293667]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 200.0
 offset_top = 40.0
 offset_right = 232.0
 offset_bottom = 32.0
-text = "Y"
+text = "_"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "Y"
-Unicode = 89
+ScanCodeText = "UnderScore"
+Unicode = 95
 
-[node name="VirtualKeyUpperU" type="Button" parent="Panel/Alternate" unique_id=352786119]
+[node name="VirtualKeyLess" type="Button" parent="Panel/Alternate" unique_id=1687129922]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 240.0
 offset_top = 40.0
 offset_right = 272.0
 offset_bottom = 32.0
-text = "U"
+text = "<"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "U"
-Unicode = 85
+ScanCodeText = "Less"
+Unicode = 60
 
-[node name="VirtualKeyUpperI" type="Button" parent="Panel/Alternate" unique_id=756835292]
+[node name="VirtualKeyGreater" type="Button" parent="Panel/Alternate" unique_id=1679955803]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 280.0
 offset_top = 40.0
 offset_right = 312.0
 offset_bottom = 32.0
-text = "I"
+text = ">"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "I"
-Unicode = 73
+ScanCodeText = "Greater"
+Unicode = 62
 
-[node name="VirtualKeyUpperO" type="Button" parent="Panel/Alternate" unique_id=623306452]
+[node name="VirtualKeyBracketLeft" type="Button" parent="Panel/Alternate" unique_id=2106830895]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 320.0
 offset_top = 40.0
 offset_right = 352.0
 offset_bottom = 32.0
-text = "O"
+text = "["
 script = ExtResource("2_cnmmc")
-ScanCodeText = "O"
-Unicode = 79
+ScanCodeText = "BracketLeft"
+Unicode = 91
 
-[node name="VirtualKeyUpperP" type="Button" parent="Panel/Alternate" unique_id=888197605]
+[node name="VirtualKeyBracketRight" type="Button" parent="Panel/Alternate" unique_id=918411686]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 360.0
 offset_top = 40.0
 offset_right = 392.0
 offset_bottom = 32.0
-text = "P"
+text = "]"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "P"
-Unicode = 80
+ScanCodeText = "BracketRight"
+Unicode = 93
 
-[node name="VirtualKeyUpperA" type="Button" parent="Panel/Alternate" unique_id=226358077]
+[node name="VirtualKeyExclam" type="Button" parent="Panel/Alternate" unique_id=125759413]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 20.0
 offset_top = 80.0
 offset_right = 52.0
 offset_bottom = 72.0
-text = "A"
+text = "!"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "A"
-Unicode = 65
+ScanCodeText = "Exclam"
+Unicode = 33
 
-[node name="VirtualKeyUpperS" type="Button" parent="Panel/Alternate" unique_id=570261771]
+[node name="VirtualKeyAt" type="Button" parent="Panel/Alternate" unique_id=2059046695]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 60.0
 offset_top = 80.0
 offset_right = 92.0
 offset_bottom = 72.0
-text = "S"
+text = "@"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "S"
-Unicode = 83
+ScanCodeText = "At"
+Unicode = 64
 
-[node name="VirtualKeyUpperD" type="Button" parent="Panel/Alternate" unique_id=840246812]
+[node name="VirtualKeyNumberSign" type="Button" parent="Panel/Alternate" unique_id=350590889]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 100.0
 offset_top = 80.0
 offset_right = 132.0
 offset_bottom = 72.0
-text = "D"
+text = "#"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "D"
-Unicode = 68
+ScanCodeText = "NumberSign"
+Unicode = 35
 
-[node name="VirtualKeyUpperF" type="Button" parent="Panel/Alternate" unique_id=1504082809]
+[node name="VirtualKeyDollar" type="Button" parent="Panel/Alternate" unique_id=747938475]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 140.0
 offset_top = 80.0
 offset_right = 172.0
 offset_bottom = 72.0
-text = "F"
+text = "$"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "F"
-Unicode = 70
+ScanCodeText = "Dollar"
+Unicode = 36
 
-[node name="VirtualKeyUpperG" type="Button" parent="Panel/Alternate" unique_id=663133129]
+[node name="VirtualKeyPercent" type="Button" parent="Panel/Alternate" unique_id=342355462]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 180.0
 offset_top = 80.0
 offset_right = 212.0
 offset_bottom = 72.0
-text = "G"
+text = "%"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "G"
-Unicode = 71
+ScanCodeText = "Percent"
+Unicode = 37
 
-[node name="VirtualKeyUpperH" type="Button" parent="Panel/Alternate" unique_id=423730911]
+[node name="VirtualKeyCircumflex" type="Button" parent="Panel/Alternate" unique_id=494351322]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 220.0
 offset_top = 80.0
 offset_right = 252.0
 offset_bottom = 72.0
-text = "H"
+text = "^"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "H"
-Unicode = 72
+ScanCodeText = "AsciiCircum"
+Unicode = 94
 
-[node name="VirtualKeyUpperJ" type="Button" parent="Panel/Alternate" unique_id=565237241]
+[node name="VirtualKeyAmpersand" type="Button" parent="Panel/Alternate" unique_id=717854813]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 260.0
 offset_top = 80.0
 offset_right = 292.0
 offset_bottom = 72.0
-text = "J"
+text = "&"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "J"
-Unicode = 74
+ScanCodeText = "Ampersand"
+Unicode = 38
 
-[node name="VirtualKeyUpperK" type="Button" parent="Panel/Alternate" unique_id=2143837698]
+[node name="VirtualKeyParenLeft" type="Button" parent="Panel/Alternate" unique_id=1454783955]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 300.0
 offset_top = 80.0
 offset_right = 332.0
 offset_bottom = 72.0
-text = "K"
+text = "("
 script = ExtResource("2_cnmmc")
-ScanCodeText = "K"
-Unicode = 75
+ScanCodeText = "ParenLeft"
+Unicode = 40
 
-[node name="VirtualKeyUpperL" type="Button" parent="Panel/Alternate" unique_id=1761203108]
+[node name="VirtualKeyParenRight" type="Button" parent="Panel/Alternate" unique_id=538279233]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 340.0
 offset_top = 80.0
 offset_right = 372.0
 offset_bottom = 72.0
-text = "L"
+text = ")"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "L"
-Unicode = 76
+ScanCodeText = "ParenRight"
+Unicode = 41
 
-[node name="VirtualKeyUpperZ" type="Button" parent="Panel/Alternate" unique_id=654813798]
+[node name="VirtualKeyMinus" type="Button" parent="Panel/Alternate" unique_id=2045399550]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 60.0
 offset_top = 120.0
 offset_right = 92.0
 offset_bottom = 112.0
-text = "Z"
+text = "-"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "Z"
-Unicode = 90
+ScanCodeText = "Minus"
+Unicode = 45
 
-[node name="VirtualKeyUpperX" type="Button" parent="Panel/Alternate" unique_id=1960057936]
+[node name="VirtualKeyApostrophe" type="Button" parent="Panel/Alternate" unique_id=1479153608]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 100.0
 offset_top = 120.0
 offset_right = 132.0
 offset_bottom = 112.0
-text = "X"
+text = "'"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "X"
-Unicode = 88
+ScanCodeText = "Apostrophe"
+Unicode = 39
 
-[node name="VirtualKeyUpperC" type="Button" parent="Panel/Alternate" unique_id=1413437005]
+[node name="VirtualKeyQuoteDbl" type="Button" parent="Panel/Alternate" unique_id=1693829468]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 140.0
 offset_top = 120.0
 offset_right = 172.0
 offset_bottom = 112.0
-text = "C"
+text = "\""
 script = ExtResource("2_cnmmc")
-ScanCodeText = "C"
-Unicode = 67
+ScanCodeText = "QuoteDbl"
+Unicode = 34
 
-[node name="VirtualKeyUpperV" type="Button" parent="Panel/Alternate" unique_id=1600883797]
+[node name="VirtualKeyColon" type="Button" parent="Panel/Alternate" unique_id=1779435897]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 180.0
 offset_top = 120.0
 offset_right = 212.0
 offset_bottom = 112.0
-text = "V"
+text = ":"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "V"
-Unicode = 86
+ScanCodeText = "Colon"
+Unicode = 58
 
-[node name="VirtualKeyUpperB" type="Button" parent="Panel/Alternate" unique_id=2140280086]
+[node name="VirtualKeySemicolon" type="Button" parent="Panel/Alternate" unique_id=653328136]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 220.0
 offset_top = 120.0
 offset_right = 252.0
 offset_bottom = 112.0
-text = "B"
+text = ";"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "B"
-Unicode = 66
+ScanCodeText = "Semicolon"
+Unicode = 59
 
-[node name="VirtualKeyUpperN" type="Button" parent="Panel/Alternate" unique_id=774037312]
+[node name="VirtualKeyComma" type="Button" parent="Panel/Alternate" unique_id=180806948]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 260.0
 offset_top = 120.0
 offset_right = 292.0
 offset_bottom = 112.0
-text = "N"
+text = ","
 script = ExtResource("2_cnmmc")
-ScanCodeText = "N"
-Unicode = 78
+ScanCodeText = "Comma"
+Unicode = 44
 
-[node name="VirtualKeyUpperM" type="Button" parent="Panel/Alternate" unique_id=1512809376]
+[node name="VirtualKeyQuestion" type="Button" parent="Panel/Alternate" unique_id=2142951779]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 300.0
 offset_top = 120.0
 offset_right = 332.0
 offset_bottom = 112.0
-text = "M"
+text = "?"
 script = ExtResource("2_cnmmc")
-ScanCodeText = "M"
-Unicode = 77
+ScanCodeText = "Question"
+Unicode = 63
 
 [connection signal="pressed" from="Panel/Standard/ToggleShift" to="." method="_on_toggle_shift_pressed"]
 [connection signal="pressed" from="Panel/Standard/ToggleCaps" to="." method="_on_toggle_caps_pressed"]
