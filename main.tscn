@@ -16,14 +16,15 @@
 [ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Scrips/VisibilityController.cs" id="13_ycdy4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_getpj"]
-size = Vector3(1.6, 0.85, 0.01)
+size = Vector3(1.5, 0.75, 0.01)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ryguw"]
-albedo_color = Color(0.639888, 0.639888, 0.6398879, 1)
+transparency = 1
+albedo_color = Color(0.6392157, 0.6392157, 0.6392157, 0.48235294)
 
 [sub_resource type="BoxMesh" id="BoxMesh_d13ii"]
 material = SubResource("StandardMaterial3D_ryguw")
-size = Vector3(1.6, 0.85, 0.01)
+size = Vector3(1.5, 0.75, 0.01)
 
 [sub_resource type="QuadMesh" id="QuadMesh_w48qg"]
 resource_local_to_scene = true
@@ -36,7 +37,7 @@ viewport_path = NodePath("PickableKeyboard/VirtualKeyboard/Viewport")
 transparency = 1
 cull_mode = 2
 albedo_texture = SubResource("ViewportTexture_vivmo")
-texture_filter = 1
+texture_filter = 0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yaehf"]
 resource_local_to_scene = true
@@ -110,11 +111,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7808208, -2.425245)
 mesh = SubResource("BoxMesh_d13ii")
 
 [node name="GrabPointHandLeft" parent="PickableKeyboard" index="2" unique_id=2004483030]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.775, 1.5808208, -2.519245)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.72, 1.581, -2.519)
 visible = true
 
 [node name="GrabPointHandRight" parent="PickableKeyboard" index="3" unique_id=1325114580]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.775, 1.5808208, -2.519245)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 1.581, -2.519)
 visible = true
 
 [node name="VirtualKeyboard" parent="PickableKeyboard" unique_id=776647796 instance=ExtResource("5_w48qg")]
@@ -124,6 +125,7 @@ scene = ExtResource("6_vivmo")
 viewport_size = Vector2(400, 200)
 update_mode = 2
 throttle_fps = 15.0
+filter = false
 scene_properties_keys = PackedStringArray("KeyboardUi")
 
 [node name="Viewport" parent="PickableKeyboard/VirtualKeyboard" index="0" unique_id=1354956385]

@@ -5,10 +5,6 @@
 [ext_resource type="Script" uid="uid://bvmqjqykgyacb" path="res://Keyboard/VirtualToggleKey.cs" id="3_7to8h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b1dt6"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
@@ -17,152 +13,120 @@ corner_radius_bottom_left = 20
 corner_detail = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7to8h"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 16
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_buurh"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 16
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7qv4"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.225, 0.225, 0.225, 0.6)
 corner_radius_top_left = 16
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dy4el"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 16
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4er4d"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 16
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_giv3k"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.225, 0.225, 0.225, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 16
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2cm7"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 16
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q0qg6"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 16
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cfynx"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.225, 0.225, 0.225, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 16
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7aslq"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h5byh"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nohnj"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.225, 0.225, 0.225, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 3
-corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="KeyNormal"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="KeyPressed"]
+bg_color = Color(0, 0, 0, 0.85)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="KeyHover"]
+bg_color = Color(0.225, 0.225, 0.225, 0.75)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="Theme" id="KeyboardTheme"]
+Button/styles/normal = SubResource("KeyNormal")
+Button/styles/pressed = SubResource("KeyPressed")
+Button/styles/hover = SubResource("KeyHover")
+Button/styles/focus = SubResource("KeyNormal")
 
 [node name="KeyboardUi" type="Control" unique_id=538590644]
 layout_mode = 3
 anchors_preset = 0
+theme = SubResource("KeyboardTheme")
 script = ExtResource("1_b1dt6")
 
 [node name="Panel" type="Panel" parent="." unique_id=1716217141]
@@ -323,8 +287,7 @@ offset_left = 55.0
 offset_top = 160.0
 offset_right = 92.0
 offset_bottom = 192.0
-text = "ALT
-"
+text = "ALT"
 script = ExtResource("3_7to8h")
 
 [node name="VirtualKeyBackspace" type="Button" parent="Panel/Standard" unique_id=1480469953]
@@ -380,8 +343,6 @@ ScanCodeText = "Enter"
 anchors_preset = 0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 394.0
-offset_bottom = 149.0
 
 [node name="VirtualKeyLowerQ" type="Button" parent="Panel/LowerCase" unique_id=395133940]
 custom_minimum_size = Vector2(32, 32)
@@ -699,8 +660,6 @@ visible = false
 anchors_preset = 0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 394.0
-offset_bottom = 149.0
 
 [node name="VirtualKeyUpperQ" type="Button" parent="Panel/UpperCase" unique_id=1207368050]
 custom_minimum_size = Vector2(32, 32)
@@ -1018,8 +977,6 @@ visible = false
 anchors_preset = 0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 394.0
-offset_bottom = 149.0
 
 [node name="VirtualKeyPlus" type="Button" parent="Panel/Alternate" unique_id=74157990]
 custom_minimum_size = Vector2(32, 32)
