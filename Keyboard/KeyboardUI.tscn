@@ -376,6 +376,246 @@ text = "Enter"
 script = ExtResource("2_cnmmc")
 ScanCodeText = "Enter"
 
+[node name="LowerCase" type="Control" parent="Panel" unique_id=2080019785]
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 394.0
+offset_bottom = 149.0
+
+[node name="VirtualKeyLowerQ" type="Button" parent="Panel/LowerCase" unique_id=395133940]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_top = 40.0
+offset_right = 32.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerW" type="Button" parent="Panel/LowerCase" unique_id=654145475]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 72.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerE" type="Button" parent="Panel/LowerCase" unique_id=1045451660]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 80.0
+offset_top = 40.0
+offset_right = 112.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerR" type="Button" parent="Panel/LowerCase" unique_id=1467032496]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 152.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerT" type="Button" parent="Panel/LowerCase" unique_id=1377608380]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 160.0
+offset_top = 40.0
+offset_right = 192.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerY" type="Button" parent="Panel/LowerCase" unique_id=34753631]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 40.0
+offset_right = 232.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerU" type="Button" parent="Panel/LowerCase" unique_id=1094757986]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 240.0
+offset_top = 40.0
+offset_right = 272.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerI" type="Button" parent="Panel/LowerCase" unique_id=1454093431]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 280.0
+offset_top = 40.0
+offset_right = 312.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerO" type="Button" parent="Panel/LowerCase" unique_id=718115581]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 320.0
+offset_top = 40.0
+offset_right = 352.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerP" type="Button" parent="Panel/LowerCase" unique_id=618400707]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 360.0
+offset_top = 40.0
+offset_right = 392.0
+offset_bottom = 32.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerA" type="Button" parent="Panel/LowerCase" unique_id=661897955]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 80.0
+offset_right = 52.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerS" type="Button" parent="Panel/LowerCase" unique_id=1214859056]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 60.0
+offset_top = 80.0
+offset_right = 92.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerD" type="Button" parent="Panel/LowerCase" unique_id=762190521]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 100.0
+offset_top = 80.0
+offset_right = 132.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerF" type="Button" parent="Panel/LowerCase" unique_id=1214151936]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 140.0
+offset_top = 80.0
+offset_right = 172.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerG" type="Button" parent="Panel/LowerCase" unique_id=441153951]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 180.0
+offset_top = 80.0
+offset_right = 212.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerH" type="Button" parent="Panel/LowerCase" unique_id=1630295675]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 220.0
+offset_top = 80.0
+offset_right = 252.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerJ" type="Button" parent="Panel/LowerCase" unique_id=1455652794]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 260.0
+offset_top = 80.0
+offset_right = 292.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerK" type="Button" parent="Panel/LowerCase" unique_id=1058065291]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 80.0
+offset_right = 332.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerL" type="Button" parent="Panel/LowerCase" unique_id=1916535316]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 340.0
+offset_top = 80.0
+offset_right = 372.0
+offset_bottom = 72.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerZ" type="Button" parent="Panel/LowerCase" unique_id=894819197]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 60.0
+offset_top = 120.0
+offset_right = 92.0
+offset_bottom = 112.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerX" type="Button" parent="Panel/LowerCase" unique_id=168530638]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 100.0
+offset_top = 120.0
+offset_right = 132.0
+offset_bottom = 112.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerC" type="Button" parent="Panel/LowerCase" unique_id=1113015710]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 140.0
+offset_top = 120.0
+offset_right = 172.0
+offset_bottom = 112.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerV" type="Button" parent="Panel/LowerCase" unique_id=533196411]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 180.0
+offset_top = 120.0
+offset_right = 212.0
+offset_bottom = 112.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerB" type="Button" parent="Panel/LowerCase" unique_id=255443921]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 220.0
+offset_top = 120.0
+offset_right = 252.0
+offset_bottom = 112.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerN" type="Button" parent="Panel/LowerCase" unique_id=2088016949]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 260.0
+offset_top = 120.0
+offset_right = 292.0
+offset_bottom = 112.0
+script = ExtResource("2_cnmmc")
+
+[node name="VirtualKeyLowerM" type="Button" parent="Panel/LowerCase" unique_id=1753024383]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 120.0
+offset_right = 332.0
+offset_bottom = 112.0
+script = ExtResource("2_cnmmc")
+
 [connection signal="pressed" from="Panel/Standard/ToggleShift" to="." method="_on_toggle_shift_pressed"]
 [connection signal="pressed" from="Panel/Standard/ToggleCaps" to="." method="_on_toggle_caps_pressed"]
 [connection signal="pressed" from="Panel/Standard/ToggleAlt" to="." method="_on_toggle_alt_pressed"]
