@@ -28,9 +28,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1681895180]
 environment = SubResource("Environment_fj7yv")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1561248854]
-transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 3.364161, 0)
-shadow_enabled = true
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=598324275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+light_energy = 6.41
+light_size = 0.287
+omni_range = 11.972
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=382244261]
 

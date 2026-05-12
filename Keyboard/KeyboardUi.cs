@@ -1,0 +1,166 @@
+using Godot;
+
+public partial class KeyboardUi : Control
+{
+	private enum KeyboardMode
+	{
+		LowerCase,
+		UpperCase,
+		Alternate
+	}
+
+	private bool _shiftDown = false;
+	private bool _capsDown = false;
+	private bool _altDown = false;
+
+	private KeyboardMode _mode = KeyboardMode.LowerCase;
+
+	private Button _toggleShift;
+	private Button _toggleCaps;
+	private Button _toggleAlt;
+
+	private Control _lowerCase;
+	private Control _upperCase;
+	private Control _alternate;
+
+	public override void _Ready()
+	{
+		_toggleShift = GetNodeOrNull<Button>("Panel/Standard/ToggleShift");
+		_toggleCaps = GetNodeOrNull<Button>("Panel/Standard/ToggleCaps");
+		_toggleAlt = GetNodeOrNull<Button>("Panel/Standard/ToggleAlt");
+
+		_lowerCase = GetNodeOrNull<Control>("Panel/LowerCase");
+		_upperCase = GetNodeOrNull<Control>("Panel/UpperCase");
+		_alternate = GetNodeOrNull<Control>("Panel/Alternate");
+
+		if (_toggleShift != null)
+		{
+			_toggleShift.FocusMode = Control.FocusModeEnum.None;
+			_toggleShift.Pressed += OnToggleShiftPressed;
+		}
+
+		if (_toggleCaps != null)
+		{
+			_toggleCaps.FocusMode = Control.FocusModeEnum.None;
+			_toggleCaps.Pressed += OnToggleCapsPressed;
+		}
+
+		if (_toggleAlt != null)
+		{
+			_toggleAlt.FocusMode = Control.FocusModeEnum.None;
+			_toggleAlt.Pressed += OnToggleAltPressed;
+		}
+
+		SetupAllKeys(this);
+		UpdateVisible(true);
+	}
+
+	private void SetupAllKeys(Node root)
+	{
+		foreach (Node child in root.GetChildren())
+		{
+			if (child is VirtualKeyInputEvent key)
+			{
+				key.FocusMode = Control.FocusModeEnum.None;
+				key.KeyPressed += OnVirtualKeyPressed;
+			}
+
+			SetupAllKeys(child);
+		}
+	}
+
+	private void OnVirtualKeyPressed(string scanCodeText, int unicode, bool shift)
+	{
+		SendKey(scanCodeText, unicode, shift);
+
+		if (_shiftDown)
+		{
+			_shiftDown = false;
+			UpdateVisible(false);
+		}
+	}
+
+	private void SendKey(string scanCodeText, int unicode, bool shift)
+	{
+		Key scanCode = Key.None;
+
+		if (!string.IsNullOrEmpty(scanCodeText))
+			scanCode = OS.FindKeycodeFromString(scanCodeText);
+
+		var input = new InputEventKey
+		{
+			PhysicalKeycode = scanCode,
+			Keycode = scanCode,
+			Unicode = unicode != 0 ? unicode : (int)scanCode,
+			Pressed = true,
+			ShiftPressed = shift
+		};
+
+		Input.ParseInputEvent(input);
+	}
+
+	private void OnToggleShiftPressed()
+	{
+		_shiftDown = !_shiftDown;
+		_capsDown = false;
+		_altDown = false;
+
+		UpdateVisible(false);
+	}
+
+	private void OnToggleCapsPressed()
+	{
+		_capsDown = !_capsDown;
+		_shiftDown = false;
+		_altDown = false;
+
+		UpdateVisible(false);
+	}
+
+	private void OnToggleAltPressed()
+	{
+		_altDown = !_altDown;
+		_shiftDown = false;
+		_capsDown = false;
+
+		UpdateVisible(false);
+	}
+
+	private void UpdateVisible(bool force)
+	{
+		SetToggleVisual(_toggleShift, _shiftDown);
+		SetToggleVisual(_toggleCaps, _capsDown);
+		SetToggleVisual(_toggleAlt, _altDown);
+
+		KeyboardMode newMode;
+
+		if (_altDown)
+			newMode = KeyboardMode.Alternate;
+		else if (_shiftDown || _capsDown)
+			newMode = KeyboardMode.UpperCase;
+		else
+			newMode = KeyboardMode.LowerCase;
+
+		if (!force && newMode == _mode)
+			return;
+
+		_mode = newMode;
+
+		if (_lowerCase != null)
+			_lowerCase.Visible = _mode == KeyboardMode.LowerCase;
+
+		if (_upperCase != null)
+			_upperCase.Visible = _mode == KeyboardMode.UpperCase;
+
+		if (_alternate != null)
+			_alternate.Visible = _mode == KeyboardMode.Alternate;
+	}
+
+	private void SetToggleVisual(Button button, bool active)
+	{
+		if (button == null)
+			return;
+
+		button.ButtonPressed = active;
+	}
+}
