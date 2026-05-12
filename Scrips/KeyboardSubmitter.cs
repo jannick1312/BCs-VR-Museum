@@ -4,17 +4,14 @@ using System.Text;
 public partial class KeyboardSubmitter : Node
 {
 	[Export] public NodePath InputScreenBridgePath;
-	[Export] public NodePath InputScreenBridgePath2;
 	[Export] public NodePath OutputScreenBridgePath;
 	[Export] public NodePath VisibilityControllerPath;
 
 	private InputScreenBridge _inputScreen;
-	private InputScreenBridge _inputScreen2;
 	private OutputScreenBridge _outputScreen;
 	private VisibilityController _visibility;
 
 	private LineEdit _inputLineEdit;
-	private LineEdit _inputLineEdit2;
 	private LineEdit _activeLineEdit;
 
 	private HttpRequest _httpRequest;
@@ -29,20 +26,16 @@ public partial class KeyboardSubmitter : Node
 		_httpRequest = GetNode<HttpRequest>("HTTPRequest");
 
 		_inputScreen = GetNode<InputScreenBridge>(InputScreenBridgePath);
-		_inputScreen2 = GetNode<InputScreenBridge>(InputScreenBridgePath2);
 		_outputScreen = GetNode<OutputScreenBridge>(OutputScreenBridgePath);
 		_visibility = GetNode<VisibilityController>(VisibilityControllerPath);
 
 		_inputLineEdit = _inputScreen.InputLineEdit;
-		_inputLineEdit2 = _inputScreen2.InputLineEdit;
 
 		_activeLineEdit = null;
 
 		_inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
-		_inputLineEdit2.FocusEntered += () => SetActiveInput(_inputLineEdit2);
 
 		_inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);
-		_inputLineEdit2.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit2);
 
 		_httpRequest.RequestCompleted += OnRequestCompleted;
 	}
