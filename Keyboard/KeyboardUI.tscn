@@ -695,6 +695,7 @@ ScanCodeText = "M"
 Unicode = 109
 
 [node name="UpperCase" type="Control" parent="Panel" unique_id=1192887144]
+visible = false
 anchors_preset = 0
 offset_left = 4.0
 offset_top = 4.0
@@ -1001,6 +1002,325 @@ ScanCodeText = "N"
 Unicode = 78
 
 [node name="VirtualKeyUpperM" type="Button" parent="Panel/UpperCase" unique_id=601336384]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 120.0
+offset_right = 332.0
+offset_bottom = 112.0
+text = "M"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "M"
+Unicode = 77
+
+[node name="Alternate" type="Control" parent="Panel" unique_id=2079665352]
+visible = false
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 394.0
+offset_bottom = 149.0
+
+[node name="VirtualKeyUpperQ" type="Button" parent="Panel/Alternate" unique_id=240121251]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_top = 40.0
+offset_right = 32.0
+offset_bottom = 32.0
+text = "Q"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "Q"
+Unicode = 81
+
+[node name="VirtualKeyUpperW" type="Button" parent="Panel/Alternate" unique_id=214945470]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 72.0
+offset_bottom = 32.0
+text = "W"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "W"
+Unicode = 87
+
+[node name="VirtualKeyUpperE" type="Button" parent="Panel/Alternate" unique_id=2131151283]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 80.0
+offset_top = 40.0
+offset_right = 112.0
+offset_bottom = 32.0
+text = "E"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "E"
+Unicode = 69
+
+[node name="VirtualKeyUpperR" type="Button" parent="Panel/Alternate" unique_id=1833714203]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 152.0
+offset_bottom = 32.0
+text = "R"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "R"
+Unicode = 82
+
+[node name="VirtualKeyUpperT" type="Button" parent="Panel/Alternate" unique_id=1184045278]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 160.0
+offset_top = 40.0
+offset_right = 192.0
+offset_bottom = 32.0
+text = "T"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "T"
+Unicode = 84
+
+[node name="VirtualKeyUpperY" type="Button" parent="Panel/Alternate" unique_id=2135409382]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 40.0
+offset_right = 232.0
+offset_bottom = 32.0
+text = "Y"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "Y"
+Unicode = 89
+
+[node name="VirtualKeyUpperU" type="Button" parent="Panel/Alternate" unique_id=352786119]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 240.0
+offset_top = 40.0
+offset_right = 272.0
+offset_bottom = 32.0
+text = "U"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "U"
+Unicode = 85
+
+[node name="VirtualKeyUpperI" type="Button" parent="Panel/Alternate" unique_id=756835292]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 280.0
+offset_top = 40.0
+offset_right = 312.0
+offset_bottom = 32.0
+text = "I"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "I"
+Unicode = 73
+
+[node name="VirtualKeyUpperO" type="Button" parent="Panel/Alternate" unique_id=623306452]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 320.0
+offset_top = 40.0
+offset_right = 352.0
+offset_bottom = 32.0
+text = "O"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "O"
+Unicode = 79
+
+[node name="VirtualKeyUpperP" type="Button" parent="Panel/Alternate" unique_id=888197605]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 360.0
+offset_top = 40.0
+offset_right = 392.0
+offset_bottom = 32.0
+text = "P"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "P"
+Unicode = 80
+
+[node name="VirtualKeyUpperA" type="Button" parent="Panel/Alternate" unique_id=226358077]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 80.0
+offset_right = 52.0
+offset_bottom = 72.0
+text = "A"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "A"
+Unicode = 65
+
+[node name="VirtualKeyUpperS" type="Button" parent="Panel/Alternate" unique_id=570261771]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 60.0
+offset_top = 80.0
+offset_right = 92.0
+offset_bottom = 72.0
+text = "S"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "S"
+Unicode = 83
+
+[node name="VirtualKeyUpperD" type="Button" parent="Panel/Alternate" unique_id=840246812]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 100.0
+offset_top = 80.0
+offset_right = 132.0
+offset_bottom = 72.0
+text = "D"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "D"
+Unicode = 68
+
+[node name="VirtualKeyUpperF" type="Button" parent="Panel/Alternate" unique_id=1504082809]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 140.0
+offset_top = 80.0
+offset_right = 172.0
+offset_bottom = 72.0
+text = "F"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "F"
+Unicode = 70
+
+[node name="VirtualKeyUpperG" type="Button" parent="Panel/Alternate" unique_id=663133129]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 180.0
+offset_top = 80.0
+offset_right = 212.0
+offset_bottom = 72.0
+text = "G"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "G"
+Unicode = 71
+
+[node name="VirtualKeyUpperH" type="Button" parent="Panel/Alternate" unique_id=423730911]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 220.0
+offset_top = 80.0
+offset_right = 252.0
+offset_bottom = 72.0
+text = "H"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "H"
+Unicode = 72
+
+[node name="VirtualKeyUpperJ" type="Button" parent="Panel/Alternate" unique_id=565237241]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 260.0
+offset_top = 80.0
+offset_right = 292.0
+offset_bottom = 72.0
+text = "J"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "J"
+Unicode = 74
+
+[node name="VirtualKeyUpperK" type="Button" parent="Panel/Alternate" unique_id=2143837698]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 80.0
+offset_right = 332.0
+offset_bottom = 72.0
+text = "K"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "K"
+Unicode = 75
+
+[node name="VirtualKeyUpperL" type="Button" parent="Panel/Alternate" unique_id=1761203108]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 340.0
+offset_top = 80.0
+offset_right = 372.0
+offset_bottom = 72.0
+text = "L"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "L"
+Unicode = 76
+
+[node name="VirtualKeyUpperZ" type="Button" parent="Panel/Alternate" unique_id=654813798]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 60.0
+offset_top = 120.0
+offset_right = 92.0
+offset_bottom = 112.0
+text = "Z"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "Z"
+Unicode = 90
+
+[node name="VirtualKeyUpperX" type="Button" parent="Panel/Alternate" unique_id=1960057936]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 100.0
+offset_top = 120.0
+offset_right = 132.0
+offset_bottom = 112.0
+text = "X"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "X"
+Unicode = 88
+
+[node name="VirtualKeyUpperC" type="Button" parent="Panel/Alternate" unique_id=1413437005]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 140.0
+offset_top = 120.0
+offset_right = 172.0
+offset_bottom = 112.0
+text = "C"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "C"
+Unicode = 67
+
+[node name="VirtualKeyUpperV" type="Button" parent="Panel/Alternate" unique_id=1600883797]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 180.0
+offset_top = 120.0
+offset_right = 212.0
+offset_bottom = 112.0
+text = "V"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "V"
+Unicode = 86
+
+[node name="VirtualKeyUpperB" type="Button" parent="Panel/Alternate" unique_id=2140280086]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 220.0
+offset_top = 120.0
+offset_right = 252.0
+offset_bottom = 112.0
+text = "B"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "B"
+Unicode = 66
+
+[node name="VirtualKeyUpperN" type="Button" parent="Panel/Alternate" unique_id=774037312]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 260.0
+offset_top = 120.0
+offset_right = 292.0
+offset_bottom = 112.0
+text = "N"
+script = ExtResource("2_cnmmc")
+ScanCodeText = "N"
+Unicode = 78
+
+[node name="VirtualKeyUpperM" type="Button" parent="Panel/Alternate" unique_id=1512809376]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 0
 offset_left = 300.0
