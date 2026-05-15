@@ -1,17 +1,5 @@
 [gd_scene format=3 uid="uid://bde7wip0wp3vt"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gv5m4"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_f3sb7"]
-sky_material = SubResource("ProceduralSkyMaterial_gv5m4")
-
-[sub_resource type="Environment" id="Environment_fj7yv"]
-background_mode = 1
-background_color = Color(0.1584723, 0.15847233, 0.1584723, 1)
-sky = SubResource("Sky_f3sb7")
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
 size = Vector3(10, 0.1, 10)
 
@@ -22,17 +10,14 @@ albedo_color = Color(0.26111263, 0.26111263, 0.2611126, 1)
 material = SubResource("StandardMaterial3D_gv5m4")
 size = Vector3(10, 0.1, 10)
 
-[node name="World" type="Node3D" unique_id=927050978]
+[node name="MuseumWorld" type="Node3D" unique_id=927050978]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1681895180]
-environment = SubResource("Environment_fj7yv")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=598324275]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-light_energy = 6.41
+light_energy = 15.0
 light_size = 0.287
-omni_range = 11.972
+omni_range = 60.0
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=382244261]
 
