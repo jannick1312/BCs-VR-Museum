@@ -3,9 +3,7 @@ using Godot;
 public partial class OutputScreenBridge : Node
 {
 	[Export] public NodePath OutputFramePath;
-	[Export] public float TargetImageWidth = 1.5f;
-	[Export] public float Border = 0.1f;
-	[Export] public float CollisionDepth = 0.03f;
+	[Export] public float Scale = 1.5f;
 
 	private Node3D _outputFrame;
 	private MeshInstance3D _picture;
@@ -22,7 +20,7 @@ public partial class OutputScreenBridge : Node
 
 		_picture = _outputFrame.GetNode<MeshInstance3D>("Picture");
 		_frame = _outputFrame.GetNode<MeshInstance3D>("Frame");
-		_collision = _outputFrame.GetNode<CollisionShape3D>("Collision");
+		_collision = _outputFrame.GetNode<CollisionShape3D>("CollisionShape3D");
 		_grabLeft = _outputFrame.GetNode<Node3D>("GrabPointHandLeft");
 		_grabRight = _outputFrame.GetNode<Node3D>("GrabPointHandRight");
 
@@ -67,23 +65,23 @@ public partial class OutputScreenBridge : Node
 
 		float aspect = (float)texture.GetWidth() / texture.GetHeight();
 
-		float imageWidth = TargetImageWidth;
+		float imageWidth = Scale;
 		float imageHeight = imageWidth / aspect;
 
-		float frameWidth = imageWidth + Border * 2.0f;
-		float frameHeight = imageHeight + Border * 2.0f;
+		float frameWidth = imageWidth + 0.2f;
+		float frameHeight = imageHeight + 0.2f;
 
 		_picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
 		_frame.Scale = new Vector3(frameWidth, frameHeight, 1.0f);
 
 		if (_collision.Shape is BoxShape3D box)
 		{
-			box.Size = new Vector3(frameWidth, frameHeight, CollisionDepth);
+			box.Size = new Vector3(frameWidth, frameHeight, 0.03f);
 		}
 		else
 		{
 			var newBox = new BoxShape3D();
-			newBox.Size = new Vector3(frameWidth, frameHeight, CollisionDepth);
+			newBox.Size = new Vector3(frameWidth, frameHeight, 0.03f);
 			_collision.Shape = newBox;
 		}
 

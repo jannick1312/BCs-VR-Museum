@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://bslaqwovqkqr6"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_wbyxu"]
+[ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="2_wiiub"]
+[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="3_x6i0p"]
+[ext_resource type="PackedScene" uid="uid://dsq03f1w5lqyc" path="res://Museum/2Din3DPlane.tscn" id="6_5r3yq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xngas"]
+size = Vector3(1.9, 1.3, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82xsv"]
+albedo_color = Color(0.6392157, 0.6392157, 0.6392157, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_md4gp"]
+material = SubResource("StandardMaterial3D_82xsv")
+size = Vector3(1.9, 1.3, 0.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_wiiub"]
+resource_local_to_scene = true
+size = Vector2(1.8, 1.2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_x6i0p"]
+viewport_path = NodePath("2Din3DPlane/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5r3yq"]
+transparency = 1
+cull_mode = 2
+albedo_texture = SubResource("ViewportTexture_x6i0p")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5phtu"]
+resource_local_to_scene = true
+size = Vector3(1.8, 1.2, 0.02)
+
+[node name="Input" unique_id=806658028 instance=ExtResource("1_wbyxu")]
+gravity_scale = 0.0
+linear_damp = 100.0
+angular_damp = 100.0
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1173825047]
+shape = SubResource("BoxShape3D_xngas")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1" unique_id=1817086855]
+mesh = SubResource("BoxMesh_md4gp")
+
+[node name="GrabPointHandLeft" parent="." index="2" unique_id=1792714259 instance=ExtResource("2_wiiub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92, 0, -0.08)
+
+[node name="GrabPointHandRight" parent="." index="3" unique_id=26794492 instance=ExtResource("3_x6i0p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.92, 0, -0.08)
+
+[node name="2Din3DPlane" parent="." index="4" unique_id=776647796 instance=ExtResource("6_5r3yq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.011)
+
+[node name="Screen" parent="2Din3DPlane" index="1" unique_id=830305756]
+mesh = SubResource("QuadMesh_wiiub")
+surface_material_override/0 = SubResource("StandardMaterial3D_5r3yq")
+
+[node name="StaticBody3D" parent="2Din3DPlane" index="2" unique_id=1024925121]
+collision_layer = 5242881
+
+[node name="CollisionShape3D" parent="2Din3DPlane/StaticBody3D" index="0" unique_id=620411508]
+shape = SubResource("BoxShape3D_5phtu")
+
+[editable path="2Din3DPlane"]

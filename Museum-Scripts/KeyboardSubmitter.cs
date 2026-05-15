@@ -20,21 +20,37 @@ public partial class KeyboardSubmitter : Node
 
 	public override async void _Ready()
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 12; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		_httpRequest = GetNode<HttpRequest>("HTTPRequest");
+		_httpRequest = GetNodeOrNull<HttpRequest>("HTTPRequest");
 
-		_inputScreen = GetNode<InputScreenBridge>(InputScreenBridgePath);
-		_outputScreen = GetNode<OutputScreenBridge>(OutputScreenBridgePath);
-		_visibility = GetNode<VisibilityController>(VisibilityControllerPath);
+		if (_httpRequest == null)
+		{
+			_httpRequest = new HttpRequest();
+			_httpRequest.Name = "HTTPRequest";
+			AddChild(_httpRequest);
+		}
+
+		_inputScreen = GetNodeOrNull<InputScreenBridge>(InputScreenBridgePath);
+		_outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
+		_visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
+
+		if (_inputScreen == null || _outputScreen == null || _visibility == null)
+		{
+			GD.PrintErr("KeyboardSubmitter: Einer der Pfade ist falsch.");
+			return;
+		}
 
 		_inputLineEdit = _inputScreen.InputLineEdit;
 
-		_activeLineEdit = null;
+		if (_inputLineEdit == null)
+		{
+			GD.PrintErr("KeyboardSubmitter: InputLineEdit ist null.");
+			return;
+		}
 
 		_inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
-
 		_inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);
 
 		_httpRequest.RequestCompleted += OnRequestCompleted;
@@ -90,9 +106,15 @@ public partial class KeyboardSubmitter : Node
 		string responseText = Encoding.UTF8.GetString(body);
 
 		Json json = new Json();
-		json.Parse(responseText);
+
+		if (json.Parse(responseText) != Error.Ok)
+			return;
 
 		var data = json.Data.AsGodotDictionary();
+
+		if (!data.ContainsKey("image_url"))
+			return;
+
 		string imageUrl = data["image_url"].ToString();
 
 		_outputScreen.SetOutputImageFromUrl(imageUrl);

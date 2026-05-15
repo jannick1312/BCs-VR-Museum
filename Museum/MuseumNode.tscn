@@ -2,59 +2,47 @@
 
 [ext_resource type="PackedScene" uid="uid://bde7wip0wp3vt" path="res://Museum/MuseumWorld.tscn" id="1_2f86q"]
 [ext_resource type="PackedScene" uid="uid://cbhnqhv46vsbp" path="res://Museum/Keyboard.tscn" id="1_ecgt1"]
-[ext_resource type="PackedScene" uid="uid://87b86o6ommpy" path="res://Museum/pickable_object.tscn" id="2_fxls0"]
+[ext_resource type="PackedScene" uid="uid://bbgtin8e3itqc" path="res://Museum/Output.tscn" id="5_avl46"]
 [ext_resource type="Script" uid="uid://bysv4urs3fhwy" path="res://Museum-Scripts/KeyboardSubmitter.cs" id="5_cwl2q"]
 [ext_resource type="Script" uid="uid://birhengy0njg6" path="res://Museum-Scripts/EnterSubmitTrigger.cs" id="6_qutch"]
-[ext_resource type="PackedScene" uid="uid://btiji2omr7n2t" path="res://Museum/Output.tscn" id="7_qs8o8"]
+[ext_resource type="PackedScene" uid="uid://bslaqwovqkqr6" path="res://Museum/Input.tscn" id="7_ecgt1"]
 [ext_resource type="Script" uid="uid://tpljsyhr5ikd" path="res://Museum-Scripts/OutputScreenBridge.cs" id="8_bs0q8"]
-[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="9_3ha1o"]
-[ext_resource type="PackedScene" uid="uid://drs3gdns8fhnb" path="res://Museum/InputText.tscn" id="10_gfepu"]
 [ext_resource type="Script" uid="uid://yntvr0ux5buk" path="res://Museum-Scripts/InputScreenBridge.cs" id="11_rusw4"]
 [ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Museum-Scripts/VisibilityController.cs" id="12_yskpt"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_hm1tn"]
+[sub_resource type="QuadMesh" id="QuadMesh_ecgt1"]
 resource_local_to_scene = true
 size = Vector2(1.5, 0.75)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_avl46"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_m6mi2"]
 viewport_path = NodePath("Keyboard/2Din3DKeyboard/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sl0ll"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hm1tn"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_avl46")
+albedo_texture = SubResource("ViewportTexture_m6mi2")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tqf3b"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_avl46"]
 resource_local_to_scene = true
 size = Vector3(1.5, 0.75, 0.02)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_dg77c"]
-size = Vector3(1.9, 1.3, 0.01)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82xsv"]
-albedo_color = Color(0.6392157, 0.6392157, 0.6392157, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_w48qg"]
-material = SubResource("StandardMaterial3D_82xsv")
-size = Vector3(1.9, 1.3, 0.01)
-
-[sub_resource type="QuadMesh" id="QuadMesh_lvb5a"]
+[sub_resource type="QuadMesh" id="QuadMesh_sl0ll"]
 resource_local_to_scene = true
-size = Vector2(3, 2)
+size = Vector2(1.8, 1.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_hstwv"]
-viewport_path = NodePath("PickableInput/InputScreen/Viewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_tqf3b"]
+viewport_path = NodePath("Input/2Din3DPlane/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i5sej"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lvb5a"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_hstwv")
+albedo_texture = SubResource("ViewportTexture_tqf3b")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_6fqx3"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_hstwv"]
 resource_local_to_scene = true
-size = Vector3(3, 2, 0.02)
+size = Vector3(1.8, 1.2, 0.02)
 
 [node name="MuseumNode" type="Node3D" unique_id=1711306997]
 
@@ -65,15 +53,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -2)
 
 [node name="Screen" parent="Keyboard/2Din3DKeyboard" parent_id_path=PackedInt32Array(806658028, 776647796) index="1" unique_id=1158603700]
-mesh = SubResource("QuadMesh_hm1tn")
-surface_material_override/0 = SubResource("StandardMaterial3D_sl0ll")
+mesh = SubResource("QuadMesh_ecgt1")
+surface_material_override/0 = SubResource("StandardMaterial3D_hm1tn")
 
 [node name="CollisionShape3D" parent="Keyboard/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(806658028, 776647796, 1711902221) index="0" unique_id=2064986693]
-shape = SubResource("BoxShape3D_tqf3b")
+shape = SubResource("BoxShape3D_avl46")
 
 [node name="KeyboardSubmitter" type="Node" parent="Keyboard" unique_id=1375999532]
 script = ExtResource("5_cwl2q")
-InputScreenBridgePath = NodePath("../../PickableInput/InputScreenBridge")
+InputScreenBridgePath = NodePath("../../Input/InputScreenBridge")
 OutputScreenBridgePath = NodePath("../../Output/OutputScreenBridge")
 VisibilityControllerPath = NodePath("../../VisibilityController")
 
@@ -84,57 +72,27 @@ script = ExtResource("6_qutch")
 ViewportPath = NodePath("../2Din3DKeyboard/Viewport")
 KeyboardSubmitterPath = NodePath("../KeyboardSubmitter")
 
-[node name="Output" parent="." unique_id=636980356 instance=ExtResource("7_qs8o8")]
+[node name="Output" parent="." unique_id=373268339 instance=ExtResource("5_avl46")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, -3.5)
-visible = false
 
 [node name="OutputScreenBridge" type="Node" parent="Output" unique_id=379999481]
 script = ExtResource("8_bs0q8")
 OutputFramePath = NodePath("..")
+Scale = 2.5
 
-[node name="PickableInput" parent="." unique_id=697843405 instance=ExtResource("2_fxls0")]
-gravity_scale = 0.0
-linear_damp = 100.0
-angular_damp = 100.0
+[node name="Input" parent="." unique_id=224690396 instance=ExtResource("7_ecgt1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -3.5)
 
-[node name="CollisionShape3D" parent="PickableInput" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -3.506)
-shape = SubResource("BoxShape3D_dg77c")
+[node name="Screen" parent="Input/2Din3DPlane" parent_id_path=PackedInt32Array(224690396, 776647796) index="1" unique_id=830305756]
+mesh = SubResource("QuadMesh_sl0ll")
+surface_material_override/0 = SubResource("StandardMaterial3D_lvb5a")
 
-[node name="MeshInstance3D" parent="PickableInput" index="1" unique_id=1228050840]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -3.506)
-mesh = SubResource("BoxMesh_w48qg")
+[node name="CollisionShape3D" parent="Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 776647796, 1024925121) index="0" unique_id=620411508]
+shape = SubResource("BoxShape3D_hstwv")
 
-[node name="GrabPointHandLeft" parent="PickableInput" index="2" unique_id=2004483030]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.925, 2, -3.6)
-visible = true
-
-[node name="GrabPointHandRight" parent="PickableInput" index="3" unique_id=1325114580]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.075, 2, -3.6)
-visible = true
-
-[node name="InputScreen" parent="PickableInput" unique_id=1016973036 instance=ExtResource("9_3ha1o")]
-transform = Transform3D(0.59999996, 0, 0, 0, 0.59999996, 0, 0, 0, 0.59999996, -2, 2, -3.5)
-scene = ExtResource("10_gfepu")
-viewport_size = Vector2(1200, 800)
-transparent = 1
-scene_properties_keys = PackedStringArray()
-
-[node name="Viewport" parent="PickableInput/InputScreen" index="0"]
-size = Vector2i(1200, 800)
-
-[node name="Screen" parent="PickableInput/InputScreen" index="1"]
-mesh = SubResource("QuadMesh_lvb5a")
-surface_material_override/0 = SubResource("StandardMaterial3D_i5sej")
-
-[node name="StaticBody3D" parent="PickableInput/InputScreen" index="2"]
-viewport_size = Vector2(1200, 800)
-
-[node name="CollisionShape3D" parent="PickableInput/InputScreen/StaticBody3D" index="0"]
-shape = SubResource("BoxShape3D_6fqx3")
-
-[node name="InputScreenBridge" type="Node" parent="PickableInput" unique_id=1054111552]
+[node name="InputScreenBridge" type="Node" parent="Input" unique_id=1054111552]
 script = ExtResource("11_rusw4")
+ViewportPath = NodePath("../2Din3DPlane/Viewport")
 
 [node name="VisibilityController" type="Node" parent="." unique_id=1955216869]
 script = ExtResource("12_yskpt")
@@ -144,5 +102,5 @@ OutputFramePath = NodePath("../Output")
 [editable path="Keyboard"]
 [editable path="Keyboard/2Din3DKeyboard"]
 [editable path="Output"]
-[editable path="PickableInput"]
-[editable path="PickableInput/InputScreen"]
+[editable path="Input"]
+[editable path="Input/2Din3DPlane"]
