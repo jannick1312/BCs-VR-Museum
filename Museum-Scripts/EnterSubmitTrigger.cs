@@ -2,12 +2,21 @@ using Godot;
 
 public partial class EnterSubmitTrigger : Node
 {
+	[Export] public NodePath ViewportPath;
+	[Export] public NodePath KeyboardSubmitterPath;
+
+	private KeyboardSubmitter _submitter;
+
 	public override async void _Ready()
 	{
 		for (int i = 0; i < 8; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		var viewport = GetNode<Viewport>("../Viewport");
+		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
+		_submitter = GetNodeOrNull<KeyboardSubmitter>(KeyboardSubmitterPath);
+
+		if (viewport == null || _submitter == null)
+			return;
 
 		Node enterKey = FindNodeByName(viewport, "VirtualKeyEnter");
 
@@ -34,9 +43,6 @@ public partial class EnterSubmitTrigger : Node
 
 	private void OnEnterPressed()
 	{
-
-		var submitter = GetNodeOrNull<KeyboardSubmitter>("../KeyboardSubmitter");
-
-		submitter.SubmitText();
+		_submitter.SubmitText();
 	}
 }

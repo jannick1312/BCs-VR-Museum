@@ -7,20 +7,17 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_dg77c"]
 size = Vector3(1, 1, 0.01)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ycdy4"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s0grr"]
 albedo_color = Color(0.6392157, 0.6392157, 0.6392157, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_w48qg"]
-material = SubResource("StandardMaterial3D_ycdy4")
+material = SubResource("StandardMaterial3D_s0grr")
 size = Vector3(1, 1, 0.01)
 
 [sub_resource type="QuadMesh" id="QuadMesh_dg77c"]
 
 [node name="PickableOutput" type="RigidBody3D" unique_id=636980356]
-collision_layer = 4
-collision_mask = 196615
 gravity_scale = 0.0
-freeze_mode = 1
 linear_damp = 100.0
 angular_damp = 100.0
 script = ExtResource("1_n5f4q")

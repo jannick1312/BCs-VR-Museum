@@ -2,16 +2,16 @@ using Godot;
 
 public partial class VisibilityController : Node
 {
-	[Export] public NodePath PickableKeyboardPath;
+	[Export] public NodePath KeyboardPath;
 	[Export] public NodePath OutputFramePath;
 
-	private Node3D _keyboardPickable;
+	private Node3D _keyboard;
 	private Node3D _outputFrame;
 
 	public override void _Ready()
 	{
-		_keyboardPickable = GetNode<Node3D>(PickableKeyboardPath);
-		_outputFrame = GetNode<Node3D>(OutputFramePath);
+		_keyboard = GetNodeOrNull<Node3D>(KeyboardPath);
+		_outputFrame = GetNodeOrNull<Node3D>(OutputFramePath);
 
 		HideKeyboard();
 		HideOutput();
@@ -19,37 +19,40 @@ public partial class VisibilityController : Node
 
 	public void ShowKeyboard()
 	{
-		SetTreeVisible(_keyboardPickable, true);
-		HideOutput();
+		SetTreeActive(_keyboard, true);
+		SetTreeActive(_outputFrame, false);
 	}
 
 	public void HideKeyboard()
 	{
-		SetTreeVisible(_keyboardPickable, false);
+		SetTreeActive(_keyboard, false);
 	}
 
 	public void ShowOutput()
 	{
-		SetTreeVisible(_outputFrame, true);
+		SetTreeActive(_outputFrame, true);
 	}
 
 	public void HideOutput()
 	{
-		SetTreeVisible(_outputFrame, false);
+		SetTreeActive(_outputFrame, false);
 	}
 
-	private void SetTreeVisible(Node node, bool visible)
+	private void SetTreeActive(Node node, bool active)
 	{
+		if (node == null)
+			return;
+
 		if (node is Node3D node3D)
-			node3D.Visible = visible;
+			node3D.Visible = active;
 
 		if (node is CollisionShape3D collisionShape)
-			collisionShape.Disabled = !visible;
+			collisionShape.SetDeferred(CollisionShape3D.PropertyName.Disabled, !active);
 
 		if (node is Viewport viewport)
-			viewport.SetProcessInput(visible);
+			viewport.SetProcessInput(active);
 
 		foreach (Node child in node.GetChildren())
-			SetTreeVisible(child, visible);
+			SetTreeActive(child, active);
 	}
 }
