@@ -44,7 +44,6 @@ public partial class OutputScreenBridge : Node
 
 		request.QueueFree();
 
-
 		Image image = new Image();
 
 		Error loadError = image.LoadJpgFromBuffer(body);

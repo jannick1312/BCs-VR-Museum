@@ -13,16 +13,7 @@ public partial class InputScreenBridge : Node
 
 		Viewport viewport = GetNodeOrNull<Viewport>(ViewportPath);
 
-		if (viewport == null)
-		{
-			GD.PrintErr("InputScreenBridge: ViewportPath ist falsch.");
-			return;
-		}
-
 		InputLineEdit = FindFirstLineEdit(viewport);
-
-		if (InputLineEdit == null)
-			GD.PrintErr("InputScreenBridge: Kein LineEdit im Viewport gefunden.");
 	}
 
 	private LineEdit FindFirstLineEdit(Node node)

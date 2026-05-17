@@ -66,6 +66,10 @@ android/build/build/intermediates/assets/monoDebug/mergeMonoDebugAssets/Museum-S
  OutputScreenBridge.cs
  PlatformSwitcher.cs
  VisibilityController.cs
+android/build/src/main/assets/Keyboard/
+ KeyboardUi.cs
+ VirtualKeyInputEvent.cs
+ VirtualToggleKey.cs
 Keyboard/
  KeyboardUi.cs
  VirtualKeyInputEvent.cs

@@ -15,9 +15,6 @@ public partial class EnterSubmitTrigger : Node
 		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
 		_submitter = GetNodeOrNull<KeyboardSubmitter>(KeyboardSubmitterPath);
 
-		if (viewport == null || _submitter == null)
-			return;
-
 		Node enterKey = FindNodeByName(viewport, "VirtualKeyEnter");
 
 		enterKey.Connect(

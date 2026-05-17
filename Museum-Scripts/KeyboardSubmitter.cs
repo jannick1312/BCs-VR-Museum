@@ -36,17 +36,10 @@ public partial class KeyboardSubmitter : Node
 		_outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
 		_visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
 
-		if (_inputScreen == null || _outputScreen == null || _visibility == null)
-		{
-			GD.PrintErr("KeyboardSubmitter: Einer der Pfade ist falsch.");
-			return;
-		}
-
 		_inputLineEdit = _inputScreen.InputLineEdit;
 
 		if (_inputLineEdit == null)
 		{
-			GD.PrintErr("KeyboardSubmitter: InputLineEdit ist null.");
 			return;
 		}
 
