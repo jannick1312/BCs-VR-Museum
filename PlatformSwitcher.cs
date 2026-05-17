@@ -17,6 +17,9 @@ public partial class PlatformSwitcher : Node
 	[Export] public NodePath RightTurnMovementPath;
 	[Export] public NodePath RightJumpMovementPath;
 
+	[Export] public NodePath LeftHandVisualPath;
+	[Export] public NodePath RightHandVisualPath;
+
 	private Node3D _playerRig;
 	private XRCamera3D _camera;
 
@@ -29,6 +32,9 @@ public partial class PlatformSwitcher : Node
 	private Node _leftMovement;
 	private Node _rightTurnMovement;
 	private Node _rightJumpMovement;
+
+	private Node3D _leftHandVisual;
+	private Node3D _rightHandVisual;
 
 	private Transform3D _lastMuseumTransform;
 
@@ -50,11 +56,15 @@ public partial class PlatformSwitcher : Node
 		_rightTurnMovement = GetNode<Node>(RightTurnMovementPath);
 		_rightJumpMovement = GetNode<Node>(RightJumpMovementPath);
 
+		_leftHandVisual = GetNode<Node3D>(LeftHandVisualPath);
+		_rightHandVisual = GetNode<Node3D>(RightHandVisualPath);
+
 		_worldEnvironment.Environment = MuseumEnvironment;
 
 		SetMuseumActive(true);
 		SetMenuActive(false);
 		SetMovementEnabled(true);
+		SetHandVisualsVisible(true);
 	}
 
 	public override void _Process(double delta)
@@ -90,6 +100,8 @@ public partial class PlatformSwitcher : Node
 			_playerRig.GlobalTransform = _lastMuseumTransform;
 
 			SetMovementEnabled(true);
+			SetHandVisualsVisible(true);
+
 			_isInMenu = false;
 		}
 		else
@@ -105,6 +117,8 @@ public partial class PlatformSwitcher : Node
 			LockCameraToMenuSpawn();
 
 			SetMovementEnabled(false);
+			SetHandVisualsVisible(false);
+
 			_isInMenu = true;
 		}
 	}
@@ -113,18 +127,20 @@ public partial class PlatformSwitcher : Node
 	{
 		Vector3 difference = _menuSpawnPoint.GlobalPosition - _camera.GlobalPosition;
 		_playerRig.GlobalPosition += difference;
+
+		Vector3 rotation = _playerRig.GlobalRotation;
+		rotation.Y = _menuSpawnPoint.GlobalRotation.Y;
+		_playerRig.GlobalRotation = rotation;
 	}
 
 	private void SetMuseumActive(bool active)
 	{
 		_museumNode.Visible = active;
-		_museumNode.ProcessMode = active ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 	}
 
 	private void SetMenuActive(bool active)
 	{
 		_menuNode.Visible = active;
-		_menuNode.ProcessMode = active ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 	}
 
 	private void SetMovementEnabled(bool enabled)
@@ -132,5 +148,11 @@ public partial class PlatformSwitcher : Node
 		_leftMovement.Set("enabled", enabled);
 		_rightTurnMovement.Set("enabled", enabled);
 		_rightJumpMovement.Set("enabled", enabled);
+	}
+
+	private void SetHandVisualsVisible(bool visible)
+	{
+		_leftHandVisual.Visible = visible;
+		_rightHandVisual.Visible = visible;
 	}
 }

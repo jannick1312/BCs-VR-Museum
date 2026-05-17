@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d084bq7yqnn45"]
 
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_0xm2m"]
-[ext_resource type="Script" uid="uid://ell5jv1h0srh" path="res://Museum-Scripts/PlatformSwitcher.cs" id="1_vivmo"]
+[ext_resource type="Script" uid="uid://ell5jv1h0srh" path="res://PlatformSwitcher.cs" id="1_vivmo"]
 [ext_resource type="PackedScene" uid="uid://dh7iemj1ylh3i" path="res://Menu/MenuNode.tscn" id="1_w48qg"]
 [ext_resource type="PackedScene" uid="uid://csbg75jax1jnj" path="res://player.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://djl0v8ero2htq" path="res://Museum/MuseumNode.tscn" id="4_lquwl"]
@@ -62,6 +62,8 @@ MenuEnvironment = SubResource("Environment_272bh")
 LeftMovementPath = NodePath("Player/XROrigin3D/LeftController/MovementDirect")
 RightTurnMovementPath = NodePath("Player/XROrigin3D/RightController/MovementTurn")
 RightJumpMovementPath = NodePath("Player/XROrigin3D/RightController/MovementJump")
+LeftHandVisualPath = NodePath("Player/XROrigin3D/LeftController/LeftHand2")
+RightHandVisualPath = NodePath("Player/XROrigin3D/RightController/RightHand2")
 
 [node name="StartXR" parent="." unique_id=758186761 instance=ExtResource("1_0xm2m")]
 

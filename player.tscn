@@ -10,8 +10,15 @@
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="7_dw050"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dw050"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b26j0"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n7ghd"]
+albedo_color = Color(0, 0, 0, 1)
 
 [node name="Player" type="Node3D" unique_id=1807302450]
 
@@ -51,11 +58,13 @@ jump_button_action = "ax_button"
 
 [node name="FunctionPointer" parent="XROrigin3D/RightController" unique_id=39751939 instance=ExtResource("7_dw050")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.05, -0.1)
-distance = 3.0
+distance = 5.0
 laser_length = 1
 laser_material = SubResource("StandardMaterial3D_dw050")
 laser_hit_material = SubResource("StandardMaterial3D_b26j0")
 show_target = true
 target_radius = 0.025
+target_material = SubResource("StandardMaterial3D_n7ghd")
+collision_mask = 5242881
 
 [node name="PlayerBody" parent="XROrigin3D" unique_id=861404871 instance=ExtResource("3_i3pqv")]

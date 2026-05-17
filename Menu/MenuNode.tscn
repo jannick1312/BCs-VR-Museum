@@ -1,18 +1,18 @@
 [gd_scene format=3 uid="uid://dh7iemj1ylh3i"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_hbcds"]
-size = Vector3(3, 2, 0.1)
+[ext_resource type="PackedScene" uid="uid://pgendy5awkuh" path="res://Keyboard/2Din3DKeyboard.tscn" id="1_gxrlm"]
+[ext_resource type="PackedScene" uid="uid://ka3p36bow7nw" path="res://Menu/2Din3DURL.tscn" id="2_jeisv"]
 
 [node name="MenuNode" type="Node3D" unique_id=227478366]
 
 [node name="MenuSpawnPoint" type="Marker3D" parent="." unique_id=1700917122]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=108671153]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 light_energy = 10.0
-omni_range = 40.0
 
-[node name="Screen" type="Node3D" parent="." unique_id=747216921]
+[node name="2Din3DKeyboard" parent="." unique_id=776647796 instance=ExtResource("1_gxrlm")]
+transform = Transform3D(1.5, 0, 0, 0, 1.3900193, 0.56377846, 0, -0.56377846, 1.3900193, 0, -0.60300744, -1.681)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Screen" unique_id=1476787400]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
-mesh = SubResource("BoxMesh_hbcds")
+[node name="2Din3DURL" parent="." unique_id=1927318274 instance=ExtResource("2_jeisv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4969926, -2)

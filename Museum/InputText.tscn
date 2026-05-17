@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://drs3gdns8fhnb"]
+[gd_scene format=3 uid="uid://u5ecy8x04wo1"]
 
 [node name="Control" type="Control" unique_id=1310227466]
 custom_minimum_size = Vector2(1200, 800)
