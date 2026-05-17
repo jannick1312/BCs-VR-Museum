@@ -16,7 +16,7 @@ public partial class KeyboardSubmitter : Node
 
 	private HttpRequest _httpRequest;
 
-	private string _serverUrl = "http://192.168.1.21:5050/search_one";
+	private ServerUrlStore _serverUrlStore;
 
 	public override async void _Ready()
 	{
@@ -35,6 +35,8 @@ public partial class KeyboardSubmitter : Node
 		_inputScreen = GetNodeOrNull<InputScreenBridge>(InputScreenBridgePath);
 		_outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
 		_visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
+
+		_serverUrlStore = GetTree().Root.FindChild("ServerUrlStore", true, false) as ServerUrlStore;
 
 		_inputLineEdit = _inputScreen.InputLineEdit;
 
@@ -83,7 +85,7 @@ public partial class KeyboardSubmitter : Node
 		string[] headers = { "Content-Type: application/json" };
 
 		_httpRequest.Request(
-			_serverUrl,
+			_serverUrlStore.CurrentServerUrl,
 			headers,
 			HttpClient.Method.Post,
 			json

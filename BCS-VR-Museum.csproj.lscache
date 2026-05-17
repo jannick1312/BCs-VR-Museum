@@ -59,23 +59,21 @@ android/build/build/intermediates/assets/monoDebug/mergeMonoDebugAssets/Keyboard
  KeyboardUi.cs
  VirtualKeyInputEvent.cs
  VirtualToggleKey.cs
-android/build/build/intermediates/assets/monoDebug/mergeMonoDebugAssets/Museum-Scripts/
- EnterSubmitTrigger.cs
- InputScreenBridge.cs
- KeyboardSubmitter.cs
- OutputScreenBridge.cs
- VisibilityController.cs
-android/build/
- build/intermediates/assets/monoDebug/mergeMonoDebugAssets/PlatformSwitcher.cs
- src/main/assets/Keyboard/
-  KeyboardUi.cs
-  VirtualKeyInputEvent.cs
-  VirtualToggleKey.cs
- src/main/assets/PlatformSwitcher.cs
+android/build/build/intermediates/assets/monoDebug/mergeMonoDebugAssets/
+ Menu-Scripts/UrlSettingsPanel.cs
+ Museum-Scripts/
+  EnterSubmitTrigger.cs
+  InputScreenBridge.cs
+  KeyboardSubmitter.cs
+  OutputScreenBridge.cs
+  VisibilityController.cs
+ PlatformSwitcher.cs
+ ServerUrlStore.cs
 Keyboard/
  KeyboardUi.cs
  VirtualKeyInputEvent.cs
  VirtualToggleKey.cs
+Menu-Scripts/UrlSettingsPanel.cs
 Museum-Scripts/
  EnterSubmitTrigger.cs
  InputScreenBridge.cs
@@ -83,6 +81,7 @@ Museum-Scripts/
  OutputScreenBridge.cs
  VisibilityController.cs
 PlatformSwitcher.cs
+ServerUrlStore.cs
 
 [metadataReferences]
 <NUGET>/microsoft.netcore.app.ref/8.0.26/ref/net8.0/

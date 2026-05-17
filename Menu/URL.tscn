@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://drs3gdns8fhnb"]
 
+[ext_resource type="Script" uid="uid://cjid5a7fylxt6" path="res://Menu-Scripts/UrlSettingsPanel.cs" id="1_1vbjo"]
+
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
 bg_color = Color(1, 1, 1, 0.75686276)
 corner_radius_top_left = 80
@@ -96,6 +98,9 @@ anchors_preset = 0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="UrlSettingsPanel" type="Node" parent="." unique_id=1045959962]
+script = ExtResource("1_1vbjo")
+
 [node name="Panel" type="Panel" parent="." unique_id=598254976]
 custom_minimum_size = Vector2(1200, 800)
 layout_mode = 0
@@ -119,7 +124,7 @@ offset_left = 50.0
 offset_top = 50.0
 offset_right = 1150.0
 offset_bottom = 212.5
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("CurrentLabelStyle")
 text = "Currently using:
 xxxxxxxxxxxxxxxxxx"
