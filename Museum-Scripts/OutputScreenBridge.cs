@@ -4,10 +4,11 @@ public partial class OutputScreenBridge : Node
 {
 	[Export] public NodePath OutputFramePath;
 	[Export] public float Scale = 1.5f;
+	[Export] public bool FrameUsesXZPlane = true;
 
 	private Node3D _outputFrame;
 	private MeshInstance3D _picture;
-	private MeshInstance3D _frame;
+	private Node3D _frame;
 	private CollisionShape3D _collision;
 	private Node3D _grabLeft;
 	private Node3D _grabRight;
@@ -19,7 +20,7 @@ public partial class OutputScreenBridge : Node
 		_outputFrame = GetNode<Node3D>(OutputFramePath);
 
 		_picture = _outputFrame.GetNode<MeshInstance3D>("Picture");
-		_frame = _outputFrame.GetNode<MeshInstance3D>("Frame");
+		_frame = _outputFrame.GetNode<Node3D>("Frame");
 		_collision = _outputFrame.GetNode<CollisionShape3D>("CollisionShape3D");
 		_grabLeft = _outputFrame.GetNode<Node3D>("GrabPointHandLeft");
 		_grabRight = _outputFrame.GetNode<Node3D>("GrabPointHandRight");
@@ -71,7 +72,7 @@ public partial class OutputScreenBridge : Node
 		float frameHeight = imageHeight + 0.2f;
 
 		_picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
-		_frame.Scale = new Vector3(frameWidth, frameHeight, 1.0f);
+		_frame.Scale = new Vector3(frameWidth, 10.0f, frameHeight);
 
 		if (_collision.Shape is BoxShape3D box)
 		{
@@ -85,7 +86,6 @@ public partial class OutputScreenBridge : Node
 		}
 
 		float halfWidth = frameWidth / 2.0f;
-		float halfHeight = frameHeight / 2.0f;
 
 		_grabLeft.Position = new Vector3(-halfWidth+0.02f, 0.0f, -0.0925f);
 		_grabRight.Position = new Vector3(halfWidth-0.02f, 0.0f, -0.0925f);

@@ -69,6 +69,20 @@ android/build/build/intermediates/assets/monoDebug/mergeMonoDebugAssets/
   VisibilityController.cs
  PlatformSwitcher.cs
  ServerUrlStore.cs
+android/build/src/main/assets/Keyboard/
+ KeyboardUi.cs
+ VirtualKeyInputEvent.cs
+ VirtualToggleKey.cs
+android/build/src/main/assets/
+ Menu-Scripts/UrlSettingsPanel.cs
+ Museum-Scripts/
+  EnterSubmitTrigger.cs
+  InputScreenBridge.cs
+  KeyboardSubmitter.cs
+  OutputScreenBridge.cs
+  VisibilityController.cs
+ PlatformSwitcher.cs
+ ServerUrlStore.cs
 Keyboard/
  KeyboardUi.cs
  VirtualKeyInputEvent.cs
