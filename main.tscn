@@ -94,19 +94,12 @@ script = ExtResource("3_7mycd")
 
 [node name="PlatformSwitcher" type="Node" parent="." unique_id=350164590]
 script = ExtResource("1_vivmo")
-PlayerRigPath = NodePath("../Player/XROrigin3D")
-CameraPath = NodePath("../Player/XROrigin3D/XRCamera3D")
+PlayerPath = NodePath("../Player")
 MuseumNodePath = NodePath("../MuseumNode")
 MenuNodePath = NodePath("../MenuNode")
-MenuSpawnPointPath = NodePath("../MenuNode/MenuSpawnPoint")
 WorldEnvironmentPath = NodePath("../WorldEnvironment")
 MuseumEnvironment = SubResource("Environment_7mycd")
 MenuEnvironment = SubResource("Environment_272bh")
-LeftMovementPath = NodePath("../Player/XROrigin3D/LeftController/MovementDirect")
-RightTurnMovementPath = NodePath("../Player/XROrigin3D/RightController/MovementTurn")
-RightJumpMovementPath = NodePath("../Player/XROrigin3D/RightController/MovementJump")
-LeftHandVisualPath = NodePath("../Player/XROrigin3D/LeftController/LeftHand2")
-RightHandVisualPath = NodePath("../Player/XROrigin3D/RightController/RightHand2")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1222899868]
 environment = SubResource("Environment_lquwl")

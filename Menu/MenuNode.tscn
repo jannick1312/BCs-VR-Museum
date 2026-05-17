@@ -3,38 +3,38 @@
 [ext_resource type="PackedScene" uid="uid://pgendy5awkuh" path="res://Keyboard/2Din3DKeyboard.tscn" id="1_gxrlm"]
 [ext_resource type="PackedScene" uid="uid://ka3p36bow7nw" path="res://Menu/2Din3DURL.tscn" id="2_jeisv"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_eywo2"]
+[sub_resource type="QuadMesh" id="QuadMesh_jeisv"]
 resource_local_to_scene = true
 size = Vector2(1.5, 0.75)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_35l5i"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_4h7le"]
 viewport_path = NodePath("2Din3DKeyboard/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cvui0"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eywo2"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_35l5i")
+albedo_texture = SubResource("ViewportTexture_4h7le")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_r5m5x"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_35l5i"]
 resource_local_to_scene = true
 size = Vector3(1.5, 0.75, 0.02)
 
-[sub_resource type="QuadMesh" id="QuadMesh_tc8e0"]
+[sub_resource type="QuadMesh" id="QuadMesh_cvui0"]
 resource_local_to_scene = true
 size = Vector2(1.8, 1.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ffolm"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_r5m5x"]
 viewport_path = NodePath("2Din3DURL/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o2dd1"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tc8e0"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_ffolm")
+albedo_texture = SubResource("ViewportTexture_r5m5x")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_e605b"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ffolm"]
 resource_local_to_scene = true
 size = Vector3(1.8, 1.2, 0.02)
 
@@ -50,21 +50,21 @@ light_energy = 10.0
 transform = Transform3D(1.5, 0, 0, 0, 1.3900193, 0.56377846, 0, -0.56377846, 1.3900193, 0, -0.60300744, -1.681)
 
 [node name="Screen" parent="2Din3DKeyboard" index="1" unique_id=1158603700]
-mesh = SubResource("QuadMesh_eywo2")
-surface_material_override/0 = SubResource("StandardMaterial3D_cvui0")
+mesh = SubResource("QuadMesh_jeisv")
+surface_material_override/0 = SubResource("StandardMaterial3D_eywo2")
 
 [node name="CollisionShape3D" parent="2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(776647796, 1711902221) index="0" unique_id=2064986693]
-shape = SubResource("BoxShape3D_r5m5x")
+shape = SubResource("BoxShape3D_35l5i")
 
 [node name="2Din3DURL" parent="." unique_id=1927318274 instance=ExtResource("2_jeisv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4969926, -2)
 
 [node name="Screen" parent="2Din3DURL" index="1" unique_id=830305756]
-mesh = SubResource("QuadMesh_tc8e0")
-surface_material_override/0 = SubResource("StandardMaterial3D_o2dd1")
+mesh = SubResource("QuadMesh_cvui0")
+surface_material_override/0 = SubResource("StandardMaterial3D_tc8e0")
 
 [node name="CollisionShape3D" parent="2Din3DURL/StaticBody3D" parent_id_path=PackedInt32Array(1927318274, 1024925121) index="0" unique_id=620411508]
-shape = SubResource("BoxShape3D_e605b")
+shape = SubResource("BoxShape3D_ffolm")
 
 [editable path="2Din3DKeyboard"]
 [editable path="2Din3DURL"]
