@@ -49,6 +49,9 @@ size = Vector3(1.8, 1.2, 0.02)
 [node name="World" parent="." unique_id=927050978 instance=ExtResource("1_2f86q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 
+[node name="StartSpawnPoint" type="Marker3D" parent="." unique_id=1195512689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
 [node name="Keyboard" parent="." unique_id=806658028 instance=ExtResource("1_ecgt1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -2)
 

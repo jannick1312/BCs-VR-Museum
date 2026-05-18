@@ -19,18 +19,22 @@ public partial class PlatformSwitcher : Node
 	private Node3D _museumNode;
 	private Node3D _menuNode;
 	private Marker3D _menuSpawnPoint;
+	private Marker3D _startSpawnPoint;
 	private WorldEnvironment _worldEnvironment;
 	private Node _leftMovement;
 	private Node _rightTurnMovement;
 	private Node _rightJumpMovement;
-	
+
 	private Transform3D _lastMuseumTransform;
 	private Transform3D _lockedMenuTransform;
 	private bool _isInMenu = false;
 	private bool _bothWerePressed = false;
 
-	public override void _Ready()
+	public override async void _Ready()
 	{
+		for (int i = 0; i < 8; i++)
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
 		_player = GetNode(PlayerPath);
 
 		_playerRig = _player.FindChild("XROrigin3D", true, false) as Node3D;
@@ -50,6 +54,7 @@ public partial class PlatformSwitcher : Node
 		_menuNode = GetNode<Node3D>(MenuNodePath);
 
 		_menuSpawnPoint = _menuNode.FindChild("MenuSpawnPoint", true, false) as Marker3D;
+		_startSpawnPoint = _museumNode.FindChild("StartSpawnPoint", true, false) as Marker3D;
 
 		_worldEnvironment = GetNode<WorldEnvironment>(WorldEnvironmentPath);
 
@@ -58,11 +63,13 @@ public partial class PlatformSwitcher : Node
 		SetMuseumActive(true);
 		SetMenuActive(false);
 		SetMovementEnabled(true);
+
+		MoveCameraExactlyToStartSpawn();
+		_lastMuseumTransform = _playerRig.GlobalTransform;
 	}
 
 	public override void _Process(double delta)
 	{
-
 		bool bothPressed =
 			_leftController.GetFloat("trigger") > 0.75f &&
 			_rightController.GetFloat("trigger") > 0.75f;
@@ -121,18 +128,39 @@ public partial class PlatformSwitcher : Node
 		}
 	}
 
-	private void MoveCameraExactlyToMenuSpawn()
+	private void MoveCameraExactlyToStartSpawn()
 	{
-		if (_menuSpawnPoint == null)
+		if (_startSpawnPoint == null || _camera == null || _playerRig == null)
 			return;
 
+		MoveCameraExactlyToMarker(_startSpawnPoint);
+	}
+
+	private void MoveCameraExactlyToMenuSpawn()
+	{
+		MoveCameraExactlyToMarker(_menuSpawnPoint);
+	}
+
+	private void MoveCameraExactlyToMarker(Marker3D marker)
+	{
 		Vector3 cameraOffset = _camera.GlobalPosition - _playerRig.GlobalPosition;
+		_playerRig.GlobalPosition = marker.GlobalPosition - cameraOffset;
 
-		_playerRig.GlobalPosition = _menuSpawnPoint.GlobalPosition - cameraOffset;
+		Vector3 cameraForward = -_camera.GlobalTransform.Basis.Z;
+		cameraForward.Y = 0;
 
-		Vector3 rotation = _playerRig.GlobalRotation;
-		rotation.Y = _menuSpawnPoint.GlobalRotation.Y;
-		_playerRig.GlobalRotation = rotation;
+		cameraForward = cameraForward.Normalized();
+
+		Vector3 targetForward = Vector3.Forward;
+		targetForward.Y = 0;
+		targetForward = targetForward.Normalized();
+
+		float angle = cameraForward.SignedAngleTo(targetForward, Vector3.Up);
+
+		_playerRig.RotateY(angle);
+
+		cameraOffset = _camera.GlobalPosition - _playerRig.GlobalPosition;
+		_playerRig.GlobalPosition = marker.GlobalPosition - cameraOffset;
 	}
 
 	private void SetMuseumActive(bool active)
