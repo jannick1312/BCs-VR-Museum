@@ -74,16 +74,8 @@ public partial class OutputScreenBridge : Node
 		_picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
 		_frame.Scale = new Vector3(frameWidth, 10.0f, frameHeight);
 
-		if (_collision.Shape is BoxShape3D box)
-		{
-			box.Size = new Vector3(frameWidth, frameHeight, 0.03f);
-		}
-		else
-		{
-			var newBox = new BoxShape3D();
-			newBox.Size = new Vector3(frameWidth, frameHeight, 0.03f);
-			_collision.Shape = newBox;
-		}
+		BoxShape3D box = _collision.Shape as BoxShape3D;
+		box.Size = new Vector3(frameWidth, frameHeight, 0.03f);
 
 		float halfWidth = frameWidth / 2.0f;
 

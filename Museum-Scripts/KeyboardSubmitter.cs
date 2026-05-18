@@ -25,13 +25,6 @@ public partial class KeyboardSubmitter : Node
 
 		_httpRequest = GetNodeOrNull<HttpRequest>("HTTPRequest");
 
-		if (_httpRequest == null)
-		{
-			_httpRequest = new HttpRequest();
-			_httpRequest.Name = "HTTPRequest";
-			AddChild(_httpRequest);
-		}
-
 		_inputScreen = GetNodeOrNull<InputScreenBridge>(InputScreenBridgePath);
 		_outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
 		_visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
@@ -39,11 +32,6 @@ public partial class KeyboardSubmitter : Node
 		_serverUrlStore = GetTree().Root.FindChild("ServerUrlStore", true, false) as ServerUrlStore;
 
 		_inputLineEdit = _inputScreen.InputLineEdit;
-
-		if (_inputLineEdit == null)
-		{
-			return;
-		}
 
 		_inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
 		_inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);
