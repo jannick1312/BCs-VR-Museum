@@ -20,6 +20,10 @@ config/icon="uid://cjocch1iv0wgx"
 XRToolsUserSettings="*uid://bqgb8i74tm0t"
 XRToolsRumbleManager="*uid://by853dk86g1qw"
 
+[blenderkit]
+
+model_format="gltf_godot"
+
 [dotnet]
 
 project/assembly_name="BCS-VR-Museum"
