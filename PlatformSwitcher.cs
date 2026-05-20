@@ -70,6 +70,9 @@ public partial class PlatformSwitcher : Node
 
 	public override void _Process(double delta)
 	{
+		if (_leftController == null || _rightController == null)
+			return;
+		
 		bool bothPressed =
 			_leftController.GetFloat("trigger") > 0.75f &&
 			_rightController.GetFloat("trigger") > 0.75f;
