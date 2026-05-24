@@ -4,10 +4,11 @@ public partial class UrlSettingsPanel : Node
 {
 	private ServerUrlStore _serverUrlStore;
 
-	private LineEdit _urlInput;
-	private Label _currentUrlLabel;
-	private Button _submitButton;
-	private Button _revertButton;
+    private LineEdit _urlInput;
+    private Label _currentUrlLabel;
+    private Button _submitButton;
+    private Button _revertButton;
+    private CheckBox _deployedCheckBox;
 
 	public override async void _Ready()
 	{
@@ -18,12 +19,17 @@ public partial class UrlSettingsPanel : Node
 
 		Node root = GetParent();
 
-		_urlInput = root.FindChild("URLinput", true, false) as LineEdit;
-		_currentUrlLabel = root.FindChild("URLcurrently", true, false) as Label;
-		_submitButton = root.FindChild("Submit", true, false) as Button;
-		_revertButton = root.FindChild("Revert", true, false) as Button;
-		_submitButton.Pressed += OnSubmitPressed;
-		_revertButton.Pressed += OnRevertPressed;
+        _urlInput = root.FindChild("URLinput", true, false) as LineEdit;
+        _currentUrlLabel = root.FindChild("URLcurrently", true, false) as Label;
+        _submitButton = root.FindChild("Submit", true, false) as Button;
+        _revertButton = root.FindChild("Revert", true, false) as Button;
+        _deployedCheckBox = root.FindChild("Check", true, false) as CheckBox;
+
+        _submitButton.Pressed += OnSubmitPressed;
+        _revertButton.Pressed += OnRevertPressed;
+        _deployedCheckBox.Toggled += OnDeployedToggled;
+
+        _deployedCheckBox.ButtonPressed = _serverUrlStore.Deployed;
 
 		UpdateCurrentUrlLabel();
 	}
@@ -54,5 +60,12 @@ public partial class UrlSettingsPanel : Node
 	private void UpdateCurrentUrlLabel()
 	{
 		_currentUrlLabel.Text = "Currently using:\n" + _serverUrlStore.CurrentServerUrl;
+	}
+	
+	private void OnDeployedToggled(bool toggledOn)
+	{
+		_serverUrlStore.SetDeployed(toggledOn);
+
+		UpdateCurrentUrlLabel();
 	}
 }

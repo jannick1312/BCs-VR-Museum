@@ -22,7 +22,7 @@ size = Vector3(1.5, 0.75, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_cvui0"]
 resource_local_to_scene = true
-size = Vector2(1.8, 1.2)
+size = Vector2(1.8, 1.8)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_r5m5x"]
 viewport_path = NodePath("2Din3DURL/Viewport")
@@ -36,7 +36,7 @@ texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ffolm"]
 resource_local_to_scene = true
-size = Vector3(1.8, 1.2, 0.02)
+size = Vector3(1.8, 1.8, 0.02)
 
 [node name="MenuNode" type="Node3D" unique_id=227478366]
 
@@ -47,7 +47,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 light_energy = 10.0
 
 [node name="2Din3DKeyboard" parent="." unique_id=776647796 instance=ExtResource("1_gxrlm")]
-transform = Transform3D(1.5, 0, 0, 0, 1.3900193, 0.56377846, 0, -0.56377846, 1.3900193, 0, -0.60300744, -1.681)
+transform = Transform3D(1.5, 0, 0, 0, 1.3900193, 0.56377846, 0, -0.56377846, 1.3900193, 0, -0.8, -1.681)
 
 [node name="Screen" parent="2Din3DKeyboard" index="1" unique_id=1158603700]
 mesh = SubResource("QuadMesh_jeisv")
