@@ -41,13 +41,6 @@ public partial class ServerUrlStore : Node
         CurrentServerUrl = Deployed
             ? NormalizeBaseUrl(DeployedServerUrl)
             : LocalServerUrl.Trim();
-
-        if (Deployed)
-            GD.Print("APP MODE: DEPLOYED");
-        else
-            GD.Print("APP MODE: NOT DEPLOYED");
-
-        GD.Print("CurrentServerUrl: ", CurrentServerUrl);
     }
 
     private string NormalizeBaseUrl(string url)

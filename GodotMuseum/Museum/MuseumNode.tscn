@@ -3,11 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://bde7wip0wp3vt" path="res://Museum/MuseumWorld.tscn" id="1_2f86q"]
 [ext_resource type="PackedScene" uid="uid://cbhnqhv46vsbp" path="res://Keyboard/Keyboard.tscn" id="1_ecgt1"]
 [ext_resource type="PackedScene" uid="uid://bbgtin8e3itqc" path="res://Museum/Output.tscn" id="5_avl46"]
-[ext_resource type="Script" uid="uid://bysv4urs3fhwy" path="res://Museum-Scripts/KeyboardSubmitter.cs" id="5_cwl2q"]
+[ext_resource type="Script" uid="uid://co0mygxye2f0a" path="res://Museum-Scripts/KeyboardSubmitter.cs" id="5_cwl2q"]
 [ext_resource type="Script" uid="uid://birhengy0njg6" path="res://Museum-Scripts/EnterSubmitTrigger.cs" id="6_qutch"]
 [ext_resource type="PackedScene" uid="uid://bslaqwovqkqr6" path="res://Museum/Input.tscn" id="7_ecgt1"]
 [ext_resource type="Script" uid="uid://da02bak3hx70k" path="res://Museum-Scripts/FrameMaker.cs" id="7_m6mi2"]
-[ext_resource type="Script" uid="uid://tpljsyhr5ikd" path="res://Museum-Scripts/OutputScreenBridge.cs" id="8_bs0q8"]
+[ext_resource type="Script" uid="uid://cgxi4oyne67d7" path="res://Museum-Scripts/OutputScreenBridge.cs" id="8_bs0q8"]
 [ext_resource type="Script" uid="uid://yntvr0ux5buk" path="res://Museum-Scripts/InputScreenBridge.cs" id="11_rusw4"]
 [ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Museum-Scripts/VisibilityController.cs" id="12_yskpt"]
 

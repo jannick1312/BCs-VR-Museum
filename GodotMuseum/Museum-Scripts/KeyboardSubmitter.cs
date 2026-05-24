@@ -67,7 +67,6 @@ public partial class KeyboardSubmitter : Node
 		if (_httpRequest.GetHttpClientStatus() !=
 			HttpClient.Status.Disconnected)
 		{
-			GD.Print("Cancelling previous request...");
 			_httpRequest.CancelRequest();
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		}
@@ -227,12 +226,6 @@ public partial class KeyboardSubmitter : Node
 			return;
 
 		var data = json.Data.AsGodotDictionary();
-
-		if (!data.ContainsKey("retrievables"))
-		{
-			GD.PrintErr("No retrievables key in response.");
-			return;
-		}
 
 		var retrievables = data["retrievables"].AsGodotArray();
 		var best = retrievables[0].AsGodotDictionary();
