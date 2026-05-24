@@ -52,6 +52,15 @@ public partial class OutputScreenBridge : Node
 		ApplyTexture(texture);
 	}
 
+	public void SetOutputImageFromLocalPath(string imagePath)
+	{
+		Image image = new Image();
+		Error loadError = image.Load(imagePath);
+
+		ImageTexture texture = ImageTexture.CreateFromImage(image);
+		ApplyTexture(texture);
+	}
+
 	private void ApplyTexture(ImageTexture texture)
 	{
 		_pictureMaterial.AlbedoTexture = texture;
