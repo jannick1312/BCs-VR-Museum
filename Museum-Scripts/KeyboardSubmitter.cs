@@ -72,8 +72,10 @@ public partial class KeyboardSubmitter : Node
 		string json = "{\"text\":\"" + safeText + "\"}";
 		string[] headers = { "Content-Type: application/json" };
 
+		string searchUrl = _serverUrlStore.CurrentServerUrl + "search_one";
+
 		_httpRequest.Request(
-			_serverUrlStore.CurrentServerUrl,
+			searchUrl,
 			headers,
 			HttpClient.Method.Post,
 			json
@@ -95,10 +97,12 @@ public partial class KeyboardSubmitter : Node
 
 		var data = json.Data.AsGodotDictionary();
 
-		if (!data.ContainsKey("image_url"))
+		if (!data.ContainsKey("filename"))
 			return;
 
-		string imageUrl = data["image_url"].ToString();
+		string filename = data["filename"].ToString();
+
+		string imageUrl = _serverUrlStore.CurrentServerUrl + "media/" + filename;
 
 		_outputScreen.SetOutputImageFromUrl(imageUrl);
 		_visibility.ShowOutput();

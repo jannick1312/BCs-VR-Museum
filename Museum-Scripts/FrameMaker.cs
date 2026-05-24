@@ -49,49 +49,65 @@ public partial class FrameMaker : Node
 		Vector3 up = basis.Y.Normalized();
 		Vector3 forward = basis.Z.Normalized();
 
-		Vector3 tl = center - right * (imageWidth / 2.0f) + up * (imageHeight / 2.0f);
-		Vector3 tr = center + right * (imageWidth / 2.0f) + up * (imageHeight / 2.0f);
-		Vector3 bl = center - right * (imageWidth / 2.0f) - up * (imageHeight / 2.0f);
-		Vector3 br = center + right * (imageWidth / 2.0f) - up * (imageHeight / 2.0f);
+		Basis frameBasis = new Basis(
+			right,
+			forward,
+			-up
+		).Orthonormalized();
 
-		_frame.GlobalTransform = new Transform3D(basis, _frame.GlobalPosition);
+		_frame.GlobalTransform = new Transform3D(frameBasis, center);
 
-		PlaceCorner(_topL, tl, true, false);
-		PlaceCorner(_topR, tr, false, false);
-		PlaceCorner(_bottomL, bl, true, true);
-		PlaceCorner(_bottomR, br, false, true);
+		float halfW = imageWidth / 2.0f;
+		float halfH = imageHeight / 2.0f;
 
-		PlaceH(_top, _topL, _topR, right);
-		PlaceH(_bottom, _bottomL, _bottomR, right);
+		Vector3 tl = new Vector3(-halfW, 0, -halfH);
+		Vector3 tr = new Vector3( halfW, 0, -halfH);
+		Vector3 bl = new Vector3(-halfW, 0,  halfH);
+		Vector3 br = new Vector3( halfW, 0,  halfH);
 
-		PlaceV(_left, _topL, _bottomL, up);
-		PlaceV(_right, _topR, _bottomR, up);
+		PlaceCornerLocal(_topL, tl, true, false);
+		PlaceCornerLocal(_topR, tr, false, false);
+		PlaceCornerLocal(_bottomL, bl, true, true);
+		PlaceCornerLocal(_bottomR, br, false, true);
+
+		PlaceHLocal(_top, _topL, _topR);
+		PlaceHLocal(_bottom, _bottomL, _bottomR);
+
+		PlaceVLocal(_left, _topL, _bottomL);
+		PlaceVLocal(_right, _topR, _bottomR);
 
 		UpdateCollision(center, basis, imageWidth, imageHeight);
-		UpdateGrabPoints(forward);
+		UpdateGrabPointsLocal();
 	}
 
-	private void PlaceCorner(MeshInstance3D corner, Vector3 target, bool left, bool bottom)
+	private void PlaceCornerLocal(MeshInstance3D corner, Vector3 target, bool left, bool bottom)
 	{
-		corner.GlobalPosition = target;
+		corner.Position = target;
 
-		Aabb aabb = GlobalAabb(corner);
+		Aabb aabb = corner.GetAabb();
 
-		float innerX = left ? aabb.End.X : aabb.Position.X;
-		float innerY = bottom ? aabb.End.Y : aabb.Position.Y;
+		float innerX = corner.Position.X + (left ? aabb.End.X : aabb.Position.X);
+		float innerZ = corner.Position.Z + (bottom ? aabb.Position.Z : aabb.End.Z);
 
-		corner.GlobalPosition += target - new Vector3(innerX, innerY, target.Z);
+		Vector3 correction = target - new Vector3(innerX, target.Y, innerZ);
+
+		corner.Position += correction;
 	}
 
-	private void PlaceH(MeshInstance3D mesh, MeshInstance3D leftCorner, MeshInstance3D rightCorner, Vector3 right)
+	private void PlaceHLocal(MeshInstance3D mesh, MeshInstance3D leftCorner, MeshInstance3D rightCorner)
 	{
-		Vector3 start = GetInnerPoint(leftCorner, true, false);
-		Vector3 end = GetInnerPoint(rightCorner, false, false);
+		Aabb l = leftCorner.GetAabb();
+		Aabb r = rightCorner.GetAabb();
 
-		Vector3 center = (start + end) / 2.0f;
-		float len = Mathf.Max(0.001f, start.DistanceTo(end));
+		float start = leftCorner.Position.X + l.End.X;
+		float end = rightCorner.Position.X + r.Position.X;
+		float len = Mathf.Max(0.001f, end - start);
 
-		mesh.GlobalPosition = center;
+		mesh.Position = new Vector3(
+			(start + end) / 2.0f,
+			0,
+			leftCorner.Position.Z
+		);
 
 		float baseLength = Mathf.Abs(mesh.GetAabb().Size.X);
 
@@ -99,30 +115,25 @@ public partial class FrameMaker : Node
 			mesh.Scale = new Vector3(len / baseLength, mesh.Scale.Y, mesh.Scale.Z);
 	}
 
-	private void PlaceV(MeshInstance3D mesh, MeshInstance3D topCorner, MeshInstance3D bottomCorner, Vector3 up)
+	private void PlaceVLocal(MeshInstance3D mesh, MeshInstance3D topCorner, MeshInstance3D bottomCorner)
 	{
-		Vector3 start = GetInnerPoint(bottomCorner, true, true);
-		Vector3 end = GetInnerPoint(topCorner, true, false);
+		Aabb t = topCorner.GetAabb();
+		Aabb b = bottomCorner.GetAabb();
 
-		Vector3 center = (start + end) / 2.0f;
-		float len = Mathf.Max(0.001f, start.DistanceTo(end));
+		float start = topCorner.Position.Z + t.End.Z;
+		float end = bottomCorner.Position.Z + b.Position.Z;
+		float len = Mathf.Max(0.001f, end - start);
 
-		mesh.GlobalPosition = center;
+		mesh.Position = new Vector3(
+			topCorner.Position.X,
+			0,
+			(start + end) / 2.0f
+		);
 
 		float baseLength = Mathf.Abs(mesh.GetAabb().Size.Z);
 
 		if (!Mathf.IsZeroApprox(baseLength))
 			mesh.Scale = new Vector3(mesh.Scale.X, mesh.Scale.Y, len / baseLength);
-	}
-
-	private Vector3 GetInnerPoint(MeshInstance3D corner, bool left, bool bottom)
-	{
-		Aabb aabb = GlobalAabb(corner);
-
-		float x = left ? aabb.End.X : aabb.Position.X;
-		float y = bottom ? aabb.End.Y : aabb.Position.Y;
-
-		return new Vector3(x, y, corner.GlobalPosition.Z);
 	}
 
 	private void UpdateCollision(Vector3 center, Basis basis, float imageWidth, float imageHeight)
@@ -134,39 +145,15 @@ public partial class FrameMaker : Node
 		_collision.GlobalTransform = new Transform3D(basis, center);
 	}
 
-	private void UpdateGrabPoints(Vector3 forward)
+	private void UpdateGrabPointsLocal()
 	{
-		Aabb l = GlobalAabb(_left);
-		Aabb r = GlobalAabb(_right);
+		Aabb l = _left.GetAabb();
+		Aabb r = _right.GetAabb();
 
-		Vector3 lc = l.GetCenter();
-		Vector3 rc = r.GetCenter();
+		Vector3 lc = _left.Position + l.GetCenter();
+		Vector3 rc = _right.Position + r.GetCenter();
 
-		_grabLeft.GlobalPosition = lc - forward * 0.08f;
-		_grabRight.GlobalPosition = rc - forward * 0.08f;
-	}
-
-	private Aabb GlobalAabb(MeshInstance3D mesh)
-	{
-		Aabb a = mesh.GetAabb();
-
-		Vector3[] p =
-		{
-			new Vector3(a.Position.X, a.Position.Y, a.Position.Z),
-			new Vector3(a.End.X, a.Position.Y, a.Position.Z),
-			new Vector3(a.Position.X, a.End.Y, a.Position.Z),
-			new Vector3(a.End.X, a.End.Y, a.Position.Z),
-			new Vector3(a.Position.X, a.Position.Y, a.End.Z),
-			new Vector3(a.End.X, a.Position.Y, a.End.Z),
-			new Vector3(a.Position.X, a.End.Y, a.End.Z),
-			new Vector3(a.End.X, a.End.Y, a.End.Z)
-		};
-
-		Aabb result = new Aabb(mesh.ToGlobal(p[0]), Vector3.Zero);
-
-		for (int i = 1; i < p.Length; i++)
-			result = result.Expand(mesh.ToGlobal(p[i]));
-
-		return result;
+		_grabLeft.GlobalPosition = _frame.ToGlobal(lc + new Vector3(0, -0.08f, 0));
+		_grabRight.GlobalPosition = _frame.ToGlobal(rc + new Vector3(0, -0.08f, 0));
 	}
 }
