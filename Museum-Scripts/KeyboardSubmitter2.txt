@@ -1,4 +1,5 @@
 using Godot;
+using System.IO;
 using System.Text;
 
 public partial class KeyboardSubmitter : Node
@@ -6,6 +7,8 @@ public partial class KeyboardSubmitter : Node
 	[Export] public NodePath InputScreenBridgePath;
 	[Export] public NodePath OutputScreenBridgePath;
 	[Export] public NodePath VisibilityControllerPath;
+
+	[Export] public string MediaFolderPath = @"C:\Users\dbis-\Desktop\BCs\media";
 
 	private InputScreenBridge _inputScreen;
 	private OutputScreenBridge _outputScreen;
@@ -68,14 +71,11 @@ public partial class KeyboardSubmitter : Node
 			return;
 		}
 
-		string safeText = text.Replace("\\", "\\\\").Replace("\"", "\\\"");
-		string json = "{\"text\":\"" + safeText + "\"}";
+		string json = BuildVitrivrQuery(text);
 		string[] headers = { "Content-Type: application/json" };
 
-		string searchUrl = _serverUrlStore.CurrentServerUrl + "search_one";
-
-		_httpRequest.Request(
-			searchUrl,
+		Error err = _httpRequest.Request(
+			_serverUrlStore.CurrentServerUrl,
 			headers,
 			HttpClient.Method.Post,
 			json
@@ -86,9 +86,64 @@ public partial class KeyboardSubmitter : Node
 		_visibility.HideKeyboard();
 	}
 
+	private string BuildVitrivrQuery(string text)
+	{
+		var payload = new Godot.Collections.Dictionary
+		{
+			["inputs"] = new Godot.Collections.Dictionary
+			{
+				["txt"] = new Godot.Collections.Dictionary
+				{
+					["type"] = "TEXT",
+					["data"] = text
+				}
+			},
+			["operations"] = new Godot.Collections.Dictionary
+			{
+				["clip"] = new Godot.Collections.Dictionary
+				{
+					["field"] = "clip",
+					["inputs"] = new Godot.Collections.Dictionary
+					{
+						["input"] = "txt"
+					},
+					["parameters"] = new Godot.Collections.Dictionary
+					{
+						["limit"] = "1"
+					}
+				},
+				["filelookup"] = new Godot.Collections.Dictionary
+				{
+					["factory"] = "FieldLookup",
+					["inputs"] = new Godot.Collections.Dictionary
+					{
+						["in"] = "clip"
+					},
+					["parameters"] = new Godot.Collections.Dictionary
+					{
+						["field"] = "file",
+						["keys"] = "path"
+					}
+				}
+			},
+			["output"] = "filelookup"
+		};
+
+		return Json.Stringify(payload);
+	}
+
 	private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
 	{
 		string responseText = Encoding.UTF8.GetString(body);
+
+		GD.Print("vitrivr response code: ", responseCode);
+		GD.Print("vitrivr response: ", responseText);
+
+		if (responseCode < 200 || responseCode >= 300)
+		{
+			GD.PrintErr("vitrivr returned HTTP error: ", responseCode);
+			return;
+		}
 
 		Json json = new Json();
 
@@ -97,14 +152,46 @@ public partial class KeyboardSubmitter : Node
 
 		var data = json.Data.AsGodotDictionary();
 
-		if (!data.ContainsKey("filename"))
+		if (!data.ContainsKey("retrievables"))
+		{
+			GD.PrintErr("No retrievables key in response.");
 			return;
+		}
 
-		string filename = data["filename"].ToString();
+		var retrievables = data["retrievables"].AsGodotArray();
 
-		string imageUrl = _serverUrlStore.CurrentServerUrl + "media/" + filename;
+		if (retrievables.Count == 0)
+		{
+			GD.PrintErr("No retrievables found.");
+			return;
+		}
 
-		_outputScreen.SetOutputImageFromUrl(imageUrl);
+		var best = retrievables[0].AsGodotDictionary();
+
+		if (!best.ContainsKey("descriptors"))
+		{
+			GD.PrintErr("No descriptors found.");
+			return;
+		}
+
+		var descriptors = best["descriptors"].AsGodotDictionary();
+
+		if (!descriptors.ContainsKey("file.path"))
+		{
+			GD.PrintErr("No file.path found.");
+			return;
+		}
+
+		string dockerPath = descriptors["file.path"].ToString();
+		string filename = Path.GetFileName(dockerPath);
+
+		string localImagePath = Path.Combine(MediaFolderPath, filename);
+
+		GD.Print("Docker path: ", dockerPath);
+		GD.Print("Filename: ", filename);
+		GD.Print("Local image path: ", localImagePath);
+
+		_outputScreen.SetOutputImageFromLocalPath(localImagePath);
 		_visibility.ShowOutput();
 	}
 }

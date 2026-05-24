@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bde7wip0wp3vt"]
 
+[ext_resource type="Material" uid="uid://ciooi6xq5kaka" path="res://Materials/Black_marble/Black_marble.tres" id="1_e4efu"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
 size = Vector3(10, 0.1, 10)
 
@@ -25,4 +27,5 @@ omni_range = 20.0
 shape = SubResource("BoxShape3D_gv5m4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=483930271]
+material_override = ExtResource("1_e4efu")
 mesh = SubResource("BoxMesh_f3sb7")

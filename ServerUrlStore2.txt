@@ -1,0 +1,26 @@
+using Godot;
+
+public partial class ServerUrlStore : Node
+{
+	[Export]
+	public string DefaultServerUrl = "http://10.34.64.208:7070/api/sandbox/query";
+
+	public string CurrentServerUrl { get; private set; }
+
+	public override void _Ready()
+	{
+		CurrentServerUrl = DefaultServerUrl;
+	}
+
+	public void SetServerUrl(string newUrl)
+	{
+		if (string.IsNullOrWhiteSpace(newUrl))
+			return;
+		CurrentServerUrl = newUrl.Trim();
+	}
+
+	public void RevertServerUrl()
+	{
+		CurrentServerUrl = DefaultServerUrl;
+	}
+}

@@ -3,7 +3,7 @@ using Godot;
 public partial class ServerUrlStore : Node
 {
     [Export] public string DefaultServerUrl = "http://192.168.1.21:5050/";
-    [Export] public bool Deployed = false;
+    [Export] public bool Deployed = true;
 
     public string CurrentServerUrl { get; private set; }
 

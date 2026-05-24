@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://ell5jv1h0srh" path="res://PlatformSwitcher.cs" id="1_vivmo"]
 [ext_resource type="PackedScene" uid="uid://dh7iemj1ylh3i" path="res://Menu/MenuNode.tscn" id="1_w48qg"]
 [ext_resource type="PackedScene" uid="uid://csbg75jax1jnj" path="res://player.tscn" id="2_h2yge"]
-[ext_resource type="Script" uid="uid://735rx36tkcjl" path="res://ServerUrlStore.cs" id="3_7mycd"]
+[ext_resource type="Script" uid="uid://dosnwmw4cp0s3" path="res://ServerUrlStore.cs" id="3_7mycd"]
 [ext_resource type="PackedScene" uid="uid://djl0v8ero2htq" path="res://Museum/MuseumNode.tscn" id="4_lquwl"]
 
 [sub_resource type="Environment" id="Environment_7mycd"]
@@ -69,7 +69,7 @@ size = Vector3(1.5, 0.75, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_074og"]
 resource_local_to_scene = true
-size = Vector2(1.8, 1.2)
+size = Vector2(1.8, 1.8)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_cegan"]
 viewport_path = NodePath("MenuNode/2Din3DURL/Viewport")
@@ -83,7 +83,7 @@ texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_getpj"]
 resource_local_to_scene = true
-size = Vector3(1.8, 1.2, 0.02)
+size = Vector3(1.8, 1.8, 0.02)
 
 [node name="Main" type="Node3D" unique_id=895849569]
 

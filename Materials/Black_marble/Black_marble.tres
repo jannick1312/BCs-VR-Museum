@@ -1,0 +1,22 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ciooi6xq5kaka"]
+
+[ext_resource type="Texture2D" uid="uid://dbuk7y6u2b1jh" path="res://Materials/Black_marble/textures/4K-tiling_36_basecolor.jpg" id="1_t4vhv"]
+[ext_resource type="Texture2D" uid="uid://b1f7uwpqmdrhg" path="res://Materials/Metal_rough/textures/Metal rough_Displacement.jpg" id="2_ai2bc"]
+[ext_resource type="Texture2D" uid="uid://cadcbyu3q8cju" path="res://Materials/Black_marble/textures/4K-tiling_36_ambientocclusion.jpg" id="2_u8wcn"]
+[ext_resource type="Texture2D" uid="uid://cks64wxnu41kn" path="res://Materials/Black_marble/textures/4K-tiling_36_metallic.jpg" id="4_i3guq"]
+[ext_resource type="Texture2D" uid="uid://cn3pb4ute1qhv" path="res://Materials/Black_marble/textures/4K-tiling_36_normal.jpg" id="5_kk8dr"]
+[ext_resource type="Texture2D" uid="uid://bd5aoy0re1cjb" path="res://Materials/Black_marble/textures/4K-tiling_36_roughness.jpg" id="6_36h4n"]
+
+[resource]
+albedo_texture = ExtResource("1_t4vhv")
+metallic = 1.0
+metallic_texture = ExtResource("4_i3guq")
+roughness_texture = ExtResource("6_36h4n")
+normal_enabled = true
+normal_texture = ExtResource("5_kk8dr")
+ao_enabled = true
+ao_texture = ExtResource("2_u8wcn")
+heightmap_enabled = true
+heightmap_scale = 0.1
+heightmap_texture = ExtResource("2_ai2bc")
+uv1_scale = Vector3(20, 13, 20)
