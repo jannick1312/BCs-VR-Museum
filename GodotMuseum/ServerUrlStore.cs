@@ -1,50 +1,36 @@
 using Godot;
+using Server;
 
 public partial class ServerUrlStore : Node
 {
     [Export] public bool Deployed = true;
 
-    [Export] public string DeployedServerUrl = "http://192.168.1.21:5050/";
-    [Export] public string LocalServerUrl = "http://10.34.64.208:7070/api/sandbox/query";
+    [Export] public string DefaultDeployedServerUrl = "http://192.168.1.21:5050/";
+    [Export] public string DefaultStreamedServerUrl = "http://10.34.64.208:7070/api/sandbox/query";
 
-    public string CurrentServerUrl { get; private set; }
+    private ServerSettings _settings;
+
+    public string CurrentServerUrl => _settings.CurrentServerUrl;
+    public ServerMode Mode => _settings.Mode;
 
     public override void _Ready()
     {
-        SetDeployed(Deployed);
+        _settings = new ServerSettings(Deployed, DefaultDeployedServerUrl,  DefaultStreamedServerUrl);
     }
 
     public void SetServerUrl(string newUrl)
     {
-        if (string.IsNullOrWhiteSpace(newUrl))
-            return;
-
-        if (Deployed)
-            DeployedServerUrl = NormalizeBaseUrl(newUrl);
-        else
-            LocalServerUrl = newUrl.Trim();
-
-        CurrentServerUrl = Deployed ? DeployedServerUrl : LocalServerUrl;
+        _settings.SetServerUrl(newUrl);
     }
 
     public void RevertServerUrl()
     {
-        CurrentServerUrl = Deployed
-            ? NormalizeBaseUrl(DeployedServerUrl)
-            : LocalServerUrl.Trim();
+        _settings = new ServerSettings(Deployed, DefaultDeployedServerUrl, DefaultStreamedServerUrl);
     }
 
     public void SetDeployed(bool deployed)
     {
         Deployed = deployed;
-
-        CurrentServerUrl = Deployed
-            ? NormalizeBaseUrl(DeployedServerUrl)
-            : LocalServerUrl.Trim();
-    }
-
-    private string NormalizeBaseUrl(string url)
-    {
-        return url.Trim().TrimEnd('/') + "/";
+        _settings.SetDeployed(deployed);
     }
 }

@@ -1,5 +1,4 @@
 using Godot;
-using Server;
 
 public partial class PlatformSwitcher : Node
 {
@@ -64,8 +63,6 @@ public partial class PlatformSwitcher : Node
 		SetMuseumActive(true);
 		SetMenuActive(false);
 		SetMovementEnabled(true);
-
-		var c = new HelloWorld();
 
 		MoveCameraExactlyToStartSpawn();
 		_lastMuseumTransform = _playerRig.GlobalTransform;

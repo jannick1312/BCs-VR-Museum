@@ -1,6 +1,6 @@
 using Godot;
-using System.IO;
 using System.Text;
+using Server;
 
 public partial class KeyboardSubmitter : Node
 {
@@ -64,8 +64,7 @@ public partial class KeyboardSubmitter : Node
 		if (_activeLineEdit == null)
 			return;
 
-		if (_httpRequest.GetHttpClientStatus() !=
-			HttpClient.Status.Disconnected)
+		if (_httpRequest.GetHttpClientStatus() != HttpClient.Status.Disconnected)
 		{
 			_httpRequest.CancelRequest();
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
@@ -80,20 +79,9 @@ public partial class KeyboardSubmitter : Node
 			return;
 		}
 
-		string json;
-		string requestUrl;
+		string json = ServerRequestFactory.BuildRequestBody(text, _serverUrlStore.Mode);
 
-		if (_serverUrlStore.Deployed)
-		{
-			string safeText = text.Replace("\\", "\\\\").Replace("\"", "\\\"");
-			json = "{\"text\":\"" + safeText + "\"}";
-			requestUrl = _serverUrlStore.CurrentServerUrl + "search_one";
-		}
-		else
-		{
-			json = BuildVitrivrQuery(text);
-			requestUrl = _serverUrlStore.CurrentServerUrl;
-		}
+		string requestUrl = ServerRequestFactory.BuildRequestUrl( _serverUrlStore.CurrentServerUrl, _serverUrlStore.Mode);
 
 		string[] headers = { "Content-Type: application/json" };
 
@@ -127,115 +115,25 @@ public partial class KeyboardSubmitter : Node
 			_httpRequest.CancelRequest();
 	}
 
-	private string BuildVitrivrQuery(string text)
-	{
-		var payload = new Godot.Collections.Dictionary
-		{
-			["inputs"] = new Godot.Collections.Dictionary
-			{
-				["txt"] = new Godot.Collections.Dictionary
-				{
-					["type"] = "TEXT",
-					["data"] = text
-				}
-			},
-
-			["operations"] = new Godot.Collections.Dictionary
-			{
-				["clip"] = new Godot.Collections.Dictionary
-				{
-					["field"] = "clip",
-
-					["inputs"] = new Godot.Collections.Dictionary
-					{
-						["input"] = "txt"
-					},
-
-					["parameters"] = new Godot.Collections.Dictionary
-					{
-						["limit"] = "1"
-					}
-				},
-
-				["filelookup"] = new Godot.Collections.Dictionary
-				{
-					["factory"] = "FieldLookup",
-
-					["inputs"] = new Godot.Collections.Dictionary
-					{
-						["in"] = "clip"
-					},
-
-					["parameters"] = new Godot.Collections.Dictionary
-					{
-						["field"] = "file",
-						["keys"] = "path"
-					}
-				}
-			},
-
-			["output"] = "filelookup"
-		};
-
-		return Json.Stringify(payload);
-	}
-
 	private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
 	{
 		_requestTimeout = null;
 
-		if (_serverUrlStore.Deployed)
-			HandleDeployedResponse(responseCode, body);
-		else
-			HandleLocalResponse(responseCode, body);
-	}
-
-	private void HandleDeployedResponse(long responseCode, byte[] body)
-	{
 		string responseText = Encoding.UTF8.GetString(body);
 
-		Json json = new Json();
+		ServerResult serverResult = ServerResponseParser.Parse(responseText, _serverUrlStore.Mode, _serverUrlStore.CurrentServerUrl, MediaFolderPath);
 
-		if (json.Parse(responseText) != Error.Ok)
+		if (!serverResult.Success)
+		{
+			GD.PrintErr(serverResult.ErrorMessage);
 			return;
+		}
 
-		var data = json.Data.AsGodotDictionary();
+		if (serverResult.IsUrlResult)
+			_outputScreen.SetOutputImageFromUrl(serverResult.ImageUrl);
+		else if (serverResult.IsLocalPathResult)
+			_outputScreen.SetOutputImageFromLocalPath(serverResult.LocalImagePath);
 
-		if (!data.ContainsKey("filename"))
-			return;
-
-		string filename = data["filename"].ToString();
-
-		string imageUrl =
-			_serverUrlStore.CurrentServerUrl +
-			"media/" +
-			filename;
-
-		_outputScreen.SetOutputImageFromUrl(imageUrl);
-
-		_visibility.ShowOutput();
-	}
-
-	private void HandleLocalResponse(long responseCode, byte[] body)
-	{
-		string responseText = Encoding.UTF8.GetString(body);
-
-		Json json = new Json();
-
-		if (json.Parse(responseText) != Error.Ok)
-			return;
-
-		var data = json.Data.AsGodotDictionary();
-
-		var retrievables = data["retrievables"].AsGodotArray();
-		var best = retrievables[0].AsGodotDictionary();
-		var descriptors = best["descriptors"].AsGodotDictionary();
-		
-		string dockerPath = descriptors["file.path"].ToString();
-		string filename = Path.GetFileName(dockerPath);
-		string localImagePath =Path.Combine(MediaFolderPath, filename);
-		
-		_outputScreen.SetOutputImageFromLocalPath(localImagePath);
 		_visibility.ShowOutput();
 	}
 }
