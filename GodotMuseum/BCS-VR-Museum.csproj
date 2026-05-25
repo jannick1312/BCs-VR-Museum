@@ -6,6 +6,6 @@
     <RootNamespace>BCSVRMuseum</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LocalInterface\LocalInterface\LocalInterface.csproj" />
+    <ProjectReference Include="..\Server\Server\Server.csproj" />
   </ItemGroup>
 </Project>

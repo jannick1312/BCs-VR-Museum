@@ -2,7 +2,7 @@
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCS-VR-Museum", "BCS-VR-Museum.csproj", "{F14029ED-F0F8-4577-9EE9-7154F35B1681}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalInterface", "..\LocalInterface\LocalInterface\LocalInterface.csproj", "{C153B138-146B-4616-9546-90B5EF8057B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "..\Server\Server\Server.csproj", "{FFD8AE0B-1329-4343-AF63-E62A4ADD1D74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,11 +17,11 @@ Global
 		{F14029ED-F0F8-4577-9EE9-7154F35B1681}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{F14029ED-F0F8-4577-9EE9-7154F35B1681}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{F14029ED-F0F8-4577-9EE9-7154F35B1681}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
-		{C153B138-146B-4616-9546-90B5EF8057B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C153B138-146B-4616-9546-90B5EF8057B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C153B138-146B-4616-9546-90B5EF8057B0}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C153B138-146B-4616-9546-90B5EF8057B0}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
-		{C153B138-146B-4616-9546-90B5EF8057B0}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
-		{C153B138-146B-4616-9546-90B5EF8057B0}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{FFD8AE0B-1329-4343-AF63-E62A4ADD1D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD8AE0B-1329-4343-AF63-E62A4ADD1D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD8AE0B-1329-4343-AF63-E62A4ADD1D74}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD8AE0B-1329-4343-AF63-E62A4ADD1D74}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD8AE0B-1329-4343-AF63-E62A4ADD1D74}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD8AE0B-1329-4343-AF63-E62A4ADD1D74}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

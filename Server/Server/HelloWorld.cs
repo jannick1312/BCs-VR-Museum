@@ -1,4 +1,4 @@
-﻿namespace LocalInterface;
+﻿namespace Server;
 
 public class HelloWorld
 {
