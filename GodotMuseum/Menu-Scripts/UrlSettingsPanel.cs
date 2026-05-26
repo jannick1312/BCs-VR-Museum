@@ -41,9 +41,7 @@ public partial class UrlSettingsPanel : Node
 		if (string.IsNullOrWhiteSpace(input))
 			return;
 
-		string newUrl = "http://" + input;
-
-		_serverUrlStore.SetServerUrl(newUrl);
+        _serverUrlStore.SetServerIp(input);
 
 		_urlInput.Clear();
 		UpdateCurrentUrlLabel();
@@ -59,7 +57,7 @@ public partial class UrlSettingsPanel : Node
 
 	private void UpdateCurrentUrlLabel()
 	{
-		_currentUrlLabel.Text = "Currently using:\n" + _serverUrlStore.CurrentServerUrl;
+		_currentUrlLabel.Text = "Currently using:\n" + _serverUrlStore.CurrentIp;
 	}
 	
 	private void OnDeployedToggled(bool toggledOn)

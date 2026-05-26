@@ -4,22 +4,25 @@ public class ServerSettings
 {
     public bool Deployed { get; private set; }
 
-    public string DeployedServerUrl { get; private set; }
-    public string StreamedServerUrl { get; private set; }
+    public string DeployedIp { get; private set; }
+    public string StreamedIp { get; private set; }
 
     public ServerMode Mode => Deployed
         ? ServerMode.Deployed
         : ServerMode.Streamed;
 
-    public string CurrentServerUrl => Deployed
-        ? NormalizeBaseUrl(DeployedServerUrl)
-        : StreamedServerUrl.Trim();
+    public string CurrentIp => Deployed
+        ? DeployedIp.Trim()
+        : StreamedIp.Trim();
 
-    public ServerSettings(bool deployed,  string deployedServerUrl, string streamedServerUrl)
+    public string QueryUrl => "http://" + CurrentIp + ":7070/api/sandbox/query";
+    public string MediaBaseUrl => "http://" + CurrentIp + ":9090/";
+
+    public ServerSettings(bool deployed, string deployedIp, string streamedIp)
     {
         Deployed = deployed;
-        DeployedServerUrl = deployedServerUrl;
-        StreamedServerUrl = streamedServerUrl;
+        DeployedIp = CleanIp(deployedIp);
+        StreamedIp = CleanIp(streamedIp);
     }
 
     public void SetDeployed(bool deployed)
@@ -27,19 +30,30 @@ public class ServerSettings
         Deployed = deployed;
     }
 
-    public void SetServerUrl(string newUrl)
+    public void SetCurrentIp(string ip)
     {
-        if (string.IsNullOrWhiteSpace(newUrl))
+        if (string.IsNullOrWhiteSpace(ip))
             return;
 
         if (Deployed)
-            DeployedServerUrl = NormalizeBaseUrl(newUrl);
+            DeployedIp = CleanIp(ip);
         else
-            StreamedServerUrl = newUrl.Trim();
+            StreamedIp = CleanIp(ip);
     }
 
-    public static string NormalizeBaseUrl(string url)
+    private static string CleanIp(string input)
     {
-        return url.Trim().TrimEnd('/') + "/";
+        string cleaned = input.Trim();
+
+        cleaned = cleaned.Replace("http://", "");
+        cleaned = cleaned.Replace("https://", "");
+
+        if (cleaned.Contains(":"))
+            cleaned = cleaned.Split(":")[0];
+
+        if (cleaned.Contains("/"))
+            cleaned = cleaned.Split("/")[0];
+
+        return cleaned;
     }
 }

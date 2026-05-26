@@ -91,6 +91,7 @@ size = Vector3(1.8, 1.8, 0.02)
 
 [node name="ServerUrlStore" type="Node" parent="." unique_id=378595432]
 script = ExtResource("3_7mycd")
+DefaultDeployedIp = "192.168.1.140"
 
 [node name="PlatformSwitcher" type="Node" parent="." unique_id=350164590]
 script = ExtResource("1_vivmo")

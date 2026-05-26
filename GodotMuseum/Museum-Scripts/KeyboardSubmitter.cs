@@ -1,4 +1,5 @@
 using Godot;
+using System.IO;
 using System.Text;
 using Server;
 
@@ -79,9 +80,8 @@ public partial class KeyboardSubmitter : Node
 			return;
 		}
 
-		string json = ServerRequestFactory.BuildRequestBody(text, _serverUrlStore.Mode);
-
-		string requestUrl = ServerRequestFactory.BuildRequestUrl( _serverUrlStore.CurrentServerUrl, _serverUrlStore.Mode);
+		string json = ServerRequestFactory.BuildRequestBody(text);
+		string requestUrl = _serverUrlStore.QueryUrl;
 
 		string[] headers = { "Content-Type: application/json" };
 
@@ -121,7 +121,7 @@ public partial class KeyboardSubmitter : Node
 
 		string responseText = Encoding.UTF8.GetString(body);
 
-		ServerResult serverResult = ServerResponseParser.Parse(responseText, _serverUrlStore.Mode, _serverUrlStore.CurrentServerUrl, MediaFolderPath);
+		ServerResult serverResult = ServerResponseParser.Parse(responseText, MediaFolderPath, _serverUrlStore.MediaBaseUrl);
 
 		if (!serverResult.Success)
 		{
@@ -129,10 +129,16 @@ public partial class KeyboardSubmitter : Node
 			return;
 		}
 
-		if (serverResult.IsUrlResult)
-			_outputScreen.SetOutputImageFromUrl(serverResult.ImageUrl);
-		else if (serverResult.IsLocalPathResult)
+		if (File.Exists(serverResult.LocalImagePath))
+		{
+			GD.Print("LOCAL IMAGE FOUND -> loading from local path");
 			_outputScreen.SetOutputImageFromLocalPath(serverResult.LocalImagePath);
+		}
+		else
+		{
+			GD.Print("LOCAL IMAGE NOT FOUND -> loading from remote URL");
+			_outputScreen.SetOutputImageFromUrl(serverResult.RemoteImageUrl);
+		}
 
 		_visibility.ShowOutput();
 	}

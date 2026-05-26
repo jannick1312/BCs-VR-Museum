@@ -4,38 +4,12 @@ namespace Server;
 
 public static class ServerResponseParser
 {
-	public static ServerResult Parse(string responseText, ServerMode mode, string currentServerUrl, string mediaFolderPath)
-	{
-		if (mode == ServerMode.Deployed)
-			return ParseDeployed(responseText, currentServerUrl);
-		return ParseStreamed(responseText, mediaFolderPath);
-	}
-
-	private static ServerResult ParseDeployed(string responseText, string currentServerUrl)
-	{
-		try
-		{
-			using JsonDocument document = JsonDocument.Parse(responseText);
-			JsonElement root = document.RootElement;
-
-			root.TryGetProperty("filename", out JsonElement filenameElement);
-
-			string? filename = filenameElement.GetString();
-			string imageUrl = ServerSettings.NormalizeBaseUrl(currentServerUrl) + "media/" + filename;
-			return ServerResult.FromUrl(imageUrl);
-		}
-		catch
-		{
-			return ServerResult.Fail("Could not parse response.");
-		}
-	}
-
-	private static ServerResult ParseStreamed(string responseText, string mediaFolderPath)
-	{
-		try
-		{
-			using JsonDocument document = JsonDocument.Parse(responseText);
-			JsonElement root = document.RootElement;
+    public static ServerResult Parse(string responseText, string mediaFolderPath, string mediaBaseUrl)
+    {
+        try
+        {
+            using JsonDocument document = JsonDocument.Parse(responseText);
+            JsonElement root = document.RootElement;
 
 			root.TryGetProperty("retrievables", out JsonElement retrievables);
 
@@ -45,14 +19,15 @@ public static class ServerResponseParser
 
 			string? dockerPath = pathElement.GetString();
 
-			string? filename = Path.GetFileName(dockerPath);
-			string localImagePath = Path.Combine(mediaFolderPath, filename);
+            string? filename = Path.GetFileName(dockerPath);
+            string localImagePath = Path.Combine(mediaFolderPath, filename);
+            string remoteImageUrl = mediaBaseUrl.TrimEnd('/') + "/" + filename;
 
-			return ServerResult.FromLocalPath(localImagePath);
-		}
-		catch
-		{
-			return ServerResult.Fail("Could not parse response.");
-		}
-	}
+            return ServerResult.FromImage(filename, localImagePath, remoteImageUrl);
+        }
+        catch
+        {
+            return ServerResult.Fail("Could not parse response.");
+        }
+    }
 }

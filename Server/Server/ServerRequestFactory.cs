@@ -4,29 +4,7 @@ namespace Server;
 
 public static class ServerRequestFactory
 {
-    public static string BuildRequestBody(string text, ServerMode mode)
-    {
-        if (mode == ServerMode.Deployed)
-            return BuildDeployedRequest(text);
-        return BuildStreamedRequest(text);
-    }
-    
-    public static string BuildRequestUrl(string currentServerUrl, ServerMode mode)
-    {
-        if (mode == ServerMode.Deployed)
-            return ServerSettings.NormalizeBaseUrl(currentServerUrl) + "search_one";
-        return currentServerUrl.Trim();
-    }
-    
-    private static string BuildDeployedRequest(string text)
-    {
-        return JsonSerializer.Serialize(new
-        {
-            text = text
-        });
-    }
-    
-    private static string BuildStreamedRequest(string text)
+    public static string BuildRequestBody(string text)
     {
         var payload = new
         {
