@@ -1,3 +1,4 @@
+using Application;
 using Core;
 using Godot;
 using Infrastructure.Media;
@@ -76,10 +77,8 @@ public partial class KeyboardSubmitter : Node
 
         _isSearching = true;
 
-        var query = new SearchQuery(text, SearchLimit);
-
-        var searchService = new VitrivrSearchService(_serverUrlStore.Settings);
-        var result = await searchService.SearchAsync(query);
+        var useCase = CreateSearchUseCase();
+        var result = await useCase.ExecuteAsync(text, SearchLimit);
 
         _isSearching = false;
 
@@ -89,51 +88,33 @@ public partial class KeyboardSubmitter : Node
             return;
         }
 
-        var item = result.FirstOrDefault();
-
-        if (item == null)
-        {
-            GD.PrintErr("Search returned no result item.");
-            return;
-        }
-
-        switch (item.MediaType)
+        switch (result.MediaType)
         {
             case MediaType.Image:
-                ShowImage(item);
+                _outputScreen.SetOutputImageFromBytes(result.Bytes);
+                _visibility.ShowOutput();
                 break;
 
             case MediaType.Video:
-                GD.PrintErr("Video results are recognized, but video display is not implemented yet.");
+                GD.PrintErr("Video display is not implemented yet.");
                 break;
 
             case MediaType.Object3D:
-                GD.PrintErr("3D object results are recognized, but 3D loading is not implemented yet.");
+                GD.PrintErr("3D object loading is not implemented yet.");
                 break;
 
-            case MediaType.Unknown:
-                GD.PrintErr("Not a known Media Type.");
-                break;
-            
             default:
-                GD.PrintErr("Unknown media type: " + item.FileName);
+                GD.PrintErr("Unknown media type: " + result.FileName);
                 break;
         }
     }
 
-    private void ShowImage(SearchResultItem item)
+    private SearchAndLoadMedia CreateSearchUseCase()
     {
-        if (MediaResolver.IsLocal(item))
-        {
-            GD.Print("LOCAL MEDIA FOUND -> loading from local path");
-            _outputScreen.SetOutputImageFromLocalPath(item.LocalPath);
-        }
-        else
-        {
-            GD.Print("LOCAL MEDIA NOT FOUND -> loading from remote URL");
-            _outputScreen.SetOutputImageFromUrl(item.RemoteUrl);
-        }
+        ISearchService searchService = new VitrivrSearchService(_serverUrlStore.Settings);
 
-        _visibility.ShowOutput();
+        IMediaLoader mediaLoader = new MediaResolver();
+
+        return new SearchAndLoadMedia(searchService, mediaLoader);
     }
 }

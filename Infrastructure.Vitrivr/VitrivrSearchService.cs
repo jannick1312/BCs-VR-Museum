@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Infrastructure.Vitrivr;
 
-public class VitrivrSearchService(VitrivrSettings settings) : SearchService
+public class VitrivrSearchService(VitrivrSettings settings) : ISearchService
 {
     private readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(5)};
 
-    public override async Task<SearchResult> SearchAsync(SearchQuery query)
+    public async Task<SearchResult> SearchAsync(SearchQuery query)
     {
         try
         {
@@ -20,6 +20,9 @@ public class VitrivrSearchService(VitrivrSettings settings) : SearchService
 
             var responseText = await response.Content.ReadAsStringAsync();
 
+            if (!response.IsSuccessStatusCode)
+                return SearchResult.Failure($"Vitrivr request failed with HTTP {(int)response.StatusCode}.");
+            
             return VitrivrResponseParser.Parse(responseText, settings.MediaFolderPath, settings.MediaBaseUrl);
         }
         catch (TaskCanceledException)

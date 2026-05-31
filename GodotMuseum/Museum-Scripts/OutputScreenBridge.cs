@@ -25,37 +25,23 @@ public partial class OutputScreenBridge : Node
 		_picture.MaterialOverride = _pictureMaterial;
 	}
 
-	public async void SetOutputImageFromUrl(string imageUrl)
-	{
-		var request = new HttpRequest();
-		AddChild(request);
+    public void SetOutputImageFromBytes(byte[] bytes)
+    {
+        var image = new Image();
 
-		request.Request(imageUrl);
+        var loadError = image.LoadJpgFromBuffer(bytes);
 
-		var resultArray = await ToSignal(request, HttpRequest.SignalName.RequestCompleted);
+        if (loadError != Error.Ok)
+            loadError = image.LoadPngFromBuffer(bytes);
 
-		var body = (byte[])resultArray[3];
+        if (loadError != Error.Ok)
+            loadError = image.LoadWebpFromBuffer(bytes);
 
-		request.QueueFree();
-
-		var image = new Image();
-
-		var loadError = image.LoadJpgFromBuffer(body);
-
-		if (loadError != Error.Ok)
-			image.LoadPngFromBuffer(body);
-
-		if (loadError != Error.Ok)
-			image.LoadWebpFromBuffer(body);
-
-		ImageTexture texture = ImageTexture.CreateFromImage(image);
-		ApplyTexture(texture);
-	}
-
-	public void SetOutputImageFromLocalPath(string imagePath)
-	{
-		var image = new Image();
-		image.Load(imagePath);
+        if (loadError != Error.Ok || image.IsEmpty())
+        {
+            GD.PrintErr("Could not load image from bytes. Error: " + loadError);
+            return;
+        }
 
 		var texture = ImageTexture.CreateFromImage(image);
 		ApplyTexture(texture);
