@@ -4,6 +4,33 @@
 [ext_resource type="Script" uid="uid://c8g5n84np0w7u" path="res://Keyboard/VirtualKeyInputEvent.cs" id="2_cnmmc"]
 [ext_resource type="Script" uid="uid://bvmqjqykgyacb" path="res://Keyboard/VirtualToggleKey.cs" id="3_7to8h"]
 
+[sub_resource type="StyleBoxFlat" id="KeyNormal"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="KeyHover"]
+bg_color = Color(0.225, 0.225, 0.225, 0.75)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="KeyPressed"]
+bg_color = Color(0, 0, 0, 0.85)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="Theme" id="KeyboardTheme"]
+Button/styles/focus = SubResource("KeyNormal")
+Button/styles/hover = SubResource("KeyHover")
+Button/styles/normal = SubResource("KeyNormal")
+Button/styles/pressed = SubResource("KeyPressed")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b1dt6"]
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 20
@@ -95,33 +122,6 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="KeyNormal"]
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="KeyPressed"]
-bg_color = Color(0, 0, 0, 0.85)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="KeyHover"]
-bg_color = Color(0.225, 0.225, 0.225, 0.75)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="Theme" id="KeyboardTheme"]
-Button/styles/normal = SubResource("KeyNormal")
-Button/styles/pressed = SubResource("KeyPressed")
-Button/styles/hover = SubResource("KeyHover")
-Button/styles/focus = SubResource("KeyNormal")
 
 [node name="KeyboardUi" type="Control" unique_id=538590644]
 layout_mode = 3

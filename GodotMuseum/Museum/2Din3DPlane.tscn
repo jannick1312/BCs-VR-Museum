@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dsq03f1w5lqyc"]
 
 [ext_resource type="Script" uid="uid://eavk7267igp7" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.gd" id="1_0meo3"]
-[ext_resource type="PackedScene" path="res://Museum/InputText.tscn" id="2_8fgmr"]
+[ext_resource type="PackedScene" uid="uid://u5ecy8x04wo1" path="res://Museum/InputText.tscn" id="2_8fgmr"]
 [ext_resource type="Script" uid="uid://cpl5yiyf1ypft" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d_body.gd" id="3_oudb5"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_8fgmr"]

@@ -1,8 +1,8 @@
-[gd_resource type="ORMMaterial3D" load_steps=4 format=3 uid="uid://f2uhcqq8s2jx"]
+[gd_resource type="ORMMaterial3D" format=3 uid="uid://f2uhcqq8s2jx"]
 
-[ext_resource type="Texture2D" uid="uid://dgkfppran5j1f" path="res://addons/godot-xr-tools/hands/textures/glove_caucasian_green_camo.png" id="1_hy1aq"]
-[ext_resource type="Texture2D" uid="uid://bw8rmigwt5pr4" path="res://addons/godot-xr-tools/hands/textures/glove_fingerless_normal.png" id="2_iwp46"]
-[ext_resource type="Texture2D" uid="uid://d2iocwfr47kqp" path="res://addons/godot-xr-tools/hands/textures/glove_fingerless_occlusionRoughnessMetallic.png" id="3_gyrju"]
+[ext_resource type="Texture2D" uid="uid://dv34tpffs5n3q" path="res://addons/godot-xr-tools/hands/textures/glove_caucasian_green_camo.png" id="1_hy1aq"]
+[ext_resource type="Texture2D" uid="uid://cyp2ueocl0x2a" path="res://addons/godot-xr-tools/hands/textures/glove_fingerless_normal.png" id="2_iwp46"]
+[ext_resource type="Texture2D" uid="uid://bv2p6ef8cldvk" path="res://addons/godot-xr-tools/hands/textures/glove_fingerless_occlusionRoughnessMetallic.png" id="3_gyrju"]
 
 [resource]
 albedo_texture = ExtResource("1_hy1aq")

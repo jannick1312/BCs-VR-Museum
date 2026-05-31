@@ -1,14 +1,16 @@
-﻿namespace Server;
+namespace Infrastructure.Vitrivr;
 
-public class ServerSettings(bool deployed, string deployedIp, string streamedIp)
+public class VitrivrSettings(bool deployed, string deployedIp, string streamedIp, string mediaFolderPath)
 {
     private bool Deployed { get; set; } = deployed;
     private string DeployedIp { get; set; } = CleanIp(deployedIp);
     private string StreamedIp { get; set; } = CleanIp(streamedIp);
 
-    public ServerMode Mode => Deployed
-        ? ServerMode.Deployed
-        : ServerMode.Streamed;
+    public string MediaFolderPath { get; } = mediaFolderPath;
+
+    public VitrivrMode Mode => Deployed
+        ? VitrivrMode.Deployed
+        : VitrivrMode.Streamed;
 
     public string CurrentIp => Deployed
         ? DeployedIp.Trim()
@@ -41,10 +43,10 @@ public class ServerSettings(bool deployed, string deployedIp, string streamedIp)
         cleaned = cleaned.Replace("https://", "");
 
         if (cleaned.Contains(':'))
-            cleaned = cleaned.Split(":")[0];
+            cleaned = cleaned.Split(':')[0];
 
         if (cleaned.Contains('/'))
-            cleaned = cleaned.Split("/")[0];
+            cleaned = cleaned.Split('/')[0];
 
         return cleaned;
     }

@@ -1,24 +1,33 @@
 using Godot;
-using Server;
+using Infrastructure.Configuration;
+using Infrastructure.Vitrivr;
+
 namespace BCSVRMuseum;
 
 public partial class ServerUrlStore : Node
 {
-    [Export] public bool Deployed = true;
+    private AppSettings _appSettings;
+    private VitrivrSettings _settings;
 
-    [Export] public string DefaultDeployedIp = "192.168.1.21";
-    [Export] public string DefaultStreamedIp = "10.34.64.208";
-
-    private ServerSettings _settings;
+    public bool Deployed => _settings.Mode == VitrivrMode.Deployed;
 
     public string CurrentIp => _settings.CurrentIp;
-    public string QueryUrl => _settings.QueryUrl;
-    public string MediaBaseUrl => _settings.MediaBaseUrl;
-    private ServerMode Mode => _settings.Mode;
+    private string QueryUrl => _settings.QueryUrl;
+    private string MediaBaseUrl => _settings.MediaBaseUrl;
+    private string MediaFolderPath => _settings.MediaFolderPath;
+
+    public VitrivrSettings Settings => _settings;
 
     public override void _Ready()
     {
-        _settings = new ServerSettings(Deployed, DefaultDeployedIp, DefaultStreamedIp);
+        const string settingsPath = "res://appsettings.json";
+
+        _appSettings = new AppSettings();
+        using var file = FileAccess.Open(settingsPath, FileAccess.ModeFlags.Read);
+        var json = file.GetAsText();
+       _appSettings = AppSettingsLoader.LoadFromJson(json);
+       
+        _settings = new VitrivrSettings(_appSettings.Deployed, _appSettings.DefaultDeployedIp, _appSettings.DefaultStreamedIp, _appSettings.MediaFolderPath);
     }
 
     public void SetServerIp(string ip)
@@ -28,12 +37,12 @@ public partial class ServerUrlStore : Node
 
     public void RevertServerUrl()
     {
-        _settings = new ServerSettings(Deployed, DefaultDeployedIp, DefaultStreamedIp);
+        var deployed = Deployed;
+        _settings = new VitrivrSettings(deployed, _appSettings.DefaultDeployedIp, _appSettings.DefaultStreamedIp, _appSettings.MediaFolderPath);
     }
 
     public void SetDeployed(bool deployed)
     {
-        Deployed = deployed;
         _settings.SetDeployed(deployed);
     }
 }

@@ -7,6 +7,10 @@
     <RootNamespace>BCSVRMuseum</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Server\Server\Server.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure.Vitrivr\Infrastructure.Vitrivr.csproj" />
+    <ProjectReference Include="..\Infrastructure.Media\Infrastructure.Media.csproj" />
+    <ProjectReference Include="..\Infrastructure.Configuration\Infrastructure.Configuration.csproj" />
   </ItemGroup>
 </Project>

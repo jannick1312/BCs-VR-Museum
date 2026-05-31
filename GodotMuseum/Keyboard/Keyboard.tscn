@@ -21,7 +21,7 @@ gravity_scale = 0.0
 linear_damp = 100.0
 angular_damp = 100.0
 
-[node name="CollisionShape3D" parent="." index="0"]
+[node name="CollisionShape3D" parent="." index="0" unique_id=1173825047]
 shape = SubResource("BoxShape3D_xngas")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1" unique_id=764809591]

@@ -1,145 +1,139 @@
+using Core;
 using Godot;
-using System.IO;
-using System.Text;
-using Server;
+using Infrastructure.Media;
+using Infrastructure.Vitrivr;
+
 namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class KeyboardSubmitter : Node
 {
-	[Export] public NodePath InputScreenBridgePath;
-	[Export] public NodePath OutputScreenBridgePath;
-	[Export] public NodePath VisibilityControllerPath;
+    [Export] public NodePath InputScreenBridgePath;
+    [Export] public NodePath OutputScreenBridgePath;
+    [Export] public NodePath VisibilityControllerPath;
 
-	[Export] public string MediaFolderPath = @"C:\Users\dbis-\Desktop\BCs\media";
+    [Export] public int SearchLimit = 1;
 
-	private InputScreenBridge _inputScreen;
-	private OutputScreenBridge _outputScreen;
-	private VisibilityController _visibility;
+    private InputScreenBridge _inputScreen;
+    private OutputScreenBridge _outputScreen;
+    private VisibilityController _visibility;
 
-	private LineEdit _inputLineEdit;
-	private LineEdit _activeLineEdit;
+    private LineEdit _inputLineEdit;
+    private LineEdit _activeLineEdit;
 
-	private HttpRequest _httpRequest;
+    private ServerUrlStore _serverUrlStore;
 
-	private SceneTreeTimer _requestTimeout;
+    private bool _isSearching;
 
-	private ServerUrlStore _serverUrlStore;
+    public override async void _Ready()
+    {
+        for (var i = 0; i < 12; i++)
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-	public override async void _Ready()
-	{
-		for (var i = 0; i < 12; i++)
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        _inputScreen = GetNodeOrNull<InputScreenBridge>(InputScreenBridgePath);
+        _outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
+        _visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
 
-		_httpRequest = GetNodeOrNull<HttpRequest>("HTTPRequest");
+        _serverUrlStore = GetTree().Root.FindChild("ServerUrlStore", true, false) as ServerUrlStore;
 
-		_inputScreen = GetNodeOrNull<InputScreenBridge>(InputScreenBridgePath);
-		_outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
-		_visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
+        _inputLineEdit = _inputScreen.InputLineEdit;
 
-		_serverUrlStore = GetTree().Root.FindChild("ServerUrlStore", true, false) as ServerUrlStore;
+        _inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
+        _inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);
+    }
 
-		_inputLineEdit = _inputScreen.InputLineEdit;
+    private void SetActiveInput(LineEdit lineEdit)
+    {
+        _activeLineEdit = lineEdit;
+        _visibility.ShowKeyboard();
+    }
 
-		_inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
-		_inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);
+    private void OnInputGuiInput(InputEvent inputEvent, LineEdit lineEdit)
+    {
+        if (inputEvent is not InputEventMouseButton mouseButton || !mouseButton.Pressed)
+            return;
 
-		_httpRequest.RequestCompleted += OnRequestCompleted;
-	}
+        _activeLineEdit = lineEdit;
+        _visibility.ShowKeyboard();
+    }
 
-	private void SetActiveInput(LineEdit lineEdit)
-	{
-		_activeLineEdit = lineEdit;
-		_visibility.ShowKeyboard();
-	}
+    public async void SubmitText()
+    {
+        if (_activeLineEdit == null || _isSearching)
+            return;
 
-	private void OnInputGuiInput(InputEvent inputEvent, LineEdit lineEdit)
-	{
-		if (inputEvent is not InputEventMouseButton mouseButton || !mouseButton.Pressed) 
-			return;
-		_activeLineEdit = lineEdit;
-		_visibility.ShowKeyboard();
-	}
+        var text = _activeLineEdit.Text;
 
-	public async void SubmitText()
-	{
-		if (_activeLineEdit == null)
-			return;
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            _activeLineEdit.ReleaseFocus();
+            _visibility.HideKeyboard();
+            return;
+        }
 
-		if (_httpRequest.GetHttpClientStatus() != HttpClient.Status.Disconnected)
-		{
-			_httpRequest.CancelRequest();
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-		}
+        _activeLineEdit.Clear();
+        _activeLineEdit.ReleaseFocus();
+        _visibility.HideKeyboard();
 
-		var text = _activeLineEdit.Text;
+        _isSearching = true;
 
-		if (string.IsNullOrWhiteSpace(text))
-		{
-			_activeLineEdit.ReleaseFocus();
-			_visibility.HideKeyboard();
-			return;
-		}
+        var query = new SearchQuery(text, SearchLimit);
 
-		var json = ServerRequestFactory.BuildRequestBody(text);
-		var requestUrl = _serverUrlStore.QueryUrl;
+        var searchService = new VitrivrSearchService(_serverUrlStore.Settings);
+        var result = await searchService.SearchAsync(query);
 
-		string[] headers = ["Content-Type: application/json"];
+        _isSearching = false;
 
-		_httpRequest.Request(
-			requestUrl,
-			headers,
-			HttpClient.Method.Post,
-			json
-		);
+        if (!result.Success)
+        {
+            GD.PrintErr(result.ErrorMessage);
+            return;
+        }
 
-		StartRequestTimeout();
+        var item = result.FirstOrDefault();
 
-		_activeLineEdit.Clear();
-		_activeLineEdit.ReleaseFocus();
-		_visibility.HideKeyboard();
-	}
+        if (item == null)
+        {
+            GD.PrintErr("Search returned no result item.");
+            return;
+        }
 
-	private async void StartRequestTimeout()
-	{
-		_requestTimeout = GetTree().CreateTimer(5.0);
+        switch (item.MediaType)
+        {
+            case MediaType.Image:
+                ShowImage(item);
+                break;
 
-		await ToSignal(
-			_requestTimeout,
-			SceneTreeTimer.SignalName.Timeout
-		);
+            case MediaType.Video:
+                GD.PrintErr("Video results are recognized, but video display is not implemented yet.");
+                break;
 
-		if (_httpRequest == null)
-			return;
+            case MediaType.Object3D:
+                GD.PrintErr("3D object results are recognized, but 3D loading is not implemented yet.");
+                break;
 
-		if (_httpRequest.GetHttpClientStatus() != HttpClient.Status.Disconnected)
-			_httpRequest.CancelRequest();
-	}
+            case MediaType.Unknown:
+                GD.PrintErr("Not a known Media Type.");
+                break;
+            
+            default:
+                GD.PrintErr("Unknown media type: " + item.FileName);
+                break;
+        }
+    }
 
-	private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
-	{
-		_requestTimeout = null;
+    private void ShowImage(SearchResultItem item)
+    {
+        if (MediaResolver.IsLocal(item))
+        {
+            GD.Print("LOCAL MEDIA FOUND -> loading from local path");
+            _outputScreen.SetOutputImageFromLocalPath(item.LocalPath);
+        }
+        else
+        {
+            GD.Print("LOCAL MEDIA NOT FOUND -> loading from remote URL");
+            _outputScreen.SetOutputImageFromUrl(item.RemoteUrl);
+        }
 
-		var responseText = Encoding.UTF8.GetString(body);
-
-		var serverResult = ServerResponseParser.Parse(responseText, MediaFolderPath, _serverUrlStore.MediaBaseUrl);
-
-		if (!serverResult.Success)
-		{
-			GD.PrintErr(serverResult.ErrorMessage);
-			return;
-		}
-
-		if (File.Exists(serverResult.LocalImagePath))
-		{
-			GD.Print("LOCAL IMAGE FOUND -> loading from local path");
-			_outputScreen.SetOutputImageFromLocalPath(serverResult.LocalImagePath);
-		}
-		else
-		{
-			GD.Print("LOCAL IMAGE NOT FOUND -> loading from remote URL");
-			_outputScreen.SetOutputImageFromUrl(serverResult.RemoteImageUrl);
-		}
-
-		_visibility.ShowOutput();
-	}
+        _visibility.ShowOutput();
+    }
 }

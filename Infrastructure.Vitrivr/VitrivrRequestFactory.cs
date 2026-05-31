@@ -1,10 +1,11 @@
-﻿using System.Text.Json;
+using System.Text.Json;
+using Core;
 
-namespace Server;
+namespace Infrastructure.Vitrivr;
 
-public static class ServerRequestFactory
+public static class VitrivrRequestFactory
 {
-    public static string BuildRequestBody(string text)
+    public static string BuildRequestBody(SearchQuery query)
     {
         var payload = new
         {
@@ -13,7 +14,7 @@ public static class ServerRequestFactory
                 txt = new
                 {
                     type = "TEXT",
-                    data = text
+                    data = query.Text
                 }
             },
             operations = new
@@ -27,7 +28,7 @@ public static class ServerRequestFactory
                     },
                     parameters = new
                     {
-                        limit = "1"
+                        limit = query.Limit.ToString()
                     }
                 },
                 filelookup = new
@@ -46,6 +47,7 @@ public static class ServerRequestFactory
             },
             output = "filelookup"
         };
+
         return JsonSerializer.Serialize(payload);
     }
 }

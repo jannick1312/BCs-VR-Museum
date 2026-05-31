@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ijjjf42k124s"]
 
-[ext_resource type="Texture2D" uid="uid://5n2k0xbtnud2" path="res://addons/blenderkit/logo/blenderkit-logo-hexa_pure.svg" id="Texture2D_logo"]
+[ext_resource type="Texture2D" uid="uid://cgc80u72j6wv3" path="res://addons/blenderkit/logo/blenderkit-logo-hexa_pure.svg" id="Texture2D_logo"]
 
 [sub_resource type="SystemFont" id="SystemFont_bold"]
 subpixel_positioning = 0
