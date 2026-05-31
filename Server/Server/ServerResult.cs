@@ -3,27 +3,25 @@
 public class ServerResult
 {
     public bool Success { get; }
-    public string Filename { get; }
     public string LocalImagePath { get; }
     public string RemoteImageUrl { get; }
     public string ErrorMessage { get; }
 
-    private ServerResult(bool success, string filename, string localImagePath, string remoteImageUrl, string errorMessage)
+    private ServerResult(bool success, string localImagePath, string remoteImageUrl, string errorMessage)
     {
         Success = success;
-        Filename = filename;
         LocalImagePath = localImagePath;
         RemoteImageUrl = remoteImageUrl;
         ErrorMessage = errorMessage;
     }
 
-    public static ServerResult FromImage(string filename, string localImagePath, string remoteImageUrl)
+    public static ServerResult FromImage(string localImagePath, string remoteImageUrl)
     {
-        return new ServerResult(true, filename, localImagePath, remoteImageUrl, "");
+        return new ServerResult(true, localImagePath, remoteImageUrl, "");
     }
 
-    public static ServerResult Fail(string errorMessage)
+    public static ServerResult FromError(string errorMessage)
     {
-        return new ServerResult(false, "", "", "", errorMessage);
+        return new ServerResult(false, "", "", errorMessage);
     }
 }

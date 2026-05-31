@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum.Keyboard;
 
 public partial class VirtualToggleKey : Button
 {

@@ -1,5 +1,6 @@
 using Godot;
 using Server;
+namespace BCSVRMuseum;
 
 public partial class ServerUrlStore : Node
 {
@@ -13,7 +14,7 @@ public partial class ServerUrlStore : Node
     public string CurrentIp => _settings.CurrentIp;
     public string QueryUrl => _settings.QueryUrl;
     public string MediaBaseUrl => _settings.MediaBaseUrl;
-    public ServerMode Mode => _settings.Mode;
+    private ServerMode Mode => _settings.Mode;
 
     public override void _Ready()
     {

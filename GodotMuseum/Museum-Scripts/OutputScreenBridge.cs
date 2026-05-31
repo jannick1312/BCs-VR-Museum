@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class OutputScreenBridge : Node
 {
@@ -29,24 +30,23 @@ public partial class OutputScreenBridge : Node
 		var request = new HttpRequest();
 		AddChild(request);
 
-		Error error = request.Request(imageUrl);
+		request.Request(imageUrl);
 
 		var resultArray = await ToSignal(request, HttpRequest.SignalName.RequestCompleted);
 
-		long responseCode = (long)resultArray[1];
-		byte[] body = (byte[])resultArray[3];
+		var body = (byte[])resultArray[3];
 
 		request.QueueFree();
 
-		Image image = new Image();
+		var image = new Image();
 
-		Error loadError = image.LoadJpgFromBuffer(body);
-
-		if (loadError != Error.Ok)
-			loadError = image.LoadPngFromBuffer(body);
+		var loadError = image.LoadJpgFromBuffer(body);
 
 		if (loadError != Error.Ok)
-			loadError = image.LoadWebpFromBuffer(body);
+			image.LoadPngFromBuffer(body);
+
+		if (loadError != Error.Ok)
+			image.LoadWebpFromBuffer(body);
 
 		ImageTexture texture = ImageTexture.CreateFromImage(image);
 		ApplyTexture(texture);
@@ -54,10 +54,10 @@ public partial class OutputScreenBridge : Node
 
 	public void SetOutputImageFromLocalPath(string imagePath)
 	{
-		Image image = new Image();
-		Error loadError = image.Load(imagePath);
+		var image = new Image();
+		image.Load(imagePath);
 
-		ImageTexture texture = ImageTexture.CreateFromImage(image);
+		var texture = ImageTexture.CreateFromImage(image);
 		ApplyTexture(texture);
 	}
 
@@ -65,10 +65,10 @@ public partial class OutputScreenBridge : Node
 	{
 		_pictureMaterial.AlbedoTexture = texture;
 
-		float aspect = (float)texture.GetWidth() / texture.GetHeight();
+		var aspect = (float)texture.GetWidth() / texture.GetHeight();
 
-		float imageWidth = Scale;
-		float imageHeight = imageWidth / aspect;
+		var imageWidth = Scale;
+		var imageHeight = imageWidth / aspect;
 
 		_picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
 

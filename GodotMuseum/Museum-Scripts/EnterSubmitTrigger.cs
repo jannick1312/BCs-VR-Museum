@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class EnterSubmitTrigger : Node
 {
@@ -9,13 +10,13 @@ public partial class EnterSubmitTrigger : Node
 
 	public override async void _Ready()
 	{
-		for (int i = 0; i < 8; i++)
+		for (var i = 0; i < 8; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
 		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
 		_submitter = GetNodeOrNull<KeyboardSubmitter>(KeyboardSubmitterPath);
 
-		Node enterKey = FindNodeByName(viewport, "VirtualKeyEnter");
+		var enterKey = FindNodeByName(viewport, "VirtualKeyEnter");
 
 		enterKey.Connect(
 			"pressed",
@@ -23,14 +24,14 @@ public partial class EnterSubmitTrigger : Node
 		);
 	}
 
-	private Node FindNodeByName(Node node, string name)
+	private static Node FindNodeByName(Node node, string name)
 	{
 		if (node.Name.ToString() == name)
 			return node;
 
-		foreach (Node child in node.GetChildren())
+		foreach (var child in node.GetChildren())
 		{
-			Node found = FindNodeByName(child, name);
+			var found = FindNodeByName(child, name);
 			if (found != null)
 				return found;
 		}

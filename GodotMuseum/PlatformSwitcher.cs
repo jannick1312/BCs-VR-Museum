@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum;
 
 public partial class PlatformSwitcher : Node
 {
@@ -27,12 +28,12 @@ public partial class PlatformSwitcher : Node
 
 	private Transform3D _lastMuseumTransform;
 	private Transform3D _lockedMenuTransform;
-	private bool _isInMenu = false;
-	private bool _bothWerePressed = false;
+	private bool _isInMenu;
+	private bool _bothWerePressed;
 
 	public override async void _Ready()
 	{
-		for (int i = 0; i < 8; i++)
+		for (var i = 0; i < 8; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
 		_player = GetNode(PlayerPath);
@@ -65,7 +66,8 @@ public partial class PlatformSwitcher : Node
 		SetMovementEnabled(true);
 
 		MoveCameraExactlyToStartSpawn();
-		_lastMuseumTransform = _playerRig.GlobalTransform;
+		if (_playerRig != null) 
+			_lastMuseumTransform = _playerRig.GlobalTransform;
 	}
 
 	public override void _Process(double delta)
@@ -73,7 +75,7 @@ public partial class PlatformSwitcher : Node
 		if (_leftController == null || _rightController == null)
 			return;
 		
-		bool bothPressed =
+		var bothPressed =
 			_leftController.GetFloat("trigger") > 0.75f &&
 			_rightController.GetFloat("trigger") > 0.75f;
 
@@ -146,19 +148,19 @@ public partial class PlatformSwitcher : Node
 
 	private void MoveCameraExactlyToMarker(Marker3D marker)
 	{
-		Vector3 cameraOffset = _camera.GlobalPosition - _playerRig.GlobalPosition;
+		var cameraOffset = _camera.GlobalPosition - _playerRig.GlobalPosition;
 		_playerRig.GlobalPosition = marker.GlobalPosition - cameraOffset;
 
-		Vector3 cameraForward = -_camera.GlobalTransform.Basis.Z;
+		var cameraForward = -_camera.GlobalTransform.Basis.Z;
 		cameraForward.Y = 0;
 
 		cameraForward = cameraForward.Normalized();
 
-		Vector3 targetForward = Vector3.Forward;
+		var targetForward = Vector3.Forward;
 		targetForward.Y = 0;
 		targetForward = targetForward.Normalized();
 
-		float angle = cameraForward.SignedAngleTo(targetForward, Vector3.Up);
+		var angle = cameraForward.SignedAngleTo(targetForward, Vector3.Up);
 
 		_playerRig.RotateY(angle);
 
@@ -188,7 +190,7 @@ public partial class PlatformSwitcher : Node
 		node.Set("enabled", enabled);
 
 		node.ProcessMode = enabled
-			? Node.ProcessModeEnum.Inherit
-			: Node.ProcessModeEnum.Disabled;
+			? ProcessModeEnum.Inherit
+			: ProcessModeEnum.Disabled;
 	}
 }

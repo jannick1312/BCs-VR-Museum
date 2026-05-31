@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class VisibilityController : Node
 {
@@ -33,14 +34,14 @@ public partial class VisibilityController : Node
 		SetTreeActive(_outputFrame, true);
 	}
 
-	public void HideOutput()
+	private void HideOutput()
 	{
 		SetTreeActive(_outputFrame, false);
 	}
 
-	private void SetTreeActive(Node node, bool active)
+	private static void SetTreeActive(Node node, bool active)
 	{
-		if (node == null)
+		if (node is null)
 			return;
 
 		if (node is Node3D node3D)
@@ -52,7 +53,7 @@ public partial class VisibilityController : Node
 		if (node is Viewport viewport)
 			viewport.SetProcessInput(active);
 
-		foreach (Node child in node.GetChildren())
+		foreach (var child in node.GetChildren())
 			SetTreeActive(child, active);
 	}
 }

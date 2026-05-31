@@ -1,11 +1,10 @@
 ﻿namespace Server;
 
-public class ServerSettings
+public class ServerSettings(bool deployed, string deployedIp, string streamedIp)
 {
-    public bool Deployed { get; private set; }
-
-    public string DeployedIp { get; private set; }
-    public string StreamedIp { get; private set; }
+    private bool Deployed { get; set; } = deployed;
+    private string DeployedIp { get; set; } = CleanIp(deployedIp);
+    private string StreamedIp { get; set; } = CleanIp(streamedIp);
 
     public ServerMode Mode => Deployed
         ? ServerMode.Deployed
@@ -17,13 +16,6 @@ public class ServerSettings
 
     public string QueryUrl => "http://" + CurrentIp + ":7070/api/sandbox/query";
     public string MediaBaseUrl => "http://" + CurrentIp + ":9090/";
-
-    public ServerSettings(bool deployed, string deployedIp, string streamedIp)
-    {
-        Deployed = deployed;
-        DeployedIp = CleanIp(deployedIp);
-        StreamedIp = CleanIp(streamedIp);
-    }
 
     public void SetDeployed(bool deployed)
     {
@@ -43,15 +35,15 @@ public class ServerSettings
 
     private static string CleanIp(string input)
     {
-        string cleaned = input.Trim();
+        var cleaned = input.Trim();
 
         cleaned = cleaned.Replace("http://", "");
         cleaned = cleaned.Replace("https://", "");
 
-        if (cleaned.Contains(":"))
+        if (cleaned.Contains(':'))
             cleaned = cleaned.Split(":")[0];
 
-        if (cleaned.Contains("/"))
+        if (cleaned.Contains('/'))
             cleaned = cleaned.Split("/")[0];
 
         return cleaned;

@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class InputScreenBridge : Node
 {
@@ -8,25 +9,22 @@ public partial class InputScreenBridge : Node
 
 	public override async void _Ready()
 	{
-		for (int i = 0; i < 8; i++)
+		for (var i = 0; i < 8; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		Viewport viewport = GetNodeOrNull<Viewport>(ViewportPath);
+		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
 
 		InputLineEdit = FindFirstLineEdit(viewport);
 	}
 
-	private LineEdit FindFirstLineEdit(Node node)
+	private static LineEdit FindFirstLineEdit(Node node)
 	{
-		if (node == null)
-			return null;
+		if (node is null or LineEdit)
+			return (LineEdit)node;
 
-		if (node is LineEdit lineEdit)
-			return lineEdit;
-
-		foreach (Node child in node.GetChildren())
+		foreach (var child in node.GetChildren())
 		{
-			LineEdit found = FindFirstLineEdit(child);
+			var found = FindFirstLineEdit(child);
 
 			if (found != null)
 				return found;

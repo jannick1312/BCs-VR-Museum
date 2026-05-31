@@ -2,6 +2,7 @@ using Godot;
 using System.IO;
 using System.Text;
 using Server;
+namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class KeyboardSubmitter : Node
 {
@@ -26,7 +27,7 @@ public partial class KeyboardSubmitter : Node
 
 	public override async void _Ready()
 	{
-		for (int i = 0; i < 12; i++)
+		for (var i = 0; i < 12; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
 		_httpRequest = GetNodeOrNull<HttpRequest>("HTTPRequest");
@@ -53,11 +54,10 @@ public partial class KeyboardSubmitter : Node
 
 	private void OnInputGuiInput(InputEvent inputEvent, LineEdit lineEdit)
 	{
-		if (inputEvent is InputEventMouseButton mouseButton && mouseButton.Pressed)
-		{
-			_activeLineEdit = lineEdit;
-			_visibility.ShowKeyboard();
-		}
+		if (inputEvent is not InputEventMouseButton mouseButton || !mouseButton.Pressed) 
+			return;
+		_activeLineEdit = lineEdit;
+		_visibility.ShowKeyboard();
 	}
 
 	public async void SubmitText()
@@ -71,7 +71,7 @@ public partial class KeyboardSubmitter : Node
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		}
 
-		string text = _activeLineEdit.Text;
+		var text = _activeLineEdit.Text;
 
 		if (string.IsNullOrWhiteSpace(text))
 		{
@@ -80,12 +80,12 @@ public partial class KeyboardSubmitter : Node
 			return;
 		}
 
-		string json = ServerRequestFactory.BuildRequestBody(text);
-		string requestUrl = _serverUrlStore.QueryUrl;
+		var json = ServerRequestFactory.BuildRequestBody(text);
+		var requestUrl = _serverUrlStore.QueryUrl;
 
-		string[] headers = { "Content-Type: application/json" };
+		string[] headers = ["Content-Type: application/json"];
 
-		Error err = _httpRequest.Request(
+		_httpRequest.Request(
 			requestUrl,
 			headers,
 			HttpClient.Method.Post,
@@ -119,9 +119,9 @@ public partial class KeyboardSubmitter : Node
 	{
 		_requestTimeout = null;
 
-		string responseText = Encoding.UTF8.GetString(body);
+		var responseText = Encoding.UTF8.GetString(body);
 
-		ServerResult serverResult = ServerResponseParser.Parse(responseText, MediaFolderPath, _serverUrlStore.MediaBaseUrl);
+		var serverResult = ServerResponseParser.Parse(responseText, MediaFolderPath, _serverUrlStore.MediaBaseUrl);
 
 		if (!serverResult.Success)
 		{

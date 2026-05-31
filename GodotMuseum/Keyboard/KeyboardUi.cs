@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum.Keyboard;
 
 public partial class KeyboardUi : Control
 {
@@ -9,9 +10,9 @@ public partial class KeyboardUi : Control
 		Alternate
 	}
 
-	private bool _shiftDown = false;
-	private bool _capsDown = false;
-	private bool _altDown = false;
+	private bool _shiftDown;
+	private bool _capsDown;
+	private bool _altDown;
 
 	private KeyboardMode _mode = KeyboardMode.LowerCase;
 
@@ -35,19 +36,19 @@ public partial class KeyboardUi : Control
 
 		if (_toggleShift != null)
 		{
-			_toggleShift.FocusMode = Control.FocusModeEnum.None;
+			_toggleShift.FocusMode = FocusModeEnum.None;
 			_toggleShift.Pressed += OnToggleShiftPressed;
 		}
 
 		if (_toggleCaps != null)
 		{
-			_toggleCaps.FocusMode = Control.FocusModeEnum.None;
+			_toggleCaps.FocusMode = FocusModeEnum.None;
 			_toggleCaps.Pressed += OnToggleCapsPressed;
 		}
 
 		if (_toggleAlt != null)
 		{
-			_toggleAlt.FocusMode = Control.FocusModeEnum.None;
+			_toggleAlt.FocusMode = FocusModeEnum.None;
 			_toggleAlt.Pressed += OnToggleAltPressed;
 		}
 
@@ -57,11 +58,11 @@ public partial class KeyboardUi : Control
 
 	private void SetupAllKeys(Node root)
 	{
-		foreach (Node child in root.GetChildren())
+		foreach (var child in root.GetChildren())
 		{
 			if (child is VirtualKeyInputEvent key)
 			{
-				key.FocusMode = Control.FocusModeEnum.None;
+				key.FocusMode = FocusModeEnum.None;
 				key.KeyPressed += OnVirtualKeyPressed;
 			}
 
@@ -73,16 +74,15 @@ public partial class KeyboardUi : Control
 	{
 		SendKey(scanCodeText, unicode, shift);
 
-		if (_shiftDown)
-		{
-			_shiftDown = false;
-			UpdateVisible(false);
-		}
+		if (!_shiftDown) 
+			return;
+		_shiftDown = false;
+		UpdateVisible(false);
 	}
 
-	private void SendKey(string scanCodeText, int unicode, bool shift)
+	private static void SendKey(string scanCodeText, int unicode, bool shift)
 	{
-		Key scanCode = Key.None;
+		var scanCode = Key.None;
 
 		if (!string.IsNullOrEmpty(scanCodeText))
 			scanCode = OS.FindKeycodeFromString(scanCodeText);
@@ -146,21 +146,15 @@ public partial class KeyboardUi : Control
 
 		_mode = newMode;
 
-		if (_lowerCase != null)
-			_lowerCase.Visible = _mode == KeyboardMode.LowerCase;
+		_lowerCase?.Visible = _mode == KeyboardMode.LowerCase;
 
-		if (_upperCase != null)
-			_upperCase.Visible = _mode == KeyboardMode.UpperCase;
+		_upperCase?.Visible = _mode == KeyboardMode.UpperCase;
 
-		if (_alternate != null)
-			_alternate.Visible = _mode == KeyboardMode.Alternate;
+		_alternate?.Visible = _mode == KeyboardMode.Alternate;
 	}
 
-	private void SetToggleVisual(Button button, bool active)
+	private static void SetToggleVisual(Button button, bool active)
 	{
-		if (button == null)
-			return;
-
-		button.ButtonPressed = active;
+		button?.ButtonPressed = active;
 	}
 }

@@ -1,4 +1,5 @@
 using Godot;
+namespace BCSVRMuseum.Menu_Scripts;
 
 public partial class UrlSettingsPanel : Node
 {
@@ -12,36 +13,38 @@ public partial class UrlSettingsPanel : Node
 
 	public override async void _Ready()
 	{
-		for (int i = 0; i < 8; i++)
+		for (var i = 0; i < 8; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
 		_serverUrlStore = GetTree().Root.FindChild("ServerUrlStore", true, false) as ServerUrlStore;
 
-		Node root = GetParent();
+		var root = GetParent();
 
-        _urlInput = root.FindChild("URLinput", true, false) as LineEdit;
-        _currentUrlLabel = root.FindChild("URLcurrently", true, false) as Label;
-        _submitButton = root.FindChild("Submit", true, false) as Button;
-        _revertButton = root.FindChild("Revert", true, false) as Button;
-        _deployedCheckBox = root.FindChild("Check", true, false) as CheckBox;
+		_urlInput = root.FindChild("URLinput", true, false) as LineEdit;
+		_currentUrlLabel = root.FindChild("URLcurrently", true, false) as Label;
+		_submitButton = root.FindChild("Submit", true, false) as Button;
+		_revertButton = root.FindChild("Revert", true, false) as Button;
+		_deployedCheckBox = root.FindChild("Check", true, false) as CheckBox;
 
-        _submitButton.Pressed += OnSubmitPressed;
-        _revertButton.Pressed += OnRevertPressed;
-        _deployedCheckBox.Toggled += OnDeployedToggled;
-
-        _deployedCheckBox.ButtonPressed = _serverUrlStore.Deployed;
+		if (_submitButton != null) _submitButton.Pressed += OnSubmitPressed;
+		if (_revertButton != null) _revertButton.Pressed += OnRevertPressed;
+		if (_deployedCheckBox != null)
+		{
+			_deployedCheckBox.Toggled += OnDeployedToggled;
+			if (_serverUrlStore != null) _deployedCheckBox.ButtonPressed = _serverUrlStore.Deployed;
+		}
 
 		UpdateCurrentUrlLabel();
 	}
 
 	private void OnSubmitPressed()
 	{
-		string input = _urlInput.Text.Trim();
+		var input = _urlInput.Text.Trim();
 
 		if (string.IsNullOrWhiteSpace(input))
 			return;
 
-        _serverUrlStore.SetServerIp(input);
+		_serverUrlStore.SetServerIp(input);
 
 		_urlInput.Clear();
 		UpdateCurrentUrlLabel();
