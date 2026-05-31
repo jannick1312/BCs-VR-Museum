@@ -49,7 +49,7 @@ public static class VitrivrResponseParser
         var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + fileName;
         var mediaType = DetectMediaType(fileName);
 
-        return new SearchResultItem(mediaType, fileName, localPath, remoteUrl);
+        return new SearchResultItem(mediaType, localPath, remoteUrl);
     }
 
     private static MediaType DetectMediaType(string fileName)

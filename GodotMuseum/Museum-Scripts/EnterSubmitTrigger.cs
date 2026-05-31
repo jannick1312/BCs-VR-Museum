@@ -4,9 +4,9 @@ namespace BCSVRMuseum.Museum_Scripts;
 public partial class EnterSubmitTrigger : Node
 {
 	[Export] public NodePath ViewportPath;
-	[Export] public NodePath KeyboardSubmitterPath;
+	[Export] public NodePath Controller;
 
-	private KeyboardSubmitter _submitter;
+	private SearchController _submitter;
 
 	public override async void _Ready()
 	{
@@ -14,14 +14,10 @@ public partial class EnterSubmitTrigger : Node
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
 		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
-		_submitter = GetNodeOrNull<KeyboardSubmitter>(KeyboardSubmitterPath);
+		_submitter = GetNodeOrNull<SearchController>(Controller);
 
 		var enterKey = FindNodeByName(viewport, "VirtualKeyEnter");
-
-		enterKey.Connect(
-			"pressed",
-			new Callable(this, nameof(OnEnterPressed))
-		);
+		enterKey.Connect("pressed", new Callable(this, nameof(OnEnterPressed)));
 	}
 
 	private static Node FindNodeByName(Node node, string name)

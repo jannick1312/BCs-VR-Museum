@@ -1,12 +1,9 @@
-using Application;
 using Core;
 using Godot;
-using Infrastructure.Media;
-using Infrastructure.Vitrivr;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
-public partial class KeyboardSubmitter : Node
+public partial class SearchController : Node
 {
     [Export] public NodePath InputScreenBridgePath;
     [Export] public NodePath OutputScreenBridgePath;
@@ -21,7 +18,7 @@ public partial class KeyboardSubmitter : Node
     private LineEdit _inputLineEdit;
     private LineEdit _activeLineEdit;
 
-    private ServerUrlStore _serverUrlStore;
+    private SearchUseCaseFactory _searchUseCaseFactory;
 
     private bool _isSearching;
 
@@ -34,7 +31,7 @@ public partial class KeyboardSubmitter : Node
         _outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
         _visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
 
-        _serverUrlStore = GetTree().Root.FindChild("ServerUrlStore", true, false) as ServerUrlStore;
+        _searchUseCaseFactory = GetTree().Root.FindChild( "SearchUseCaseFactory", true, false) as SearchUseCaseFactory;
 
         _inputLineEdit = _inputScreen.InputLineEdit;
 
@@ -77,7 +74,7 @@ public partial class KeyboardSubmitter : Node
 
         _isSearching = true;
 
-        var useCase = CreateSearchUseCase();
+        var useCase = _searchUseCaseFactory.GetSearchAndLoadMedia();
         var result = await useCase.ExecuteAsync(text, SearchLimit);
 
         _isSearching = false;
@@ -104,17 +101,8 @@ public partial class KeyboardSubmitter : Node
                 break;
 
             default:
-                GD.PrintErr("Unknown media type: " + result.FileName);
+                GD.PrintErr("Unknown media type.");
                 break;
         }
-    }
-
-    private SearchAndLoadMedia CreateSearchUseCase()
-    {
-        ISearchService searchService = new VitrivrSearchService(_serverUrlStore.Settings);
-
-        IMediaLoader mediaLoader = new MediaResolver();
-
-        return new SearchAndLoadMedia(searchService, mediaLoader);
     }
 }

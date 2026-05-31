@@ -3,14 +3,9 @@ using Core;
 
 namespace Infrastructure.Media;
 
-public class MediaResolver : IMediaLoader
+public class MediaLoader : IMediaLoader
 {
     private readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(5)};
-
-    public static bool IsLocal(SearchResultItem item)
-    {
-        return File.Exists(item.LocalPath);
-    }
 
     public async Task<MediaContent> LoadAsync(SearchResultItem item)
     {
@@ -19,11 +14,11 @@ public class MediaResolver : IMediaLoader
             if (File.Exists(item.LocalPath))
             {
                 var localBytes = await File.ReadAllBytesAsync(item.LocalPath);
-                return MediaContent.FromBytes(localBytes, item.LocalPath);
+                return MediaContent.FromBytes(localBytes);
             }
 
             var remoteBytes = await _httpClient.GetByteArrayAsync(item.RemoteUrl);
-            return MediaContent.FromBytes(remoteBytes, item.RemoteUrl);
+            return MediaContent.FromBytes(remoteBytes);
         }
         catch (TaskCanceledException)
         {

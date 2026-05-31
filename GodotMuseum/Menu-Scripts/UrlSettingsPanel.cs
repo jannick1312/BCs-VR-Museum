@@ -3,7 +3,7 @@ namespace BCSVRMuseum.Menu_Scripts;
 
 public partial class UrlSettingsPanel : Node
 {
-	private ServerUrlStore _serverUrlStore;
+	private SearchSettingsStore _searchSettingsStore;
 
     private LineEdit _urlInput;
     private Label _currentUrlLabel;
@@ -16,7 +16,7 @@ public partial class UrlSettingsPanel : Node
 		for (var i = 0; i < 8; i++)
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		_serverUrlStore = GetTree().Root.FindChild("ServerUrlStore", true, false) as ServerUrlStore;
+		_searchSettingsStore = GetTree().Root.FindChild("SearchSettingsStore", true, false) as SearchSettingsStore;
 
 		var root = GetParent();
 
@@ -31,7 +31,7 @@ public partial class UrlSettingsPanel : Node
 		if (_deployedCheckBox != null)
 		{
 			_deployedCheckBox.Toggled += OnDeployedToggled;
-			if (_serverUrlStore != null) _deployedCheckBox.ButtonPressed = _serverUrlStore.Deployed;
+			if (_searchSettingsStore != null) _deployedCheckBox.ButtonPressed = _searchSettingsStore.Deployed;
 		}
 
 		UpdateCurrentUrlLabel();
@@ -44,29 +44,26 @@ public partial class UrlSettingsPanel : Node
 		if (string.IsNullOrWhiteSpace(input))
 			return;
 
-		_serverUrlStore.SetServerIp(input);
-
+		_searchSettingsStore.SetServerIp(input);
 		_urlInput.Clear();
 		UpdateCurrentUrlLabel();
 	}
 
 	private void OnRevertPressed()
 	{
-		_serverUrlStore.RevertServerUrl();
-
+		_searchSettingsStore.RevertServerUrl();
 		_urlInput.Clear();
 		UpdateCurrentUrlLabel();
 	}
 
 	private void UpdateCurrentUrlLabel()
 	{
-		_currentUrlLabel.Text = "Currently using:\n" + _serverUrlStore.CurrentIp;
+		_currentUrlLabel.Text = "Currently using:\n" + _searchSettingsStore.CurrentIp;
 	}
 	
 	private void OnDeployedToggled(bool toggledOn)
 	{
-		_serverUrlStore.SetDeployed(toggledOn);
-
+		_searchSettingsStore.SetDeployed(toggledOn);
 		UpdateCurrentUrlLabel();
 	}
 }

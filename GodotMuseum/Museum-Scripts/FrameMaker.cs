@@ -50,11 +50,7 @@ public partial class FrameMaker : Node
 		var up = basis.Y.Normalized();
 		var forward = basis.Z.Normalized();
 
-		var frameBasis = new Basis(
-			right,
-			forward,
-			-up
-		).Orthonormalized();
+		var frameBasis = new Basis(right, forward, -up).Orthonormalized();
 
 		_frame.GlobalTransform = new Transform3D(frameBasis, center);
 
@@ -104,11 +100,7 @@ public partial class FrameMaker : Node
 		var end = rightCorner.Position.X + r.Position.X;
 		var len = Mathf.Max(0.001f, end - start);
 
-		mesh.Position = new Vector3(
-			(start + end) / 2.0f,
-			0,
-			leftCorner.Position.Z
-		);
+		mesh.Position = new Vector3((start + end) / 2.0f, 0, leftCorner.Position.Z);
 
 		var baseLength = Mathf.Abs(mesh.GetAabb().Size.X);
 
@@ -125,11 +117,7 @@ public partial class FrameMaker : Node
 		var end = bottomCorner.Position.Z + b.Position.Z;
 		var len = Mathf.Max(0.001f, end - start);
 
-		mesh.Position = new Vector3(
-			topCorner.Position.X,
-			0,
-			(start + end) / 2.0f
-		);
+		mesh.Position = new Vector3(topCorner.Position.X, 0, (start + end) / 2.0f);
 
 		var baseLength = Mathf.Abs(mesh.GetAabb().Size.Z);
 

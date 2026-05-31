@@ -4,24 +4,22 @@ public class MediaContent
 {
     public bool Success { get; }
     public byte[] Bytes { get; }
-    public string Source { get; }
     public string ErrorMessage { get; }
 
-    private MediaContent(bool success, byte[] bytes, string source, string errorMessage)
+    private MediaContent(bool success, byte[] bytes, string errorMessage)
     {
         Success = success;
         Bytes = bytes;
-        Source = source;
         ErrorMessage = errorMessage;
     }
 
-    public static MediaContent FromBytes(byte[] bytes, string source)
+    public static MediaContent FromBytes(byte[] bytes)
     {
-        return new MediaContent(true, bytes, source, "");
+        return new MediaContent(true, bytes, "");
     }
 
     public static MediaContent Failure(string errorMessage)
     {
-        return new MediaContent(false, [], "", errorMessage);
+        return new MediaContent(false, [], errorMessage);
     }
 }
