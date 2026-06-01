@@ -13,13 +13,14 @@ public class SearchMedia(ISearchService searchService, IMediaLoader mediaLoader)
         if (!searchResult.Success)
             return DisplayMediaResult.Failure(searchResult.ErrorMessage);
 
-        var item = searchResult.FirstOrDefault();
+        var items = new List<DisplayMediaItem>();
 
-        if (item == null)
-            return DisplayMediaResult.Failure("No media found for the given query.");
-            
-        var mediaContent = await mediaLoader.LoadAsync(item);
+        foreach (var item in searchResult.Items.Take(limit))
+        {
+            var mediaContent = await mediaLoader.LoadAsync(item);
+            items.Add(new DisplayMediaItem(item.MediaType, mediaContent.Bytes));
+        }
 
-        return !mediaContent.Success ? DisplayMediaResult.Failure(mediaContent.ErrorMessage) : DisplayMediaResult.FromMedia(item.MediaType, mediaContent.Bytes);
+        return DisplayMediaResult.FromMedia(items);
     }
 }

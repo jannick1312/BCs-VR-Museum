@@ -4,7 +4,7 @@ public class SearchResult
 {
     public bool Success { get; }
     public string ErrorMessage { get; }
-    private IReadOnlyList<SearchResultItem> Items { get; }
+    public IReadOnlyList<SearchResultItem> Items { get; }
 
     private SearchResult(bool success, IReadOnlyList<SearchResultItem> items, string errorMessage)
     {
@@ -21,10 +21,5 @@ public class SearchResult
     public static SearchResult Failure(string errorMessage)
     {
         return new SearchResult(false, [], errorMessage);
-    }
-
-    public SearchResultItem? FirstOrDefault()
-    {
-        return Items.Count > 0 ? Items[0] : null;
     }
 }

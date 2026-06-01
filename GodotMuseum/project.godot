@@ -40,6 +40,19 @@ enabled=PackedStringArray("res://addons/blenderkit/plugin.cfg", "res://addons/go
 
 rendering_device/driver.windows="d3d12"
 textures/vram_compression/import_etc2_astc=true
+lights_and_shadows/directional_shadow/size=8192
+lights_and_shadows/directional_shadow/size.mobile=8192
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality.mobile=2
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality.mobile=2
+environment/ssao/quality=3
+environment/ssil/quality=3
+anti_aliasing/quality/msaa_3d=1
+scaling_3d/mode=2
+environment/subsurface_scattering/subsurface_scattering_quality=2
+lightmapping/probe_capture/update_speed=60.0
+lights_and_shadows/positional_shadow/atlas_size=8192
+lights_and_shadows/positional_shadow/atlas_size.mobile=8192
+lights_and_shadows/positional_shadow/atlas_quadrant_3_subdiv=3
 
 [xr]
 

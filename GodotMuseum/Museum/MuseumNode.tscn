@@ -11,44 +11,43 @@
 [ext_resource type="Script" uid="uid://yntvr0ux5buk" path="res://Museum-Scripts/InputScreenBridge.cs" id="11_rusw4"]
 [ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Museum-Scripts/VisibilityController.cs" id="12_yskpt"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_hm1tn"]
+[sub_resource type="QuadMesh" id="QuadMesh_m6mi2"]
 resource_local_to_scene = true
 size = Vector2(1.5, 0.75)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_avl46"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_hm1tn"]
 viewport_path = NodePath("Keyboard/2Din3DKeyboard/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sl0ll"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avl46"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_avl46")
+albedo_texture = SubResource("ViewportTexture_hm1tn")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tqf3b"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_sl0ll"]
 resource_local_to_scene = true
 size = Vector3(1.5, 0.75, 0.02)
 
-[sub_resource type="QuadMesh" id="QuadMesh_lvb5a"]
+[sub_resource type="QuadMesh" id="QuadMesh_tqf3b"]
 resource_local_to_scene = true
 size = Vector2(1.8, 1.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_hstwv"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_lvb5a"]
 viewport_path = NodePath("Input/2Din3DPlane/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i5sej"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hstwv"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_hstwv")
+albedo_texture = SubResource("ViewportTexture_lvb5a")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_6fqx3"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_i5sej"]
 resource_local_to_scene = true
 size = Vector3(1.8, 1.2, 0.02)
 
 [node name="MuseumNode" type="Node3D" unique_id=1711306997]
 
 [node name="World" parent="." unique_id=927050978 instance=ExtResource("1_2f86q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 
 [node name="StartSpawnPoint" type="Marker3D" parent="." unique_id=1195512689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -57,11 +56,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -2)
 
 [node name="Screen" parent="Keyboard/2Din3DKeyboard" parent_id_path=PackedInt32Array(806658028, 776647796) index="1" unique_id=1158603700]
-mesh = SubResource("QuadMesh_hm1tn")
-surface_material_override/0 = SubResource("StandardMaterial3D_sl0ll")
+mesh = SubResource("QuadMesh_m6mi2")
+surface_material_override/0 = SubResource("StandardMaterial3D_avl46")
 
 [node name="CollisionShape3D" parent="Keyboard/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(806658028, 776647796, 1711902221) index="0" unique_id=2064986693]
-shape = SubResource("BoxShape3D_tqf3b")
+shape = SubResource("BoxShape3D_sl0ll")
 
 [node name="SearchController" type="Node" parent="Keyboard" unique_id=1375999532]
 script = ExtResource("3_m6mi2")
@@ -77,7 +76,7 @@ ViewportPath = NodePath("../2Din3DKeyboard/Viewport")
 Controller = NodePath("../SearchController")
 
 [node name="Output" parent="." unique_id=373268339 instance=ExtResource("5_avl46")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, -3.5)
+visible = false
 
 [node name="OutputScreenBridge" type="Node" parent="Output" unique_id=379999481]
 script = ExtResource("8_bs0q8")
@@ -90,11 +89,11 @@ script = ExtResource("7_m6mi2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -3.5)
 
 [node name="Screen" parent="Input/2Din3DPlane" parent_id_path=PackedInt32Array(224690396, 776647796) index="1" unique_id=830305756]
-mesh = SubResource("QuadMesh_lvb5a")
-surface_material_override/0 = SubResource("StandardMaterial3D_i5sej")
+mesh = SubResource("QuadMesh_tqf3b")
+surface_material_override/0 = SubResource("StandardMaterial3D_hstwv")
 
 [node name="CollisionShape3D" parent="Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 776647796, 1024925121) index="0" unique_id=620411508]
-shape = SubResource("BoxShape3D_6fqx3")
+shape = SubResource("BoxShape3D_i5sej")
 
 [node name="InputScreenBridge" type="Node" parent="Input" unique_id=1054111552]
 script = ExtResource("11_rusw4")

@@ -16,6 +16,10 @@ background_color = Color(0.5033745, 0.5033746, 0.5033746, 1)
 background_mode = 1
 
 [sub_resource type="Environment" id="Environment_lquwl"]
+tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_272bh"]
 resource_local_to_scene = true

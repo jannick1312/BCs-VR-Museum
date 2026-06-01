@@ -1,31 +1,63 @@
 using Godot;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class OutputScreenBridge : Node
 {
-	[Export] public NodePath OutputFramePath;
-	[Export] public float Scale = 1.5f;
+    [Export] public NodePath OutputFramePath;
+    [Export] public string OutputScenePath = "res://Museum/Output.tscn";
 
-	private Node3D _outputFrame;
-	private MeshInstance3D _picture;
-	private FrameMaker _frameMaker;
+    [Export] public float WallCenterX;
+    [Export] public float WallZ = -4.99f;
 
-	private StandardMaterial3D _pictureMaterial;
+    [Export] public float WallWidth = 10.0f;
+    [Export] public float WallBottomY = 0.05f;
+    [Export] public float WallHeight = 2.85f;
 
-	public override void _Ready()
-	{
-		_outputFrame = GetNode<Node3D>(OutputFramePath);
+    [Export] public float CellPadding = 0.40f;
 
-		_picture = _outputFrame.GetNode<MeshInstance3D>("Picture");
-		_frameMaker = _outputFrame.GetNode<FrameMaker>("FrameMaker");
+    private Node3D _outputRoot;
+    private PackedScene _outputScene;
+    private readonly RandomNumberGenerator _rng = new();
 
-		_pictureMaterial = new StandardMaterial3D();
-		_pictureMaterial.CullMode = BaseMaterial3D.CullModeEnum.Disabled;
+    public override void _Ready()
+    {
+        _outputRoot = GetNodeOrNull<Node3D>(OutputFramePath);
+        _outputScene = GD.Load<PackedScene>(OutputScenePath);
+        _rng.Randomize();
+        ClearGeneratedPictures();
+    }
 
-		_picture.MaterialOverride = _pictureMaterial;
-	}
+    public void SetOutputImagesFromBytes(IReadOnlyList<byte[]> imageBytes)
+    {
+        ClearGeneratedPictures();
 
-    public void SetOutputImageFromBytes(byte[] bytes)
+        var randomCount = _rng.RandiRange(1, Mathf.Min(4, imageBytes.Count));
+
+        var selectedBytes = imageBytes.OrderBy(_ => _rng.Randf()).Take(randomCount).ToList();
+
+        var slots = WallImageLayout.CreateHorizontalSlots(selectedBytes.Count, WallCenterX, WallWidth, WallBottomY, WallHeight);
+
+        for (var i = 0; i < selectedBytes.Count; i++)
+        {
+            var texture = LoadTexture(selectedBytes[i]);
+
+            CreatePictureInstance(texture, slots[i]);
+        }
+    }
+
+    private void ClearGeneratedPictures()
+    {
+        foreach (var child in _outputRoot.GetChildren())
+        {
+            if (child is Node node && node.IsInGroup("GeneratedOutputPicture"))
+                node.QueueFree();
+        }
+    }
+
+    private ImageTexture LoadTexture(byte[] bytes)
     {
         var image = new Image();
 
@@ -40,24 +72,60 @@ public partial class OutputScreenBridge : Node
         if (loadError != Error.Ok || image.IsEmpty())
         {
             GD.PrintErr("Could not load image from bytes. Error: " + loadError);
-            return;
+            return null;
         }
 
-		var texture = ImageTexture.CreateFromImage(image);
-		ApplyTexture(texture);
-	}
+        return ImageTexture.CreateFromImage(image);
+    }
 
-	private void ApplyTexture(ImageTexture texture)
-	{
-		_pictureMaterial.AlbedoTexture = texture;
+    private async void CreatePictureInstance(ImageTexture texture, Rect2 slot)
+    {
+        var item = _outputScene.Instantiate<Node3D>();
 
-		var aspect = (float)texture.GetWidth() / texture.GetHeight();
+        item.AddToGroup("GeneratedOutputPicture");
 
-		var imageWidth = Scale;
-		var imageHeight = imageWidth / aspect;
+        _outputRoot.AddChild(item);
 
-		_picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
+        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		_frameMaker.UpdateFrame(_picture, imageWidth, imageHeight);
-	}
+        item.Visible = true;
+
+        var picture = item.GetNodeOrNull<MeshInstance3D>("Picture");
+
+        var material = new StandardMaterial3D { CullMode = BaseMaterial3D.CullModeEnum.Disabled, AlbedoTexture = texture };
+
+        picture.MaterialOverride = material;
+
+        var aspect = (float)texture.GetWidth() / texture.GetHeight();
+
+        var maxWidth = Mathf.Max(0.1f, slot.Size.X - CellPadding);
+        var maxHeight = Mathf.Max(0.1f, slot.Size.Y - CellPadding);
+
+        var imageWidth = maxWidth;
+        var imageHeight = imageWidth / aspect;
+
+        if (imageHeight > maxHeight)
+        {
+            imageHeight = maxHeight;
+            imageWidth = imageHeight * aspect;
+        }
+
+        var x = slot.Position.X + slot.Size.X / 2.0f;
+        var y = 1.55f;
+        
+        item.GlobalPosition = new Vector3(x, y, WallZ);
+        item.GlobalRotation = Vector3.Zero;
+
+        picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
+
+        var frameMaker = item.GetNodeOrNull<FrameMaker>("FrameMaker");
+
+        if (frameMaker == null)
+        {
+            frameMaker = new FrameMaker();
+            item.AddChild(frameMaker);
+        }
+
+        frameMaker.UpdateFrame(picture, imageWidth, imageHeight);
+    }
 }

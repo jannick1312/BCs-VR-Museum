@@ -1,29 +1,25 @@
-using Core;
-
 namespace Application;
 
 public class DisplayMediaResult
 {
     public bool Success { get; }
-    public MediaType MediaType { get; }
-    public byte[] Bytes { get; }
+    public IReadOnlyList<DisplayMediaItem> Items { get; }
     public string ErrorMessage { get; }
 
-    private DisplayMediaResult( bool success, MediaType mediaType, byte[] bytes, string errorMessage)
+    private DisplayMediaResult(bool success, IReadOnlyList<DisplayMediaItem> items, string errorMessage)
     {
         Success = success;
-        MediaType = mediaType;
-        Bytes = bytes;
+        Items = items;
         ErrorMessage = errorMessage;
     }
 
-    public static DisplayMediaResult FromMedia(MediaType mediaType, byte[] bytes)
+    public static DisplayMediaResult FromMedia(IReadOnlyList<DisplayMediaItem> items)
     {
-        return new DisplayMediaResult(true, mediaType, bytes, "");
+        return new DisplayMediaResult(true, items, "");
     }
 
     public static DisplayMediaResult Failure(string errorMessage)
     {
-        return new DisplayMediaResult(false, MediaType.Unknown, [], errorMessage);
+        return new DisplayMediaResult(false, [], errorMessage);
     }
 }

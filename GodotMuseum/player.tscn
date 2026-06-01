@@ -51,7 +51,7 @@ tracker = &"right_hand"
 turn_mode = 2
 
 [node name="MovementJump" parent="XROrigin3D/RightController" unique_id=1987572354 instance=ExtResource("5_dw050")]
-order = 50
+order = 100
 jump_button_action = "ax_button"
 
 [node name="FunctionPickup" parent="XROrigin3D/RightController" unique_id=175986978 instance=ExtResource("3_1jxqw")]

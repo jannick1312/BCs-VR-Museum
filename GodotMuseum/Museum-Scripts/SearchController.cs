@@ -1,5 +1,6 @@
 using Core;
 using Godot;
+using System.Linq;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
@@ -9,7 +10,7 @@ public partial class SearchController : Node
     [Export] public NodePath OutputScreenBridgePath;
     [Export] public NodePath VisibilityControllerPath;
 
-    [Export] public int SearchLimit = 1;
+    [Export] public int SearchLimit = 4;
 
     private InputScreenBridge _inputScreen;
     private OutputScreenBridge _outputScreen;
@@ -85,24 +86,21 @@ public partial class SearchController : Node
             return;
         }
 
-        switch (result.MediaType)
+        var imageItems = result.Items.Where(item => item.MediaType == MediaType.Image).ToList();
+        var videoItems = result.Items.Where(item => item.MediaType == MediaType.Video).ToList();
+        var objectItems = result.Items.Where(item => item.MediaType == MediaType.Object3D).ToList();
+
+        if (imageItems.Count > 0)
         {
-            case MediaType.Image:
-                _outputScreen.SetOutputImageFromBytes(result.Bytes);
-                _visibility.ShowOutput();
-                break;
-
-            case MediaType.Video:
-                GD.PrintErr("Video display is not implemented yet.");
-                break;
-
-            case MediaType.Object3D:
-                GD.PrintErr("3D object loading is not implemented yet.");
-                break;
-
-            default:
-                GD.PrintErr("Unknown media type.");
-                break;
+            var imageBytes = imageItems.Select(item => item.Bytes).ToList();
+            _visibility.ShowOutput();
+            _outputScreen.SetOutputImagesFromBytes(imageBytes);
         }
+
+        if (videoItems.Count > 0)
+            GD.PrintErr("Video display is not implemented yet.");
+
+        if (objectItems.Count > 0)
+            GD.PrintErr(" 3D object loading is not implemented yet.");
     }
 }
