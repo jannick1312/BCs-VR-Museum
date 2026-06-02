@@ -1,0 +1,62 @@
+\usepackage[
+    a4paper,
+    top=3.5cm,
+    bottom=2.3cm,
+    left=2.3cm,
+    right=2.3cm,
+    headheight=42pt
+]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+
+\newcommand{\project}{Interactive VR Museum}
+\newcommand{\meetingtype}{Weekly Meeting}
+\providecommand{\meetingdate}{\today}
+
+\newcommand{\authorname}{Jannick Seper}
+\newcommand{\tutors}{Rahel Arnold, Raphael Waltenspül}
+
+\lhead{\project\\\meetingtype\\Date: \meetingdate}
+\rhead{\authorname\\\tutors\\Page \thepage\ of \pageref{LastPage}}
+\pagestyle{fancy}
+
+\newcommand{\done}{
+    \section*{1. What I have done}
+}
+
+\newcommand{\support}{
+    \section*{2. Where I need support}
+}
+
+\newcommand{\plan}{
+    \section*{3. What I am planning to do for the next meeting}
+}
+
+\newtcolorbox{checkpointbox}{
+    colback=gray!5,
+    colframe=gray!50,
+    boxrule=0.5pt,
+    arc=3mm,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm,
+    width=\textwidth
+}
+
+\newcommand{\checkpoint}[2][open]{
+    \begin{checkpointbox}
+        \ifstrequal{#1}{done}
+            {$\boxtimes$}
+            {$\square$}
+        \hspace{0.3cm} #2
+    \end{checkpointbox}
+}
