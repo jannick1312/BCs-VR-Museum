@@ -1,0 +1,53 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+
+\newcommand{\meetingdate}{20 May 2026}
+\input{../template.tex}
+
+\begin{document}
+
+\done
+\begin{itemize}
+    \item Installed Blender, Godot with .NET support, Rider, and Insomnia.
+    \item Set up the vitrivr engine first using Docker and later directly on my machine. During this process, I updated several configuration files to match the newer format.
+    \item Tested Insomnia with POST requests and successfully received ``retrievables`` from the API.
+    \item Started working through the \href{https://docs.godotengine.org/en/stable/getting_started/first_3d_game/index.html}{Official Godot Tutorial}. After completing the chapter ``Jumping and squashing monsters'', the project no longer started correctly. Therefore, I repeated the tutorial using the example project provided on \href{https://github.com/godotengine/godot-demo-projects/tree/master/3d/squash_the_creeps}{GitHub}
+    \item Integration and Debugging of XR/OpenXR on Meta Quest 3
+    \item Prototype progress:
+    \begin{itemize}
+        \item Extracted the core ideas of the XRTools virtual keyboard and simplified its implementation to make appearance customization easier.
+        \item Created a scene where the user can type a word or text. After pressing Enter, a request is sent to a Flask Python server at: \texttt{http://<serverIP>:5050/search\_one}\\
+        The Flask server then forwards the query to the vitrivr engine:\\ \texttt{http://<serverIP>:7070/api/sandbox/query}\\
+        The Flask server returns a JSON response containing a URL pointing to the image:\\ \texttt{http://<serverIP>:5050/media/<image>.jpg}\\
+        The application then makes a second request to retrieve the image itself. The image is then displayed on a 2D mesh inside a 3D environment.
+        \item The frame automatically adjusts its size to the image dimensions. The scaling is currently not correct, so the frame thickness can differ between the horizontal and vertical sides.
+        \item All objects (except the ground) can currently be picked up. The keyboard and output image are hidden depending on user input.
+        \item Created a second scene containing a simple menu where the Flask server endpoint can be changed(Platform-Switching with double trigger, disabling player movements in menu).
+    \end{itemize}
+    
+    \item Provided my public SSH key and a sketch of the current architecture. The architecture is ``work in progress`` because I have not yet been able to test nginx (see last point in the next section).
+\end{itemize}
+
+\support
+\begin{itemize}
+    \item Access to BlenderKit and Polyhaven (paid products for now?).
+    \item Streaming VR content to the Meta Quest from my MacBook is currently not possible because Meta Horizon Link is not available on macOS.
+    \item Access to a Vive Focus 3/XR Elite headset
+    \item Can I connect a Meta Quest or other VR devices to eduroam?
+    \item Regarding vitrivr:\\
+    At the moment, the vitrivr engine does not provide the real image path or filename for a retrievable. The VR application therefore only could receive the retrievable ID, but not the actual image (location). Because of this, I have not yet tested nginx because in my understanding nginx can only expose files that already exist in accessible directories via URLs. So I still need the Python/Flask server to map retrievable IDs to the actual image files? Is there a better way to obtain the original image path or filename from a retrievable?
+\end{itemize}
+
+\newpage
+\plan
+\checkpoint[done]{Fix the frame scaling so that all borders have equal thickness}
+\checkpoint[done]{Deploy prototype on the Vive devices}
+\checkpoint[done]{Try running vitrivr on the server}
+\checkpoint{Cleanup Code}
+\checkpoint{Create a simple museum environment (room, lighting, etc.)}
+\checkpoint{Prepare for the next weekly meeting}
+\checkpoint[done]{(Reduce the image retrieval process to a single request)}
+\checkpoint[done]{(Test nginx integration)}
+
+\end{document}

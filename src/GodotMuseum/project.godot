@@ -1,0 +1,60 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="BCS-VR-Museum"
+run/main_scene="uid://d084bq7yqnn45"
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
+config/icon="uid://cpmn180ie23bu"
+
+[autoload]
+
+XRToolsUserSettings="*uid://bqgb8i74tm0t"
+XRToolsRumbleManager="*uid://by853dk86g1qw"
+
+[blenderkit]
+
+model_format="gltf_godot"
+
+[dotnet]
+
+project/assembly_name="BCS-VR-Museum"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/blenderkit/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg")
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+textures/vram_compression/import_etc2_astc=true
+lights_and_shadows/directional_shadow/size=8192
+lights_and_shadows/directional_shadow/size.mobile=8192
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality.mobile=2
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality.mobile=2
+environment/ssao/quality=3
+environment/ssil/quality=3
+anti_aliasing/quality/msaa_3d=1
+scaling_3d/mode=2
+environment/subsurface_scattering/subsurface_scattering_quality=2
+lightmapping/probe_capture/update_speed=60.0
+lights_and_shadows/positional_shadow/atlas_size=8192
+lights_and_shadows/positional_shadow/atlas_size.mobile=8192
+lights_and_shadows/positional_shadow/atlas_quadrant_3_subdiv=3
+
+[xr]
+
+openxr/enabled=true
+shaders/enabled=true

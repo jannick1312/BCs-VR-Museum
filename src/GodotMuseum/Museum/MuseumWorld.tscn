@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://bde7wip0wp3vt"]
+
+[ext_resource type="Material" uid="uid://cabshhfn3j7gc" path="res://Materials/Plaster_wall/Plaster_wall.tres" id="1_e4efu"]
+[ext_resource type="Material" uid="uid://b7v3q13s3jgaw" path="res://Materials/Wood_floor/Wood_floor.tres" id="1_wrs37"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv5m4"]
+albedo_color = Color(0.26111263, 0.26111263, 0.2611126, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f3sb7"]
+material = SubResource("StandardMaterial3D_gv5m4")
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e4efu"]
+size = Vector3(10, 3, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wrs37"]
+size = Vector3(10, 3, 0.1)
+
+[node name="MuseumWorld" type="Node3D" unique_id=927050978]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1768307920]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -2)
+light_energy = 5.0
+shadow_enabled = true
+shadow_bias = 0.04
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=1599002084]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+visible = false
+light_energy = 5.0
+shadow_enabled = true
+shadow_bias = 0.04
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="." unique_id=1126057830]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 2)
+light_energy = 5.0
+shadow_enabled = true
+shadow_bias = 0.04
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=382244261]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1255798251]
+shape = SubResource("BoxShape3D_gv5m4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=483930271]
+material_override = ExtResource("1_wrs37")
+mesh = SubResource("BoxMesh_f3sb7")
+
+[node name="Wall" type="StaticBody3D" parent="." unique_id=844524504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -5.05)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall" unique_id=502109859]
+shape = SubResource("BoxShape3D_e4efu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall" unique_id=88211178]
+material_override = ExtResource("1_e4efu")
+mesh = SubResource("BoxMesh_wrs37")

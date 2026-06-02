@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://d084bq7yqnn45"]
+
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://ell5jv1h0srh" path="res://PlatformSwitcher.cs" id="1_vivmo"]
+[ext_resource type="PackedScene" uid="uid://dh7iemj1ylh3i" path="res://Menu/MenuNode.tscn" id="1_w48qg"]
+[ext_resource type="Script" uid="uid://dosnwmw4cp0s3" path="res://SearchSettingsStore.cs" id="2_272bh"]
+[ext_resource type="PackedScene" uid="uid://csbg75jax1jnj" path="res://player.tscn" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://ulmqj7ytbj65" path="res://SearchUseCaseFactory.cs" id="3_272bh"]
+[ext_resource type="PackedScene" uid="uid://djl0v8ero2htq" path="res://Museum/MuseumNode.tscn" id="4_lquwl"]
+
+[sub_resource type="Environment" id="Environment_7mycd"]
+background_mode = 1
+background_color = Color(0.5033745, 0.5033746, 0.5033746, 1)
+
+[sub_resource type="Environment" id="Environment_272bh"]
+background_mode = 1
+
+[sub_resource type="Environment" id="Environment_lquwl"]
+tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_272bh"]
+resource_local_to_scene = true
+size = Vector2(1.5, 0.75)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_5vw27"]
+viewport_path = NodePath("MuseumNode/Keyboard/2Din3DKeyboard/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kek77"]
+transparency = 1
+cull_mode = 2
+albedo_texture = SubResource("ViewportTexture_5vw27")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4c57u"]
+resource_local_to_scene = true
+size = Vector3(1.5, 0.75, 0.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_efxa6"]
+resource_local_to_scene = true
+size = Vector2(1.8, 1.2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_dg77c"]
+viewport_path = NodePath("MuseumNode/Input/2Din3DPlane/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ycdy4"]
+transparency = 1
+cull_mode = 2
+albedo_texture = SubResource("ViewportTexture_dg77c")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w48qg"]
+resource_local_to_scene = true
+size = Vector3(1.8, 1.2, 0.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_vivmo"]
+resource_local_to_scene = true
+size = Vector2(1.5, 0.75)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2cqfq"]
+viewport_path = NodePath("MenuNode/2Din3DKeyboard/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yaehf"]
+transparency = 1
+cull_mode = 2
+albedo_texture = SubResource("ViewportTexture_2cqfq")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_074og"]
+resource_local_to_scene = true
+size = Vector3(1.5, 0.75, 0.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_cegan"]
+resource_local_to_scene = true
+size = Vector2(1.8, 1.8)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_82xsv"]
+viewport_path = NodePath("MenuNode/2Din3DURL/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_getpj"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_82xsv")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ryguw"]
+resource_local_to_scene = true
+size = Vector3(1.8, 1.8, 0.02)
+
+[node name="Main" type="Node3D" unique_id=895849569]
+
+[node name="StartXR" parent="." unique_id=758186761 instance=ExtResource("1_0xm2m")]
+
+[node name="SearchSettingsStore" type="Node" parent="." unique_id=378595432]
+script = ExtResource("2_272bh")
+
+[node name="SearchUseCaseFactory" type="Node" parent="." unique_id=1891732225]
+script = ExtResource("3_272bh")
+
+[node name="PlatformSwitcher" type="Node" parent="." unique_id=350164590]
+script = ExtResource("1_vivmo")
+PlayerPath = NodePath("../Player")
+MuseumNodePath = NodePath("../MuseumNode")
+MenuNodePath = NodePath("../MenuNode")
+WorldEnvironmentPath = NodePath("../WorldEnvironment")
+MuseumEnvironment = SubResource("Environment_7mycd")
+MenuEnvironment = SubResource("Environment_272bh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1222899868]
+environment = SubResource("Environment_lquwl")
+
+[node name="Player" parent="." unique_id=1807302450 instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9571701, 0)
+
+[node name="MuseumNode" parent="." unique_id=1711306997 instance=ExtResource("4_lquwl")]
+
+[node name="Screen" parent="MuseumNode/Keyboard/2Din3DKeyboard" parent_id_path=PackedInt32Array(1711306997, 806658028, 776647796) index="1" unique_id=1158603700]
+mesh = SubResource("QuadMesh_272bh")
+surface_material_override/0 = SubResource("StandardMaterial3D_kek77")
+
+[node name="CollisionShape3D" parent="MuseumNode/Keyboard/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 806658028, 776647796, 1711902221) index="0" unique_id=2064986693]
+shape = SubResource("BoxShape3D_4c57u")
+
+[node name="Screen" parent="MuseumNode/Input/2Din3DPlane" parent_id_path=PackedInt32Array(1711306997, 224690396, 776647796) index="1" unique_id=830305756]
+mesh = SubResource("QuadMesh_efxa6")
+surface_material_override/0 = SubResource("StandardMaterial3D_ycdy4")
+
+[node name="CollisionShape3D" parent="MuseumNode/Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 224690396, 776647796, 1024925121) index="0" unique_id=620411508]
+shape = SubResource("BoxShape3D_w48qg")
+
+[node name="MenuNode" parent="." unique_id=227478366 instance=ExtResource("1_w48qg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
+
+[node name="Screen" parent="MenuNode/2Din3DKeyboard" parent_id_path=PackedInt32Array(227478366, 776647796) index="1" unique_id=1158603700]
+mesh = SubResource("QuadMesh_vivmo")
+surface_material_override/0 = SubResource("StandardMaterial3D_yaehf")
+
+[node name="CollisionShape3D" parent="MenuNode/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 776647796, 1711902221) index="0" unique_id=2064986693]
+shape = SubResource("BoxShape3D_074og")
+
+[node name="Screen" parent="MenuNode/2Din3DURL" parent_id_path=PackedInt32Array(227478366, 1927318274) index="1" unique_id=830305756]
+mesh = SubResource("QuadMesh_cegan")
+surface_material_override/0 = SubResource("StandardMaterial3D_getpj")
+
+[node name="CollisionShape3D" parent="MenuNode/2Din3DURL/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1927318274, 1024925121) index="0" unique_id=620411508]
+shape = SubResource("BoxShape3D_ryguw")
+
+[editable path="Player"]
+[editable path="MuseumNode"]
+[editable path="MuseumNode/World"]
+[editable path="MuseumNode/Keyboard"]
+[editable path="MuseumNode/Keyboard/2Din3DKeyboard"]
+[editable path="MuseumNode/Output"]
+[editable path="MuseumNode/Input"]
+[editable path="MuseumNode/Input/2Din3DPlane"]
+[editable path="MenuNode"]
+[editable path="MenuNode/2Din3DKeyboard"]
+[editable path="MenuNode/2Din3DURL"]

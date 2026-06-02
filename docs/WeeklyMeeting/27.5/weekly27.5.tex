@@ -1,0 +1,32 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+
+\newcommand{\meetingdate}{27 May 2026}
+\input{../template.tex}
+
+\begin{document}
+
+\done
+\begin{itemize}
+    \item Successfully deployed and tested the prototype on the Vive headset.
+    \item Improved the frame scaling logic so that all frame borders now maintain a consistent thickness independent of the image aspect ratio.
+    \item Refactored and cleaned up parts of the Godot project structure.
+    \item Tested vitrivr on the server environment.
+    \item Updated the menu so now you can decide if the museum runs in local mode (using vitrivr in docker desktop and the flask server) or in server mode (via the vpn and vitriver running on the server and getting images from the laptop).
+\end{itemize}
+
+\support
+\begin{itemize}
+    \item nginx is installed but how do i configure it to serve the images from the vitrivr engine?
+    \item Access to a Vive XR Elite headset
+\end{itemize}
+
+\plan
+\checkpoint{Test nginx integration}
+\checkpoint{Continue Code Cleanup}
+\checkpoint{Improve VR museum environment (lighting, assets)}
+\checkpoint{Add multiple image result support}
+\checkpoint{Prepare for the next weekly meeting}
+
+\end{document}

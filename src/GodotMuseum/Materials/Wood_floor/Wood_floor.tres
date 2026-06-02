@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b7v3q13s3jgaw"]
+
+[ext_resource type="Texture2D" uid="uid://twegov0py2gw" path="res://Materials/Wood_floor/textures/Parquet_Trials_basecolor.jpg" id="1_ybsc3"]
+[ext_resource type="Texture2D" uid="uid://dwe8f0f4ayoml" path="res://Materials/Wood_floor/textures/Parquet_Trials_height.jpg" id="2_vwqrq"]
+[ext_resource type="Texture2D" uid="uid://beedm3b25ac3y" path="res://Materials/Wood_floor/textures/Parquet_Trials_normal.jpg" id="3_hg8bu"]
+[ext_resource type="Texture2D" uid="uid://chv3d5dn3r3hr" path="res://Materials/Wood_floor/textures/Parquet_Trials_roughness.jpg" id="4_5bneg"]
+
+[resource]
+albedo_color = Color(0.7350052, 0.7867022, 0.79825354, 1)
+albedo_texture = ExtResource("1_ybsc3")
+roughness_texture = ExtResource("4_5bneg")
+normal_enabled = true
+normal_scale = 1.4
+normal_texture = ExtResource("3_hg8bu")
+heightmap_enabled = true
+heightmap_scale = 6.0
+heightmap_texture = ExtResource("2_vwqrq")
+uv1_scale = Vector3(35, 25, 1)
