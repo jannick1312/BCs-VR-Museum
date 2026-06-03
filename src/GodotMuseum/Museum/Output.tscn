@@ -289,6 +289,7 @@ shadow_mesh = SubResource("ArrayMesh_j0y26")
 [sub_resource type="QuadMesh" id="QuadMesh_5belf"]
 
 [node name="Output" unique_id=806658028 instance=ExtResource("1_wtudd")]
+collision_layer = 5
 gravity_scale = 0.0
 linear_damp = 100.0
 angular_damp = 100.0

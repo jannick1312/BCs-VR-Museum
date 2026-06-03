@@ -33,6 +33,7 @@ resource_local_to_scene = true
 size = Vector3(1.8, 1.2, 0.02)
 
 [node name="Input" unique_id=806658028 instance=ExtResource("1_wbyxu")]
+collision_layer = 1
 gravity_scale = 0.0
 linear_damp = 100.0
 angular_damp = 100.0
