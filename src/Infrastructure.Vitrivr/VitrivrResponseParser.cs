@@ -45,9 +45,10 @@ public static class VitrivrResponseParser
             return null;
 
         var fileName = Path.GetFileName(sourcePath);
-        var localPath = Path.Combine(mediaFolderPath, fileName);
-        var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + fileName;
         var mediaType = DetectMediaType(fileName);
+        var mediaFolderName = GetMediaFolderName(mediaType);
+        var localPath = Path.Combine(mediaFolderPath, mediaFolderName, fileName);
+        var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + mediaFolderName + "/" + fileName;
 
         return new SearchResultItem(mediaType, localPath, remoteUrl);
     }
@@ -62,6 +63,17 @@ public static class VitrivrResponseParser
             ".mp4" or ".mov" or ".avi" or ".mkv" or ".webm" => MediaType.Video,
             ".glb" or ".gltf" or ".obj" or ".fbx" => MediaType.Object3D,
             _ => MediaType.Unknown
+        };
+    }
+
+    private static string GetMediaFolderName(MediaType mediaType)
+    {
+        return mediaType switch
+        {
+            MediaType.Image => "images",
+            MediaType.Video => "videos",
+            MediaType.Object3D => "3d",
+            _ => throw new InvalidOperationException($"Unsupported media type: {mediaType}")
         };
     }
 }

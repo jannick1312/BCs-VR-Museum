@@ -31,7 +31,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
 tracker = &"left_hand"
 
-[node name="LeftHand2" parent="XROrigin3D/LeftController" unique_id=1572654635 instance=ExtResource("1_onrkg")]
+[node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1572654635 instance=ExtResource("1_onrkg")]
 
 [node name="MovementDirect" parent="XROrigin3D/LeftController" unique_id=162239011 instance=ExtResource("2_2hs0m")]
 order = 8
@@ -45,7 +45,7 @@ grab_distance = 0.1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 tracker = &"right_hand"
 
-[node name="RightHand2" parent="XROrigin3D/RightController" unique_id=1634325532 instance=ExtResource("2_i3pqv")]
+[node name="RightHand" parent="XROrigin3D/RightController" unique_id=1634325532 instance=ExtResource("2_i3pqv")]
 
 [node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=1172217544 instance=ExtResource("4_1jxqw")]
 turn_mode = 2

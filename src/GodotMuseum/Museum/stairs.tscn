@@ -1,7 +1,5 @@
 [gd_scene format=4 uid="uid://db0sakau7ko2o"]
 
-[ext_resource type="PackedScene" uid="uid://cbdgdr3bky0lb" path="res://Models/untitled.blend" id="1_hj1r6"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_hj1r6"]
 size = Vector3(3, 0.6, 0.9)
 
@@ -45,5 +43,3 @@ shape = SubResource("BoxShape3D_hj1r6")
 [node name="Cube" type="MeshInstance3D" parent="." unique_id=1298623550]
 visible = false
 mesh = SubResource("ArrayMesh_036ey")
-
-[node name="untitled" parent="." unique_id=723068743 instance=ExtResource("1_hj1r6")]

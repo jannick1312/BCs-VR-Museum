@@ -34,3 +34,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.72, 0.06, -0.099)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 0.061, -0.098)
 
 [node name="2Din3DKeyboard" parent="." index="4" unique_id=776647796 instance=ExtResource("4_2pxb6")]
+unshaded = true
