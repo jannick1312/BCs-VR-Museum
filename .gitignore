@@ -687,6 +687,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,android,godot,jetbrains,csharp,rider
-android/
+src/GodotMuseum/android/
+src/GodotMuseum/Blender/
 
 *.import
