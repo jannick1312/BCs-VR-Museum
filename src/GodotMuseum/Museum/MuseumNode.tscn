@@ -21,6 +21,7 @@ viewport_path = NodePath("Keyboard/2Din3DKeyboard/Viewport")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avl46"]
 transparency = 1
 cull_mode = 2
+shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_hm1tn")
 texture_filter = 1
 
@@ -81,6 +82,8 @@ visible = false
 [node name="OutputScreenBridge" type="Node" parent="Output" unique_id=379999481]
 script = ExtResource("8_bs0q8")
 OutputFramePath = NodePath("..")
+WallZ = -7.99
+WallWidth = 6.6
 
 [node name="FrameMaker" type="Node" parent="Output" unique_id=44059174]
 script = ExtResource("7_m6mi2")
@@ -105,7 +108,6 @@ KeyboardPath = NodePath("../Keyboard")
 OutputFramePath = NodePath("../Output")
 
 [editable path="World"]
-[editable path="World/Stairs"]
 [editable path="Keyboard"]
 [editable path="Keyboard/2Din3DKeyboard"]
 [editable path="Output"]

@@ -165,7 +165,6 @@ shape = SubResource("BoxShape3D_d13ii")
 [editable path="Player"]
 [editable path="MuseumNode"]
 [editable path="MuseumNode/World"]
-[editable path="MuseumNode/World/Stairs"]
 [editable path="MuseumNode/Keyboard"]
 [editable path="MuseumNode/Keyboard/2Din3DKeyboard"]
 [editable path="MuseumNode/Output"]
