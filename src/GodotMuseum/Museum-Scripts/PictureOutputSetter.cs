@@ -1,6 +1,5 @@
 using Godot;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
@@ -9,8 +8,7 @@ public partial class PictureOutputSetter : Node
     [Export] public NodePath OutputInstancePath;
     [Export] public NodePath OutputPlacesPath;
 
-    [Export] public float CellPadding = 0.40f;
-    [Export] public float PlaceForwardOffset = 0.03f;
+    [Export] public float CellPadding;
 
     private Node3D _outputRoot;
     private Node3D _outputTemplate;
@@ -32,7 +30,13 @@ public partial class PictureOutputSetter : Node
 
         var places = GetOutputPlaces();
 
-        var availableBytes = imageBytes.OrderBy(_ => _rng.Randf()).ToList();
+        var availableBytes = new List<byte[]>(imageBytes);
+        for (var i = availableBytes.Count - 1; i > 0; i--)
+        {
+            var j = _rng.RandiRange(0, i);
+            (availableBytes[i], availableBytes[j]) = (availableBytes[j], availableBytes[i]);
+        }
+
         var nextImageIndex = 0;
 
         foreach (var place in places)
@@ -85,7 +89,17 @@ public partial class PictureOutputSetter : Node
 
     private List<Node3D> GetOutputPlaces()
     {
-        return _outputPlacesRoot.GetChildren().OfType<Node3D>().OrderBy(place => place.GetIndex()).ToList();
+        var result = new List<Node3D>();
+
+        foreach (var child in _outputPlacesRoot.GetChildren())
+        {
+            if (child is Node3D place)
+                result.Add(place);
+        }
+
+        result.Sort((a, b) => a.GetIndex().CompareTo(b.GetIndex()));
+
+        return result;
     }
 
     private static float GetPlaceWidth(Node3D place)
@@ -134,7 +148,7 @@ public partial class PictureOutputSetter : Node
         var x = slot.Position.X + slot.Size.X / 2.0f;
         var y = slot.Position.Y + slot.Size.Y / 2.0f;
 
-        item.GlobalTransform = new Transform3D(place.GlobalTransform.Basis.Orthonormalized(), place.ToGlobal(new Vector3(x, y, PlaceForwardOffset)));
+        item.GlobalTransform = new Transform3D(place.GlobalTransform.Basis.Orthonormalized(), place.ToGlobal(new Vector3(x, y, 0)));
 
         picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
 

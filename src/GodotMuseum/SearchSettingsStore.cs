@@ -16,10 +16,7 @@ public partial class SearchSettingsStore : Node
     {
         const string settingsPath = "res://appsettings.json";
 
-        using var file = FileAccess.Open(
-            settingsPath,
-            FileAccess.ModeFlags.Read
-        );
+        using var file = FileAccess.Open(settingsPath, FileAccess.ModeFlags.Read );
 
         var json = file.GetAsText();
         var appSettings = AppSettingsLoader.LoadFromJson(json);

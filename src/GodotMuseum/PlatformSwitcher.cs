@@ -82,8 +82,7 @@ public partial class PlatformSwitcher : Node
 		if (!_inMenu)
 			return;
 
-		if (_rig != null)
-			_rig.GlobalTransform = _lockedMenuRig;
+		_rig?.GlobalTransform = _lockedMenuRig;
 
 		LockHands();
 	}
@@ -95,16 +94,14 @@ public partial class PlatformSwitcher : Node
 
 		_switching = true;
 
-		if (_body != null)
-			_body.Velocity = Vector3.Zero;
+		_body?.Velocity = Vector3.Zero;
 
 		if (_inMenu)
 		{
 			_inMenu = false;
 			SetWorld(true);
 			_rig.GlobalTransform = _lastMuseumRig;
-			if (_body != null)
-				_body.GlobalTransform = _lastMuseumBody;
+			_body?.GlobalTransform = _lastMuseumBody;
 
 			await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 			SetEnabled(_body, true);
@@ -137,12 +134,9 @@ public partial class PlatformSwitcher : Node
 
 	private void SetWorld(bool museumActive)
 	{
-		if (_museum != null)
-			_museum.Visible = museumActive;
-		if (_menu != null)
-			_menu.Visible = !museumActive;
-		if (_worldEnvironment != null)
-			_worldEnvironment.Environment = museumActive ? MuseumEnvironment : MenuEnvironment;
+		_museum?.Visible = museumActive;
+		_menu?.Visible = !museumActive;
+		_worldEnvironment?.Environment = museumActive ? MuseumEnvironment : MenuEnvironment;
 	}
 
 	private void MoveCameraTo(Marker3D marker)

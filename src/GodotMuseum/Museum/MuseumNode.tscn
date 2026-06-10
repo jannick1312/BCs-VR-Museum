@@ -106,7 +106,7 @@ script = ExtResource("7_m6mi2")
 script = ExtResource("8_bs0q8")
 OutputInstancePath = NodePath("../PictureOutputInstance")
 OutputPlacesPath = NodePath("../PictureOutputPlaces")
-PlaceForwardOffset = 0.0
+CellPadding = 0.4
 
 [node name="PictureOutputPlaces" type="Node3D" parent="." unique_id=1319521603]
 visible = false

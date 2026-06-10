@@ -1,6 +1,6 @@
 using Core;
 using Godot;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
@@ -10,7 +10,7 @@ public partial class SearchController : Node
     [Export] public NodePath PictureOutputSetterPath;
     [Export] public NodePath VisibilityControllerPath;
 
-    [Export] public int SearchLimit = 4;
+    [Export] public int SearchLimit;
 
     private InputBridge _inputScreen;
     private PictureOutputSetter _outputScreen;
@@ -86,13 +86,36 @@ public partial class SearchController : Node
             return;
         }
 
-        var imageItems = result.Items.Where(item => item.MediaType == MediaType.Image).ToList();
-        var videoItems = result.Items.Where(item => item.MediaType == MediaType.Video).ToList();
-        var objectItems = result.Items.Where(item => item.MediaType == MediaType.Object3D).ToList();
+        var imageItems = new List<dynamic>();
+        var videoItems = new List<dynamic>();
+        var objectItems = new List<dynamic>();
 
+        foreach (var item in result.Items)
+        {
+            switch (item.MediaType)
+            {
+                case MediaType.Image:
+                    imageItems.Add(item);
+                    break;
+
+                case MediaType.Video:
+                    videoItems.Add(item);
+                    break;
+
+                case MediaType.Object3D:
+                    objectItems.Add(item);
+                    break;
+            }
+        }
+        
         if (imageItems.Count > 0)
         {
-            var imageBytes = imageItems.Select(item => item.Bytes).ToList();
+            var imageBytes = new List<byte[]>();
+
+            foreach (var item in imageItems)
+            {
+                imageBytes.Add(item.Bytes);
+            }
             _visibility.ShowOutput();
             _outputScreen.SetOutputImagesFromBytes(imageBytes);
         }
