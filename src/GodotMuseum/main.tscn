@@ -36,28 +36,26 @@ sdfgi_enabled = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_5vw27"]
 resource_local_to_scene = true
-size = Vector2(1.5, 0.75)
+size = Vector2(1.8, 1.2)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_kek77"]
-viewport_path = NodePath("MuseumNode/Keyboard/2Din3DKeyboard/Viewport")
+viewport_path = NodePath("MuseumNode/Input/2Din3DPlane/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
-transparency = 1
 cull_mode = 2
-shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_kek77")
 texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_efxa6"]
 resource_local_to_scene = true
-size = Vector3(1.5, 0.75, 0.02)
+size = Vector3(1.8, 1.2, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_dg77c"]
 resource_local_to_scene = true
-size = Vector2(1.8, 1.2)
+size = Vector2(1.5, 0.75)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ycdy4"]
-viewport_path = NodePath("MuseumNode/Input/2Din3DPlane/Viewport")
+viewport_path = NodePath("MuseumNode/Input/2Din3DKeyboard/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w48qg"]
 transparency = 1
@@ -67,7 +65,7 @@ texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vivmo"]
 resource_local_to_scene = true
-size = Vector3(1.8, 1.2, 0.02)
+size = Vector3(1.5, 0.75, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_2cqfq"]
 resource_local_to_scene = true
@@ -131,18 +129,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9571701, 0)
 
 [node name="MuseumNode" parent="." unique_id=1711306997 instance=ExtResource("4_lquwl")]
 
-[node name="Screen" parent="MuseumNode/Keyboard/2Din3DKeyboard" parent_id_path=PackedInt32Array(1711306997, 806658028, 776647796) index="1" unique_id=1158603700]
+[node name="Screen" parent="MuseumNode/Input/2Din3DPlane" parent_id_path=PackedInt32Array(1711306997, 224690396, 776647796) index="1" unique_id=830305756]
 mesh = SubResource("QuadMesh_5vw27")
 surface_material_override/0 = SubResource("StandardMaterial3D_4c57u")
 
-[node name="CollisionShape3D" parent="MuseumNode/Keyboard/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 806658028, 776647796, 1711902221) index="0" unique_id=2064986693]
+[node name="CollisionShape3D" parent="MuseumNode/Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 224690396, 776647796, 1024925121) index="0" unique_id=620411508]
 shape = SubResource("BoxShape3D_efxa6")
 
-[node name="Screen" parent="MuseumNode/Input/2Din3DPlane" parent_id_path=PackedInt32Array(1711306997, 224690396, 776647796) index="1" unique_id=830305756]
+[node name="Screen" parent="MuseumNode/Input/2Din3DKeyboard" parent_id_path=PackedInt32Array(1711306997, 224690396, 845947144) index="1" unique_id=1158603700]
 mesh = SubResource("QuadMesh_dg77c")
 surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
 
-[node name="CollisionShape3D" parent="MuseumNode/Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 224690396, 776647796, 1024925121) index="0" unique_id=620411508]
+[node name="CollisionShape3D" parent="MuseumNode/Input/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 224690396, 845947144, 1711902221) index="0" unique_id=2064986693]
 shape = SubResource("BoxShape3D_vivmo")
 
 [node name="MenuNode" parent="." unique_id=227478366 instance=ExtResource("1_w48qg")]
@@ -165,11 +163,10 @@ shape = SubResource("BoxShape3D_d13ii")
 [editable path="Player"]
 [editable path="MuseumNode"]
 [editable path="MuseumNode/World"]
-[editable path="MuseumNode/Keyboard"]
-[editable path="MuseumNode/Keyboard/2Din3DKeyboard"]
-[editable path="MuseumNode/Output"]
 [editable path="MuseumNode/Input"]
 [editable path="MuseumNode/Input/2Din3DPlane"]
+[editable path="MuseumNode/Input/2Din3DKeyboard"]
+[editable path="MuseumNode/PictureOutputInstance"]
 [editable path="MenuNode"]
 [editable path="MenuNode/2Din3DKeyboard"]
 [editable path="MenuNode/2Din3DURL"]

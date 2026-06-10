@@ -6,45 +6,53 @@ namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class PictureOutputSetter : Node
 {
-    [Export] public NodePath OutputFramePath;
-    [Export] public string OutputScenePath = "res://Museum/Output.tscn";
-
-    [Export] public float WallCenterX;
-    [Export] public float WallZ = -4.99f;
-
-    [Export] public float WallWidth = 10.0f;
-    [Export] public float WallBottomY = 0.05f;
-    [Export] public float WallHeight = 2.85f;
+    [Export] public NodePath OutputInstancePath;
+    [Export] public NodePath OutputPlacesPath;
 
     [Export] public float CellPadding = 0.40f;
+    [Export] public float PlaceForwardOffset = 0.03f;
 
     private Node3D _outputRoot;
-    private PackedScene _outputScene;
+    private Node3D _outputTemplate;
+    private Node _outputPlacesRoot;
     private readonly RandomNumberGenerator _rng = new();
 
     public override void _Ready()
     {
-        _outputRoot = GetNodeOrNull<Node3D>(OutputFramePath);
-        _outputScene = GD.Load<PackedScene>(OutputScenePath);
+        _outputRoot = GetNodeOrNull<Node3D>(OutputInstancePath);
+        _outputPlacesRoot = GetNodeOrNull(OutputPlacesPath);
         _rng.Randomize();
         ClearGeneratedPictures();
+        _outputTemplate = _outputRoot.Duplicate() as Node3D;
     }
 
     public void SetOutputImagesFromBytes(IReadOnlyList<byte[]> imageBytes)
     {
         ClearGeneratedPictures();
 
-        var randomCount = _rng.RandiRange(1, Mathf.Min(4, imageBytes.Count));
+        var places = GetOutputPlaces();
 
-        var selectedBytes = imageBytes.OrderBy(_ => _rng.Randf()).Take(randomCount).ToList();
+        var availableBytes = imageBytes.OrderBy(_ => _rng.Randf()).ToList();
+        var nextImageIndex = 0;
 
-        var slots = WallImageLayout.CreateHorizontalSlots(selectedBytes.Count, WallCenterX, WallWidth, WallBottomY, WallHeight);
-
-        for (var i = 0; i < selectedBytes.Count; i++)
+        foreach (var place in places)
         {
-            var texture = LoadTexture(selectedBytes[i]);
+            if (nextImageIndex >= availableBytes.Count)
+                break;
 
-            CreatePictureInstance(texture, slots[i]);
+            var randomCount = _rng.RandiRange(1, Mathf.Min(4, availableBytes.Count - nextImageIndex));
+            var slots = WallImageLayout.CreateCenteredHorizontalSlots(randomCount, GetPlaceWidth(place), GetPlaceHeight(place));
+
+            for (var i = 0; i < randomCount; i++)
+            {
+                var texture = LoadTexture(availableBytes[nextImageIndex]);
+                nextImageIndex++;
+
+                if (texture == null)
+                    continue;
+
+                CreatePictureInstance(texture, place, slots[i]);
+            }
         }
     }
 
@@ -52,12 +60,12 @@ public partial class PictureOutputSetter : Node
     {
         foreach (var child in _outputRoot.GetChildren())
         {
-            if (child is Node node && node.IsInGroup("GeneratedOutputPicture"))
-                node.QueueFree();
+            if (child != null && child.IsInGroup("GeneratedOutputPicture"))
+                child.QueueFree();
         }
     }
 
-    private ImageTexture LoadTexture(byte[] bytes)
+    private static ImageTexture LoadTexture(byte[] bytes)
     {
         var image = new Image();
 
@@ -69,26 +77,39 @@ public partial class PictureOutputSetter : Node
         if (loadError != Error.Ok)
             loadError = image.LoadWebpFromBuffer(bytes);
 
-        if (loadError != Error.Ok || image.IsEmpty())
-        {
-            GD.PrintErr("Could not load image from bytes. Error: " + loadError);
-            return null;
-        }
+        if (loadError == Error.Ok && !image.IsEmpty()) return ImageTexture.CreateFromImage(image);
+        GD.PrintErr("Could not load image from bytes. Error: " + loadError);
+        return null;
 
-        return ImageTexture.CreateFromImage(image);
     }
 
-    private async void CreatePictureInstance(ImageTexture texture, Rect2 slot)
+    private List<Node3D> GetOutputPlaces()
     {
-        var item = _outputScene.Instantiate<Node3D>();
+        return _outputPlacesRoot.GetChildren().OfType<Node3D>().OrderBy(place => place.GetIndex()).ToList();
+    }
+
+    private static float GetPlaceWidth(Node3D place)
+    {
+        var mesh = (MeshInstance3D)place;
+        return Mathf.Max(0.1f, mesh.GetAabb().Size.X * mesh.Scale.X);
+    }
+
+    private static float GetPlaceHeight(Node3D place)
+    {
+        var mesh = (MeshInstance3D)place;
+        return Mathf.Max(0.1f, mesh.GetAabb().Size.Y * mesh.Scale.Y);
+    }
+
+    private async void CreatePictureInstance(ImageTexture texture, Node3D place, Rect2 slot)
+    {
+        var item = _outputTemplate.Duplicate() as Node3D;
 
         item.AddToGroup("GeneratedOutputPicture");
 
         _outputRoot.AddChild(item);
+        SetTreeActive(item, true);
 
         await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
-        item.Visible = true;
 
         var picture = item.GetNodeOrNull<MeshInstance3D>("Picture");
 
@@ -111,10 +132,9 @@ public partial class PictureOutputSetter : Node
         }
 
         var x = slot.Position.X + slot.Size.X / 2.0f;
-        var y = 1.55f;
-        
-        item.GlobalPosition = new Vector3(x, y, WallZ);
-        item.GlobalRotation = Vector3.Zero;
+        var y = slot.Position.Y + slot.Size.Y / 2.0f;
+
+        item.GlobalTransform = new Transform3D(place.GlobalTransform.Basis.Orthonormalized(), place.ToGlobal(new Vector3(x, y, PlaceForwardOffset)));
 
         picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
 
@@ -127,5 +147,17 @@ public partial class PictureOutputSetter : Node
         }
 
         frameMaker.UpdateFrame(picture, imageWidth, imageHeight);
+    }
+
+    private static void SetTreeActive(Node node, bool active)
+    {
+        if (node is Node3D node3D)
+            node3D.Visible = active;
+
+        if (node is CollisionShape3D collisionShape)
+            collisionShape.SetDeferred(CollisionShape3D.PropertyName.Disabled, !active);
+
+        foreach (var child in node.GetChildren())
+            SetTreeActive(child, active);
     }
 }
