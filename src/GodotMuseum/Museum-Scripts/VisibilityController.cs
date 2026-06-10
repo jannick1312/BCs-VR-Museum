@@ -11,8 +11,8 @@ public partial class VisibilityController : Node
 
 	public override void _Ready()
 	{
-		_keyboard = GetNodeOrNull<Node3D>(KeyboardPath);
-		_outputFrame = GetNodeOrNull<Node3D>(OutputFramePath);
+		_keyboard = GetNode<Node3D>(KeyboardPath);
+		_outputFrame = GetNode<Node3D>(OutputFramePath);
 
 		HideKeyboard();
 		HideOutput();

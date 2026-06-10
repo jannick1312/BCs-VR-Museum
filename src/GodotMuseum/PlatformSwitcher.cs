@@ -1,3 +1,4 @@
+using BCSVRMuseum.Museum_Scripts;
 using Godot;
 namespace BCSVRMuseum;
 
@@ -34,9 +35,6 @@ public partial class PlatformSwitcher : Node
 
 	public override async void _Ready()
 	{
-		for (var i = 0; i < 20; i++)
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
 		_player = GetNode(PlayerPath);
 
 		_rig = _player.FindChild("XROrigin3D", true, false) as Node3D;
@@ -50,6 +48,16 @@ public partial class PlatformSwitcher : Node
 
 		_body = _player.FindChild("PlayerBody", true, false) as CharacterBody3D;
 		_movementNodes = [_player.FindChild("MovementDirect", true, false), _player.FindChild("MovementTurn", true, false), _player.FindChild("MovementJump", true, false)];
+
+		await this.WaitFor(() =>
+		{
+			foreach (var child in _body.GetChildren())
+			{
+				if (child is CollisionShape3D collisionShape)
+					return collisionShape;
+			}
+			return null;
+		}, "player body collision shape");
 
 		_museum = GetNode<Node3D>(MuseumNodePath);
 		_menu = GetNode<Node3D>(MenuNodePath);

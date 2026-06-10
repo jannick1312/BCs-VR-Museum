@@ -25,16 +25,12 @@ public partial class SearchController : Node
 
     public override async void _Ready()
     {
-        for (var i = 0; i < 12; i++)
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        _inputScreen = GetNode<InputBridge>(InputBridgePath);
+        _outputScreen = GetNode<PictureOutputSetter>(PictureOutputSetterPath);
+        _visibility = GetNode<VisibilityController>(VisibilityControllerPath);
+        _searchUseCaseFactory = GetTree().Root.FindChild("SearchUseCaseFactory", true, false) as SearchUseCaseFactory;
 
-        _inputScreen = GetNodeOrNull<InputBridge>(InputBridgePath);
-        _outputScreen = GetNodeOrNull<PictureOutputSetter>(PictureOutputSetterPath);
-        _visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
-
-        _searchUseCaseFactory = GetTree().Root.FindChild( "SearchUseCaseFactory", true, false) as SearchUseCaseFactory;
-
-        _inputLineEdit = _inputScreen.InputLineEdit;
+        _inputLineEdit = await this.WaitFor(() => _inputScreen.InputLineEdit, "input line edit");
 
         _inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
         _inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);

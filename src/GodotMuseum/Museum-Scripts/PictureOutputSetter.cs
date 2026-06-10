@@ -17,8 +17,8 @@ public partial class PictureOutputSetter : Node
 
     public override void _Ready()
     {
-        _outputRoot = GetNodeOrNull<Node3D>(OutputInstancePath);
-        _outputPlacesRoot = GetNodeOrNull(OutputPlacesPath);
+        _outputRoot = GetNode<Node3D>(OutputInstancePath);
+        _outputPlacesRoot = GetNode(OutputPlacesPath);
         _rng.Randomize();
         ClearGeneratedPictures();
         _outputTemplate = _outputRoot.Duplicate() as Node3D;
@@ -114,7 +114,7 @@ public partial class PictureOutputSetter : Node
         return Mathf.Max(0.1f, mesh.GetAabb().Size.Y * mesh.Scale.Y);
     }
 
-    private async void CreatePictureInstance(ImageTexture texture, Node3D place, Rect2 slot)
+    private void CreatePictureInstance(ImageTexture texture, Node3D place, Rect2 slot)
     {
         var item = _outputTemplate.Duplicate() as Node3D;
 
@@ -123,9 +123,7 @@ public partial class PictureOutputSetter : Node
         _outputRoot.AddChild(item);
         SetTreeActive(item, true);
 
-        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
-        var picture = item.GetNodeOrNull<MeshInstance3D>("Picture");
+        var picture = item.GetNode<MeshInstance3D>("Picture");
 
         var material = new StandardMaterial3D { CullMode = BaseMaterial3D.CullModeEnum.Disabled, AlbedoTexture = texture };
 
@@ -152,7 +150,7 @@ public partial class PictureOutputSetter : Node
 
         picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
 
-        var frameMaker = item.GetNodeOrNull<FrameMaker>("FrameMaker");
+        var frameMaker = item.GetNode<FrameMaker>("FrameMaker");
 
         if (frameMaker == null)
         {

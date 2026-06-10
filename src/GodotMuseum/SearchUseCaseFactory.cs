@@ -13,11 +13,8 @@ public partial class SearchUseCaseFactory : Node
     private string _cachedIp = "";
     private string _cachedMediaFolderPath = "";
 
-    public override async void _Ready()
+    public override void _Ready()
     {
-        for (var i = 0; i < 8; i++)
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
         _searchSettingsStore = GetTree().Root.FindChild("SearchSettingsStore", true, false) as SearchSettingsStore;
     }
 

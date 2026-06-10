@@ -26,13 +26,13 @@ public partial class KeyboardUi : Control
 
 	public override void _Ready()
 	{
-		_toggleShift = GetNodeOrNull<Button>("Panel/Standard/ToggleShift");
-		_toggleCaps = GetNodeOrNull<Button>("Panel/Standard/ToggleCaps");
-		_toggleAlt = GetNodeOrNull<Button>("Panel/Standard/ToggleAlt");
+		_toggleShift = GetNode<Button>("Panel/Standard/ToggleShift");
+		_toggleCaps = GetNode<Button>("Panel/Standard/ToggleCaps");
+		_toggleAlt = GetNode<Button>("Panel/Standard/ToggleAlt");
 
-		_lowerCase = GetNodeOrNull<Control>("Panel/LowerCase");
-		_upperCase = GetNodeOrNull<Control>("Panel/UpperCase");
-		_alternate = GetNodeOrNull<Control>("Panel/Alternate");
+		_lowerCase = GetNode<Control>("Panel/LowerCase");
+		_upperCase = GetNode<Control>("Panel/UpperCase");
+		_alternate = GetNode<Control>("Panel/Alternate");
 
 		if (_toggleShift != null)
 		{

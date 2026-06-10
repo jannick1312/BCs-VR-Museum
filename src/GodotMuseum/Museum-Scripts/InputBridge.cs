@@ -9,12 +9,8 @@ public partial class InputBridge : Node
 
 	public override async void _Ready()
 	{
-		for (var i = 0; i < 8; i++)
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
-		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
-
-		InputLineEdit = FindFirstLineEdit(viewport);
+		var viewport = GetNode<Viewport>(ViewportPath);
+		InputLineEdit = await this.WaitFor(() => FindFirstLineEdit(viewport), "input line edit");
 	}
 
 	private static LineEdit FindFirstLineEdit(Node node)

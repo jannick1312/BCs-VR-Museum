@@ -11,13 +11,8 @@ public partial class UrlSettingsPanel : Node
     private Button _revertButton;
     private CheckBox _deployedCheckBox;
 
-	public override async void _Ready()
+	public override void _Ready()
 	{
-		for (var i = 0; i < 8; i++)
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
-		_searchSettingsStore = GetTree().Root.FindChild("SearchSettingsStore", true, false) as SearchSettingsStore;
-
 		var root = GetParent();
 
 		_urlInput = root.FindChild("URLinput", true, false) as LineEdit;
@@ -25,6 +20,8 @@ public partial class UrlSettingsPanel : Node
 		_submitButton = root.FindChild("Submit", true, false) as Button;
 		_revertButton = root.FindChild("Revert", true, false) as Button;
 		_deployedCheckBox = root.FindChild("Check", true, false) as CheckBox;
+		
+		_searchSettingsStore = GetTree().Root.FindChild("SearchSettingsStore", true, false) as SearchSettingsStore;
 
 		if (_submitButton != null) _submitButton.Pressed += OnSubmitPressed;
 		if (_revertButton != null) _revertButton.Pressed += OnRevertPressed;

@@ -10,13 +10,10 @@ public partial class EnterSubmitTrigger : Node
 
 	public override async void _Ready()
 	{
-		for (var i = 0; i < 8; i++)
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		var viewport = GetNode<Viewport>(ViewportPath);
+		_submitter = GetNode<SearchController>(Controller);
 
-		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
-		_submitter = GetNodeOrNull<SearchController>(Controller);
-
-		var enterKey = FindNodeByName(viewport, "VirtualKeyEnter");
+		var enterKey = await this.WaitFor(() => FindNodeByName(viewport, "VirtualKeyEnter"), "enter key");
 		enterKey.Connect("pressed", new Callable(this, nameof(OnEnterPressed)));
 	}
 
