@@ -26,6 +26,9 @@ public partial class FrameMaker : Node
 		_frame = _outputFrame.GetNode<Node3D>("Frame");
 
 		_collision = _outputFrame.GetNode<CollisionShape3D>("CollisionShape3D");
+		if (_collision.Shape != null)
+			_collision.Shape = (Shape3D)_collision.Shape.Duplicate();
+
 		_grabLeft = _outputFrame.GetNode<Node3D>("GrabPointHandLeft");
 		_grabRight = _outputFrame.GetNode<Node3D>("GrabPointHandRight");
 
