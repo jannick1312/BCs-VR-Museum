@@ -6,13 +6,13 @@ namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class SearchController : Node
 {
-    [Export] public NodePath InputScreenBridgePath;
+    [Export] public NodePath InputBridgePath;
     [Export] public NodePath OutputScreenBridgePath;
     [Export] public NodePath VisibilityControllerPath;
 
     [Export] public int SearchLimit = 4;
 
-    private InputScreenBridge _inputScreen;
+    private InputBridge _inputScreen;
     private OutputScreenBridge _outputScreen;
     private VisibilityController _visibility;
 
@@ -28,7 +28,7 @@ public partial class SearchController : Node
         for (var i = 0; i < 12; i++)
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-        _inputScreen = GetNodeOrNull<InputScreenBridge>(InputScreenBridgePath);
+        _inputScreen = GetNodeOrNull<InputBridge>(InputBridgePath);
         _outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
         _visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
 

@@ -1,7 +1,7 @@
 using Godot;
 namespace BCSVRMuseum.Museum_Scripts;
 
-public partial class InputScreenBridge : Node
+public partial class InputBridge : Node
 {
 	[Export] public NodePath ViewportPath;
 
