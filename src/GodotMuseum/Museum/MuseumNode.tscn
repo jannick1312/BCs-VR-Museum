@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://birhengy0njg6" path="res://Museum-Scripts/EnterSubmitTrigger.cs" id="6_qutch"]
 [ext_resource type="PackedScene" uid="uid://bslaqwovqkqr6" path="res://Museum/Input.tscn" id="7_ecgt1"]
 [ext_resource type="Script" uid="uid://da02bak3hx70k" path="res://Museum-Scripts/FrameMaker.cs" id="7_m6mi2"]
-[ext_resource type="Script" uid="uid://cgxi4oyne67d7" path="res://Museum-Scripts/OutputScreenBridge.cs" id="8_bs0q8"]
+[ext_resource type="Script" uid="uid://cgxi4oyne67d7" path="res://Museum-Scripts/PictureOutputSetter.cs" id="8_bs0q8"]
 [ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Museum-Scripts/VisibilityController.cs" id="12_yskpt"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_ecgt1"]
@@ -57,12 +57,6 @@ albedo_color = Color(0.9647059, 0.49019608, 0, 0.28627452)
 [node name="StartSpawnPoint" type="Marker3D" parent="." unique_id=1195512689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
-[node name="PictureOutputInstance" parent="." unique_id=373268339 instance=ExtResource("5_avl46")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
-
-[node name="FrameMaker" type="Node" parent="PictureOutputInstance" unique_id=44059174]
-script = ExtResource("7_m6mi2")
-
 [node name="Input" parent="." unique_id=224690396 instance=ExtResource("7_ecgt1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -7.99)
 collision_layer = 5
@@ -74,16 +68,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_hm1tn")
 [node name="CollisionShape3D" parent="Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 776647796, 1024925121) index="0" unique_id=620411508]
 shape = SubResource("BoxShape3D_avl46")
 
-[node name="InputBridge" type="Node" parent="Input" unique_id=1054111552]
-script = ExtResource("6_ecgt1")
-ViewportPath = NodePath("../2Din3DPlane/Viewport")
-
 [node name="Screen" parent="Input/2Din3DKeyboard" parent_id_path=PackedInt32Array(224690396, 845947144) index="1" unique_id=1158603700]
 mesh = SubResource("QuadMesh_sl0ll")
 surface_material_override/0 = SubResource("StandardMaterial3D_lvb5a")
 
 [node name="CollisionShape3D" parent="Input/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 845947144, 1711902221) index="0" unique_id=2064986693]
 shape = SubResource("BoxShape3D_hstwv")
+
+[node name="InputBridge" type="Node" parent="Input" unique_id=1054111552]
+script = ExtResource("6_ecgt1")
+ViewportPath = NodePath("../2Din3DPlane/Viewport")
 
 [node name="EnterSubmitTrigger" type="Node" parent="Input" unique_id=935852314]
 script = ExtResource("6_qutch")
@@ -93,20 +87,24 @@ Controller = NodePath("../../SearchController")
 [node name="SearchController" type="Node" parent="." unique_id=1873299870]
 script = ExtResource("3_m6mi2")
 InputBridgePath = NodePath("../Input/InputBridge")
-OutputScreenBridgePath = NodePath("../OutputScreenBridge")
+PictureOutputSetterPath = NodePath("../PictureOutputSetter")
 VisibilityControllerPath = NodePath("../VisibilityController")
-
-[node name="OutputScreenBridge" type="Node" parent="." unique_id=379999481]
-script = ExtResource("8_bs0q8")
-OutputFramePath = NodePath("../PictureOutputInstance")
-OutputScenePath = "res://Museum/PictureOutputInstance.tscn"
-WallZ = -7.99
-WallWidth = 6.6
 
 [node name="VisibilityController" type="Node" parent="." unique_id=1955216869]
 script = ExtResource("12_yskpt")
 KeyboardPath = NodePath("../Input/2Din3DKeyboard")
 OutputFramePath = NodePath("../PictureOutputInstance")
+
+[node name="PictureOutputInstance" parent="." unique_id=373268339 instance=ExtResource("5_avl46")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+
+[node name="FrameMaker" type="Node" parent="PictureOutputInstance" unique_id=44059174]
+script = ExtResource("7_m6mi2")
+
+[node name="PictureOutputSetter" type="Node" parent="." unique_id=379999481]
+script = ExtResource("8_bs0q8")
+OutputFramePath = NodePath("../PictureOutputInstance")
+OutputScenePath = "res://Museum/PictureOutputInstance.tscn"
 
 [node name="PictureOutputPlaces" type="Node3D" parent="." unique_id=1319521603]
 
@@ -131,7 +129,7 @@ mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
 [editable path="World"]
-[editable path="PictureOutputInstance"]
 [editable path="Input"]
 [editable path="Input/2Din3DPlane"]
 [editable path="Input/2Din3DKeyboard"]
+[editable path="PictureOutputInstance"]

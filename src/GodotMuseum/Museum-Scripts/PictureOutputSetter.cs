@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
-public partial class OutputScreenBridge : Node
+public partial class PictureOutputSetter : Node
 {
     [Export] public NodePath OutputFramePath;
     [Export] public string OutputScenePath = "res://Museum/Output.tscn";

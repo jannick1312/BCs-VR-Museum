@@ -7,13 +7,13 @@ namespace BCSVRMuseum.Museum_Scripts;
 public partial class SearchController : Node
 {
     [Export] public NodePath InputBridgePath;
-    [Export] public NodePath OutputScreenBridgePath;
+    [Export] public NodePath PictureOutputSetterPath;
     [Export] public NodePath VisibilityControllerPath;
 
     [Export] public int SearchLimit = 4;
 
     private InputBridge _inputScreen;
-    private OutputScreenBridge _outputScreen;
+    private PictureOutputSetter _outputScreen;
     private VisibilityController _visibility;
 
     private LineEdit _inputLineEdit;
@@ -29,7 +29,7 @@ public partial class SearchController : Node
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
         _inputScreen = GetNodeOrNull<InputBridge>(InputBridgePath);
-        _outputScreen = GetNodeOrNull<OutputScreenBridge>(OutputScreenBridgePath);
+        _outputScreen = GetNodeOrNull<PictureOutputSetter>(PictureOutputSetterPath);
         _visibility = GetNodeOrNull<VisibilityController>(VisibilityControllerPath);
 
         _searchUseCaseFactory = GetTree().Root.FindChild( "SearchUseCaseFactory", true, false) as SearchUseCaseFactory;
