@@ -9,5 +9,4 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0
 
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="." unique_id=1216805608]
 transform = Transform3D(1, 0, 0, 0, 0.6200118, 0.78459245, 0, -0.7845925, 0.6200118, 0, 20, 9.594491)
-shadow_enabled = true
 sky_mode = 1

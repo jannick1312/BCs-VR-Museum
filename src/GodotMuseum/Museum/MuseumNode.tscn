@@ -8,38 +8,39 @@
 [ext_resource type="PackedScene" uid="uid://bslaqwovqkqr6" path="res://Museum/Input.tscn" id="7_ecgt1"]
 [ext_resource type="Script" uid="uid://da02bak3hx70k" path="res://Museum-Scripts/FrameMaker.cs" id="7_m6mi2"]
 [ext_resource type="Script" uid="uid://cgxi4oyne67d7" path="res://Museum-Scripts/PictureOutputSetter.cs" id="8_bs0q8"]
+[ext_resource type="Script" uid="uid://7ycx12yd2vde" path="res://Museum-Scripts/ObjectOutputSetter.cs" id="10_m6mi2"]
 [ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Museum-Scripts/VisibilityController.cs" id="12_yskpt"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_ecgt1"]
+[sub_resource type="QuadMesh" id="QuadMesh_m6mi2"]
 resource_local_to_scene = true
 size = Vector2(1.8, 1.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_m6mi2"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_hm1tn"]
 viewport_path = NodePath("Input/2Din3DPlane/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hm1tn"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avl46"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_m6mi2")
+albedo_texture = SubResource("ViewportTexture_hm1tn")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_avl46"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_sl0ll"]
 resource_local_to_scene = true
 size = Vector3(1.8, 1.2, 0.02)
 
-[sub_resource type="QuadMesh" id="QuadMesh_sl0ll"]
+[sub_resource type="QuadMesh" id="QuadMesh_tqf3b"]
 resource_local_to_scene = true
 size = Vector2(1.5, 0.75)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_tqf3b"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_lvb5a"]
 viewport_path = NodePath("Input/2Din3DKeyboard/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lvb5a"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hstwv"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_tqf3b")
+albedo_texture = SubResource("ViewportTexture_lvb5a")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_hstwv"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_i5sej"]
 resource_local_to_scene = true
 size = Vector3(1.5, 0.75, 0.02)
 
@@ -49,6 +50,13 @@ size = Vector3(6.627, 2.43, 0.03)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m6mi2"]
 transparency = 1
 albedo_color = Color(0.9647059, 0.49019608, 0, 0.28627452)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i5sej"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6fqx3"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.31764707)
 
 [node name="MuseumNode" type="Node3D" unique_id=1711306997]
 
@@ -62,18 +70,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -7.99)
 collision_layer = 5
 
 [node name="Screen" parent="Input/2Din3DPlane" parent_id_path=PackedInt32Array(224690396, 776647796) index="1" unique_id=830305756]
-mesh = SubResource("QuadMesh_ecgt1")
-surface_material_override/0 = SubResource("StandardMaterial3D_hm1tn")
+mesh = SubResource("QuadMesh_m6mi2")
+surface_material_override/0 = SubResource("StandardMaterial3D_avl46")
 
 [node name="CollisionShape3D" parent="Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 776647796, 1024925121) index="0" unique_id=620411508]
-shape = SubResource("BoxShape3D_avl46")
+shape = SubResource("BoxShape3D_sl0ll")
 
 [node name="Screen" parent="Input/2Din3DKeyboard" parent_id_path=PackedInt32Array(224690396, 845947144) index="1" unique_id=1158603700]
-mesh = SubResource("QuadMesh_sl0ll")
-surface_material_override/0 = SubResource("StandardMaterial3D_lvb5a")
+mesh = SubResource("QuadMesh_tqf3b")
+surface_material_override/0 = SubResource("StandardMaterial3D_hstwv")
 
 [node name="CollisionShape3D" parent="Input/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 845947144, 1711902221) index="0" unique_id=2064986693]
-shape = SubResource("BoxShape3D_hstwv")
+shape = SubResource("BoxShape3D_i5sej")
 
 [node name="InputBridge" type="Node" parent="Input" unique_id=1054111552]
 script = ExtResource("6_ecgt1")
@@ -88,8 +96,9 @@ Controller = NodePath("../../SearchController")
 script = ExtResource("3_m6mi2")
 InputBridgePath = NodePath("../Input/InputBridge")
 PictureOutputSetterPath = NodePath("../PictureOutputSetter")
+ObjectOutputSetterPath = NodePath("../ObjectOutputSetter")
 VisibilityControllerPath = NodePath("../VisibilityController")
-SearchLimit = 20
+SearchLimit = 30
 
 [node name="VisibilityController" type="Node" parent="." unique_id=1955216869]
 script = ExtResource("12_yskpt")
@@ -130,6 +139,33 @@ surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 transform = Transform3D(-0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, -0.7071067, -5.646, 1.635, 5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
+
+[node name="ObjectOutputSetter" type="Node" parent="." unique_id=458957298]
+script = ExtResource("10_m6mi2")
+OutputPlacesPath = NodePath("../ObjectOutputPlaces")
+
+[node name="ObjectOutputPlaces" type="Node3D" parent="." unique_id=664289943]
+visible = false
+
+[node name="Place1" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=1697069992]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1.5, 2)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place2" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=441623648]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.5, 2)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place3" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=446700766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.5, -2)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place4" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=678776937]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1.5, -2)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [editable path="World"]
 [editable path="Input"]

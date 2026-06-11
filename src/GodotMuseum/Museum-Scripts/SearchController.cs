@@ -8,12 +8,14 @@ public partial class SearchController : Node
 {
     [Export] public NodePath InputBridgePath;
     [Export] public NodePath PictureOutputSetterPath;
+    [Export] public NodePath ObjectOutputSetterPath;
     [Export] public NodePath VisibilityControllerPath;
 
     [Export] public int SearchLimit;
 
     private InputBridge _inputScreen;
     private PictureOutputSetter _outputScreen;
+    private ObjectOutputSetter _objectOutput;
     private VisibilityController _visibility;
 
     private LineEdit _inputLineEdit;
@@ -27,6 +29,7 @@ public partial class SearchController : Node
     {
         _inputScreen = GetNode<InputBridge>(InputBridgePath);
         _outputScreen = GetNode<PictureOutputSetter>(PictureOutputSetterPath);
+        _objectOutput = GetNode<ObjectOutputSetter>(ObjectOutputSetterPath);
         _visibility = GetNode<VisibilityController>(VisibilityControllerPath);
         _searchUseCaseFactory = GetTree().Root.FindChild("SearchUseCaseFactory", true, false) as SearchUseCaseFactory;
 
@@ -112,14 +115,25 @@ public partial class SearchController : Node
             {
                 imageBytes.Add(item.Bytes);
             }
-            _visibility.ShowOutput();
             _outputScreen.SetOutputImagesFromBytes(imageBytes);
         }
 
         if (videoItems.Count > 0)
+        {
             GD.PrintErr("Video display is not implemented yet.");
+        }
+            
 
         if (objectItems.Count > 0)
-            GD.PrintErr(" 3D object loading is not implemented yet.");
+        {
+            var objectBytes = new List<byte[]>();
+
+            foreach (var item in objectItems)
+            {
+                objectBytes.Add(item.Bytes);
+            }
+            _objectOutput.SetOutputObjectsFromBytes(objectBytes);
+        }
+        _visibility.ShowOutput();
     }
 }
