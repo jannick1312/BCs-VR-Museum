@@ -10,9 +10,7 @@ public class RuntimeSearchSettings
     private string DeployedIp { get; set; }
     private string StreamedIp { get; set; }
 
-    public string CurrentIp => Deployed
-        ? DeployedIp
-        : StreamedIp;
+    public string CurrentIp => Deployed ? DeployedIp : StreamedIp;
 
     public RuntimeSearchSettings(bool deployed, string defaultDeployedIp, string defaultStreamedIp, string mediaFolderPath)
     {
@@ -32,9 +30,6 @@ public class RuntimeSearchSettings
 
     public void SetCurrentIp(string ip)
     {
-        if (string.IsNullOrWhiteSpace(ip))
-            return;
-
         if (Deployed)
             DeployedIp = CleanIp(ip);
         else

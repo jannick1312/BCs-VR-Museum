@@ -1,4 +1,5 @@
 using Godot;
+using Infrastructure.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,14 +16,31 @@ public partial class PictureOutputSetter : Node
     private Node3D _outputTemplate;
     private Node _outputPlacesRoot;
     private readonly RandomNumberGenerator _rng = new();
+    private static readonly EventLogger Logger = new(nameof(PictureOutputSetter));
 
     public override void _Ready()
     {
-        _outputRoot = GetNode<Node3D>(OutputInstancePath);
-        _outputPlacesRoot = GetNode(OutputPlacesPath);
+        _outputRoot = GetNodeOrNull<Node3D>(OutputInstancePath);
+        _outputPlacesRoot = GetNodeOrNull(OutputPlacesPath);
+
+        if (_outputRoot == null)
+        {
+            Logger.Error("Picture output root is missing.");
+            return;
+        }
+
+        if (_outputPlacesRoot == null)
+        {
+            Logger.Error("Picture output places root is missing.");
+            return;
+        }
+
         _rng.Randomize();
         ClearGeneratedPictures();
         _outputTemplate = _outputRoot.Duplicate() as Node3D;
+
+        if (_outputTemplate == null)
+            Logger.Error("Picture output template could not be duplicated as Node3D.");
     }
 
     public async Task SetOutputImagesFromBytes(IReadOnlyList<byte[]> imageBytes)
@@ -30,6 +48,9 @@ public partial class PictureOutputSetter : Node
         ClearGeneratedPictures();
 
         var places = GetOutputPlaces();
+
+        if (imageBytes.Count > places.Count)
+            Logger.Warning($"Only {places.Count} of {imageBytes.Count} images can be placed.");
 
         var availableBytes = new List<byte[]>(imageBytes);
         for (var i = availableBytes.Count - 1; i > 0; i--)
@@ -85,9 +106,8 @@ public partial class PictureOutputSetter : Node
             loadError = image.LoadWebpFromBuffer(bytes);
 
         if (loadError == Error.Ok && !image.IsEmpty()) return ImageTexture.CreateFromImage(image);
-        GD.PrintErr("Could not load image from bytes. Error: " + loadError);
+        Logger.Error($"Could not load image from bytes. Error: {loadError}");
         return null;
-
     }
 
     private List<Node3D> GetOutputPlaces()
@@ -101,7 +121,6 @@ public partial class PictureOutputSetter : Node
         }
 
         result.Sort((a, b) => a.GetIndex().CompareTo(b.GetIndex()));
-
         return result;
     }
 
@@ -153,10 +172,11 @@ public partial class PictureOutputSetter : Node
 
         picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
 
-        var frameMaker = item.GetNode<FrameMaker>("FrameMaker");
+        var frameMaker = item.GetNodeOrNull<FrameMaker>("FrameMaker");
 
         if (frameMaker == null)
         {
+            Logger.Warning(" Creating FrameMaker dynamically.");
             frameMaker = new FrameMaker();
             item.AddChild(frameMaker);
         }

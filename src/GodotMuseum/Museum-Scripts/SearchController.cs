@@ -1,5 +1,6 @@
 using Core;
 using Godot;
+using Infrastructure.Logging;
 using System.Collections.Generic;
 
 namespace BCSVRMuseum.Museum_Scripts;
@@ -22,6 +23,7 @@ public partial class SearchController : Node
     private LineEdit _activeLineEdit;
 
     private SearchUseCaseFactory _searchUseCaseFactory;
+    private readonly EventLogger _logger = new(nameof(SearchController));
 
     private bool _isSearching;
 
@@ -56,13 +58,17 @@ public partial class SearchController : Node
 
     public async void SubmitText()
     {
-        if (_activeLineEdit == null || _isSearching)
+        if (_isSearching)
+        {
+            _logger.Warning("Search submit ignored because another search is already running.");
             return;
+        }
 
         var text = _activeLineEdit.Text;
 
         if (string.IsNullOrWhiteSpace(text))
         {
+            _logger.Warning("Search submit ignored because query text is empty.");
             _activeLineEdit.ReleaseFocus();
             _visibility.HideKeyboard();
             return;
@@ -73,6 +79,7 @@ public partial class SearchController : Node
         _visibility.HideKeyboard();
 
         _isSearching = true;
+        _logger.Info($"Search submitted.");
 
         var useCase = _searchUseCaseFactory.GetSearchAndLoadMedia();
         var result = await useCase.ExecuteAsync(text, SearchLimit);
@@ -81,7 +88,7 @@ public partial class SearchController : Node
 
         if (!result.Success)
         {
-            GD.PrintErr(result.ErrorMessage);
+            _logger.Warning("Search failed, output will not be shown.");
             return;
         }
 
@@ -117,11 +124,11 @@ public partial class SearchController : Node
             }
             await _outputScreen.SetOutputImagesFromBytes(imageBytes);
         }
+        else
+            _logger.Info("Search result contains no images to display.");
 
         if (videoItems.Count > 0)
-        {
-            GD.PrintErr("Video display is not implemented yet.");
-        }
+            _logger.Warning("Video display is not implemented yet.");
             
 
         if (objectItems.Count > 0)
@@ -134,6 +141,9 @@ public partial class SearchController : Node
             }
             await _objectOutput.SetOutputObjectsFromBytes(objectBytes);
         }
+        else
+            _logger.Info("Search result contains no 3D objects to display.");
+        _logger.Info($"Search output shown. images={imageItems.Count}, videos={videoItems.Count}, objects={objectItems.Count}");
         _visibility.ShowOutput();
     }
 }

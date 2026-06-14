@@ -1,11 +1,13 @@
 using Application;
 using Core;
+using Infrastructure.Logging;
 
 namespace Infrastructure.Media;
 
 public class MediaLoader : IMediaLoader
 {
     private readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(5)};
+    private readonly EventLogger _logger = new(nameof(MediaLoader));
 
     public async Task<MediaContent> LoadAsync(SearchResultItem item)
     {
@@ -14,18 +16,22 @@ public class MediaLoader : IMediaLoader
             if (File.Exists(item.LocalPath))
             {
                 var localBytes = await File.ReadAllBytesAsync(item.LocalPath);
+                _logger.Info("Loaded media from local path.");
                 return MediaContent.FromBytes(localBytes);
             }
 
+            _logger.Info("Local media not found, loading remote media.");
             var remoteBytes = await _httpClient.GetByteArrayAsync(item.RemoteUrl);
             return MediaContent.FromBytes(remoteBytes);
         }
         catch (TaskCanceledException)
         {
+            _logger.Warning("Media request timed out.");
             return MediaContent.Failure("Media request timed out.");
         }
         catch (Exception exception)
         {
+            _logger.Error("Media loading failed", exception);
             return MediaContent.Failure(exception.Message);
         }
     }

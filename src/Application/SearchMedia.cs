@@ -1,13 +1,17 @@
 using Core;
+using Infrastructure.Logging;
 
 namespace Application;
 
 public class SearchMedia(ISearchService searchService, IMediaLoader mediaLoader)
 {
+    private readonly EventLogger _logger = new(nameof(SearchMedia));
+
     public async Task<DisplayMediaResult> ExecuteAsync(string text, int limit)
     {
-        var query = new SearchQuery(text, limit);
+        _logger.Info($"Executing media search. Query='{text}', Limit={limit}");
 
+        var query = new SearchQuery(text, limit);
         var searchResult = await searchService.SearchAsync(query);
 
         if (!searchResult.Success)
@@ -23,11 +27,13 @@ public class SearchMedia(ISearchService searchService, IMediaLoader mediaLoader)
             var mediaContent = mediaContents[i];
 
             if (!mediaContent.Success)
+            {
+                _logger.Warning($"Skipping media item because loading failed: {mediaContent.ErrorMessage}");
                 continue;
-
+            }
             items.Add(new DisplayMediaItem(searchItems[i].MediaType, mediaContent.Bytes));
         }
-
+        _logger.Info($"Media search completed. searchItems={searchItems.Count}, loadedItems={items.Count}");
         return DisplayMediaResult.FromMedia(items);
     }
 }

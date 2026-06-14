@@ -1,4 +1,5 @@
 using Godot;
+using Infrastructure.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,10 +10,18 @@ public partial class ObjectOutputSetter : Node
     [Export] public NodePath OutputPlacesPath;
 
     private Node _outputPlacesRoot;
+    private static readonly EventLogger Logger = new(nameof(ObjectOutputSetter));
 
     public override void _Ready()
     {
-        _outputPlacesRoot = GetNode(OutputPlacesPath);
+        _outputPlacesRoot = GetNodeOrNull(OutputPlacesPath);
+
+        if (_outputPlacesRoot == null)
+        {
+            Logger.Error("3D object output places root is missing.");
+            return;
+        }
+
         ClearGeneratedObjects();
     }
 
@@ -24,6 +33,9 @@ public partial class ObjectOutputSetter : Node
 
         var count = Mathf.Min(objectBytes.Count, places.Count);
 
+        if (objectBytes.Count > places.Count)
+            Logger.Warning($"Only {count} of {objectBytes.Count} 3D objects can be placed.");
+
         for (var i = 0; i < count; i++)
         {
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
@@ -31,7 +43,10 @@ public partial class ObjectOutputSetter : Node
             var objectNode = LoadObject(objectBytes[i]);
 
             if (objectNode == null)
+            {
+                Logger.Warning($"Skipping 3D object at index {i} because it could not be loaded.");
                 continue;
+            }
 
             PlaceObject(objectNode, places[i]);
         }
@@ -53,13 +68,9 @@ public partial class ObjectOutputSetter : Node
 
         var error = gltf.AppendFromBuffer(bytes, "", state);
 
-        if (error != Error.Ok)
-        {
-            GD.PrintErr($"Could not load 3D object. Error: {error}");
-            return null;
-        }
-
-        return gltf.GenerateScene(state) as Node3D;
+        if (error == Error.Ok) return gltf.GenerateScene(state) as Node3D;
+        Logger.Error($"Could not load 3D object. Error: {error}");
+        return null;
     }
 
     private List<Node3D> GetOutputPlaces()
@@ -77,7 +88,7 @@ public partial class ObjectOutputSetter : Node
         return result;
     }
 
-    public static Aabb GetPlaceBounds(Node3D place)
+    private static Aabb GetPlaceBounds(Node3D place)
     {
         var mesh = (MeshInstance3D)place;
         var aabb = mesh.GetAabb();
@@ -97,6 +108,8 @@ public partial class ObjectOutputSetter : Node
 
         var scale = GetScale(objectBounds.Size, placeBounds.Size);
 
+        Logger.Info($"Placing 3D object. Scale={scale}");
+
         item.Scale *= scale;
 
         objectBounds = GetObjectBounds(item);
@@ -107,7 +120,10 @@ public partial class ObjectOutputSetter : Node
     private static float GetScale(Vector3 objectSize, Vector3 targetSize)
     {
         if (objectSize.X <= 0 || objectSize.Y <= 0 || objectSize.Z <= 0)
+        {
+            Logger.Warning($"Invalid 3D object size. Using scale 1.");
             return 1.0f;
+        }
 
         var sx = targetSize.X / objectSize.X;
         var sy = targetSize.Y / objectSize.Y;
@@ -131,6 +147,9 @@ public partial class ObjectOutputSetter : Node
             bounds = hasBounds ? bounds.Merge(meshAabb) : meshAabb;
             hasBounds = true;
         }
+
+        if (!hasBounds)
+            Logger.Warning($"3D object '{root.Name}' has no MeshInstance3D children. Using fallback bounds.");
 
         return hasBounds ? bounds : new Aabb(Vector3.Zero, Vector3.One);
     }

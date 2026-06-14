@@ -1,5 +1,6 @@
 using Application;
 using Core;
+using Infrastructure.Logging;
 using System.Text;
 
 namespace Infrastructure.Vitrivr;
@@ -7,6 +8,7 @@ namespace Infrastructure.Vitrivr;
 public class VitrivrSearchService(VitrivrSettings settings) : ISearchService
 {
     private readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(5)};
+    private readonly EventLogger _logger = new(nameof(VitrivrSearchService));
 
     public async Task<SearchResult> SearchAsync(SearchQuery query)
     {
@@ -21,16 +23,24 @@ public class VitrivrSearchService(VitrivrSettings settings) : ISearchService
             var responseText = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
+            {
+                _logger.Warning($"Vitrivr request failed with HTTP {(int)response.StatusCode}.");
                 return SearchResult.Failure($"Vitrivr request failed with HTTP {(int)response.StatusCode}.");
-            
-            return VitrivrResponseParser.Parse(responseText, settings.MediaFolderPath, settings.MediaBaseUrl);
+            }
+
+            var result = VitrivrResponseParser.Parse(responseText, settings.MediaFolderPath, settings.MediaBaseUrl);
+
+            _logger.Info($"Vitrivr request completed successfully.");
+            return result;
         }
         catch (TaskCanceledException)
         {
+            _logger.Warning("Vitrivr request timed out after 5 seconds.");
             return SearchResult.Failure("Vitrivr request timed out.");
         }
         catch (Exception exception)
         {
+            _logger.Error("Vitrivr search failed unexpectedly", exception);
             return SearchResult.Failure(exception.Message);
         }
     }

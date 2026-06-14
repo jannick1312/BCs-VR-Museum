@@ -1,8 +1,11 @@
 using Godot;
+using Infrastructure.Logging;
+
 namespace BCSVRMuseum.Menu_Scripts;
 
 public partial class UrlSettingsPanel : Node
 {
+	private readonly EventLogger _logger = new(nameof(UrlSettingsPanel));
 	private SearchSettingsStore _searchSettingsStore;
 
     private LineEdit _urlInput;
@@ -39,8 +42,10 @@ public partial class UrlSettingsPanel : Node
 		var input = _urlInput.Text.Trim();
 
 		if (string.IsNullOrWhiteSpace(input))
+		{
+			_logger.Warning("URL submit ignored because input is empty.");
 			return;
-
+		}
 		_searchSettingsStore.SetServerIp(input);
 		_urlInput.Clear();
 		UpdateCurrentUrlLabel();

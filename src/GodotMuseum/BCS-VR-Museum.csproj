@@ -12,5 +12,6 @@
     <ProjectReference Include="..\Infrastructure.Vitrivr\Infrastructure.Vitrivr.csproj" />
     <ProjectReference Include="..\Infrastructure.Media\Infrastructure.Media.csproj" />
     <ProjectReference Include="..\Infrastructure.Configuration\Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\Infrastructure.Logging\Infrastructure.Logging.csproj" />
   </ItemGroup>
 </Project>

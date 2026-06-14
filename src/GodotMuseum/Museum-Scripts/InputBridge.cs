@@ -25,7 +25,6 @@ public partial class InputBridge : Node
 			if (found != null)
 				return found;
 		}
-
 		return null;
 	}
 }

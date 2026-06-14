@@ -1,8 +1,12 @@
 using Godot;
+using Infrastructure.Logging;
+
 namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class FrameMaker : Node
 {
+	private static readonly EventLogger Logger = new(nameof(FrameMaker));
+
 	private Node3D _outputFrame;
 	private Node3D _frame;
 	private Node3D _grabLeft;
@@ -22,6 +26,12 @@ public partial class FrameMaker : Node
 	public override void _Ready()
 	{
 		_outputFrame = GetParent<Node3D>();
+
+		if (_outputFrame == null)
+		{
+			Logger.Error("FrameMaker parent is missing or not a Node3D.");
+			return;
+		}
 
 		_frame = _outputFrame.GetNode<Node3D>("Frame");
 
@@ -45,6 +55,12 @@ public partial class FrameMaker : Node
 
 	public void UpdateFrame(MeshInstance3D picture, float imageWidth, float imageHeight)
 	{
+		if (imageWidth <= 0 || imageHeight <= 0)
+		{
+			Logger.Warning("Frame update received invalid image size.");
+			return;
+		}
+
 		var center = picture.GlobalPosition;
 
 		var basis = picture.GlobalTransform.Basis.Orthonormalized();
@@ -101,7 +117,7 @@ public partial class FrameMaker : Node
 
 		var start = leftCorner.Position.X + l.End.X;
 		var end = rightCorner.Position.X + r.Position.X;
-		var len = Mathf.Max(0.001f, end - start);
+		var len = end - start;
 
 		mesh.Position = new Vector3((start + end) / 2.0f, 0, leftCorner.Position.Z);
 
@@ -109,6 +125,8 @@ public partial class FrameMaker : Node
 
 		if (!Mathf.IsZeroApprox(baseLength))
 			mesh.Scale = new Vector3(len / baseLength, mesh.Scale.Y, mesh.Scale.Z);
+		else
+			Logger.Warning($"Horizontal frame mesh '{mesh.Name}' has zero base length.");
 	}
 
 	private static void PlaceVLocal(MeshInstance3D mesh, MeshInstance3D topCorner, MeshInstance3D bottomCorner)
@@ -118,7 +136,7 @@ public partial class FrameMaker : Node
 
 		var start = topCorner.Position.Z + t.End.Z;
 		var end = bottomCorner.Position.Z + b.Position.Z;
-		var len = Mathf.Max(0.001f, end - start);
+		var len = end - start;
 
 		mesh.Position = new Vector3(topCorner.Position.X, 0, (start + end) / 2.0f);
 
@@ -126,12 +144,17 @@ public partial class FrameMaker : Node
 
 		if (!Mathf.IsZeroApprox(baseLength))
 			mesh.Scale = new Vector3(mesh.Scale.X, mesh.Scale.Y, len / baseLength);
+		else
+			Logger.Warning($"Vertical frame mesh '{mesh.Name}' has zero base length.");
 	}
 
 	private void UpdateCollision(Vector3 center, Basis basis, float imageWidth, float imageHeight)
 	{
 		if (_collision.Shape is not BoxShape3D box)
+		{
+			Logger.Warning("Frame collision shape is missing or not a BoxShape3D.");
 			return;
+		}
 
 		box.Size = new Vector3(imageWidth + 0.2f, imageHeight + 0.2f, 0.04f);
 		_collision.GlobalTransform = new Transform3D(basis, center);

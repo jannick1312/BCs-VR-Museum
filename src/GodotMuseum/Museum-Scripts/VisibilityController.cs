@@ -1,8 +1,12 @@
 using Godot;
+using Infrastructure.Logging;
+
 namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class VisibilityController : Node
 {
+	private static readonly EventLogger Logger = new(nameof(VisibilityController));
+
 	[Export] public NodePath KeyboardPath;
 	[Export] public NodePath OutputFramePath;
 
@@ -11,8 +15,14 @@ public partial class VisibilityController : Node
 
 	public override void _Ready()
 	{
-		_keyboard = GetNode<Node3D>(KeyboardPath);
-		_outputFrame = GetNode<Node3D>(OutputFramePath);
+		_keyboard = GetNodeOrNull<Node3D>(KeyboardPath);
+		_outputFrame = GetNodeOrNull<Node3D>(OutputFramePath);
+
+		if (_keyboard == null)
+			Logger.Warning("Keyboard node is missing.");
+
+		if (_outputFrame == null)
+			Logger.Warning("Output frame node is missing.");
 
 		HideKeyboard();
 		HideOutput();
@@ -42,7 +52,10 @@ public partial class VisibilityController : Node
 	private static void SetTreeActive(Node node, bool active)
 	{
 		if (node is null)
+		{
+			Logger.Warning($"Cannot set active={active} because node is null.");
 			return;
+		}
 
 		if (node is Node3D node3D)
 			node3D.Visible = active;

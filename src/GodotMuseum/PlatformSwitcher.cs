@@ -1,9 +1,13 @@
 using BCSVRMuseum.Museum_Scripts;
 using Godot;
+using Infrastructure.Logging;
+
 namespace BCSVRMuseum;
 
 public partial class PlatformSwitcher : Node
 {
+	private readonly EventLogger _logger = new(nameof(PlatformSwitcher));
+
 	[Export] public NodePath PlayerPath;
 	[Export] public NodePath MuseumNodePath;
 	[Export] public NodePath MenuNodePath;
@@ -35,7 +39,13 @@ public partial class PlatformSwitcher : Node
 
 	public override async void _Ready()
 	{
-		_player = GetNode(PlayerPath);
+		_player = GetNodeOrNull(PlayerPath);
+
+		if (_player == null)
+		{
+			_logger.Error("Player node is missing. Platform switching cannot initialize.");
+			return;
+		}
 
 		_rig = _player.FindChild("XROrigin3D", true, false) as Node3D;
 		_camera = _player.FindChild("XRCamera3D", true, false) as XRCamera3D;
@@ -57,7 +67,7 @@ public partial class PlatformSwitcher : Node
 					return collisionShape;
 			}
 			return null;
-		}, "player body collision shape");
+		}, "player body collision shape");	
 
 		_museum = GetNode<Node3D>(MuseumNodePath);
 		_menu = GetNode<Node3D>(MenuNodePath);
@@ -69,6 +79,7 @@ public partial class PlatformSwitcher : Node
 		SetMovementEnabled(true);
 		MoveCameraTo(_museumSpawn);
 		RememberMuseumTransform();
+		_logger.Info("Platform switcher initialized in museum world.");
 	}
 
 	public override void _Process(double delta)
@@ -97,9 +108,6 @@ public partial class PlatformSwitcher : Node
 
 	private async void ToggleWorld()
 	{
-		if (_rig == null)
-			return;
-
 		_switching = true;
 
 		_body?.Velocity = Vector3.Zero;
@@ -114,6 +122,7 @@ public partial class PlatformSwitcher : Node
 			await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 			SetEnabled(_body, true);
 			SetMovementEnabled(true);
+			_logger.Info("Switched from menu to museum world.");
 		}
 		else
 		{
@@ -127,6 +136,7 @@ public partial class PlatformSwitcher : Node
 				_body.GlobalTransform = _rig.GlobalTransform;
 			_lockedMenuRig = _rig.GlobalTransform;
 			_inMenu = true;
+			_logger.Info("Switched from museum world to menu.");
 		}
 
 		_switching = false;
@@ -149,15 +159,10 @@ public partial class PlatformSwitcher : Node
 
 	private void MoveCameraTo(Marker3D marker)
 	{
-		if (marker == null || _camera == null || _rig == null)
-			return;
-
 		_rig.GlobalPosition = marker.GlobalPosition - (_camera.GlobalPosition - _rig.GlobalPosition);
 
 		var cameraForward = Flatten(-_camera.GlobalTransform.Basis.Z);
 		var targetForward = Flatten(-marker.GlobalTransform.Basis.Z);
-		if (cameraForward.LengthSquared() < 0.0001f || targetForward.LengthSquared() < 0.0001f)
-			return;
 
 		_rig.RotateY(cameraForward.SignedAngleTo(targetForward, Vector3.Up));
 		_rig.GlobalPosition = marker.GlobalPosition - (_camera.GlobalPosition - _rig.GlobalPosition);

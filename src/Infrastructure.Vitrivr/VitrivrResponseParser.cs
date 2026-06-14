@@ -1,10 +1,13 @@
 using Core;
+using Infrastructure.Logging;
 using System.Text.Json;
 
 namespace Infrastructure.Vitrivr;
 
 public static class VitrivrResponseParser
 {
+    private static readonly EventLogger Logger = new(nameof(VitrivrResponseParser));
+
     public static SearchResult Parse(string responseText, string mediaFolderPath, string mediaBaseUrl)
     {
         try
@@ -23,10 +26,12 @@ public static class VitrivrResponseParser
                 if (item != null)
                     items.Add(item);
             }
+            Logger.Info($"Parsed Vitrivr response. Items={items.Count}");
             return SearchResult.FromItems(items);
         }
         catch (Exception exception)
         {
+            Logger.Error("Failed to parse Vitrivr response", exception);
             return SearchResult.Failure(exception.Message);
         }
     }
