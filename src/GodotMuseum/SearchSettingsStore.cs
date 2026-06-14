@@ -23,7 +23,7 @@ public partial class SearchSettingsStore : Node
         var json = file.GetAsText();
         var appSettings = AppSettingsLoader.LoadFromJson(json);
 
-        var logDirectoryPath = ResolvePath(appSettings.LogDirectoryPath);
+        var logDirectoryPath = ResolveLogDirectoryPath(appSettings.LogDirectoryPath, appSettings.FallbackLogDirectoryPath);
         EventLogger.Configure(logDirectoryPath);
         GD.Print($"JSON-Logs are written to: " + logDirectoryPath + "/app.log");
         GD.Print($"Readable logs are written to:" + logDirectoryPath + "/app-readable.log");
@@ -56,5 +56,18 @@ public partial class SearchSettingsStore : Node
             return ProjectSettings.GlobalizePath(path);
 
         return path;
+    }
+
+    private static string ResolveLogDirectoryPath(string primaryPath, string fallbackPath)
+    {
+        var resolvedPrimaryPath = ResolvePath(primaryPath);
+
+        if (Directory.Exists(resolvedPrimaryPath))
+            return resolvedPrimaryPath;
+
+        var resolvedFallbackPath = ResolvePath(fallbackPath);
+        GD.Print($"Log directory does not exist: {resolvedPrimaryPath}. Falling back to: {resolvedFallbackPath}");
+
+        return resolvedFallbackPath;
     }
 }
