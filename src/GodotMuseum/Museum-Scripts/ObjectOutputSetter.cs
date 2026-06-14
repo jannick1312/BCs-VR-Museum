@@ -25,7 +25,7 @@ public partial class ObjectOutputSetter : Node
         ClearGeneratedObjects();
     }
 
-    public async Task SetOutputObjectsFromBytes(IReadOnlyList<byte[]> objectBytes)
+    public async Task SetOutputObjects(IReadOnlyList<byte[]> objectBytes, IReadOnlyList<string> objectNames)
     {
         ClearGeneratedObjects();
 
@@ -40,15 +40,14 @@ public partial class ObjectOutputSetter : Node
         {
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-            var objectNode = LoadObject(objectBytes[i]);
+            var objectNode = LoadObject(objectBytes[i], objectNames[i]);
 
             if (objectNode == null)
             {
-                Logger.Warning($"Skipping 3D object at index {i} because it could not be loaded.");
+                Logger.Warning($"Skipping 3D object '{objectNames[i]}' at index {i} because it could not be loaded.");
                 continue;
             }
-
-            PlaceObject(objectNode, places[i]);
+            PlaceObject(objectNode, objectNames[i], places[i]);
         }
     }
 
@@ -61,7 +60,7 @@ public partial class ObjectOutputSetter : Node
         }
     }
 
-    private static Node3D LoadObject(byte[] bytes)
+    private static Node3D LoadObject(byte[] bytes, string objectName)
     {
         var gltf = new GltfDocument();
         var state = new GltfState();
@@ -69,7 +68,7 @@ public partial class ObjectOutputSetter : Node
         var error = gltf.AppendFromBuffer(bytes, "", state);
 
         if (error == Error.Ok) return gltf.GenerateScene(state) as Node3D;
-        Logger.Error($"Could not load 3D object. Error: {error}");
+        Logger.Error($"Could not load 3D object '{objectName}'. Error: {error}");
         return null;
     }
 
@@ -96,7 +95,7 @@ public partial class ObjectOutputSetter : Node
         return aabb;
     }
 
-    private void PlaceObject(Node3D item, Node3D place)
+    private void PlaceObject(Node3D item, string objectName, Node3D place)
     {
         item.AddToGroup("GeneratedOutputObject");
         AddChild(item);
@@ -108,7 +107,7 @@ public partial class ObjectOutputSetter : Node
 
         var scale = GetScale(objectBounds.Size, placeBounds.Size);
 
-        Logger.Info($"Placing 3D object. Scale={scale}");
+        Logger.Info($"Placing 3D object '{objectName}'. Scale={scale}");
 
         item.Scale *= scale;
 

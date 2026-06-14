@@ -5,4 +5,5 @@ public class SearchResultItem(MediaType mediaType, string localPath, string remo
     public MediaType MediaType { get; } = mediaType;
     public string LocalPath { get; } = localPath;
     public string RemoteUrl { get; } = remoteUrl;
+    public string Name { get; } = Path.GetFileName(localPath);
 }

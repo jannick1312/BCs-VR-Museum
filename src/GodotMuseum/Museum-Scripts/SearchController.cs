@@ -92,58 +92,48 @@ public partial class SearchController : Node
             return;
         }
 
-        var imageItems = new List<dynamic>();
-        var videoItems = new List<dynamic>();
-        var objectItems = new List<dynamic>();
+        var imageBytes = new List<byte[]>();
+        var imageNames = new List<string>();
+        var videoBytes = new List<byte[]>();
+        var videoNames = new List<string>();
+        var objectBytes = new List<byte[]>();
+        var objectNames = new List<string>();
 
         foreach (var item in result.Items)
         {
             switch (item.MediaType)
             {
                 case MediaType.Image:
-                    imageItems.Add(item);
+                    imageBytes.Add(item.Bytes);
+                    imageNames.Add(item.Name);
                     break;
 
                 case MediaType.Video:
-                    videoItems.Add(item);
+                    videoBytes.Add(item.Bytes);
+                    videoNames.Add(item.Name);
                     break;
 
                 case MediaType.Object3D:
-                    objectItems.Add(item);
+                    objectBytes.Add(item.Bytes);
+                    objectNames.Add(item.Name);
                     break;
             }
         }
         
-        if (imageItems.Count > 0)
-        {
-            var imageBytes = new List<byte[]>();
-
-            foreach (var item in imageItems)
-            {
-                imageBytes.Add(item.Bytes);
-            }
-            await _outputScreen.SetOutputImagesFromBytes(imageBytes);
-        }
+        if (imageBytes.Count > 0)
+            await _outputScreen.SetOutputImages(imageBytes, imageNames);
         else
             _logger.Info("Search result contains no images to display.");
 
-        if (videoItems.Count > 0)
-            _logger.Warning("Video display is not implemented yet.");
+        if (videoBytes.Count > 0)
+            _logger.Warning($"Video display is not implemented yet.");
             
 
-        if (objectItems.Count > 0)
-        {
-            var objectBytes = new List<byte[]>();
-
-            foreach (var item in objectItems)
-            {
-                objectBytes.Add(item.Bytes);
-            }
-            await _objectOutput.SetOutputObjectsFromBytes(objectBytes);
-        }
+        if (objectBytes.Count > 0)
+            await _objectOutput.SetOutputObjects(objectBytes, objectNames);
         else
             _logger.Info("Search result contains no 3D objects to display.");
-        _logger.Info($"Search output shown. images={imageItems.Count}, videos={videoItems.Count}, objects={objectItems.Count}");
+        _logger.Info($"Search output shown.");
         _visibility.ShowOutput();
     }
 }

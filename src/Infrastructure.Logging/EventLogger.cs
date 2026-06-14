@@ -10,14 +10,6 @@ public sealed class EventLogger(string source)
     private static string DirectoryPath { get; set; } = Path.Combine(AppContext.BaseDirectory, "logs");
     private static DateTimeOffset StartTime { get; set; } = DateTimeOffset.UtcNow;
 
-    public static void Configure(string directoryPath)
-    {
-        DirectoryPath = directoryPath;
-        StartTime = DateTimeOffset.UtcNow;
-        Directory.CreateDirectory(DirectoryPath);
-        File.WriteAllText(Path.Combine(DirectoryPath, "app.log"), "");
-    }
-
     public void Info(string text)
     {
         Log(LogLevel.Info, text);
@@ -35,8 +27,9 @@ public sealed class EventLogger(string source)
 
     private void Log(LogLevel level, string text)
     {
-        var entry = new{level = level.ToString(), timestamp = FormatElapsedTime(), source, text};
-        WriteJsonLine(Path.Combine(DirectoryPath, "app.log"), entry);
+        var timestamp = FormatElapsedTime();
+        var entry = new{level = level.ToString(), timestamp, source, text};
+        WriteLogLines(entry, FormatReadableLine(level, timestamp, text));
     }
 
     private static string FormatElapsedTime()
@@ -46,9 +39,27 @@ public sealed class EventLogger(string source)
         return $"{(int)elapsed.TotalHours:00}:{elapsed.Minutes:00}:{elapsed.Seconds:00}.{elapsed.Milliseconds:000}";
     }
 
-    private static void WriteJsonLine(string filePath, object entry)
+    private string FormatReadableLine(LogLevel level, string timestamp, string text)
     {
-        var line = JsonSerializer.Serialize(entry, JsonOptions);
-        lock (WriteLock){Directory.CreateDirectory(DirectoryPath);File.AppendAllText(filePath, line + Environment.NewLine);}
+        var prefix = level switch
+        {
+            LogLevel.Info => "[INFO]    ",
+            LogLevel.Warning => "  [WARN]  ",
+            LogLevel.Error => "    [ERR] ",
+            _ => "[INFO]    "
+        };
+
+        return $"{prefix}{timestamp} {source} - {text}";
+    }
+
+    private static void WriteLogLines(object entry, string readableLine)
+    {
+        var jsonLine = JsonSerializer.Serialize(entry, JsonOptions);
+        lock (WriteLock)
+        {
+            Directory.CreateDirectory(DirectoryPath); 
+            File.AppendAllText(Path.Combine(DirectoryPath, "app.log"), jsonLine + Environment.NewLine); 
+            File.AppendAllText(Path.Combine(DirectoryPath, "app-readable.log"), readableLine + Environment.NewLine);
+        }
     }
 }

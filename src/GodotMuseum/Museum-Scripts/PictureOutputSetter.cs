@@ -43,45 +43,56 @@ public partial class PictureOutputSetter : Node
             Logger.Error("Picture output template could not be duplicated as Node3D.");
     }
 
-    public async Task SetOutputImagesFromBytes(IReadOnlyList<byte[]> imageBytes)
+    public async Task SetOutputImages(IReadOnlyList<byte[]> imageBytes, IReadOnlyList<string> imageNames)
     {
         ClearGeneratedPictures();
 
         var places = GetOutputPlaces();
 
-        if (imageBytes.Count > places.Count)
-            Logger.Warning($"Only {places.Count} of {imageBytes.Count} images can be placed.");
+        var availableImages = new List<(byte[] Bytes, string Name)>();
 
-        var availableBytes = new List<byte[]>(imageBytes);
-        for (var i = availableBytes.Count - 1; i > 0; i--)
+        for (var i = 0; i < imageBytes.Count; i++)
+        {
+            availableImages.Add((imageBytes[i], imageNames[i]));
+        }
+
+        for (var i = availableImages.Count - 1; i > 0; i--)
         {
             var j = _rng.RandiRange(0, i);
-            (availableBytes[i], availableBytes[j]) = (availableBytes[j], availableBytes[i]);
+            (availableImages[i], availableImages[j]) = (availableImages[j], availableImages[i]);
         }
 
         var nextImageIndex = 0;
+        var placedImageCount = 0;
 
         foreach (var place in places)
         {
-            if (nextImageIndex >= availableBytes.Count)
+            if (nextImageIndex >= availableImages.Count)
                 break;
 
-            var randomCount = _rng.RandiRange(1, Mathf.Min(4, availableBytes.Count - nextImageIndex));
+            var randomCount = _rng.RandiRange(1, Mathf.Min(4, availableImages.Count - nextImageIndex));
             var slots = WallImageLayout.CreateCenteredHorizontalSlots(randomCount, GetPlaceWidth(place), GetPlaceHeight(place));
 
             for (var i = 0; i < randomCount; i++)
             {
                 await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-                var texture = LoadTexture(availableBytes[nextImageIndex]);
+                var imageItem = availableImages[nextImageIndex];
+                var texture = LoadTexture(imageItem.Bytes, imageItem.Name);
                 nextImageIndex++;
 
                 if (texture == null)
                     continue;
 
-                CreatePictureInstance(texture, place, slots[i]);
+                CreatePictureInstance(texture, imageItem.Name, place, slots[i]);
+                placedImageCount++;
             }
         }
+
+        if (placedImageCount < imageBytes.Count)
+            Logger.Warning($"Placed {placedImageCount} of {imageBytes.Count} images.");
+        else
+            Logger.Info($"Placed all {placedImageCount} images.");
     }
 
     private void ClearGeneratedPictures()
@@ -93,7 +104,7 @@ public partial class PictureOutputSetter : Node
         }
     }
 
-    private static ImageTexture LoadTexture(byte[] bytes)
+    private static ImageTexture LoadTexture(byte[] bytes, string imageName)
     {
         var image = new Image();
 
@@ -106,7 +117,7 @@ public partial class PictureOutputSetter : Node
             loadError = image.LoadWebpFromBuffer(bytes);
 
         if (loadError == Error.Ok && !image.IsEmpty()) return ImageTexture.CreateFromImage(image);
-        Logger.Error($"Could not load image from bytes. Error: {loadError}");
+        Logger.Error($"Could not load image '{imageName}' from bytes. Error: {loadError}");
         return null;
     }
 
@@ -136,7 +147,7 @@ public partial class PictureOutputSetter : Node
         return Mathf.Max(0.1f, mesh.GetAabb().Size.Y * mesh.Scale.Y);
     }
 
-    private void CreatePictureInstance(ImageTexture texture, Node3D place, Rect2 slot)
+    private void CreatePictureInstance(ImageTexture texture, string imageName, Node3D place, Rect2 slot)
     {
         var item = _outputTemplate.Duplicate() as Node3D;
 
@@ -171,6 +182,7 @@ public partial class PictureOutputSetter : Node
         item.GlobalTransform = new Transform3D(place.GlobalTransform.Basis.Orthonormalized(), place.ToGlobal(new Vector3(x, y, 0)));
 
         picture.Scale = new Vector3(imageWidth, imageHeight, 1.0f);
+        Logger.Info($"Placed image '{imageName}'.");
 
         var frameMaker = item.GetNodeOrNull<FrameMaker>("FrameMaker");
 

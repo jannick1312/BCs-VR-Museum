@@ -25,7 +25,8 @@ public partial class SearchSettingsStore : Node
 
         var logDirectoryPath = ResolvePath(appSettings.LogDirectoryPath);
         EventLogger.Configure(logDirectoryPath);
-        GD.Print($"Logs are written to: " + logDirectoryPath + "/app.log");
+        GD.Print($"JSON-Logs are written to: " + logDirectoryPath + "/app.log");
+        GD.Print($"Readable logs are written to:" + logDirectoryPath + "/app-readable.log");
         _logger.Info($"Settings loaded.");
 
         _runtimeSettings = new RuntimeSearchSettings(appSettings.Deployed, appSettings.DefaultDeployedIp, appSettings.DefaultStreamedIp, appSettings.MediaFolderPath);
