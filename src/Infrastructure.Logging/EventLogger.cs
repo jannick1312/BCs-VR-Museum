@@ -10,6 +10,15 @@ public sealed class EventLogger(string source)
     private static string DirectoryPath { get; set; } = Path.Combine(AppContext.BaseDirectory, "logs");
     private static DateTimeOffset StartTime { get; set; } = DateTimeOffset.UtcNow;
 
+    public static void Configure(string directoryPath)
+    {
+        DirectoryPath = directoryPath;
+        StartTime = DateTimeOffset.UtcNow;
+        Directory.CreateDirectory(DirectoryPath);
+        File.WriteAllText(Path.Combine(DirectoryPath, "app.log"), "");
+        File.WriteAllText(Path.Combine(DirectoryPath, "app-readable.log"), "");
+    }
+
     public void Info(string text)
     {
         Log(LogLevel.Info, text);
