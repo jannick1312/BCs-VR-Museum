@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
@@ -15,7 +16,7 @@ public partial class ObjectOutputSetter : Node
         ClearGeneratedObjects();
     }
 
-    public void SetOutputObjectsFromBytes(IReadOnlyList<byte[]> objectBytes)
+    public async Task SetOutputObjectsFromBytes(IReadOnlyList<byte[]> objectBytes)
     {
         ClearGeneratedObjects();
 
@@ -25,6 +26,8 @@ public partial class ObjectOutputSetter : Node
 
         for (var i = 0; i < count; i++)
         {
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
             var objectNode = LoadObject(objectBytes[i]);
 
             if (objectNode == null)

@@ -13,12 +13,19 @@ public class SearchMedia(ISearchService searchService, IMediaLoader mediaLoader)
         if (!searchResult.Success)
             return DisplayMediaResult.Failure(searchResult.ErrorMessage);
 
-        var items = new List<DisplayMediaItem>();
+        var searchItems = searchResult.Items.Take(limit).ToList();
+        var loadTasks = searchItems.Select(mediaLoader.LoadAsync).ToArray();
+        var mediaContents = await Task.WhenAll(loadTasks);
 
-        foreach (var item in searchResult.Items.Take(limit))
+        var items = new List<DisplayMediaItem>();
+        for (var i = 0; i < searchItems.Count; i++)
         {
-            var mediaContent = await mediaLoader.LoadAsync(item);
-            items.Add(new DisplayMediaItem(item.MediaType, mediaContent.Bytes));
+            var mediaContent = mediaContents[i];
+
+            if (!mediaContent.Success)
+                continue;
+
+            items.Add(new DisplayMediaItem(searchItems[i].MediaType, mediaContent.Bytes));
         }
 
         return DisplayMediaResult.FromMedia(items);

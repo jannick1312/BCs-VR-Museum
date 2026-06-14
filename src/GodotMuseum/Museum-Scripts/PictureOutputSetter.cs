@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
@@ -24,7 +25,7 @@ public partial class PictureOutputSetter : Node
         _outputTemplate = _outputRoot.Duplicate() as Node3D;
     }
 
-    public void SetOutputImagesFromBytes(IReadOnlyList<byte[]> imageBytes)
+    public async Task SetOutputImagesFromBytes(IReadOnlyList<byte[]> imageBytes)
     {
         ClearGeneratedPictures();
 
@@ -49,6 +50,8 @@ public partial class PictureOutputSetter : Node
 
             for (var i = 0; i < randomCount; i++)
             {
+                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
                 var texture = LoadTexture(availableBytes[nextImageIndex]);
                 nextImageIndex++;
 

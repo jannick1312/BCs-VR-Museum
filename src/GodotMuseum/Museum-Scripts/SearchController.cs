@@ -115,7 +115,7 @@ public partial class SearchController : Node
             {
                 imageBytes.Add(item.Bytes);
             }
-            _outputScreen.SetOutputImagesFromBytes(imageBytes);
+            await _outputScreen.SetOutputImagesFromBytes(imageBytes);
         }
 
         if (videoItems.Count > 0)
@@ -132,7 +132,7 @@ public partial class SearchController : Node
             {
                 objectBytes.Add(item.Bytes);
             }
-            _objectOutput.SetOutputObjectsFromBytes(objectBytes);
+            await _objectOutput.SetOutputObjectsFromBytes(objectBytes);
         }
         _visibility.ShowOutput();
     }
