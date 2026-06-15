@@ -1,0 +1,36 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+
+\newcommand{\meetingdate}{17 June 2026}
+\input{../template.tex}
+
+\begin{document}
+
+\done
+\begin{itemize}
+    \item Refactored and cleaned up project structure.
+    \item Pulled the newest version of vitrivr and tested it in the server environment. Had to fix some issues related to rendering in a headless server environment.
+    \item Added a custom logger to all scripts to log errors and debug information to a file instead of the console.
+    \item Added logic that allows areas to define where images are displayed in the VR museum environment. This makes it possible to define multiple areas and display images in different locations.
+    \item Added support for GLB files and implemented logic that allows areas to define where objects are displayed in the VR museum environment.
+    \item Spent a lot of time experimenting with Fusion/Blender to create a reasonably good-looking VR museum environment.
+\end{itemize}
+
+\support
+\begin{itemize}
+    \item Which image, video, and 3D formats do I need to support in the environment? Which formats are supported by the vitrivr engine?
+    At the moment, I support: jpg, jpeg, png, webp, and glb. Would it make sense to convert unsupported formats beforehand?
+    \item When I extract videos in the vitrivr engine, the results I get when querying the engine do not contain the path to the video itself in the filelookup area. How can I obtain the path to the video file from the results?
+    \item Access to a Vive XR Elite headset and an Apple Vision Pro.
+    \item Before extracting information from images, videos, or 3D objects in the vitrivr engine, should I reduce their size (and therefore their quality) to speed up the extraction process and later improve asset loading times in the VR environment?
+    \item When loading all assets from a URL, the time between the query and all assets being loaded into the environment is currently 5--10 seconds (around 3--5 seconds when loading from local storage). Some stuttering also occurs while assets are being loaded and placed into the environment during runtime. Is this acceptable, or do you have any ideas or suggestions for making the loading process smoother?
+    \item When querying the vitrivr engine, I sometimes do not get a mesh as a result, but only images. In those cases, the environment only displays images. Should I make additional queries to the engine to guarantee that I have a mesh, or is it acceptable to display only images in such cases, since an unrelated mesh may be worse than displaying no mesh at all?
+\end{itemize}
+
+\plan
+\checkpoint{Improve the VR museum environment?}
+\checkpoint{Support video files in the VR museum environment.}
+\checkpoint{Prepare for the next weekly meeting}
+
+\end{document}
