@@ -13,15 +13,18 @@ public class MediaLoader : IMediaLoader
     {
         try
         {
+            _logger.Info($"Loading media. Name='{item.Name}', LocalPath='{item.LocalPath}', RemoteUrl='{item.RemoteUrl}'");
+
             if (File.Exists(item.LocalPath))
             {
                 var localBytes = await File.ReadAllBytesAsync(item.LocalPath);
-                _logger.Info("Loaded media from local path.");
+                _logger.Info($"Loaded media from local path. LocalPath='{item.LocalPath}'");
                 return MediaContent.FromBytes(localBytes);
             }
 
             _logger.Info("Local media not found, loading remote media.");
             var remoteBytes = await _httpClient.GetByteArrayAsync(item.RemoteUrl);
+            _logger.Info($"Loaded media from remote URL. RemoteUrl='{item.RemoteUrl}'");
             return MediaContent.FromBytes(remoteBytes);
         }
         catch (TaskCanceledException)

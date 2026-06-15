@@ -49,13 +49,19 @@ public static class VitrivrResponseParser
         if (string.IsNullOrWhiteSpace(sourcePath))
             return null;
 
-        var fileName = Path.GetFileName(sourcePath);
+        var fileName = ExtractFileName(sourcePath);
         var mediaType = DetectMediaType(fileName);
         var mediaFolderName = GetMediaFolderName(mediaType);
         var localPath = Path.Combine(mediaFolderPath, mediaFolderName, fileName);
         var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + mediaFolderName + "/" + fileName;
 
         return new SearchResultItem(mediaType, localPath, remoteUrl);
+    }
+
+    private static string ExtractFileName(string path)
+    {
+        var normalizedPath = path.Replace('\\', '/');
+        return Path.GetFileName(normalizedPath);
     }
 
     private static MediaType DetectMediaType(string fileName)

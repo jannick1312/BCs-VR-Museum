@@ -18,7 +18,7 @@ public partial class SearchSettingsStore : Node
     {
         const string settingsPath = "res://appsettings.json";
 
-        using var file = FileAccess.Open(settingsPath, FileAccess.ModeFlags.Read );
+        using var file = FileAccess.Open(settingsPath, FileAccess.ModeFlags.Read);
 
         var json = file.GetAsText();
         var appSettings = AppSettingsLoader.LoadFromJson(json);
@@ -62,7 +62,7 @@ public partial class SearchSettingsStore : Node
     {
         var resolvedPrimaryPath = ResolvePath(primaryPath);
 
-        if (Directory.Exists(resolvedPrimaryPath))
+        if (System.IO.Directory.Exists(resolvedPrimaryPath))
             return resolvedPrimaryPath;
 
         var resolvedFallbackPath = ResolvePath(fallbackPath);
