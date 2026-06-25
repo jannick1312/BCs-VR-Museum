@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dh7iemj1ylh3i" path="res://Menu/MenuNode.tscn" id="1_w48qg"]
 [ext_resource type="Script" uid="uid://dosnwmw4cp0s3" path="res://SearchSettingsStore.cs" id="2_272bh"]
 [ext_resource type="PackedScene" uid="uid://csbg75jax1jnj" path="res://player.tscn" id="2_h2yge"]
+[ext_resource type="Script" path="res://GameSettingsStore.cs" id="3_2hygf"]
 [ext_resource type="Script" uid="uid://ulmqj7ytbj65" path="res://SearchUseCaseFactory.cs" id="3_272bh"]
 [ext_resource type="PackedScene" uid="uid://djl0v8ero2htq" path="res://Museum/MuseumNode.tscn" id="4_lquwl"]
 [ext_resource type="Texture2D" uid="uid://bb4010j8bdjsi" path="res://HDRi/qwantani_dusk_2_puresky_4k.hdr" id="5_5vw27"]
@@ -102,12 +103,51 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(1.8, 1.8, 0.02)
 
+[sub_resource type="QuadMesh" id="QuadMesh_1u8w0"]
+resource_local_to_scene = true
+size = Vector2(1.8, 1.8)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_0odxb"]
+viewport_path = NodePath("MenuNode/2Din3DGame/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lswn8"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_0odxb")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a6jrf"]
+resource_local_to_scene = true
+size = Vector3(1.8, 1.8, 0.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_xuqvo"]
+resource_local_to_scene = true
+size = Vector2(1.8, 1.8)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qsp4k"]
+viewport_path = NodePath("MenuNode/2Din3DSettings/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kq58d"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_qsp4k")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_seu75"]
+resource_local_to_scene = true
+size = Vector3(1.8, 1.8, 0.02)
+
 [node name="Main" type="Node3D" unique_id=895849569]
 
 [node name="StartXR" parent="." unique_id=758186761 instance=ExtResource("1_0xm2m")]
 
 [node name="SearchSettingsStore" type="Node" parent="." unique_id=378595432]
 script = ExtResource("2_272bh")
+
+[node name="GameSettingsStore" type="Node" parent="." unique_id=2084563901]
+script = ExtResource("3_2hygf")
 
 [node name="SearchUseCaseFactory" type="Node" parent="." unique_id=1891732225]
 script = ExtResource("3_272bh")
@@ -143,6 +183,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
 [node name="CollisionShape3D" parent="MuseumNode/Input/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 224690396, 845947144, 1711902221) index="0" unique_id=2064986693]
 shape = SubResource("BoxShape3D_vivmo")
 
+[node name="PictureOutputPlaces" parent="MuseumNode" index="7" unique_id=1319521603]
+visible = true
+
 [node name="MenuNode" parent="." unique_id=227478366 instance=ExtResource("1_w48qg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
 
@@ -160,6 +203,20 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ryguw")
 [node name="CollisionShape3D" parent="MenuNode/2Din3DURL/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1927318274, 1024925121) index="0" unique_id=620411508]
 shape = SubResource("BoxShape3D_d13ii")
 
+[node name="Screen" parent="MenuNode/2Din3DGame" parent_id_path=PackedInt32Array(227478366, 1731874065) index="1" unique_id=830305756]
+mesh = SubResource("QuadMesh_1u8w0")
+surface_material_override/0 = SubResource("StandardMaterial3D_lswn8")
+
+[node name="CollisionShape3D" parent="MenuNode/2Din3DGame/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1731874065, 1024925121) index="0" unique_id=620411508]
+shape = SubResource("BoxShape3D_a6jrf")
+
+[node name="Screen" parent="MenuNode/2Din3DSettings" parent_id_path=PackedInt32Array(227478366, 1345467856) index="1" unique_id=830305756]
+mesh = SubResource("QuadMesh_xuqvo")
+surface_material_override/0 = SubResource("StandardMaterial3D_kq58d")
+
+[node name="CollisionShape3D" parent="MenuNode/2Din3DSettings/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1345467856, 1024925121) index="0" unique_id=620411508]
+shape = SubResource("BoxShape3D_seu75")
+
 [editable path="Player"]
 [editable path="MuseumNode"]
 [editable path="MuseumNode/World"]
@@ -170,3 +227,5 @@ shape = SubResource("BoxShape3D_d13ii")
 [editable path="MenuNode"]
 [editable path="MenuNode/2Din3DKeyboard"]
 [editable path="MenuNode/2Din3DURL"]
+[editable path="MenuNode/2Din3DGame"]
+[editable path="MenuNode/2Din3DSettings"]

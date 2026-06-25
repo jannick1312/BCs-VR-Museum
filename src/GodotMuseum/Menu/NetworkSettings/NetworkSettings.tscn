@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://drs3gdns8fhnb"]
 
-[ext_resource type="Script" uid="uid://cjid5a7fylxt6" path="res://Menu-Scripts/UrlSettingsPanel.cs" id="1_1vbjo"]
+[ext_resource type="Script" uid="uid://cjid5a7fylxt6" path="res://Menu-Scripts/UrlSettingsPanel.cs" id="1_ii3tl"]
 
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
 bg_color = Color(1, 1, 1, 0.75686276)
@@ -102,18 +102,20 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 corner_detail = 20
 
-[node name="URL" type="Control" unique_id=1310227466]
+[node name="NetworkSettings" type="Control" unique_id=1310227466]
 layout_mode = 3
 anchors_preset = 0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="UrlSettingsPanel" type="Node" parent="." unique_id=1045959962]
-script = ExtResource("1_1vbjo")
+[node name="NetworkSettingsPanel" type="Node" parent="." unique_id=1045959962]
+script = ExtResource("1_ii3tl")
 
 [node name="Panel" type="Panel" parent="." unique_id=598254976]
 custom_minimum_size = Vector2(1200, 1200)
 layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 1250.0
 theme_override_styles/panel = SubResource("PanelStyle")
 
 [node name="Title" type="Label" parent="Panel" unique_id=1440946483]
@@ -124,7 +126,7 @@ offset_right = 1150.0
 offset_bottom = 212.5
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 100
-text = "Settings"
+text = "Network Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -172,8 +174,30 @@ offset_right = 1150.0
 offset_bottom = 612.5
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("CurrentLabelStyle")
-text = "Currently using:
-xxxxxxxxxxxxxxxxxx"
+text = "
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="URLcurrentlyTitle" type="Label" parent="Panel" unique_id=338616414]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 462.5
+offset_right = 1150.0
+offset_bottom = 525.0
+theme_override_font_sizes/font_size = 45
+text = "Currently using:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="URLcurrentlyValue" type="Label" parent="Panel" unique_id=338616415]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 525.0
+offset_right = 1150.0
+offset_bottom = 600.0
+theme_override_font_sizes/font_size = 50
+text = "xxxxxxxxxxxxxxxxxx"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -206,7 +230,7 @@ layout_mode = 0
 offset_left = 50.0
 offset_top = 825.0
 offset_right = 575.0
-offset_bottom = 1150.0
+offset_bottom = 1200.0
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("RevertNormal")
 theme_override_styles/pressed = SubResource("RevertPressed")
@@ -218,7 +242,7 @@ layout_mode = 0
 offset_left = 625.0
 offset_top = 825.0
 offset_right = 1150.0
-offset_bottom = 1150.0
+offset_bottom = 1200.0
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("SubmitNormal")
 theme_override_styles/pressed = SubResource("SubmitPressed")

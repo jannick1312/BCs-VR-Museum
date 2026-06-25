@@ -28,4 +28,15 @@ public partial class SearchUseCaseFactory : Node
 
         return new SearchMedia(searchService, mediaLoader);
     }
+
+    public ValidateServer GetValidateServer()
+    {
+        var vitrivrSettings = new VitrivrSettings(_searchSettingsStore.CurrentIp, _searchSettingsStore.MediaFolderPath);
+
+        _logger.Info($"Creating server validation use case. CurrentIp={_searchSettingsStore.CurrentIp}");
+
+        IServerHealthService serverHealthService = new VitrivrServerHealthService(vitrivrSettings);
+
+        return new ValidateServer(serverHealthService);
+    }
 }

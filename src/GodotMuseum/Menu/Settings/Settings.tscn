@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://bifam2t5wkpb8"]
+
+[ext_resource type="Script" path="res://Menu-Scripts/SettingsPanel.cs" id="1_1g1q2"]
+[ext_resource type="Texture2D" uid="uid://ul6xsjsyi8wu" path="res://Icon/vr-sketch.png" id="2_1g1q2"]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(1, 1, 1, 0.75686276)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="RevertNormal"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="RevertPressed"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="RevertHover"]
+bg_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitNormal"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitPressed"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitHover"]
+bg_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1g1q2"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 0.6)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+corner_detail = 5
+
+[node name="Settings" type="Control" unique_id=1310227466]
+layout_mode = 3
+anchors_preset = 0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SettingsPanel" type="Node" parent="." unique_id=1045959962]
+script = ExtResource("1_1g1q2")
+
+[node name="Panel" type="Panel" parent="." unique_id=598254976]
+custom_minimum_size = Vector2(1200, 1200)
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 1250.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Title" type="Label" parent="Panel" unique_id=1440946483]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 1150.0
+offset_bottom = 212.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Welcome to..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Close" type="Button" parent="Panel" unique_id=1820918828]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 1050.0
+offset_right = 575.0
+offset_bottom = 1212.5
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("RevertNormal")
+theme_override_styles/pressed = SubResource("RevertPressed")
+theme_override_styles/hover = SubResource("RevertHover")
+text = "Close
+"
+
+[node name="Start" type="Button" parent="Panel" unique_id=690301288]
+layout_mode = 0
+offset_left = 625.0
+offset_top = 1050.0
+offset_right = 1150.0
+offset_bottom = 1212.5
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("SubmitNormal")
+theme_override_styles/pressed = SubResource("SubmitPressed")
+theme_override_styles/hover = SubResource("SubmitHover")
+theme_override_styles/disabled = SubResource("SubmitNormal")
+theme_override_styles/focus = SubResource("SubmitHover")
+text = "Start
+"
+
+[node name="Background" type="Panel" parent="Panel" unique_id=1559427172]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 250.0
+offset_right = 1150.0
+offset_bottom = 1000.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1g1q2")
+
+[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=2074852186]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 280.0
+offset_right = 1150.0
+offset_bottom = 1030.0
+texture = ExtResource("2_1g1q2")
+expand_mode = 5

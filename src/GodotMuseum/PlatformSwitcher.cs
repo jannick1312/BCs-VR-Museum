@@ -34,7 +34,7 @@ public partial class PlatformSwitcher : Node
 	private Transform3D _lastMuseumBody;
 	private Transform3D _lockedMenuRig;
 	private bool _inMenu;
-	private bool _bothWerePressed;
+	private bool _menuButtonWasPressed;
 	private bool _switching;
 
 	public override async void _Ready()
@@ -84,16 +84,15 @@ public partial class PlatformSwitcher : Node
 
 	public override void _Process(double delta)
 	{
-		if (_switching || _leftController == null || _rightController == null)
+		if (_switching || _leftController == null)
 			return;
 
-		var bothPressed = _leftController.GetFloat("trigger") > 0.75f &&
-			_rightController.GetFloat("trigger") > 0.75f;
+		var menuButtonPressed = _leftController.IsButtonPressed("menu_button");
 
-		if (bothPressed && !_bothWerePressed)
+		if (menuButtonPressed && !_menuButtonWasPressed)
 			ToggleWorld();
 
-		_bothWerePressed = bothPressed;
+		_menuButtonWasPressed = menuButtonPressed;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -106,40 +105,55 @@ public partial class PlatformSwitcher : Node
 		LockHands();
 	}
 
-	private async void ToggleWorld()
+	public async void SwitchToMuseum()
 	{
 		_switching = true;
 
 		_body?.Velocity = Vector3.Zero;
 
-		if (_inMenu)
-		{
-			_inMenu = false;
-			SetWorld(true);
-			_rig.GlobalTransform = _lastMuseumRig;
-			_body?.GlobalTransform = _lastMuseumBody;
+		_inMenu = false;
+		SetWorld(true);
+		_rig.GlobalTransform = _lastMuseumRig;
+		_body?.GlobalTransform = _lastMuseumBody;
 
-			await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
-			SetEnabled(_body, true);
-			SetMovementEnabled(true);
-			_logger.Info("Switched from menu to museum world.");
-		}
-		else
-		{
-			RememberMuseumTransform();
-			SetMovementEnabled(false);
-			SetEnabled(_body, false);
-			SetWorld(false);
-			MoveCameraTo(_menuSpawn);
-			
-			if (_body != null && _rig != null)
-				_body.GlobalTransform = _rig.GlobalTransform;
-			_lockedMenuRig = _rig.GlobalTransform;
-			_inMenu = true;
-			_logger.Info("Switched from museum world to menu.");
-		}
+		await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+		SetEnabled(_body, true);
+		SetMovementEnabled(true);
+		_logger.Info("Switched from menu to museum world.");
 
 		_switching = false;
+	}
+
+	private void SwitchToMenu()
+	{
+		if (_inMenu || _switching)
+			return;
+
+		_switching = true;
+
+		_body?.Velocity = Vector3.Zero;
+
+		RememberMuseumTransform();
+		SetMovementEnabled(false);
+		SetEnabled(_body, false);
+		SetWorld(false);
+		MoveCameraTo(_menuSpawn);
+		
+		if (_body != null && _rig != null)
+			_body.GlobalTransform = _rig.GlobalTransform;
+		_lockedMenuRig = _rig.GlobalTransform;
+		_inMenu = true;
+		_logger.Info("Switched from museum world to menu.");
+
+		_switching = false;
+	}
+
+	private void ToggleWorld()
+	{
+		if (_inMenu)
+			SwitchToMuseum();
+		else
+			SwitchToMenu();
 	}
 
 	private void RememberMuseumTransform()
