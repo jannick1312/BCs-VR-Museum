@@ -43,6 +43,7 @@ public partial class UrlSettingsPanel : Node
 		{
 			_urlInput.FocusEntered += OnUrlInputFocusEntered;
 			_urlInput.FocusExited += OnUrlInputFocusExited;
+			_urlInput.TextSubmitted += _ => DismissUrlInput();
 		}
 		_submitButton?.Pressed += OnSubmitPressed;
 		_revertButton?.Pressed += OnRevertPressed;
@@ -55,6 +56,17 @@ public partial class UrlSettingsPanel : Node
 		SetKeyboardVisible(false);
 		UpdateCurrentUrlLabel();
 		ValidateCurrentUrl();
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (_urlInput == null || !_urlInput.HasFocus())
+			return;
+
+		if (@event is InputEventMouseButton { Pressed: true } mouseButton && !IsInsideUrlInput(mouseButton.Position))
+			DismissUrlInput();
+		else if (@event is InputEventScreenTouch { Pressed: true } screenTouch && !IsInsideUrlInput(screenTouch.Position))
+			DismissUrlInput();
 	}
 
 	private void OnSubmitPressed()
@@ -107,6 +119,17 @@ public partial class UrlSettingsPanel : Node
 	private void OnUrlInputFocusExited()
 	{
 		SetKeyboardVisible(false);
+	}
+
+	private void DismissUrlInput()
+	{
+		_urlInput?.ReleaseFocus();
+		SetKeyboardVisible(false);
+	}
+
+	private bool IsInsideUrlInput(Vector2 position)
+	{
+		return _urlInput.GetGlobalRect().HasPoint(position);
 	}
 
 	private void SetKeyboardVisible(bool visible)

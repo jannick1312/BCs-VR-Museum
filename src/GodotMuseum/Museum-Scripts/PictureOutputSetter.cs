@@ -110,12 +110,6 @@ public partial class PictureOutputSetter : Node
 
         var loadError = image.LoadJpgFromBuffer(bytes);
 
-        if (loadError != Error.Ok)
-            loadError = image.LoadPngFromBuffer(bytes);
-
-        if (loadError != Error.Ok)
-            loadError = image.LoadWebpFromBuffer(bytes);
-
         if (loadError == Error.Ok && !image.IsEmpty()) return ImageTexture.CreateFromImage(image);
         Logger.Error($"Could not load image '{imageName}' from bytes. Error: {loadError}");
         return null;

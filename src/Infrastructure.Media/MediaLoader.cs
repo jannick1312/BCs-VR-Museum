@@ -6,7 +6,7 @@ namespace Infrastructure.Media;
 
 public class MediaLoader : IMediaLoader
 {
-    private readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(5)};
+    private readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(10)};
     private readonly EventLogger _logger = new(nameof(MediaLoader));
 
     public async Task<MediaContent> LoadAsync(SearchResultItem item)

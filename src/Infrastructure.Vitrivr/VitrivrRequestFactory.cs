@@ -24,19 +24,66 @@ public static class VitrivrRequestFactory
                     field = "clip",
                     inputs = new
                     {
-                        input = "txt"
+                        txt = "txt"
                     },
                     parameters = new
                     {
                         limit = query.Limit.ToString()
                     }
                 },
-                filelookup = new
+                relations = new
+                {
+                    factory = "RelationExpander",
+                    inputs = new Dictionary<string, string>
+                    {
+                        ["in"] = "clip"
+                    },
+                    parameters = new
+                    {
+                        outgoing = "partOf"
+                    }
+                },
+                aggregator = new
+                {
+                    factory = "ScoreAggregator",
+                    inputs = new Dictionary<string, string>
+                    {
+                        ["in"] = "relations"
+                    }
+                },
+                timelookup = new
                 {
                     factory = "FieldLookup",
                     inputs = new Dictionary<string, string>
                     {
-                        ["in"] = "clip"
+                        ["in"] = "aggregator"
+                    },
+                    parameters = new
+                    {
+                        field = "time",
+                        keys = "start, end"
+                    }
+                },
+                filelookup = new
+                {
+                    factory = "ObjectFieldLookup",
+                    inputs = new Dictionary<string, string>
+                    {
+                        ["in"] = "timelookup"
+                    },
+                    parameters = new
+                    {
+                        field = "file",
+                        predicates = "partOf",
+                        keys = "path"
+                    }
+                },
+                filelookupextended = new
+                {
+                    factory = "FieldLookup",
+                    inputs = new Dictionary<string, string>
+                    {
+                        ["in"] = "filelookup"
                     },
                     parameters = new
                     {
@@ -45,7 +92,7 @@ public static class VitrivrRequestFactory
                     }
                 }
             },
-            output = "filelookup"
+            output = "filelookupextended"
         };
 
         return JsonSerializer.Serialize(payload);
