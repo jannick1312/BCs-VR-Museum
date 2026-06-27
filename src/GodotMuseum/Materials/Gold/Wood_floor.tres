@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b7v3q13s3jgaw"]
+
+[ext_resource type="Texture2D" uid="uid://bfkeweqc7j85w" path="res://Materials/Gold/textures/Metallic Gold_old_Base Color.jpeg" id="1_ufkvb"]
+[ext_resource type="Texture2D" uid="uid://b3bevu3lwr67p" path="res://Materials/Gold/textures/Metallic Gold_old_Ambient Occlusion.jpeg" id="2_ro5a4"]
+[ext_resource type="Texture2D" uid="uid://ck5itfvqkswga" path="res://Materials/Gold/textures/Metallic Gold_old_Height.jpeg" id="3_hot0m"]
+[ext_resource type="Texture2D" uid="uid://bewdioopvr0y" path="res://Materials/Gold/textures/Metallic Gold_old_Normal.jpeg" id="4_gumxl"]
+[ext_resource type="Texture2D" uid="uid://cx0fvem0xa0s5" path="res://Materials/Gold/textures/Metallic Gold_old_Roughness.jpeg" id="5_106ks"]
+
+[resource]
+albedo_texture = ExtResource("1_ufkvb")
+metallic = 1.0
+roughness_texture = ExtResource("5_106ks")
+normal_enabled = true
+normal_texture = ExtResource("4_gumxl")
+ao_enabled = true
+ao_texture = ExtResource("2_ro5a4")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_hot0m")
+uv1_scale = Vector3(0.05, 0.05, 1)

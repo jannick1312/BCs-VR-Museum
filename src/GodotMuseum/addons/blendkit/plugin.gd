@@ -1,14 +1,22 @@
 @tool
 extends EditorPlugin
 
-const SERVER = "https://www.blenderkit.com"
+const SERVER = "https://blendkit.com"
 const CLIENT_PORTS = ["62485", "65425", "55428"]
 #const CLIENT_PORTS = ["62485", "65425", "55428", "49452", "35452", "25152", "5152", "1234"]
 const RESOLUTION_OPTIONS = ["", "ORIGINAL", "resolution_4K", "resolution_2K", "resolution_1K", "resolution_0_5K"]
 const WAIT_OK: float = 0.8
 const WAIT_EXPLORING: float = 0.2
 const WAIT_STARTING: float = 1
+const WAIT_STARTING_SLOW: float = 3
+const STARTING_FAST_PROBES: int = 5
+const STARTING_TIMEOUT: int = 30000
 const REQUEST_TIMEOUT: int = 3000
+# minimum process frames before a request can be considered timed out
+# (guards against false timeouts when the main loop is suspended);
+# non-threaded HTTPRequest polls once per frame and a request needs
+# several polls to connect, send and read the response
+const REQUEST_TIMEOUT_MIN_FRAMES: int = 10
 
 
 enum LogLevel { ERROR, WARNING, INFO, VERBOSE, DEBUG, TRACE }
@@ -24,10 +32,21 @@ const LOG_LEVEL_NAMES = {
 
 var log_level: int = LogLevel.INFO
 
+# The Client reports message_level in Python logging values:
+# 0=Debug, 10=Info, 20=Warning, 30=Error, 40=Fatal
+static func client_message_log_level(message_level: int) -> LogLevel:
+	if message_level >= 30:
+		return LogLevel.ERROR
+	if message_level >= 20:
+		return LogLevel.WARNING
+	if message_level >= 10:
+		return LogLevel.INFO
+	return LogLevel.DEBUG
+
 func bk_log(level: LogLevel, msg: String) -> void:
 	if level > log_level:
 		return
-	var prefix = "BlenderKit: " if level == LogLevel.INFO else "BlenderKit %s: " % LOG_LEVEL_NAMES[level]
+	var prefix = "Blendkit: " if level == LogLevel.INFO else "Blendkit %s: " % LOG_LEVEL_NAMES[level]
 	var log_msg = prefix + msg
 	match level:
 		LogLevel.ERROR:
@@ -99,6 +118,8 @@ var port: String = CLIENT_PORTS[0]
 var failed_requests: int = 0
 var max_failed_requests: int = 3
 var request_start_time: int = 0
+var request_start_frame: int = 0
+var starting_since: int = 0
 var http_request: HTTPRequest
 var unsubscribe_http_request: HTTPRequest
 var timer: Timer
@@ -107,13 +128,14 @@ var timer: Timer
 var bk_plugin_dir: String
 var client_data_dir: String
 var client_version: String
+var connected_client_version: String = ""
 var client_base_dir: String
 var client_bin_name: String
 var client_bin_path: String
 
 # GUI
-const menu_scene = preload("res://addons/blenderkit/menu.tscn")
-const download_progress_bar_scene = preload("res://addons/blenderkit/ui/download_progress_bar.tscn")
+const menu_scene = preload("res://addons/blendkit/menu.tscn")
+const download_progress_bar_scene = preload("res://addons/blendkit/ui/download_progress_bar.tscn")
 var docked_menu_scene: Control
 var enabled_check_box: CheckBox
 var status_icon: TextureRect
@@ -191,13 +213,17 @@ func enter_state(new_state: State):
 			timer.start()
 			bk_log(LogLevel.INFO, "Searching for running Client...")
 		State.STARTING:
+			starting_since = Time.get_ticks_msec()
 			timer.wait_time = WAIT_STARTING
 			timer.start()
 			start_client(port)
 		State.CONNECTED:
 			timer.wait_time = WAIT_OK
 			timer.start()
-			bk_log(LogLevel.INFO, "Connected to Client v%s on port %s" % [client_version, port])
+			if connected_client_version:
+				bk_log(LogLevel.INFO, "Connected to Client v%s on port %s" % [connected_client_version, port])
+			else:
+				bk_log(LogLevel.INFO, "Connected to Client on port %s" % port)
 		_:
 			fail("invalid state %s" % state_name(new_state))
 
@@ -211,10 +237,8 @@ func update_status():
 		State.EXPLORING:
 			status_label.text = "Exploring..."
 		State.STARTING:
-			if failed_requests > 0:
-				status_label.text = "Starting (#%s)..." % failed_requests
-			else:
-				status_label.text = "Starting..."
+			var starting_elapsed := (Time.get_ticks_msec() - starting_since) / 1000
+			status_label.text = "Starting (%d / %d s)..." % [starting_elapsed, STARTING_TIMEOUT / 1000]
 		State.CONNECTED:
 			if failed_requests > 0:
 				status_label.text = "Reconnecting (#%s)..." % failed_requests
@@ -269,7 +293,7 @@ func start_client(port: String):
 		return
 
 	if client_pid == 0:
-		bk_log(LogLevel.ERROR, "Failed to start the BlenderKit Client.")
+		bk_log(LogLevel.ERROR, "Failed to start the Blendkit Client.")
 		bk_log(LogLevel.DEBUG, "Failed command: %s" % command_str)
 		fail("client start failed")
 		return
@@ -293,11 +317,19 @@ func on_timer_timeout():
 		HTTPClient.STATUS_CONNECTED, HTTPClient.STATUS_BODY, HTTPClient.STATUS_REQUESTING:
 			# Waiting for response - check timeout
 			var elapsed := Time.get_ticks_msec() - request_start_time
+			var frames_elapsed := Engine.get_process_frames() - request_start_frame
 			if elapsed >= REQUEST_TIMEOUT:
-				bk_log(LogLevel.WARNING, "Request timeout in %s after %dms" % [http_status_name(http_client_status), elapsed])
+				if frames_elapsed < REQUEST_TIMEOUT_MIN_FRAMES:
+					# Wall-clock time passed but the request had (almost) no frames
+					# to make progress - the main loop was suspended, e.g. by the
+					# compositor hiding the window. Give it a frame to poll the
+					# response that most likely already arrived.
+					bk_log(LogLevel.DEBUG, "Main loop suspended for %d ms (%d frames) - postponing request timeout" % [elapsed, frames_elapsed])
+					return
+				bk_log(LogLevel.WARNING, "Request timeout in %s after %d ms (%d frames)" % [http_status_name(http_client_status), elapsed, frames_elapsed])
 				prev_request_failed = true
 			else:
-				bk_log(LogLevel.DEBUG, "Waiting in %s (%d ms)" % [http_status_name(http_client_status), elapsed])
+				bk_log(LogLevel.DEBUG, "Waiting in %s (%d ms, %d frames)" % [http_status_name(http_client_status), elapsed, frames_elapsed])
 				return
 		HTTPClient.STATUS_DISCONNECTED:
 			# Ready to request
@@ -331,40 +363,50 @@ func on_timer_timeout():
 	}
 	var json = JSON.stringify(data)
 	request_start_time = Time.get_ticks_msec()
+	request_start_frame = Engine.get_process_frames()
 	bk_log(LogLevel.TRACE, "POST %s  %s" % [url, json])
 	var error = http_request.request(url, headers, HTTPClient.METHOD_POST, json)
 	if error != OK:
 		bk_log(LogLevel.ERROR, "Error sending request to %s, error=%s" % [url, error])
+		http_request.cancel_request()
+		request_failed()
 
 
 func on_request_completed(result, response_code, _headers, body):
 	var elapsed := Time.get_ticks_msec() - request_start_time
 	if result != OK:
 		bk_log(LogLevel.DEBUG, "Request %s, response_code=%d, state=%s, port=%s" % [http_result_name(result), response_code, state_name(state), port])
-	if state == State.FAILED:
-		bk_log(LogLevel.WARNING, "Request completed in failed state - strange")
+	if state in [State.DISABLED, State.FAILED]:
+		bk_log(LogLevel.WARNING, "Ignoring stale request completion in %s state" % state_name(state))
+		return
 
 	var body_text: String = body.get_string_from_utf8()
 	bk_log(LogLevel.TRACE, "HTTP response (%d ms): %s" % [elapsed, body_text])
 
-	# Success - connected to client
+	# Success - only a 200 with a valid JSON body counts as the Client
 	if response_code == 200:
-		if state != State.CONNECTED:
-			enter_state(State.CONNECTED)
-
 		var data = JSON.parse_string(body_text)
-		var msg = data.get("message", "")
-		var level: int = int(data.get("message_level", LogLevel.INFO))
-		if msg and level <= log_level:
-			bk_log(level, "Client: %s" % msg)
-		var tasks = data.get("tasks", [])
-		if tasks:
-			handle_tasks(tasks)
-		return
+		if typeof(data) == TYPE_DICTIONARY:
+			if state != State.CONNECTED:
+				connected_client_version = str(data.get("client_version", ""))
+				enter_state(State.CONNECTED)
+			elif failed_requests > 0:
+				failed_requests = 0
+				update_status()
+
+			var msg = data.get("message", "")
+			if msg:
+				var level := client_message_log_level(int(data.get("message_level", 10)))
+				bk_log(level, "Client: %s" % msg)
+			var tasks = data.get("tasks", [])
+			if tasks:
+				handle_tasks(tasks)
+			return
+		bk_log(LogLevel.WARNING, "Got 200 on port %s but body is not a valid JSON object - not the Client?" % port)
 
 	if state == State.EXPLORING:
 		bk_log(LogLevel.VERBOSE, "Client not found on port %s" % port)
-	else:
+	elif response_code != 200:
 		bk_log(LogLevel.WARNING, "Request on port %s failed (response_code=%d)" % [port, response_code])
 	if body_text != "":
 		bk_log(LogLevel.TRACE, "Response body: %s" % body_text)
@@ -387,15 +429,20 @@ func request_failed():
 			enter_state(State.STARTING)
 
 	elif state == State.STARTING:
-		if failed_requests > max_failed_requests:
-			bk_log(LogLevel.ERROR, "Failed to connect to Client on port %s after %s tries." % [port, failed_requests])
+		var starting_elapsed := Time.get_ticks_msec() - starting_since
+		if starting_elapsed >= STARTING_TIMEOUT:
+			bk_log(LogLevel.ERROR, "Failed to connect to Client on port %s after %s tries in %d ms." % [port, failed_requests, starting_elapsed])
 			fail("connection timeout")
 			return
+		if failed_requests == STARTING_FAST_PROBES:
+			bk_log(LogLevel.VERBOSE, "Client not up after %d fast probes, slowing probes to %ss" % [STARTING_FAST_PROBES, WAIT_STARTING_SLOW])
+			timer.wait_time = WAIT_STARTING_SLOW
+			timer.start()
 		update_status()
 
 	elif state == State.CONNECTED:
 		if failed_requests >= max_failed_requests:
-			bk_log(LogLevel.WARNING, "Lost connection to BlenderKit Client on port %s." % port)
+			bk_log(LogLevel.WARNING, "Lost connection to Blendkit Client on port %s." % port)
 			enter_state(State.EXPLORING)
 			return
 		update_status()
@@ -446,12 +493,12 @@ func on_log_level_changed(index: int):
 
 func on_model_format_changed(index: int):
 	model_format = "gltf_godot" if index == 0 else "blend"
-	ProjectSettings.set_setting("blenderkit/model_format", model_format)
+	ProjectSettings.set_setting("blendkit/model_format", model_format)
 
 
 func on_resolution_changed(index: int):
 	resolution = RESOLUTION_OPTIONS[index]
-	ProjectSettings.set_setting("blenderkit/resolution", resolution)
+	ProjectSettings.set_setting("blendkit/resolution", resolution)
 
 
 func init_paths():
@@ -477,7 +524,7 @@ func init_ui():
 	status_label = docked_menu_scene.get_node("StatusRow/StatusLabel")
 	port_option_button = docked_menu_scene.get_node("Port/OptionButton")
 	version_label = docked_menu_scene.get_node("DocsContainer/Version")
-	version_label.text = "BlenderKit v%s" % get_addon_version()
+	version_label.text = "Blendkit v%s" % get_addon_version()
 	browse_assets_button = docked_menu_scene.get_node("BrowseAssets")
 	browse_assets_button.pressed.connect(on_browse_assets_pressed)
 	download_directory = docked_menu_scene.get_node("DownloadTo/LineEdit")
@@ -487,11 +534,11 @@ func init_ui():
 	log_level_option_button.selected = log_level
 	log_level_option_button.item_selected.connect(on_log_level_changed)
 	model_format_option_button = docked_menu_scene.get_node("ModelFormat/OptionButton")
-	model_format = ProjectSettings.get_setting("blenderkit/model_format", "gltf_godot")
+	model_format = ProjectSettings.get_setting("blendkit/model_format", "gltf_godot")
 	model_format_option_button.selected = 0 if model_format == "gltf_godot" else 1
 	model_format_option_button.item_selected.connect(on_model_format_changed)
 	resolution_option_button = docked_menu_scene.get_node("Resolution/OptionButton")
-	resolution = ProjectSettings.get_setting("blenderkit/resolution", "")
+	resolution = ProjectSettings.get_setting("blendkit/resolution", "")
 	resolution_option_button.selected = max(0, RESOLUTION_OPTIONS.find(resolution))
 	resolution_option_button.item_selected.connect(on_resolution_changed)
 	downloads_container = docked_menu_scene.get_node("DownloadsContainer")
@@ -530,7 +577,7 @@ func handle_tasks(tasks: Array) -> void:
 
 func get_addon_version():
 	var config = ConfigFile.new()
-	var err = config.load("res://addons/blenderkit/plugin.cfg")
+	var err = config.load("res://addons/blendkit/plugin.cfg")
 	if err != OK:
 		return "unknown"
 	return config.get_value("plugin", "version", "unknown")
