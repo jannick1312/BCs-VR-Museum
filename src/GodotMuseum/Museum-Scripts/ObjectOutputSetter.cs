@@ -7,14 +7,25 @@ namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class ObjectOutputSetter : Node
 {
+    [Export] public NodePath OutputInstancePath;
     [Export] public NodePath OutputPlacesPath;
 
+    private Node3D _outputRoot;
+    private Node3D _outputTemplate;
     private Node _outputPlacesRoot;
+    private ObjectOutputFitter _fitter;
     private static readonly EventLogger Logger = new(nameof(ObjectOutputSetter));
 
     public override void _Ready()
     {
+        _outputRoot = GetNodeOrNull<Node3D>(OutputInstancePath);
         _outputPlacesRoot = GetNodeOrNull(OutputPlacesPath);
+
+        if (_outputRoot == null)
+        {
+            Logger.Error("3D object output root is missing.");
+            return;
+        }
 
         if (_outputPlacesRoot == null)
         {
@@ -23,6 +34,15 @@ public partial class ObjectOutputSetter : Node
         }
 
         ClearGeneratedObjects();
+        _outputTemplate = _outputRoot.Duplicate() as Node3D;
+
+        if (_outputTemplate == null)
+        {
+            Logger.Error("3D object output template could not be duplicated as Node3D.");
+            return;
+        }
+
+        _fitter = new ObjectOutputFitter(_outputTemplate);
     }
 
     public async Task SetOutputObjects(IReadOnlyList<byte[]> objectBytes, IReadOnlyList<string> objectNames)
@@ -30,46 +50,47 @@ public partial class ObjectOutputSetter : Node
         ClearGeneratedObjects();
 
         var places = GetOutputPlaces();
-
+        
         var count = Mathf.Min(objectBytes.Count, places.Count);
-
-        if (objectBytes.Count > places.Count)
-            Logger.Warning($"Only {count} of {objectBytes.Count} 3D objects can be placed.");
+        var placedObjectCount = 0;
 
         for (var i = 0; i < count; i++)
         {
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-            var objectNode = LoadObject(objectBytes[i], objectNames[i]);
+            var objectNode = LoadObject(objectBytes[i]);
 
             if (objectNode == null)
             {
                 Logger.Warning($"Skipping 3D object '{objectNames[i]}' at index {i} because it could not be loaded.");
                 continue;
             }
+
             PlaceObject(objectNode, objectNames[i], places[i]);
+            placedObjectCount++;
         }
+
+        if (placedObjectCount < objectBytes.Count)
+            Logger.Warning($"Placed {placedObjectCount} of {objectBytes.Count} 3D objects.");
+        else
+            Logger.Info($"Placed all {placedObjectCount} 3D objects.");
     }
 
     private void ClearGeneratedObjects()
     {
-        foreach (var child in GetChildren())
+        foreach (var child in _outputRoot.GetChildren())
         {
             if (child != null && child.IsInGroup("GeneratedOutputObject"))
                 child.QueueFree();
         }
     }
 
-    private static Node3D LoadObject(byte[] bytes, string objectName)
+    private static Node3D LoadObject(byte[] bytes)
     {
         var gltf = new GltfDocument();
         var state = new GltfState();
-
-        var error = gltf.AppendFromBuffer(bytes, "", state);
-
-        if (error == Error.Ok) return gltf.GenerateScene(state) as Node3D;
-        Logger.Error($"Could not load 3D object '{objectName}'. Error: {error}");
-        return null;
+        gltf.AppendFromBuffer(bytes, "", state);
+        return gltf.GenerateScene(state) as Node3D;
     }
 
     private List<Node3D> GetOutputPlaces()
@@ -83,98 +104,30 @@ public partial class ObjectOutputSetter : Node
         }
 
         result.Sort((a, b) => a.GetIndex().CompareTo(b.GetIndex()));
-
         return result;
     }
 
-    private static Aabb GetPlaceBounds(Node3D place)
+    private void PlaceObject(Node3D objectNode, string objectName, Node3D place)
     {
-        var mesh = (MeshInstance3D)place;
-        var aabb = mesh.GetAabb();
-        aabb.Size *= mesh.Scale.Abs();  
-        return aabb;
-    }
-
-    private void PlaceObject(Node3D item, string objectName, Node3D place)
-    {
+        var item = (Node3D)_outputTemplate.Duplicate();
         item.AddToGroup("GeneratedOutputObject");
-        AddChild(item);
 
-        item.GlobalTransform = place.GlobalTransform;
+        _outputRoot.AddChild(item);
+        SetTreeActive(item, true);
 
-        var objectBounds = GetObjectBounds(item);
-        var placeBounds = GetPlaceBounds(place);
-
-        var scale = GetScale(objectBounds.Size, placeBounds.Size);
-
-        Logger.Info($"Placing 3D object '{objectName}'. Scale={scale}");
-
-        item.Scale *= scale;
-
-        objectBounds = GetObjectBounds(item);
-        var centerOffset = objectBounds.GetCenter();
-        item.Position -= centerOffset * item.Scale;
+        var objectScale = _fitter.Place(item, objectNode, place);
+        Logger.Info($"Placed 3D object '{objectName}'. ObjectScale={objectScale}");
     }
 
-    private static float GetScale(Vector3 objectSize, Vector3 targetSize)
+    private static void SetTreeActive(Node node, bool active)
     {
-        if (objectSize.X <= 0 || objectSize.Y <= 0 || objectSize.Z <= 0)
-        {
-            Logger.Warning($"Invalid 3D object size. Using scale 1.");
-            return 1.0f;
-        }
+        if (node is Node3D node3D)
+            node3D.Visible = active;
 
-        var sx = targetSize.X / objectSize.X;
-        var sy = targetSize.Y / objectSize.Y;
-        var sz = targetSize.Z / objectSize.Z;
+        if (node is CollisionShape3D collisionShape)
+            collisionShape.SetDeferred(CollisionShape3D.PropertyName.Disabled, !active);
 
-        return Mathf.Min(sx, Mathf.Min(sy, sz));
-    }
-
-    private static Aabb GetObjectBounds(Node3D root)
-    {
-        var hasBounds = false;
-        var bounds = new Aabb();
-
-        foreach (var node in root.FindChildren("*", "MeshInstance3D", true, false))
-        {
-            if (node is not MeshInstance3D mesh)
-                continue;
-
-            var meshAabb = TransformAabb(root.GlobalTransform.AffineInverse() * mesh.GlobalTransform, mesh.GetAabb());
-
-            bounds = hasBounds ? bounds.Merge(meshAabb) : meshAabb;
-            hasBounds = true;
-        }
-
-        if (!hasBounds)
-            Logger.Warning($"3D object '{root.Name}' has no MeshInstance3D children. Using fallback bounds.");
-
-        return hasBounds ? bounds : new Aabb(Vector3.Zero, Vector3.One);
-    }
-
-    private static Aabb TransformAabb(Transform3D transform, Aabb aabb)
-    {
-        var min = aabb.Position;
-        var max = aabb.End;
-
-        var points = new[]
-        {
-            new Vector3(min.X, min.Y, min.Z),
-            new Vector3(max.X, min.Y, min.Z),
-            new Vector3(min.X, max.Y, min.Z),
-            new Vector3(max.X, max.Y, min.Z),
-            new Vector3(min.X, min.Y, max.Z),
-            new Vector3(max.X, min.Y, max.Z),
-            new Vector3(min.X, max.Y, max.Z),
-            new Vector3(max.X, max.Y, max.Z),
-        };
-
-        var result = new Aabb(transform * points[0], Vector3.Zero);
-
-        for (var i = 1; i < points.Length; i++)
-            result = result.Expand(transform * points[i]);
-
-        return result;
+        foreach (var child in node.GetChildren())
+            SetTreeActive(child, active);
     }
 }

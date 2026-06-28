@@ -52,9 +52,7 @@ public partial class PictureOutputSetter : Node
         var availableImages = new List<(byte[] Bytes, string Name)>();
 
         for (var i = 0; i < imageBytes.Count; i++)
-        {
             availableImages.Add((imageBytes[i], imageNames[i]));
-        }
 
         for (var i = availableImages.Count - 1; i > 0; i--)
         {
@@ -78,11 +76,14 @@ public partial class PictureOutputSetter : Node
                 await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
                 var imageItem = availableImages[nextImageIndex];
-                var texture = LoadTexture(imageItem.Bytes, imageItem.Name);
+                var texture = LoadTexture(imageItem.Bytes);
                 nextImageIndex++;
 
                 if (texture == null)
+                {
+                    Logger.Warning($"Skipping image '{imageNames[i]}' at index {i} because it could not be loaded.");
                     continue;
+                }
 
                 CreatePictureInstance(texture, imageItem.Name, place, slots[i]);
                 placedImageCount++;
@@ -104,15 +105,11 @@ public partial class PictureOutputSetter : Node
         }
     }
 
-    private static ImageTexture LoadTexture(byte[] bytes, string imageName)
+    private static ImageTexture LoadTexture(byte[] bytes)
     {
         var image = new Image();
-
-        var loadError = image.LoadJpgFromBuffer(bytes);
-
-        if (loadError == Error.Ok && !image.IsEmpty()) return ImageTexture.CreateFromImage(image);
-        Logger.Error($"Could not load image '{imageName}' from bytes. Error: {loadError}");
-        return null;
+        image.LoadJpgFromBuffer(bytes);
+        return ImageTexture.CreateFromImage(image);
     }
 
     private List<Node3D> GetOutputPlaces()
@@ -179,14 +176,6 @@ public partial class PictureOutputSetter : Node
         Logger.Info($"Placed image '{imageName}'.");
 
         var frameMaker = item.GetNodeOrNull<FrameMaker>("FrameMaker");
-
-        if (frameMaker == null)
-        {
-            Logger.Warning(" Creating FrameMaker dynamically.");
-            frameMaker = new FrameMaker();
-            item.AddChild(frameMaker);
-        }
-
         frameMaker.UpdateFrame(picture, imageWidth, imageHeight);
     }
 

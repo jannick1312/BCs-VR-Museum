@@ -55,12 +55,6 @@ public partial class FrameMaker : Node
 
 	public void UpdateFrame(MeshInstance3D picture, float imageWidth, float imageHeight)
 	{
-		if (imageWidth <= 0 || imageHeight <= 0)
-		{
-			Logger.Warning("Frame update received invalid image size.");
-			return;
-		}
-
 		var center = picture.GlobalPosition;
 
 		var basis = picture.GlobalTransform.Basis.Orthonormalized();
