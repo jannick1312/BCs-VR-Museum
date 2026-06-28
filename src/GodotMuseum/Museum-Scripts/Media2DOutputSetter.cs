@@ -48,7 +48,7 @@ public partial class Media2DOutputSetter : Node
             Logger.Error("2D media output template could not be duplicated as Node3D.");
     }
 
-    public async Task SetOutput2DMedia(IReadOnlyList<byte[]> mediaBytes, IReadOnlyList<string> mediaNames, IReadOnlyList<bool> mediaIsVideo)
+    public async Task SetOutput2DMedia(IReadOnlyList<byte[]> mediaBytes, IReadOnlyList<string> mediaPaths, IReadOnlyList<string> mediaNames, IReadOnlyList<bool> mediaIsVideo)
     {
         ClearGenerated2DMedia();
 
@@ -70,11 +70,12 @@ public partial class Media2DOutputSetter : Node
                 await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
                 var bytes = mediaBytes[nextMediaIndex];
+                var path = mediaPaths[nextMediaIndex];
                 var name = mediaNames[nextMediaIndex];
                 var isVideo = mediaIsVideo[nextMediaIndex];
                 nextMediaIndex++;
 
-                if (await Create2DMediaInstance(bytes, name, isVideo, place, slots[i]))
+                if (await Create2DMediaInstance(bytes, path, name, isVideo, place, slots[i]))
                     placedMediaCount++;
             }
         }
@@ -128,14 +129,14 @@ public partial class Media2DOutputSetter : Node
         return Mathf.Max(0.1f, mesh.GetAabb().Size.Y * mesh.Scale.Y);
     }
 
-    private async Task<bool> Create2DMediaInstance(byte[] bytes, string name, bool isVideo, Node3D place, Rect2 slot)
+    private async Task<bool> Create2DMediaInstance(byte[] bytes, string path, string name, bool isVideo, Node3D place, Rect2 slot)
     {
         var item = Media2DInstance.Create(_outputTemplate, _outputRoot, GeneratedMediaGroup, CellPadding, place, slot);
 
         if (isVideo)
-            await Video2DOutput.Set(item, bytes, name);
+            await Video2DOutput.Set(item, bytes, path, name);
         else
-            Image2DOutput.Set(item, bytes);
+            Image2DOutput.Set(item, bytes, path);
 
         Logger.Info($"Placed {(isVideo ? "video" : "image")} '{name}'.");
         _mediaInstances.Add(item);

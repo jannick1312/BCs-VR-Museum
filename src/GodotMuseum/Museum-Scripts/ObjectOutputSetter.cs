@@ -45,7 +45,7 @@ public partial class ObjectOutputSetter : Node
         _fitter = new ObjectOutputFitter(_outputTemplate);
     }
 
-    public async Task SetOutputObjects(IReadOnlyList<byte[]> objectBytes, IReadOnlyList<string> objectNames)
+    public async Task SetOutputObjects(IReadOnlyList<byte[]> objectBytes, IReadOnlyList<string> objectPaths, IReadOnlyList<string> objectNames)
     {
         ClearGeneratedObjects();
 
@@ -58,7 +58,7 @@ public partial class ObjectOutputSetter : Node
         {
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-            var objectNode = LoadObject(objectBytes[i]);
+            var objectNode = LoadObject(objectBytes[i], objectPaths[i]);
 
             if (objectNode == null)
             {
@@ -85,11 +85,16 @@ public partial class ObjectOutputSetter : Node
         }
     }
 
-    private static Node3D LoadObject(byte[] bytes)
+    private static Node3D LoadObject(byte[] bytes, string path)
     {
         var gltf = new GltfDocument();
         var state = new GltfState();
-        gltf.AppendFromBuffer(bytes, "", state);
+
+        if (System.IO.File.Exists(path))
+            gltf.AppendFromFile(path, state);
+        else
+            gltf.AppendFromBuffer(bytes, "", state);
+
         return gltf.GenerateScene(state) as Node3D;
     }
 

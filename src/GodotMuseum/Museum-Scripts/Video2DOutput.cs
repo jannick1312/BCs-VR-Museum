@@ -6,9 +6,9 @@ namespace BCSVRMuseum.Museum_Scripts;
 
 public static class Video2DOutput
 {
-    public static async Task Set(Media2DInstance instance, byte[] bytes, string name)
+    public static async Task Set(Media2DInstance instance, byte[] bytes, string path, string name)
     {
-        var player = new VideoStreamPlayer{Stream = new VideoStreamTheora { File = SaveVideo(bytes, name) }, Autoplay = false, Loop = false};
+        var player = new VideoStreamPlayer{Stream = new VideoStreamTheora { File = File.Exists(path) ? path : SaveVideo(bytes, name) }, Autoplay = false, Loop = false};
 
         instance.AttachVideo(player);
 

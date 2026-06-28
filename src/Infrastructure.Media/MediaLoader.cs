@@ -17,9 +17,8 @@ public class MediaLoader : IMediaLoader
 
             if (File.Exists(item.LocalPath))
             {
-                var localBytes = await File.ReadAllBytesAsync(item.LocalPath);
                 _logger.Info($"Loaded media from local path. LocalPath='{item.LocalPath}'");
-                return MediaContent.FromBytes(localBytes);
+                return MediaContent.FromPath(item.LocalPath);
             }
 
             _logger.Info("Local media not found, loading remote media.");

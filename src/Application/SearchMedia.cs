@@ -31,7 +31,7 @@ public class SearchMedia(ISearchService searchService, IMediaLoader mediaLoader)
                 _logger.Warning($"Skipping media item because loading failed: {mediaContent.ErrorMessage}");
                 continue;
             }
-            items.Add(new DisplayMediaItem(searchItems[i].MediaType, mediaContent.Bytes, searchItems[i].Name));
+            items.Add(new DisplayMediaItem(searchItems[i].MediaType, mediaContent.Bytes, mediaContent.Path, searchItems[i].Name));
         }
         _logger.Info($"Media search completed. SearchItems={searchItems.Count}, LoadedItems={items.Count}");
         return DisplayMediaResult.FromMedia(items);

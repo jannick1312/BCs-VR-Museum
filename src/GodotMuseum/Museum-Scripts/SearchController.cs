@@ -93,9 +93,11 @@ public partial class SearchController : Node
         }
 
         var media2DBytes = new List<byte[]>();
+        var media2DPaths = new List<string>();
         var media2DNames = new List<string>();
         var media2DIsVideo = new List<bool>();
         var objectBytes = new List<byte[]>();
+        var objectPaths = new List<string>();
         var objectNames = new List<string>();
 
         foreach (var item in result.Items)
@@ -104,30 +106,33 @@ public partial class SearchController : Node
             {
                 case MediaType.Image:
                     media2DBytes.Add(item.Bytes);
+                    media2DPaths.Add(item.Path);
                     media2DNames.Add(item.Name);
                     media2DIsVideo.Add(false);
                     break;
 
                 case MediaType.Video:
                     media2DBytes.Add(item.Bytes);
+                    media2DPaths.Add(item.Path);
                     media2DNames.Add(item.Name);
                     media2DIsVideo.Add(true);
                     break;
 
                 case MediaType.Object3D:
                     objectBytes.Add(item.Bytes);
+                    objectPaths.Add(item.Path);
                     objectNames.Add(item.Name);
                     break;
             }
         }
         
         if (media2DBytes.Count > 0)
-            await _outputScreen.SetOutput2DMedia(media2DBytes, media2DNames, media2DIsVideo);
+            await _outputScreen.SetOutput2DMedia(media2DBytes, media2DPaths, media2DNames, media2DIsVideo);
         else
             _logger.Info("Search result contains no images or videos to display.");
         
         if (objectBytes.Count > 0)
-            await _objectOutput.SetOutputObjects(objectBytes, objectNames);
+            await _objectOutput.SetOutputObjects(objectBytes, objectPaths, objectNames);
         else
             _logger.Info("Search result contains no 3D objects to display.");
         
