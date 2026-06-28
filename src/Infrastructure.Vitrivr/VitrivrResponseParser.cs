@@ -58,7 +58,7 @@ public static class VitrivrResponseParser
 
         if (mediaType == MediaType.Unknown)
         {
-            Logger.Info($"Skipping unsupported media file '{fileName}'. Supported formats are .jpg, .mp4 and .glb.");
+            Logger.Info($"Skipping unsupported media file '{fileName}'. Supported formats are .jpg, .ogv and .glb.");
             return null;
         }
 
@@ -97,7 +97,7 @@ public static class VitrivrResponseParser
         return extension switch
         {
             ".jpg" => MediaType.Image,
-            ".mp4" => MediaType.Video,
+            ".ogv" => MediaType.Video,
             ".glb" => MediaType.Object3D,
             _ => MediaType.Unknown
         };

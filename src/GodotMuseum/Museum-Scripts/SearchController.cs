@@ -8,14 +8,14 @@ namespace BCSVRMuseum.Museum_Scripts;
 public partial class SearchController : Node
 {
     [Export] public NodePath InputBridgePath;
-    [Export] public NodePath PictureOutputSetterPath;
+    [Export] public NodePath Media2DOutputSetterPath;
     [Export] public NodePath ObjectOutputSetterPath;
     [Export] public NodePath VisibilityControllerPath;
 
     [Export] public int SearchLimit;
 
     private InputBridge _inputScreen;
-    private PictureOutputSetter _outputScreen;
+    private Media2DOutputSetter _outputScreen;
     private ObjectOutputSetter _objectOutput;
     private VisibilityController _visibility;
 
@@ -30,7 +30,7 @@ public partial class SearchController : Node
     public override async void _Ready()
     {
         _inputScreen = GetNode<InputBridge>(InputBridgePath);
-        _outputScreen = GetNode<PictureOutputSetter>(PictureOutputSetterPath);
+        _outputScreen = GetNode<Media2DOutputSetter>(Media2DOutputSetterPath);
         _objectOutput = GetNode<ObjectOutputSetter>(ObjectOutputSetterPath);
         _visibility = GetNode<VisibilityController>(VisibilityControllerPath);
         _searchUseCaseFactory = GetTree().Root.FindChild("SearchUseCaseFactory", true, false) as SearchUseCaseFactory;
@@ -49,7 +49,7 @@ public partial class SearchController : Node
 
     private void OnInputGuiInput(InputEvent inputEvent, LineEdit lineEdit)
     {
-        if (inputEvent is not InputEventMouseButton mouseButton || !mouseButton.Pressed)
+        if (inputEvent is not InputEventMouseButton { Pressed: true })
             return;
 
         _activeLineEdit = lineEdit;
@@ -79,7 +79,7 @@ public partial class SearchController : Node
         _visibility.HideKeyboard();
 
         _isSearching = true;
-        _logger.Info($"Search submitted.");
+        _logger.Info("Search submitted.");
 
         var useCase = _searchUseCaseFactory.GetSearchAndLoadMedia();
         var result = await useCase.ExecuteAsync(text, SearchLimit);
@@ -92,10 +92,9 @@ public partial class SearchController : Node
             return;
         }
 
-        var imageBytes = new List<byte[]>();
-        var imageNames = new List<string>();
-        var videoBytes = new List<byte[]>();
-        var videoNames = new List<string>();
+        var media2DBytes = new List<byte[]>();
+        var media2DNames = new List<string>();
+        var media2DIsVideo = new List<bool>();
         var objectBytes = new List<byte[]>();
         var objectNames = new List<string>();
 
@@ -104,13 +103,15 @@ public partial class SearchController : Node
             switch (item.MediaType)
             {
                 case MediaType.Image:
-                    imageBytes.Add(item.Bytes);
-                    imageNames.Add(item.Name);
+                    media2DBytes.Add(item.Bytes);
+                    media2DNames.Add(item.Name);
+                    media2DIsVideo.Add(false);
                     break;
 
                 case MediaType.Video:
-                    videoBytes.Add(item.Bytes);
-                    videoNames.Add(item.Name);
+                    media2DBytes.Add(item.Bytes);
+                    media2DNames.Add(item.Name);
+                    media2DIsVideo.Add(true);
                     break;
 
                 case MediaType.Object3D:
@@ -120,19 +121,16 @@ public partial class SearchController : Node
             }
         }
         
-        if (imageBytes.Count > 0)
-            await _outputScreen.SetOutputImages(imageBytes, imageNames);
+        if (media2DBytes.Count > 0)
+            await _outputScreen.SetOutput2DMedia(media2DBytes, media2DNames, media2DIsVideo);
         else
-            _logger.Info("Search result contains no images to display.");
-
-        if (videoBytes.Count > 0)
-            _logger.Warning($"Video display is not implemented yet.");
-            
-
+            _logger.Info("Search result contains no images or videos to display.");
+        
         if (objectBytes.Count > 0)
             await _objectOutput.SetOutputObjects(objectBytes, objectNames);
         else
             _logger.Info("Search result contains no 3D objects to display.");
+        
         _logger.Info($"Search output shown.");
         _visibility.ShowOutput();
     }
