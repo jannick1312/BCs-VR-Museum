@@ -7,6 +7,11 @@
 [node name="BlenderRoom" parent="." unique_id=2104287082 instance=ExtResource("4_b2ux4")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.1, 0)
 
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="." unique_id=1216805608]
-transform = Transform3D(1, 0, 0, 0, 0.6200118, 0.78459245, 0, -0.7845925, 0.6200118, 0, 20, 9.594491)
-sky_mode = 1
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=2105556211]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5766296, 0)
+light_energy = 4.692
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.799
+omni_shadow_mode = 0

@@ -23,17 +23,17 @@ background_mode = 2
 background_color = Color(0.5033745, 0.5033746, 0.5033746, 1)
 sky = SubResource("Sky_4c57u")
 sky_rotation = Vector3(0, -1.3962634, 0)
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
 
 [sub_resource type="Environment" id="Environment_272bh"]
 background_mode = 1
 background_color = Color(0.14406255, 0.14406255, 0.14406249, 1)
 sky_rotation = Vector3(0, -1.3962634, 0)
 
-[sub_resource type="Environment" id="Environment_lquwl"]
-tonemap_mode = 3
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_enabled = true
+[sub_resource type="Environment" id="Environment_kek77"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_kek77"]
 resource_local_to_scene = true
@@ -163,7 +163,7 @@ MuseumEnvironment = SubResource("Environment_7mycd")
 MenuEnvironment = SubResource("Environment_272bh")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1222899868]
-environment = SubResource("Environment_lquwl")
+environment = SubResource("Environment_kek77")
 
 [node name="Player" parent="." unique_id=1807302450 instance=ExtResource("2_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9571701, 0)
@@ -218,6 +218,7 @@ shape = SubResource("BoxShape3D_htxhm")
 [editable path="Player"]
 [editable path="MuseumNode"]
 [editable path="MuseumNode/World"]
+[editable path="MuseumNode/World/BlenderRoom"]
 [editable path="MuseumNode/Input"]
 [editable path="MuseumNode/Input/2Din3DPlane"]
 [editable path="MuseumNode/Input/2Din3DKeyboard"]

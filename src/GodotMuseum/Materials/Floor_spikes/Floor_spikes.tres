@@ -6,7 +6,6 @@
 albedo_color = Color(0.69253325, 0.5651783, 0.43685386, 1)
 albedo_texture = ExtResource("1_wimub")
 roughness_texture = ExtResource("1_wimub")
-heightmap_enabled = true
-heightmap_scale = 0.5
-heightmap_texture = ExtResource("1_wimub")
-uv1_scale = Vector3(0.01, 0.01, 0.01)
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 150.0

@@ -46,7 +46,7 @@ resource_local_to_scene = true
 size = Vector3(1.5, 0.75, 0.02)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ecgt1"]
-size = Vector3(6.627, 2.43, 0.03)
+size = Vector3(6.627, 2.6, 0.03)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m6mi2"]
 transparency = 1
@@ -70,12 +70,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -7.99)
 collision_layer = 5
 
+[node name="Viewport" parent="Input/2Din3DPlane" parent_id_path=PackedInt32Array(224690396, 776647796) index="0" unique_id=1496002320]
+fsr_sharpness = 0.5
+
 [node name="Screen" parent="Input/2Din3DPlane" parent_id_path=PackedInt32Array(224690396, 776647796) index="1" unique_id=830305756]
 mesh = SubResource("QuadMesh_hm1tn")
 surface_material_override/0 = SubResource("StandardMaterial3D_sl0ll")
 
 [node name="CollisionShape3D" parent="Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 776647796, 1024925121) index="0" unique_id=620411508]
 shape = SubResource("BoxShape3D_tqf3b")
+
+[node name="Viewport" parent="Input/2Din3DKeyboard" parent_id_path=PackedInt32Array(224690396, 845947144) index="0" unique_id=1354956385]
+fsr_sharpness = 0.5
 
 [node name="Screen" parent="Input/2Din3DKeyboard" parent_id_path=PackedInt32Array(224690396, 845947144) index="1" unique_id=1158603700]
 mesh = SubResource("QuadMesh_lvb5a")
@@ -122,27 +128,27 @@ CellPadding = 0.4
 visible = false
 
 [node name="Place1" type="MeshInstance3D" parent="Media2DOutputPlaces" unique_id=242816524]
-transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -5.646, 1.635, -5.646)
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -5.646, 2.075, -5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
 [node name="Place2" type="MeshInstance3D" parent="Media2DOutputPlaces" unique_id=998115024]
-transform = Transform3D(0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, 0.7071067, 5.646, 1.635, -5.646)
+transform = Transform3D(0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, 0.7071067, 5.646, 2.075, -5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
 [node name="Place3" type="MeshInstance3D" parent="Media2DOutputPlaces" unique_id=2111513174]
-transform = Transform3D(-0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071067, 5.646, 1.635, 5.646)
+transform = Transform3D(-0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071067, 5.646, 2.075, 5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
 [node name="Place4" type="MeshInstance3D" parent="Media2DOutputPlaces" unique_id=156510601]
-transform = Transform3D(-0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, -0.7071067, -5.646, 1.635, 5.646)
+transform = Transform3D(-0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, -0.7071067, -5.646, 2.075, 5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
 [node name="ObjectOutputInstance" parent="." unique_id=1950581 instance=ExtResource("11_hm1tn")]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, -3, 0)
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, -7, 0)
 
 [node name="ObjectOutputSetter" type="Node" parent="." unique_id=458957298]
 script = ExtResource("10_m6mi2")
@@ -153,26 +159,27 @@ OutputPlacesPath = NodePath("../ObjectOutputPlaces")
 visible = false
 
 [node name="Place1" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=1697069992]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.55, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.22, 2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place2" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=1247304891]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.55, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.22, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place3" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=2083943530]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.55, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.22, 2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place4" type="MeshInstance3D" parent="ObjectOutputPlaces" unique_id=181321835]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.55, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.22, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [editable path="World"]
+[editable path="World/BlenderRoom"]
 [editable path="Input"]
 [editable path="Input/2Din3DPlane"]
 [editable path="Input/2Din3DKeyboard"]
