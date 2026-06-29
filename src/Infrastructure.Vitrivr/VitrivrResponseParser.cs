@@ -1,5 +1,6 @@
 using Core;
-using Infrastructure.Logging;
+using Logger;
+using Models;
 using System.Text.Json;
 
 namespace Infrastructure.Vitrivr;

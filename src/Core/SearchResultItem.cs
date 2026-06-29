@@ -1,3 +1,5 @@
+using Models;
+
 namespace Core;
 
 public class SearchResultItem(MediaType mediaType, string localPath, string remoteUrl)

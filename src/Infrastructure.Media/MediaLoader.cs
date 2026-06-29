@@ -1,6 +1,6 @@
 using Application;
 using Core;
-using Infrastructure.Logging;
+using Logger;
 
 namespace Infrastructure.Media;
 

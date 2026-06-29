@@ -1,6 +1,6 @@
-using Core;
 using Godot;
-using Infrastructure.Logging;
+using Logger;
+using Models;
 using System.Collections.Generic;
 
 namespace BCSVRMuseum.Museum_Scripts;
@@ -81,8 +81,8 @@ public partial class SearchController : Node
         _isSearching = true;
         _logger.Info("Search submitted.");
 
-        var useCase = _searchUseCaseFactory.GetSearchAndLoadMedia();
-        var result = await useCase.ExecuteAsync(text, SearchLimit);
+        var application = _searchUseCaseFactory.GetMuseumApplication();
+        var result = await application.SearchAsync(text, SearchLimit);
 
         _isSearching = false;
 
@@ -136,7 +136,7 @@ public partial class SearchController : Node
         else
             _logger.Info("Search result contains no 3D objects to display.");
         
-        _logger.Info($"Search output shown.");
+        _logger.Info("Search output shown.");
         _visibility.ShowOutput();
     }
 }

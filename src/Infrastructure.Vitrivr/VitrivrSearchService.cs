@@ -1,11 +1,11 @@
 using Application;
 using Core;
-using Infrastructure.Logging;
+using Logger;
 using System.Text;
 
 namespace Infrastructure.Vitrivr;
 
-public class VitrivrSearchService(VitrivrSettings settings) : ISearchService
+public class VitrivrSearchService(VitrivrSettings settings) : ISearchEngine
 {
     private readonly HttpClient _httpClient = new() {Timeout = TimeSpan.FromSeconds(5)};
     private readonly EventLogger _logger = new(nameof(VitrivrSearchService));
@@ -30,7 +30,7 @@ public class VitrivrSearchService(VitrivrSettings settings) : ISearchService
 
             var result = VitrivrResponseParser.Parse(responseText, settings.MediaFolderPath, settings.MediaBaseUrl);
 
-            _logger.Info($"Vitrivr request completed successfully.");
+            _logger.Info("Vitrivr request completed successfully.");
             return result;
         }
         catch (TaskCanceledException)

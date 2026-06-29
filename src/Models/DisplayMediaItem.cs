@@ -1,5 +1,4 @@
-using Core;
-namespace Application;
+namespace Models;
 
 public class DisplayMediaItem(MediaType mediaType, byte[] bytes, string path, string name)
 {

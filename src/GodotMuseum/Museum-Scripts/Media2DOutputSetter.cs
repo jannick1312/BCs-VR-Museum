@@ -1,5 +1,5 @@
 using Godot;
-using Infrastructure.Logging;
+using Logger;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

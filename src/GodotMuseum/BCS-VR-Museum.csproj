@@ -7,11 +7,9 @@
     <RootNamespace>BCSVRMuseum</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrastructure.Vitrivr\Infrastructure.Vitrivr.csproj" />
-    <ProjectReference Include="..\Infrastructure.Media\Infrastructure.Media.csproj" />
-    <ProjectReference Include="..\Infrastructure.Configuration\Infrastructure.Configuration.csproj" />
-    <ProjectReference Include="..\Infrastructure.Logging\Infrastructure.Logging.csproj" />
+    <ProjectReference Include="..\Application.Abstractions\Application.Abstractions.csproj" />
+    <ProjectReference Include="..\Application.Factory\Application.Factory.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Logger\Logger.csproj" />
   </ItemGroup>
 </Project>

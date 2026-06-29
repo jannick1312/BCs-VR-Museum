@@ -1,35 +1,33 @@
-using Core;
 using Godot;
-using Infrastructure.Configuration;
-using Infrastructure.Logging;
+using Logger;
 
 namespace BCSVRMuseum;
 
 public partial class SearchSettingsStore : Node
 {
+    [Export] public bool DefaultDeployed = true;
+    [Export] public string DefaultDeployedIp = "192.168.1.140";
+    [Export] public string DefaultStreamedIp = "10.34.64.208";
+    [Export] public string MediaFolderPath = @"C:\Users\dbis-\Desktop\BCs\media";
+    [Export] public string LogDirectoryPath = @"C:\Users\dbis-\Desktop\logs\";
+    [Export] public string FallbackLogDirectoryPath = "/sdcard/Android/data/VR.Museum/files/logs";
+
     private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
     private RuntimeSearchSettings _runtimeSettings;
 
     public bool Deployed => _runtimeSettings.Deployed;
     public string CurrentIp => _runtimeSettings.CurrentIp;
-    public string MediaFolderPath => _runtimeSettings.MediaFolderPath;
+    public string CurrentMediaFolderPath => _runtimeSettings.MediaFolderPath;
 
     public override void _Ready()
     {
-        const string settingsPath = "res://appsettings.json";
-
-        using var file = FileAccess.Open(settingsPath, FileAccess.ModeFlags.Read);
-
-        var json = file.GetAsText();
-        var appSettings = AppSettingsLoader.LoadFromJson(json);
-
-        var logDirectoryPath = ResolveLogDirectoryPath(appSettings.LogDirectoryPath, appSettings.FallbackLogDirectoryPath);
+        var logDirectoryPath = ResolveLogDirectoryPath(LogDirectoryPath, FallbackLogDirectoryPath);
         EventLogger.Configure(logDirectoryPath);
-        GD.Print($"JSON-Logs are written to: " + logDirectoryPath + "/app.log");
-        GD.Print($"Readable logs are written to:" + logDirectoryPath + "/app-readable.log");
-        _logger.Info($"Settings loaded.");
+        GD.Print("JSON-Logs are written to: " + logDirectoryPath + "/app.log");
+        GD.Print("Readable logs are written to:" + logDirectoryPath + "/app-readable.log");
+        _logger.Info("Settings loaded.");
 
-        _runtimeSettings = new RuntimeSearchSettings(appSettings.Deployed, appSettings.DefaultDeployedIp, appSettings.DefaultStreamedIp, appSettings.MediaFolderPath);
+        _runtimeSettings = new RuntimeSearchSettings(DefaultDeployed, DefaultDeployedIp, DefaultStreamedIp, MediaFolderPath);
     }
 
     public void SetServerIp(string ip)

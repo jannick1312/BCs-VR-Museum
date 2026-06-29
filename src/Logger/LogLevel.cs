@@ -1,4 +1,4 @@
-namespace Infrastructure.Logging;
+namespace Logger;
 
 public enum LogLevel
 {

@@ -2,7 +2,7 @@ using Core;
 
 namespace Application;
 
-public interface ISearchService
+public interface ISearchEngine
 {
     Task<SearchResult> SearchAsync(SearchQuery query);
 }

@@ -1,5 +1,5 @@
 using Godot;
-using Infrastructure.Logging;
+using Logger;
 
 namespace BCSVRMuseum.Menu_Scripts;
 
@@ -63,9 +63,7 @@ public partial class UrlSettingsPanel : Node
 		if (_urlInput == null || !_urlInput.HasFocus())
 			return;
 
-		if (@event is InputEventMouseButton { Pressed: true } mouseButton && !IsInsideUrlInput(mouseButton.Position))
-			DismissUrlInput();
-		else if (@event is InputEventScreenTouch { Pressed: true } screenTouch && !IsInsideUrlInput(screenTouch.Position))
+		if (@event is InputEventMouseButton { Pressed: true } mouseButton && !IsInsideUrlInput(mouseButton.Position) || @event is InputEventScreenTouch { Pressed: true } screenTouch && !IsInsideUrlInput(screenTouch.Position))
 			DismissUrlInput();
 	}
 
@@ -149,7 +147,7 @@ public partial class UrlSettingsPanel : Node
 
 		SetCurrentUrlColor(CheckingColor);
 
-		var valid = await _searchUseCaseFactory.GetValidateServer().ExecuteAsync();
+		var valid = await _searchUseCaseFactory.GetMuseumApplication().IsReachableAsync();
 
 		if (version != _validationVersion)
 			return;

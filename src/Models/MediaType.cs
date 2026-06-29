@@ -1,4 +1,4 @@
-namespace Core;
+namespace Models;
 
 public enum MediaType
 {

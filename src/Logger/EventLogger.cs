@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Infrastructure.Logging;
+namespace Logger;
 
 public sealed class EventLogger(string source)
 {

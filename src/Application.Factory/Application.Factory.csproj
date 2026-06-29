@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Abstractions\Application.Abstractions.csproj" />
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Logger\Logger.csproj" />
-    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure.Media\Infrastructure.Media.csproj" />
+    <ProjectReference Include="..\Infrastructure.Vitrivr\Infrastructure.Vitrivr.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

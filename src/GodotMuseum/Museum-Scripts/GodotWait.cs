@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Godot;
-using Infrastructure.Logging;
+using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts;
 

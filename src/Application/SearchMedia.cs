@@ -1,9 +1,10 @@
 using Core;
-using Infrastructure.Logging;
+using Models;
+using Logger;
 
 namespace Application;
 
-public class SearchMedia(ISearchService searchService, IMediaLoader mediaLoader)
+public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 {
     private readonly EventLogger _logger = new(nameof(SearchMedia));
 
@@ -12,7 +13,7 @@ public class SearchMedia(ISearchService searchService, IMediaLoader mediaLoader)
         _logger.Info($"Executing media search. Query='{text}', Limit={limit}");
 
         var query = new SearchQuery(text, limit);
-        var searchResult = await searchService.SearchAsync(query);
+        var searchResult = await searchEngine.SearchAsync(query);
 
         if (!searchResult.Success)
             return DisplayMediaResult.Failure(searchResult.ErrorMessage);

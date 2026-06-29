@@ -1,8 +1,7 @@
-using Application;
+using Application.Abstractions;
+using Application.Factory;
 using Godot;
-using Infrastructure.Logging;
-using Infrastructure.Media;
-using Infrastructure.Vitrivr;
+using Logger;
 
 namespace BCSVRMuseum;
 
@@ -16,27 +15,10 @@ public partial class SearchUseCaseFactory : Node
         _searchSettingsStore = GetTree().Root.FindChild("SearchSettingsStore", true, false) as SearchSettingsStore;
     }
 
-    public SearchMedia GetSearchAndLoadMedia()
+    public IMuseumApplication GetMuseumApplication()
     {
-        var vitrivrSettings = new VitrivrSettings(_searchSettingsStore.CurrentIp, _searchSettingsStore.MediaFolderPath);
+        _logger.Info($"Creating museum application. CurrentIp={_searchSettingsStore.CurrentIp}, MediaFolderPath='{_searchSettingsStore.CurrentMediaFolderPath}'");
 
-        _logger.Info($"Creating search use case. CurrentIp={_searchSettingsStore.CurrentIp}, MediaFolderPath='{_searchSettingsStore.MediaFolderPath}'");
-
-        ISearchService searchService = new VitrivrSearchService(vitrivrSettings);
-
-        IMediaLoader mediaLoader = new MediaLoader();
-
-        return new SearchMedia(searchService, mediaLoader);
-    }
-
-    public ValidateServer GetValidateServer()
-    {
-        var vitrivrSettings = new VitrivrSettings(_searchSettingsStore.CurrentIp, _searchSettingsStore.MediaFolderPath);
-
-        _logger.Info($"Creating server validation use case. CurrentIp={_searchSettingsStore.CurrentIp}");
-
-        IServerHealthService serverHealthService = new VitrivrServerHealthService(vitrivrSettings);
-
-        return new ValidateServer(serverHealthService);
+        return MuseumApplicationFactory.CreateVitrivrApplication(_searchSettingsStore.CurrentIp, _searchSettingsStore.CurrentMediaFolderPath);
     }
 }

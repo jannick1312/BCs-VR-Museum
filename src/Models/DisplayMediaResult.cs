@@ -1,4 +1,4 @@
-namespace Application;
+namespace Models;
 
 public class DisplayMediaResult
 {

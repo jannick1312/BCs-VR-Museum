@@ -1,5 +1,5 @@
 using Godot;
-using Infrastructure.Logging;
+using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts;
 

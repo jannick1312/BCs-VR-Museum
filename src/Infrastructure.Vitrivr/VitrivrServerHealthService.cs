@@ -1,5 +1,5 @@
 using Application;
-using Infrastructure.Logging;
+using Logger;
 
 namespace Infrastructure.Vitrivr;
 
@@ -22,7 +22,7 @@ public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealt
             }
             catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException)
             {
-                _logger.Warning($"Vitrivr schema endpoint check failed.");
+                _logger.Warning("Vitrivr schema endpoint check failed.");
             }
         }
 

@@ -1,6 +1,6 @@
 using BCSVRMuseum.Museum_Scripts;
 using Godot;
-using Infrastructure.Logging;
+using Logger;
 
 namespace BCSVRMuseum;
 
