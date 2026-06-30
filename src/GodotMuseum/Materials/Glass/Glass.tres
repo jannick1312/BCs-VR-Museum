@@ -1,12 +1,11 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://chxv8aiu0vv3t"]
-
-[ext_resource type="Texture2D" uid="uid://di2hiwslu4x1j" path="res://Materials/Glass/textures/garage_floor_nor_gl_4k.jpg" id="1_agdjn"]
-[ext_resource type="Texture2D" uid="uid://cv22yuskj3wdj" path="res://Materials/Glass/textures/garage_floor_rough_4k.jpg" id="2_5ttkj"]
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cfkuq5ui12ylk"]
 
 [resource]
 transparency = 1
-albedo_color = Color(0.08627451, 0.08627451, 0.16862746, 0.18039216)
-roughness_texture = ExtResource("2_5ttkj")
-normal_enabled = true
-normal_texture = ExtResource("1_agdjn")
-uv1_scale = Vector3(0.02, 0.02, 0.02)
+albedo_color = Color(0, 0, 1, 0.019607844)
+metallic = 0.2
+roughness = 0.05
+clearcoat_enabled = true
+clearcoat_roughness = 1.0
+refraction_enabled = true
+refraction_scale = 0.0

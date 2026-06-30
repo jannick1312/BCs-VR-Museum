@@ -50,8 +50,9 @@ public static class VitrivrResponseParser
     private static SearchResultItem? ParseRetrievable(JsonElement retrievable, string mediaFolderPath, string mediaBaseUrl)
     {
         var sourcePath = GetSourcePath(retrievable);
+        var vector = GetClipVector(retrievable);
 
-        if (string.IsNullOrWhiteSpace(sourcePath))
+        if (string.IsNullOrWhiteSpace(sourcePath) || vector.Count == 0)
             return null;
 
         var fileName = ExtractFileName(sourcePath);
@@ -67,7 +68,35 @@ public static class VitrivrResponseParser
         var localPath = Path.Combine(mediaFolderPath, mediaFolderName, fileName);
         var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + mediaFolderName + "/" + fileName;
 
-        return new SearchResultItem(mediaType, localPath, remoteUrl);
+        return new SearchResultItem(vector, mediaType, localPath, remoteUrl);
+    }
+
+    private static IReadOnlyList<double> GetClipVector(JsonElement retrievable)
+    {
+        if (retrievable.TryGetProperty("descriptors", out var descriptors) &&
+            descriptors.TryGetProperty("clip.vector", out var vectorElement))
+            return ParseVector(vectorElement);
+
+        if (retrievable.TryGetProperty("relationship", out var relationship) &&
+            relationship.TryGetProperty("partOf", out var parentRetrievable) &&
+            parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
+            parentDescriptors.TryGetProperty("clip.vector", out var parentVectorElement))
+            return ParseVector(parentVectorElement);
+
+        return [];
+    }
+
+    private static IReadOnlyList<double> ParseVector(JsonElement vectorElement)
+    {
+        var vector = new List<double>();
+
+        foreach (var value in vectorElement.EnumerateArray())
+        {
+            if (value.TryGetDouble(out var number))
+                vector.Add(number);
+        }
+
+        return vector;
     }
 
     private static string? GetSourcePath(JsonElement retrievable)

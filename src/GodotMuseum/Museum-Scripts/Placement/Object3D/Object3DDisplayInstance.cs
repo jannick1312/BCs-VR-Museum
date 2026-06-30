@@ -1,5 +1,6 @@
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
+using System.Collections.Generic;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 
@@ -20,5 +21,10 @@ public sealed class Object3DDisplayInstance
         NodeTreeActivator.SetActive(item, true);
 
         return new Object3DDisplayInstance(item);
+    }
+
+    public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName)
+    {
+        RetrievableMetadata.Store(Item, vector, mediaName);
     }
 }

@@ -112,6 +112,9 @@ script = ExtResource("7_m6mi2")
 [node name="Object3DDisplayInstance" parent="." unique_id=1950581 instance=ExtResource("11_hm1tn")]
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, -7, 0)
 
+[node name="ObjectSlot" parent="Object3DDisplayInstance/Hinge" parent_id_path=PackedInt32Array(1950581, 1572078800) index="5" unique_id=903121435]
+transform = Transform3D(0.008112016, -0.5496649, 0.017396325, 0.49846923, -2.178878e-08, -0.23244002, 0.23229843, 0.019194711, 0.49816558, -1.75, 0, 0)
+
 [node name="MediaPlacementController" type="Node" parent="." unique_id=379999481]
 script = ExtResource("8_bs0q8")
 Media2DInstancePath = NodePath("../Media2DDisplayInstance")
@@ -149,22 +152,22 @@ surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 visible = false
 
 [node name="Place1" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1697069992]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.22, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.15, 2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place2" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1247304891]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.22, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.15, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place3" type="MeshInstance3D" parent="Object3DPlaces" unique_id=2083943530]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.22, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.15, 2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place4" type="MeshInstance3D" parent="Object3DPlaces" unique_id=181321835]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.22, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.15, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 

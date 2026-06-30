@@ -73,6 +73,7 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
     private async Task<bool> CreateDisplayInstance(DisplayMediaItem mediaItem, Node3D place, Rect2 slot)
     {
         var instance = Media2DDisplayInstance.Create(DisplayTemplate, DisplayRoot, GeneratedGroup, _cellPadding, place, slot);
+        instance.StoreRetrievableMetadata(mediaItem.Vector, mediaItem.Name);
 
         switch (mediaItem.MediaType)
         {

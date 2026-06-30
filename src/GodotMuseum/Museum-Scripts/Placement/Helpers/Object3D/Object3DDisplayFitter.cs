@@ -13,7 +13,7 @@ public sealed class Object3DDisplayFitter
     public Object3DDisplayFitter(Node3D template)
     {
         _template = template;
-        _baseMesh = (MeshInstance3D)_template.FindChild("Base", true, false);
+        _baseMesh = (MeshInstance3D)_template.FindChild("BaseMesh", true, false);
     }
 
     public float Place(Node3D item, Node3D objectNode, Node3D place)

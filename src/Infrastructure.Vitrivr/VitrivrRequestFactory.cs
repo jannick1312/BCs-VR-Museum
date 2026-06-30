@@ -28,7 +28,8 @@ public static class VitrivrRequestFactory
                     },
                     parameters = new
                     {
-                        limit = query.Limit.ToString()
+                        limit = query.Limit.ToString(),
+                        returnDescriptor = "true"
                     }
                 },
                 relations = new
@@ -64,12 +65,25 @@ public static class VitrivrRequestFactory
                         keys = "start, end"
                     }
                 },
+                desclookup = new
+                {
+                    factory = "FieldLookup",
+                    inputs = new Dictionary<string, string>
+                    {
+                        ["in"] = "timelookup"
+                    },
+                    parameters = new
+                    {
+                        field = "clip",
+                        keys = "descriptor"
+                    }
+                },
                 filelookup = new
                 {
                     factory = "ObjectFieldLookup",
                     inputs = new Dictionary<string, string>
                     {
-                        ["in"] = "timelookup"
+                        ["in"] = "desclookup"
                     },
                     parameters = new
                     {

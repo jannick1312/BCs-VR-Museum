@@ -47,6 +47,7 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
                 continue;
             }
 
+            instance.StoreRetrievableMetadata(objectItem.Vector, objectItem.Name);
             Log.Info($"Placed 3D object '{objectItem.Name}'. ObjectScale={objectScale}");
             placedObjectCount++;
         }

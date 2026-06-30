@@ -1,6 +1,7 @@
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 using Godot;
+using System.Collections.Generic;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 
@@ -39,6 +40,11 @@ public sealed class Media2DDisplayInstance
     {
         DisplaySurface.MaterialOverride = new StandardMaterial3D{CullMode = BaseMaterial3D.CullModeEnum.Disabled, AlbedoTexture = texture};
         ResizeToAspect((float)texture.GetWidth() / texture.GetHeight());
+    }
+
+    public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName)
+    {
+        RetrievableMetadata.Store(Item, vector, mediaName);
     }
 
     private void ResizeToAspect(float aspect)
