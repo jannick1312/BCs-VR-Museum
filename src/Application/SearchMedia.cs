@@ -12,7 +12,20 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 	{
 		_logger.Info($"Executing media search. Query='{text}', Limit={limit}");
 
-		var query = new SearchQuery(text, limit);
+		var query = SearchQuery.FromText(text, limit);
+		return await ExecuteAsync(query, limit);
+	}
+
+	public async Task<DisplayMediaResult> ExecuteAsync(IReadOnlyList<double> vector, int limit)
+	{
+		_logger.Info($"Executing media search. VectorLength={vector.Count}, Limit={limit}");
+
+		var query = SearchQuery.FromVector(vector, limit);
+		return await ExecuteAsync(query, limit);
+	}
+
+	private async Task<DisplayMediaResult> ExecuteAsync(SearchQuery query, int limit)
+	{
 		var searchResult = await searchEngine.SearchAsync(query);
 
 		var searchItems = searchResult.Items.Take(limit).ToList();

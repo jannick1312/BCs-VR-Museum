@@ -10,13 +10,16 @@ public partial class DecisionPanel : Node
 	[Signal]
 	public delegate void DismissRequestedEventHandler();
 
+	[Signal]
+	public delegate void SimilaritySearchRequestedEventHandler(string vectorJson);
+
 	private readonly List<double> _vector = [];
 	private static readonly EventLogger Log = new(nameof(DecisionPanel));
 
 	public override void _Ready()
 	{
 		GetNode<Button>("../Panel/OriginalSize").Pressed += () => OnDecisionButtonPressed("Original Size");
-		GetNode<Button>("../Panel/SimilaritySearch").Pressed += () => OnDecisionButtonPressed("Similarity Search");
+		GetNode<Button>("../Panel/SimilaritySearch").Pressed += OnSimilaritySearchPressed;
 	}
 
 	public void SetVector(string vectorJson)
@@ -29,7 +32,13 @@ public partial class DecisionPanel : Node
 
 	private void OnDecisionButtonPressed(string action)
 	{
-		Log.Info($"{action}: first={_vector[0]}, last={_vector[^1]}.");
+		Log.Info(action);
+		EmitSignal(SignalName.DismissRequested);
+	}
+
+	private void OnSimilaritySearchPressed()
+	{
+		EmitSignal(SignalName.SimilaritySearchRequested, JsonSerializer.Serialize(_vector));
 		EmitSignal(SignalName.DismissRequested);
 	}
 }

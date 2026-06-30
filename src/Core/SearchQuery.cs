@@ -1,7 +1,16 @@
 namespace Core;
 
-public class SearchQuery(string text, int limit = 1)
+public abstract class SearchQuery(int limit)
 {
-	public string Text { get; } = text;
 	public int Limit { get; } = limit;
+
+	public static SearchQuery FromText(string text, int limit = 1)
+	{
+		return new TextSearchQuery(text, limit);
+	}
+
+	public static SearchQuery FromVector(IReadOnlyList<double> vector, int limit = 1)
+	{
+		return new VectorSearchQuery(vector, limit);
+	}
 }

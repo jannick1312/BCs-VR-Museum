@@ -7,24 +7,19 @@ public static class VitrivrRequestFactory
 {
 	public static string BuildRequestBody(SearchQuery query)
 	{
+		var input = VitrivrQueryInput.From(query);
+
 		var payload = new
 		{
-			inputs = new
-			{
-				txt = new
-				{
-					type = "TEXT",
-					data = query.Text
-				}
-			},
+			inputs = input.ToInputs(),
 			operations = new
 			{
 				clip = new
 				{
 					field = "clip",
-					inputs = new
+					inputs = new Dictionary<string, string>
 					{
-						txt = "txt"
+						[input.ClipInputName] = input.Name
 					},
 					parameters = new
 					{
@@ -75,7 +70,7 @@ public static class VitrivrRequestFactory
 					parameters = new
 					{
 						field = "clip",
-						keys = "descriptor"
+						keys = input.DescriptorKey
 					}
 				},
 				filelookup = new

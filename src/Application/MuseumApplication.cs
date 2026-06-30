@@ -13,6 +13,11 @@ public sealed class MuseumApplication(ISearchEngine searchEngine, IMediaLoader m
 		return _searchMedia.ExecuteAsync(text, limit);
 	}
 
+	public Task<DisplayMediaResult> SearchAsync(IReadOnlyList<double> vector, int limit)
+	{
+		return _searchMedia.ExecuteAsync(vector, limit);
+	}
+
 	public Task<bool> IsReachableAsync()
 	{
 		return _validateServer.ExecuteAsync();
