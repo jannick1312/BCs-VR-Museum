@@ -1,19 +1,21 @@
-using Godot;
 using System.IO;
 using System.Threading.Tasks;
+using BCSVRMuseum.Museum_Scripts.Placement.Media2D;
+using Godot;
 
-namespace BCSVRMuseum.Museum_Scripts;
+namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D.Video;
 
-public static class Video2DOutput
+public static class Video2DMediaRenderer
 {
-    public static async Task Set(Media2DInstance instance, byte[] bytes, string path, string name)
+    public static async Task<VideoPlaybackController> Render(Media2DDisplayInstance instance, byte[] bytes, string path, string name)
     {
         var player = new VideoStreamPlayer{Stream = new VideoStreamTheora { File = File.Exists(path) ? path : SaveVideo(bytes, name) }, Autoplay = false, Loop = false};
 
-        instance.AttachVideo(player);
+        instance.Item.AddChild(player);
 
         await instance.Item.ToSignal(instance.Item.GetTree(), SceneTree.SignalName.ProcessFrame);
-        instance.ApplyTexture(player.GetVideoTexture());
+        instance.ShowTexture(player.GetVideoTexture());
+        return new VideoPlaybackController(instance.Item, player);
     }
 
     private static string SaveVideo(byte[] bytes, string name)

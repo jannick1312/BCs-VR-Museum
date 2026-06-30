@@ -288,7 +288,7 @@ shadow_mesh = SubResource("ArrayMesh_j0y26")
 
 [sub_resource type="QuadMesh" id="QuadMesh_5belf"]
 
-[node name="Media2DOutputInstance" unique_id=806658028 instance=ExtResource("1_bdcga")]
+[node name="Media2DDisplayInstance" unique_id=806658028 instance=ExtResource("1_bdcga")]
 collision_layer = 5
 gravity_scale = 0.0
 linear_damp = 100.0

@@ -1,15 +1,16 @@
+using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
 using Logger;
 
-namespace BCSVRMuseum.Museum_Scripts;
+namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 
-public sealed class ObjectOutputFitter
+public sealed class Object3DDisplayFitter
 {
     private readonly Node3D _template;
     private readonly MeshInstance3D _baseMesh;
-    private static readonly EventLogger Logger = new(nameof(ObjectOutputFitter));
+    private static readonly EventLogger Logger = new(nameof(Object3DDisplayFitter));
 
-    public ObjectOutputFitter(Node3D template)
+    public Object3DDisplayFitter(Node3D template)
     {
         _template = template;
         _baseMesh = (MeshInstance3D)_template.FindChild("Base", true, false);
@@ -19,9 +20,8 @@ public sealed class ObjectOutputFitter
     {
         PlaceInstance(item, place);
 
-        var slot = item.GetNode<MeshInstance3D>("Hinge/Output");
+        var slot = item.GetNode<MeshInstance3D>("Hinge/ObjectSlot");
         slot.Visible = false;
-
         PlaceObject(objectNode, slot);
 
         return ScaleToSlot(objectNode, slot);
@@ -32,7 +32,6 @@ public sealed class ObjectOutputFitter
         var scale = InstanceScale(place);
         var basis = place.GlobalTransform.Basis.Orthonormalized() * _template.Transform.Basis.Orthonormalized();
         var origin = place.GlobalTransform.Origin - basis * (BaseCenter() * scale);
-
         item.GlobalTransform = new Transform3D(basis, origin);
         item.Scale *= scale;
     }
@@ -40,7 +39,6 @@ public sealed class ObjectOutputFitter
     private static void PlaceObject(Node3D objectNode, MeshInstance3D slot)
     {
         var parent = (Node3D)slot.GetParent();
-
         parent.AddChild(objectNode);
         objectNode.Transform = new Transform3D(slot.Transform.Basis.Orthonormalized(), slot.Transform.Origin);
     }
@@ -48,7 +46,7 @@ public sealed class ObjectOutputFitter
     private static float ScaleToSlot(Node3D objectNode, MeshInstance3D slot)
     {
         var objectBounds = Bounds(objectNode);
-        var slotBounds = MeshBounds(slot);
+        var slotBounds = PlacementBounds.ScaledMeshBounds(slot);
         var scale = FitScale(objectBounds.Size, slotBounds.Size);
 
         objectNode.Scale *= scale;
@@ -61,9 +59,8 @@ public sealed class ObjectOutputFitter
 
     private float InstanceScale(Node3D place)
     {
-        var placeBounds = MeshBounds((MeshInstance3D)place);
+        var placeBounds = PlacementBounds.ScaledMeshBounds((MeshInstance3D)place);
         var baseSize = BaseSize();
-
         var sx = placeBounds.Size.X / baseSize.X;
         var sz = placeBounds.Size.Z / baseSize.Z;
 
@@ -129,13 +126,6 @@ public sealed class ObjectOutputFitter
         var sz = targetSize.Z / objectSize.Z;
 
         return Mathf.Min(sx, Mathf.Min(sy, sz));
-    }
-
-    private static Aabb MeshBounds(MeshInstance3D mesh)
-    {
-        var bounds = mesh.GetAabb();
-        bounds.Size *= mesh.Scale.Abs();
-        return bounds;
     }
 
     private static Aabb Bounds(Node3D root)

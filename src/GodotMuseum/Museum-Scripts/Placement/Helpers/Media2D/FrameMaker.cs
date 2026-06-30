@@ -1,17 +1,16 @@
 using Godot;
 using Logger;
 
-namespace BCSVRMuseum.Museum_Scripts;
+namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 
 public partial class FrameMaker : Node
 {
 	private static readonly EventLogger Logger = new(nameof(FrameMaker));
 
-	private Node3D _outputFrame;
+	private Node3D _displayInstance;
 	private Node3D _frame;
 	private Node3D _grabLeft;
 	private Node3D _grabRight;
-
 	private MeshInstance3D _top;
 	private MeshInstance3D _bottom;
 	private MeshInstance3D _left;
@@ -25,28 +24,27 @@ public partial class FrameMaker : Node
 
 	public override void _Ready()
 	{
-		_outputFrame = GetParent<Node3D>();
+		_displayInstance = GetParent<Node3D>();
 
-		if (_outputFrame == null)
+		if (_displayInstance == null)
 		{
 			Logger.Error("FrameMaker parent is missing or not a Node3D.");
 			return;
 		}
 
-		_frame = _outputFrame.GetNode<Node3D>("Frame");
+		_frame = _displayInstance.GetNode<Node3D>("Frame");
 
-		_collision = _outputFrame.GetNode<CollisionShape3D>("CollisionShape3D");
+		_collision = _displayInstance.GetNode<CollisionShape3D>("CollisionShape3D");
+		
 		if (_collision.Shape != null)
 			_collision.Shape = (Shape3D)_collision.Shape.Duplicate();
 
-		_grabLeft = _outputFrame.GetNode<Node3D>("GrabPointHandLeft");
-		_grabRight = _outputFrame.GetNode<Node3D>("GrabPointHandRight");
-
+		_grabLeft = _displayInstance.GetNode<Node3D>("GrabPointHandLeft");
+		_grabRight = _displayInstance.GetNode<Node3D>("GrabPointHandRight");
 		_top = _frame.GetNode<MeshInstance3D>("Top");
 		_bottom = _frame.GetNode<MeshInstance3D>("Bottom");
 		_left = _frame.GetNode<MeshInstance3D>("Left");
 		_right = _frame.GetNode<MeshInstance3D>("Right");
-
 		_topL = _frame.GetNode<MeshInstance3D>("TopL");
 		_topR = _frame.GetNode<MeshInstance3D>("TopR");
 		_bottomL = _frame.GetNode<MeshInstance3D>("BottomL");
@@ -56,13 +54,10 @@ public partial class FrameMaker : Node
 	public void UpdateFrame(MeshInstance3D picture, float imageWidth, float imageHeight)
 	{
 		var center = picture.GlobalPosition;
-
 		var basis = picture.GlobalTransform.Basis.Orthonormalized();
-
 		var right = basis.X.Normalized();
 		var up = basis.Y.Normalized();
 		var forward = basis.Z.Normalized();
-
 		var frameBasis = new Basis(right, forward, -up).Orthonormalized();
 
 		_frame.GlobalTransform = new Transform3D(frameBasis, center);
@@ -108,7 +103,6 @@ public partial class FrameMaker : Node
 	{
 		var l = leftCorner.GetAabb();
 		var r = rightCorner.GetAabb();
-
 		var start = leftCorner.Position.X + l.End.X;
 		var end = rightCorner.Position.X + r.Position.X;
 		var len = end - start;
@@ -127,7 +121,6 @@ public partial class FrameMaker : Node
 	{
 		var t = topCorner.GetAabb();
 		var b = bottomCorner.GetAabb();
-
 		var start = topCorner.Position.Z + t.End.Z;
 		var end = bottomCorner.Position.Z + b.Position.Z;
 		var len = end - start;
@@ -158,7 +151,6 @@ public partial class FrameMaker : Node
 	{
 		var l = _left.GetAabb();
 		var r = _right.GetAabb();
-
 		var lc = _left.Position + l.GetCenter();
 		var rc = _right.Position + r.GetCenter();
 

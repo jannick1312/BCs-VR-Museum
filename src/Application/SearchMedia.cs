@@ -15,9 +15,6 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
         var query = new SearchQuery(text, limit);
         var searchResult = await searchEngine.SearchAsync(query);
 
-        if (!searchResult.Success)
-            return DisplayMediaResult.Failure(searchResult.ErrorMessage);
-
         var searchItems = searchResult.Items.Take(limit).ToList();
         var loadTasks = searchItems.Select(mediaLoader.LoadAsync).ToArray();
         var mediaContents = await Task.WhenAll(loadTasks);
