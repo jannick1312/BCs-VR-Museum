@@ -80,9 +80,9 @@ size = Vector3(1.8, 1.8, 0.02)
 
 [node name="MenuSpawnPoint" type="Marker3D" parent="." unique_id=1700917122]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=108671153]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-light_energy = 10.0
+[node name="OmniLight3D" type="DirectionalLight3D" parent="." unique_id=3349407]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 3, 0)
+light_energy = 5.0
 
 [node name="2Din3DKeyboard" parent="." unique_id=776647796 instance=ExtResource("1_gxrlm")]
 transform = Transform3D(1, 0, 0, 0, 0.92667955, 0.37585232, 0, -0.37585232, 0.92667955, 0, -0.8, -1.75)

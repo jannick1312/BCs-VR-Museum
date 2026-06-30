@@ -75,11 +75,20 @@ public partial class PlatformSwitcher : Node
 		_menuSpawn = _menu.FindChild("MenuSpawnPoint", true, false) as Marker3D;
 		_worldEnvironment = GetNode<WorldEnvironment>(WorldEnvironmentPath);
 
-		SetWorld(true);
-		SetMovementEnabled(true);
 		MoveCameraTo(_museumSpawn);
 		RememberMuseumTransform();
-		_logger.Info("Platform switcher initialized in museum world.");
+
+		SetMovementEnabled(false);
+		SetEnabled(_body, false);
+		SetWorld(false);
+		MoveCameraTo(_menuSpawn);
+
+		if (_body != null && _rig != null)
+			_body.GlobalTransform = _rig.GlobalTransform;
+
+		_lockedMenuRig = _rig.GlobalTransform;
+		_inMenu = true;
+		_logger.Info("Platform switcher initialized in menu.");
 	}
 
 	public override void _Process(double delta)

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bbgtin8e3itqc" path="res://Museum/Media2DDisplayInstance.tscn" id="5_avl46"]
 [ext_resource type="Script" uid="uid://csciromt1vv0a" path="res://Museum-Scripts/InputBridge.cs" id="6_ecgt1"]
 [ext_resource type="Script" uid="uid://birhengy0njg6" path="res://Museum-Scripts/EnterSubmitTrigger.cs" id="6_qutch"]
-[ext_resource type="PackedScene" uid="uid://bslaqwovqkqr6" path="res://Museum/Input.tscn" id="7_ecgt1"]
+[ext_resource type="PackedScene" uid="uid://bslaqwovqkqr6" path="res://Museum/InputArea/Input.tscn" id="7_ecgt1"]
 [ext_resource type="Script" uid="uid://da02bak3hx70k" path="res://Museum-Scripts/Placement/Helpers/Media2D/FrameMaker.cs" id="7_m6mi2"]
 [ext_resource type="Script" uid="uid://db51p8mctrlr" path="res://Museum-Scripts/Placement/MediaPlacementController.cs" id="8_bs0q8"]
 [ext_resource type="PackedScene" uid="uid://rghbahplwn5s" path="res://Museum/Object3DDisplayInstance.tscn" id="11_hm1tn"]

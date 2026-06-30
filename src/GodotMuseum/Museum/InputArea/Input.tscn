@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="2_wiiub"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="3_x6i0p"]
 [ext_resource type="PackedScene" uid="uid://pgendy5awkuh" path="res://Keyboard/2Din3DKeyboard.tscn" id="5_x6i0p"]
-[ext_resource type="PackedScene" uid="uid://dsq03f1w5lqyc" path="res://Museum/2Din3DPlane.tscn" id="6_5r3yq"]
+[ext_resource type="PackedScene" uid="uid://dsq03f1w5lqyc" path="res://Museum/InputArea/2Din3DPlane.tscn" id="6_5r3yq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xngas"]
 size = Vector3(1.8, 1.2, 0.02)

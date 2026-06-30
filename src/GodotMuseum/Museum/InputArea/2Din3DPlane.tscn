@@ -1,19 +1,19 @@
 [gd_scene format=3 uid="uid://dsq03f1w5lqyc"]
 
-[ext_resource type="Script" uid="uid://eavk7267igp7" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.gd" id="1_0meo3"]
-[ext_resource type="PackedScene" uid="uid://u5ecy8x04wo1" path="res://Museum/InputText.tscn" id="2_8fgmr"]
-[ext_resource type="Script" uid="uid://cpl5yiyf1ypft" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d_body.gd" id="3_oudb5"]
+[ext_resource type="Script" uid="uid://eavk7267igp7" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.gd" id="1_flk1r"]
+[ext_resource type="PackedScene" uid="uid://u5ecy8x04wo1" path="res://Museum/InputArea/InputText.tscn" id="2_u5ed7"]
+[ext_resource type="Script" uid="uid://cpl5yiyf1ypft" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d_body.gd" id="3_wd3uu"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_8fgmr"]
 resource_local_to_scene = true
 size = Vector2(1.8, 1.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_8fgmr"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_flk1r"]
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ygre3"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5ed7"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_8fgmr")
+albedo_texture = SubResource("ViewportTexture_flk1r")
 texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_06nps"]
@@ -21,9 +21,9 @@ resource_local_to_scene = true
 size = Vector3(1.8, 1.2, 0.02)
 
 [node name="2Din3DPlane" type="Node3D" unique_id=776647796]
-script = ExtResource("1_0meo3")
+script = ExtResource("1_flk1r")
 screen_size = Vector2(1.8, 1.2)
-scene = ExtResource("2_8fgmr")
+scene = ExtResource("2_u5ed7")
 viewport_size = Vector2(1200, 800)
 transparent = 0
 alpha_scissor_threshold = 0.25
@@ -39,11 +39,11 @@ render_target_update_mode = 1
 
 [node name="Screen" type="MeshInstance3D" parent="." unique_id=830305756]
 mesh = SubResource("QuadMesh_8fgmr")
-surface_material_override/0 = SubResource("StandardMaterial3D_ygre3")
+surface_material_override/0 = SubResource("StandardMaterial3D_u5ed7")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1024925121]
 collision_layer = 5242881
-script = ExtResource("3_oudb5")
+script = ExtResource("3_wd3uu")
 screen_size = Vector2(1.8, 1.2)
 viewport_size = Vector2(1200, 800)
 
