@@ -9,15 +9,14 @@ public partial class UrlSettingsPanel : Node
 	private SearchSettingsStore _searchSettingsStore;
 	private SearchUseCaseFactory _searchUseCaseFactory;
 
-    private LineEdit _urlInput;
-    private Label _currentUrlLabel;
-    private Label _currentUrlValueLabel;
-    private Button _submitButton;
-    private Button _revertButton;
-    private CheckBox _deployedCheckBox;
-    private Node3D _keyboard;
-    private CollisionShape3D _keyboardCollisionShape;
-    private int _validationVersion;
+	private LineEdit _urlInput;
+	private Label _currentUrlValueLabel;
+	private Button _submitButton;
+	private Button _revertButton;
+	private CheckBox _deployedCheckBox;
+	private Node3D _keyboard;
+	private CollisionShape3D _keyboardCollisionShape;
+	private int _validationVersion;
 
 	private static readonly Color CheckingColor = new(1.0f, 0.5f, 0.0f);
 	private static readonly Color ValidColor = new(0.2f, 0.8f, 0.3f);
@@ -27,31 +26,24 @@ public partial class UrlSettingsPanel : Node
 	{
 		var root = GetParent();
 
-		_urlInput = root.FindChild("URLinput", true, false) as LineEdit;
-		_currentUrlLabel = root.FindChild("URLcurrently", true, false) as Label;
-		_currentUrlValueLabel = root.FindChild("URLcurrentlyValue", true, false) as Label;
-		_submitButton = root.FindChild("Submit", true, false) as Button;
-		_revertButton = root.FindChild("Revert", true, false) as Button;
-		_deployedCheckBox = root.FindChild("Check", true, false) as CheckBox;
-		
-		_searchSettingsStore = GetTree().Root.FindChild("SearchSettingsStore", true, false) as SearchSettingsStore;
-		_searchUseCaseFactory = GetTree().Root.FindChild("SearchUseCaseFactory", true, false) as SearchUseCaseFactory;
-		_keyboard = GetTree().Root.GetNodeOrNull<Node3D>("Main/MenuNode/2Din3DKeyboard");
-		_keyboardCollisionShape = _keyboard?.FindChild("CollisionShape3D", true, false) as CollisionShape3D;
+		_urlInput = (LineEdit)root.FindChild("URLinput", true, false);
+		_currentUrlValueLabel = (Label)root.FindChild("URLcurrentlyValue", true, false);
+		_submitButton = (Button)root.FindChild("Submit", true, false);
+		_revertButton = (Button)root.FindChild("Revert", true, false);
+		_deployedCheckBox = (CheckBox)root.FindChild("Check", true, false);
 
-		if (_urlInput != null)
-		{
-			_urlInput.FocusEntered += OnUrlInputFocusEntered;
-			_urlInput.FocusExited += OnUrlInputFocusExited;
-			_urlInput.TextSubmitted += _ => DismissUrlInput();
-		}
-		_submitButton?.Pressed += OnSubmitPressed;
-		_revertButton?.Pressed += OnRevertPressed;
-		if (_deployedCheckBox != null)
-		{
-			_deployedCheckBox.Toggled += OnDeployedToggled;
-			if (_searchSettingsStore != null) _deployedCheckBox.ButtonPressed = _searchSettingsStore.Deployed;
-		}
+		_searchSettingsStore = (SearchSettingsStore)GetTree().Root.FindChild("SearchSettingsStore", true, false);
+		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
+		_keyboard = GetTree().Root.GetNode<Node3D>("Main/MenuNode/2Din3DKeyboard");
+		_keyboardCollisionShape = (CollisionShape3D)_keyboard.FindChild("CollisionShape3D", true, false);
+
+		_urlInput.FocusEntered += OnUrlInputFocusEntered;
+		_urlInput.FocusExited += OnUrlInputFocusExited;
+		_urlInput.TextSubmitted += _ => DismissUrlInput();
+		_submitButton.Pressed += OnSubmitPressed;
+		_revertButton.Pressed += OnRevertPressed;
+		_deployedCheckBox.Toggled += OnDeployedToggled;
+		_deployedCheckBox.ButtonPressed = _searchSettingsStore.Deployed;
 
 		SetKeyboardVisible(false);
 		UpdateCurrentUrlLabel();
@@ -60,7 +52,7 @@ public partial class UrlSettingsPanel : Node
 
 	public override void _Input(InputEvent @event)
 	{
-		if (_urlInput == null || !_urlInput.HasFocus())
+		if (!_urlInput.HasFocus())
 			return;
 
 		if (@event is InputEventMouseButton { Pressed: true } mouseButton && !IsInsideUrlInput(mouseButton.Position) || @event is InputEventScreenTouch { Pressed: true } screenTouch && !IsInsideUrlInput(screenTouch.Position))
@@ -94,14 +86,9 @@ public partial class UrlSettingsPanel : Node
 
 	private void UpdateCurrentUrlLabel()
 	{
-		if (_searchSettingsStore == null)
-			return;
-		if (_currentUrlValueLabel != null)
-			_currentUrlValueLabel.Text = _searchSettingsStore.CurrentIp;
-		else
-			_currentUrlLabel?.Text = "Currently using:\n" + _searchSettingsStore.CurrentIp;
+		_currentUrlValueLabel.Text = _searchSettingsStore.CurrentIp;
 	}
-	
+
 	private void OnDeployedToggled(bool toggledOn)
 	{
 		_searchSettingsStore.SetDeployed(toggledOn);
@@ -121,7 +108,7 @@ public partial class UrlSettingsPanel : Node
 
 	private void DismissUrlInput()
 	{
-		_urlInput?.ReleaseFocus();
+		_urlInput.ReleaseFocus();
 		SetKeyboardVisible(false);
 	}
 
@@ -135,14 +122,11 @@ public partial class UrlSettingsPanel : Node
 		_keyboard.Visible = visible;
 		_keyboard.ProcessMode = visible ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 
-		_keyboardCollisionShape?.Disabled = !visible;
+		_keyboardCollisionShape.Disabled = !visible;
 	}
 
 	private async void ValidateCurrentUrl()
 	{
-		if (_searchUseCaseFactory == null)
-			return;
-
 		var version = ++_validationVersion;
 
 		SetCurrentUrlColor(CheckingColor);
@@ -157,9 +141,6 @@ public partial class UrlSettingsPanel : Node
 
 	private void SetCurrentUrlColor(Color color)
 	{
-		if (_currentUrlValueLabel != null)
-			_currentUrlValueLabel.AddThemeColorOverride("font_color", color);
-		else
-			_currentUrlLabel?.AddThemeColorOverride("font_color", color);
+		_currentUrlValueLabel.AddThemeColorOverride("font_color", color);
 	}
 }

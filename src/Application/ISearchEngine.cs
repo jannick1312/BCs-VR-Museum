@@ -4,5 +4,5 @@ namespace Application;
 
 public interface ISearchEngine
 {
-    Task<SearchResult> SearchAsync(SearchQuery query);
+	Task<SearchResult> SearchAsync(SearchQuery query);
 }

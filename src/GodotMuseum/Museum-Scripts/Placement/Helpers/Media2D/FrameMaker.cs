@@ -5,7 +5,7 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 
 public partial class FrameMaker : Node
 {
-	private static readonly EventLogger Logger = new(nameof(FrameMaker));
+	private static readonly EventLogger Log = new(nameof(FrameMaker));
 
 	private Node3D _displayInstance;
 	private Node3D _frame;
@@ -26,18 +26,10 @@ public partial class FrameMaker : Node
 	{
 		_displayInstance = GetParent<Node3D>();
 
-		if (_displayInstance == null)
-		{
-			Logger.Error("FrameMaker parent is missing or not a Node3D.");
-			return;
-		}
-
 		_frame = _displayInstance.GetNode<Node3D>("Frame");
 
 		_collision = _displayInstance.GetNode<CollisionShape3D>("CollisionShape3D");
-		
-		if (_collision.Shape != null)
-			_collision.Shape = (Shape3D)_collision.Shape.Duplicate();
+		_collision.Shape = (Shape3D)_collision.Shape.Duplicate();
 
 		_grabLeft = _displayInstance.GetNode<Node3D>("GrabPointHandLeft");
 		_grabRight = _displayInstance.GetNode<Node3D>("GrabPointHandRight");
@@ -66,9 +58,9 @@ public partial class FrameMaker : Node
 		var halfH = imageHeight / 2.0f;
 
 		var tl = new Vector3(-halfW, 0, -halfH);
-		var tr = new Vector3( halfW, 0, -halfH);
-		var bl = new Vector3(-halfW, 0,  halfH);
-		var br = new Vector3( halfW, 0,  halfH);
+		var tr = new Vector3(halfW, 0, -halfH);
+		var bl = new Vector3(-halfW, 0, halfH);
+		var br = new Vector3(halfW, 0, halfH);
 
 		PlaceCornerLocal(_topL, tl, true, false);
 		PlaceCornerLocal(_topR, tr, false, false);
@@ -114,7 +106,7 @@ public partial class FrameMaker : Node
 		if (!Mathf.IsZeroApprox(baseLength))
 			mesh.Scale = new Vector3(len / baseLength, mesh.Scale.Y, mesh.Scale.Z);
 		else
-			Logger.Warning($"Horizontal frame mesh '{mesh.Name}' has zero base length.");
+			Log.Warning($"Horizontal frame mesh '{mesh.Name}' has zero base length.");
 	}
 
 	private static void PlaceVLocal(MeshInstance3D mesh, MeshInstance3D topCorner, MeshInstance3D bottomCorner)
@@ -132,16 +124,12 @@ public partial class FrameMaker : Node
 		if (!Mathf.IsZeroApprox(baseLength))
 			mesh.Scale = new Vector3(mesh.Scale.X, mesh.Scale.Y, len / baseLength);
 		else
-			Logger.Warning($"Vertical frame mesh '{mesh.Name}' has zero base length.");
+			Log.Warning($"Vertical frame mesh '{mesh.Name}' has zero base length.");
 	}
 
 	private void UpdateCollision(Vector3 center, Basis basis, float imageWidth, float imageHeight)
 	{
-		if (_collision.Shape is not BoxShape3D box)
-		{
-			Logger.Warning("Frame collision shape is missing or not a BoxShape3D.");
-			return;
-		}
+		var box = (BoxShape3D)_collision.Shape;
 
 		box.Size = new Vector3(imageWidth + 0.2f, imageHeight + 0.2f, 0.04f);
 		_collision.GlobalTransform = new Transform3D(basis, center);

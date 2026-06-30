@@ -34,23 +34,14 @@ public partial class KeyboardUi : Control
 		_upperCase = GetNode<Control>("Panel/UpperCase");
 		_alternate = GetNode<Control>("Panel/Alternate");
 
-		if (_toggleShift != null)
-		{
-			_toggleShift.FocusMode = FocusModeEnum.None;
-			_toggleShift.Pressed += OnToggleShiftPressed;
-		}
+		_toggleShift.FocusMode = FocusModeEnum.None;
+		_toggleShift.Pressed += OnToggleShiftPressed;
 
-		if (_toggleCaps != null)
-		{
-			_toggleCaps.FocusMode = FocusModeEnum.None;
-			_toggleCaps.Pressed += OnToggleCapsPressed;
-		}
+		_toggleCaps.FocusMode = FocusModeEnum.None;
+		_toggleCaps.Pressed += OnToggleCapsPressed;
 
-		if (_toggleAlt != null)
-		{
-			_toggleAlt.FocusMode = FocusModeEnum.None;
-			_toggleAlt.Pressed += OnToggleAltPressed;
-		}
+		_toggleAlt.FocusMode = FocusModeEnum.None;
+		_toggleAlt.Pressed += OnToggleAltPressed;
 
 		SetupAllKeys(this);
 		UpdateVisible(true);
@@ -74,7 +65,7 @@ public partial class KeyboardUi : Control
 	{
 		SendKey(scanCodeText, unicode, shift);
 
-		if (!_shiftDown) 
+		if (!_shiftDown)
 			return;
 		_shiftDown = false;
 		UpdateVisible(false);
@@ -146,15 +137,15 @@ public partial class KeyboardUi : Control
 
 		_mode = newMode;
 
-		_lowerCase?.Visible = _mode == KeyboardMode.LowerCase;
+		_lowerCase.Visible = _mode == KeyboardMode.LowerCase;
 
-		_upperCase?.Visible = _mode == KeyboardMode.UpperCase;
+		_upperCase.Visible = _mode == KeyboardMode.UpperCase;
 
-		_alternate?.Visible = _mode == KeyboardMode.Alternate;
+		_alternate.Visible = _mode == KeyboardMode.Alternate;
 	}
 
 	private static void SetToggleVisual(Button button, bool active)
 	{
-		button?.ButtonPressed = active;
+		button.ButtonPressed = active;
 	}
 }

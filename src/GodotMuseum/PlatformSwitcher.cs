@@ -39,24 +39,18 @@ public partial class PlatformSwitcher : Node
 
 	public override async void _Ready()
 	{
-		_player = GetNodeOrNull(PlayerPath);
+		_player = GetNode(PlayerPath);
 
-		if (_player == null)
-		{
-			_logger.Error("Player node is missing. Platform switching cannot initialize.");
-			return;
-		}
+		_rig = (Node3D)_player.FindChild("XROrigin3D", true, false);
+		_camera = (XRCamera3D)_player.FindChild("XRCamera3D", true, false);
 
-		_rig = _player.FindChild("XROrigin3D", true, false) as Node3D;
-		_camera = _player.FindChild("XRCamera3D", true, false) as XRCamera3D;
+		_leftController = (XRController3D)_player.FindChild("LeftController", true, false);
+		_rightController = (XRController3D)_player.FindChild("RightController", true, false);
 
-		_leftController = _player.FindChild("LeftController", true, false) as XRController3D;
-		_rightController = _player.FindChild("RightController", true, false) as XRController3D;
+		_leftHand = (Node3D)_player.FindChild("LeftHand", true, false);
+		_rightHand = (Node3D)_player.FindChild("RightHand", true, false);
 
-		_leftHand = _player.FindChild("LeftHand", true, false) as Node3D;
-		_rightHand = _player.FindChild("RightHand", true, false) as Node3D;
-
-		_body = _player.FindChild("PlayerBody", true, false) as CharacterBody3D;
+		_body = (CharacterBody3D)_player.FindChild("PlayerBody", true, false);
 		_movementNodes = [_player.FindChild("MovementDirect", true, false), _player.FindChild("MovementTurn", true, false), _player.FindChild("MovementJump", true, false)];
 
 		await this.WaitFor(() =>
@@ -67,12 +61,12 @@ public partial class PlatformSwitcher : Node
 					return collisionShape;
 			}
 			return null;
-		}, "player body collision shape");	
+		}, "player body collision shape");
 
 		_museum = GetNode<Node3D>(MuseumNodePath);
 		_menu = GetNode<Node3D>(MenuNodePath);
-		_museumSpawn = _museum.FindChild("StartSpawnPoint", true, false) as Marker3D;
-		_menuSpawn = _menu.FindChild("MenuSpawnPoint", true, false) as Marker3D;
+		_museumSpawn = (Marker3D)_museum.FindChild("StartSpawnPoint", true, false);
+		_menuSpawn = (Marker3D)_menu.FindChild("MenuSpawnPoint", true, false);
 		_worldEnvironment = GetNode<WorldEnvironment>(WorldEnvironmentPath);
 
 		MoveCameraTo(_museumSpawn);
@@ -83,9 +77,7 @@ public partial class PlatformSwitcher : Node
 		SetWorld(false);
 		MoveCameraTo(_menuSpawn);
 
-		if (_body != null && _rig != null)
-			_body.GlobalTransform = _rig.GlobalTransform;
-
+		_body.GlobalTransform = _rig.GlobalTransform;
 		_lockedMenuRig = _rig.GlobalTransform;
 		_inMenu = true;
 		_logger.Info("Platform switcher initialized in menu.");
@@ -93,7 +85,7 @@ public partial class PlatformSwitcher : Node
 
 	public override void _Process(double delta)
 	{
-		if (_switching || _leftController == null)
+		if (_switching)
 			return;
 
 		var menuButtonPressed = _leftController.IsButtonPressed("menu_button");
@@ -109,21 +101,19 @@ public partial class PlatformSwitcher : Node
 		if (!_inMenu)
 			return;
 
-		_rig?.GlobalTransform = _lockedMenuRig;
-
+		_rig.GlobalTransform = _lockedMenuRig;
 		LockHands();
 	}
 
 	public async void SwitchToMuseum()
 	{
+		_body.Velocity = Vector3.Zero;
+
 		_switching = true;
-
-		_body?.Velocity = Vector3.Zero;
-
 		_inMenu = false;
 		SetWorld(true);
 		_rig.GlobalTransform = _lastMuseumRig;
-		_body?.GlobalTransform = _lastMuseumBody;
+		_body.GlobalTransform = _lastMuseumBody;
 
 		await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 		SetEnabled(_body, true);
@@ -140,16 +130,15 @@ public partial class PlatformSwitcher : Node
 
 		_switching = true;
 
-		_body?.Velocity = Vector3.Zero;
+		_body.Velocity = Vector3.Zero;
 
 		RememberMuseumTransform();
 		SetMovementEnabled(false);
 		SetEnabled(_body, false);
 		SetWorld(false);
 		MoveCameraTo(_menuSpawn);
-		
-		if (_body != null && _rig != null)
-			_body.GlobalTransform = _rig.GlobalTransform;
+
+		_body.GlobalTransform = _rig.GlobalTransform;
 		_lockedMenuRig = _rig.GlobalTransform;
 		_inMenu = true;
 		_logger.Info("Switched from museum world to menu.");
@@ -167,17 +156,15 @@ public partial class PlatformSwitcher : Node
 
 	private void RememberMuseumTransform()
 	{
-		if (_rig != null)
-			_lastMuseumRig = _rig.GlobalTransform;
-		if (_body != null)
-			_lastMuseumBody = _body.GlobalTransform;
+		_lastMuseumRig = _rig.GlobalTransform;
+		_lastMuseumBody = _body.GlobalTransform;
 	}
 
 	private void SetWorld(bool museumActive)
 	{
-		_museum?.Visible = museumActive;
-		_menu?.Visible = !museumActive;
-		_worldEnvironment?.Environment = museumActive ? MuseumEnvironment : MenuEnvironment;
+		_museum.Visible = museumActive;
+		_menu.Visible = !museumActive;
+		_worldEnvironment.Environment = museumActive ? MuseumEnvironment : MenuEnvironment;
 	}
 
 	private void MoveCameraTo(Marker3D marker)
@@ -211,9 +198,7 @@ public partial class PlatformSwitcher : Node
 
 	private void LockHands()
 	{
-		if (_leftHand != null && _leftController != null)
-			_leftHand.GlobalTransform = _leftController.GlobalTransform;
-		if (_rightHand != null && _rightController != null)
-			_rightHand.GlobalTransform = _rightController.GlobalTransform;
+		_leftHand.GlobalTransform = _leftController.GlobalTransform;
+		_rightHand.GlobalTransform = _rightController.GlobalTransform;
 	}
 }

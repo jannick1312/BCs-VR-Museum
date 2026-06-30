@@ -15,8 +15,8 @@ public partial class InputBridge : Node
 
 	private static LineEdit FindFirstLineEdit(Node node)
 	{
-		if (node is null or LineEdit)
-			return (LineEdit)node;
+		if (node is LineEdit lineEdit)
+			return lineEdit;
 
 		foreach (var child in node.GetChildren())
 		{

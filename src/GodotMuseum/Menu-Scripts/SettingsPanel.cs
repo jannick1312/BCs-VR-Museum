@@ -15,12 +15,12 @@ public partial class SettingsPanel : Node
 	{
 		var root = GetParent();
 
-		_closeButton = root.FindChild("Close", true, false) as Button;
-		_startButton = root.FindChild("Start", true, false) as Button;
-		_platformSwitcher = GetTree().Root.FindChild("PlatformSwitcher", true, false) as PlatformSwitcher;
+		_closeButton = (Button)root.FindChild("Close", true, false);
+		_startButton = (Button)root.FindChild("Start", true, false);
+		_platformSwitcher = (PlatformSwitcher)GetTree().Root.FindChild("PlatformSwitcher", true, false);
 
-		_closeButton?.Pressed += OnClosePressed;
-		_startButton?.Pressed += OnStartPressed;
+		_closeButton.Pressed += OnClosePressed;
+		_startButton.Pressed += OnStartPressed;
 	}
 
 	private void OnClosePressed()

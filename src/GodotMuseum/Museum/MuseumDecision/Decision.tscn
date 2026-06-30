@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://sc2o12cynikm"]
+
+[ext_resource type="PackedScene" uid="uid://dnvgemmwny4yr" path="res://Museum/MuseumDecision/2Din3DDecision.tscn" id="1_r2hku"]
+[ext_resource type="Script" uid="uid://bj5qjwmob7808" path="res://Museum-Scripts/Decision/DecisionPopup.cs" id="2_decision"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_r2hku"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r2hku"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vw51o"]
+top_radius = 0.075
+bottom_radius = 0.075
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vw51o"]
+albedo_color = Color(0.5033745, 0.5033746, 0.5033746, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lft2l"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f7deh"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Decision" type="Node3D" unique_id=71677858]
+
+[node name="DecisionPopup" type="Node" parent="." unique_id=880110100]
+script = ExtResource("2_decision")
+
+[node name="2Din3DDecision" parent="." unique_id=776647796 instance=ExtResource("1_r2hku")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, -0.45, 0)
+unshaded = false
+
+[node name="Point" type="Node3D" parent="." unique_id=1622623373]
+
+[node name="BigPoint" type="MeshInstance3D" parent="Point" unique_id=528514524]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.005)
+mesh = SubResource("CylinderMesh_r2hku")
+surface_material_override/0 = SubResource("StandardMaterial3D_r2hku")
+
+[node name="MiddlePoint" type="MeshInstance3D" parent="Point" unique_id=2139849871]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.015)
+mesh = SubResource("CylinderMesh_vw51o")
+surface_material_override/0 = SubResource("StandardMaterial3D_vw51o")
+
+[node name="SmallPoint" type="MeshInstance3D" parent="Point" unique_id=1067719555]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.025)
+mesh = SubResource("CylinderMesh_lft2l")
+surface_material_override/0 = SubResource("StandardMaterial3D_f7deh")

@@ -4,6 +4,6 @@ namespace Application.Abstractions;
 
 public interface IMuseumApplication
 {
-    Task<DisplayMediaResult> SearchAsync(string text, int limit);
-    Task<bool> IsReachableAsync();
+	Task<DisplayMediaResult> SearchAsync(string text, int limit);
+	Task<bool> IsReachableAsync();
 }

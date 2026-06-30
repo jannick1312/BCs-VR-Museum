@@ -26,37 +26,31 @@ public partial class GameSettingsPanel : Node
 	{
 		var root = GetParent();
 
-		_movementSlider = root.FindChild("Movement-Slider", true, false) as HSlider;
-		_turnSlider = root.FindChild("Turn-Slider", true, false) as HSlider;
-		_destructionCheckBox = root.FindChild("Destruction-Check", true, false) as CheckBox;
-		_jumpCheckBox = root.FindChild("Jump-Check", true, false) as CheckBox;
-		_imagesAnd3DButton = root.FindChild("Images3D", true, false) as Button;
-		_imagesButton = root.FindChild("Images", true, false) as Button;
-		_objects3DButton = root.FindChild("3D", true, false) as Button;
-		_defaultButton = root.FindChild("Default", true, false) as Button;
+		_movementSlider = (HSlider)root.FindChild("Movement-Slider", true, false);
+		_turnSlider = (HSlider)root.FindChild("Turn-Slider", true, false);
+		_destructionCheckBox = (CheckBox)root.FindChild("Destruction-Check", true, false);
+		_jumpCheckBox = (CheckBox)root.FindChild("Jump-Check", true, false);
+		_imagesAnd3DButton = (Button)root.FindChild("Images3D", true, false);
+		_imagesButton = (Button)root.FindChild("Images", true, false);
+		_objects3DButton = (Button)root.FindChild("3D", true, false);
+		_defaultButton = (Button)root.FindChild("Default", true, false);
 		_movementDirect = GetTree().Root.FindChild("MovementDirect", true, false);
 		_movementTurn = GetTree().Root.FindChild("MovementTurn", true, false);
-		_gameSettingsStore = GetTree().Root.FindChild("GameSettingsStore", true, false) as GameSettingsStore;
+		_gameSettingsStore = (GameSettingsStore)GetTree().Root.FindChild("GameSettingsStore", true, false);
 
-		if (_movementSlider != null && _movementDirect != null)
-		{
-			_movementSlider.ValueChanged += OnMovementSliderChanged;
-			OnMovementSliderChanged(_movementSlider.Value);
-		}
+		_movementSlider.ValueChanged += OnMovementSliderChanged;
+		OnMovementSliderChanged(_movementSlider.Value);
 
-		if (_turnSlider != null && _movementTurn != null)
-		{
-			_turnSlider.ValueChanged += OnTurnSliderChanged;
-			OnTurnSliderChanged(_turnSlider.Value);
-		}
+		_turnSlider.ValueChanged += OnTurnSliderChanged;
+		OnTurnSliderChanged(_turnSlider.Value);
 
-		_destructionCheckBox?.Toggled += OnDestructionToggled;
-		_jumpCheckBox?.Toggled += OnJumpToggled;
-		_imagesAnd3DButton?.Pressed += CycleMode;
-		_imagesButton?.Pressed += CycleMode;
-		_objects3DButton?.Pressed += CycleMode;
-		_defaultButton?.Pressed += ResetToDefaults;
-		_gameSettingsStore?.Initialize(_destructionCheckBox?.ButtonPressed ?? false, _jumpCheckBox?.ButtonPressed ?? false, _gameSettingsStore.MediaMode);
+		_destructionCheckBox.Toggled += OnDestructionToggled;
+		_jumpCheckBox.Toggled += OnJumpToggled;
+		_imagesAnd3DButton.Pressed += CycleMode;
+		_imagesButton.Pressed += CycleMode;
+		_objects3DButton.Pressed += CycleMode;
+		_defaultButton.Pressed += ResetToDefaults;
+		_gameSettingsStore.Initialize(_destructionCheckBox.ButtonPressed, _jumpCheckBox.ButtonPressed, _gameSettingsStore.MediaMode);
 
 		UpdateModeButtons();
 	}
@@ -73,37 +67,37 @@ public partial class GameSettingsPanel : Node
 
 	private void OnDestructionToggled(bool toggledOn)
 	{
-		_gameSettingsStore?.SetDestructionEnabled(toggledOn);
+		_gameSettingsStore.SetDestructionEnabled(toggledOn);
 	}
 
 	private void OnJumpToggled(bool toggledOn)
 	{
-		_gameSettingsStore?.SetJumpVignetteEnabled(toggledOn);
+		_gameSettingsStore.SetJumpVignetteEnabled(toggledOn);
 	}
 
 	private void CycleMode()
 	{
-		_gameSettingsStore?.CycleMediaMode();
+		_gameSettingsStore.CycleMediaMode();
 		UpdateModeButtons();
 	}
 
 	private void ResetToDefaults()
 	{
-		_movementSlider?.Value = DefaultSliderValue;
+		_movementSlider.Value = DefaultSliderValue;
 
-		_turnSlider?.Value = DefaultSliderValue;
+		_turnSlider.Value = DefaultSliderValue;
 
-		_destructionCheckBox?.ButtonPressed = false;
+		_destructionCheckBox.ButtonPressed = false;
 
-		_jumpCheckBox?.ButtonPressed = false;
+		_jumpCheckBox.ButtonPressed = false;
 
-		_gameSettingsStore?.SetMediaMode(GameMediaMode.ImagesAnd3D);
+		_gameSettingsStore.SetMediaMode(GameMediaMode.ImagesAnd3D);
 		UpdateModeButtons();
 	}
 
 	private void UpdateModeButtons()
 	{
-		var currentMode = _gameSettingsStore?.MediaMode ?? GameMediaMode.ImagesAnd3D;
+		var currentMode = _gameSettingsStore.MediaMode;
 
 		SetModeButtonVisible(_imagesAnd3DButton, currentMode == GameMediaMode.ImagesAnd3D);
 		SetModeButtonVisible(_imagesButton, currentMode == GameMediaMode.Images);

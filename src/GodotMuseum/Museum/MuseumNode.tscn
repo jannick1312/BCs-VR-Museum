@@ -8,39 +8,40 @@
 [ext_resource type="PackedScene" uid="uid://bslaqwovqkqr6" path="res://Museum/InputArea/Input.tscn" id="7_ecgt1"]
 [ext_resource type="Script" uid="uid://da02bak3hx70k" path="res://Museum-Scripts/Placement/Helpers/Media2D/FrameMaker.cs" id="7_m6mi2"]
 [ext_resource type="Script" uid="uid://db51p8mctrlr" path="res://Museum-Scripts/Placement/MediaPlacementController.cs" id="8_bs0q8"]
+[ext_resource type="PackedScene" uid="uid://sc2o12cynikm" path="res://Museum/MuseumDecision/Decision.tscn" id="11_avl46"]
 [ext_resource type="PackedScene" uid="uid://rghbahplwn5s" path="res://Museum/Object3DDisplayInstance.tscn" id="11_hm1tn"]
 [ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Museum-Scripts/VisibilityController.cs" id="12_yskpt"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_m6mi2"]
+[sub_resource type="QuadMesh" id="QuadMesh_hm1tn"]
 resource_local_to_scene = true
 size = Vector2(1.8, 1.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_hm1tn"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_avl46"]
 viewport_path = NodePath("Input/2Din3DPlane/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avl46"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sl0ll"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_hm1tn")
+albedo_texture = SubResource("ViewportTexture_avl46")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_sl0ll"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_tqf3b"]
 resource_local_to_scene = true
 size = Vector3(1.8, 1.2, 0.02)
 
-[sub_resource type="QuadMesh" id="QuadMesh_tqf3b"]
+[sub_resource type="QuadMesh" id="QuadMesh_lvb5a"]
 resource_local_to_scene = true
 size = Vector2(1.5, 0.75)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_lvb5a"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_hstwv"]
 viewport_path = NodePath("Input/2Din3DKeyboard/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hstwv"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i5sej"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_lvb5a")
+albedo_texture = SubResource("ViewportTexture_hstwv")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_i5sej"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_6fqx3"]
 resource_local_to_scene = true
 size = Vector3(1.5, 0.75, 0.02)
 
@@ -70,18 +71,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -7.99)
 collision_layer = 5
 
 [node name="Screen" parent="Input/2Din3DPlane" parent_id_path=PackedInt32Array(224690396, 776647796) index="1" unique_id=830305756]
-mesh = SubResource("QuadMesh_m6mi2")
-surface_material_override/0 = SubResource("StandardMaterial3D_avl46")
+mesh = SubResource("QuadMesh_hm1tn")
+surface_material_override/0 = SubResource("StandardMaterial3D_sl0ll")
 
 [node name="CollisionShape3D" parent="Input/2Din3DPlane/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 776647796, 1024925121) index="0" unique_id=620411508]
-shape = SubResource("BoxShape3D_sl0ll")
+shape = SubResource("BoxShape3D_tqf3b")
 
 [node name="Screen" parent="Input/2Din3DKeyboard" parent_id_path=PackedInt32Array(224690396, 845947144) index="1" unique_id=1158603700]
-mesh = SubResource("QuadMesh_tqf3b")
-surface_material_override/0 = SubResource("StandardMaterial3D_hstwv")
+mesh = SubResource("QuadMesh_lvb5a")
+surface_material_override/0 = SubResource("StandardMaterial3D_i5sej")
 
 [node name="CollisionShape3D" parent="Input/2Din3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(224690396, 845947144, 1711902221) index="0" unique_id=2064986693]
-shape = SubResource("BoxShape3D_i5sej")
+shape = SubResource("BoxShape3D_6fqx3")
 
 [node name="InputBridge" type="Node" parent="Input" unique_id=1054111552]
 script = ExtResource("6_ecgt1")
@@ -171,6 +172,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.15, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
+[node name="Decision" parent="." unique_id=71677858 instance=ExtResource("11_avl46")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+
 [editable path="World"]
 [editable path="World/BlenderRoom"]
 [editable path="Input"]
@@ -178,3 +182,4 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 [editable path="Input/2Din3DKeyboard"]
 [editable path="Media2DDisplayInstance"]
 [editable path="Object3DDisplayInstance"]
+[editable path="Decision"]
