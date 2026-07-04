@@ -23,10 +23,6 @@ background_mode = 2
 background_color = Color(0.5033745, 0.5033746, 0.5033746, 1)
 sky = SubResource("Sky_4c57u")
 sky_rotation = Vector3(0, -1.3962634, 0)
-ssr_enabled = true
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_enabled = true
 
 [sub_resource type="Environment" id="Environment_272bh"]
 background_mode = 1
@@ -142,6 +138,8 @@ size = Vector3(1.8, 1.8, 0.02)
 [node name="Main" type="Node3D" unique_id=895849569]
 
 [node name="StartXR" parent="." unique_id=758186761 instance=ExtResource("1_0xm2m")]
+render_target_size_multiplier = 1.8
+target_refresh_rate = 72.0
 
 [node name="SearchSettingsStore" type="Node" parent="." unique_id=378595432]
 script = ExtResource("2_272bh")
