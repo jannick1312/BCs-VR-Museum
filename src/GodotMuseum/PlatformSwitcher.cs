@@ -146,8 +146,11 @@ public partial class PlatformSwitcher : Node
 		_switching = false;
 	}
 
-	private void ToggleWorld()
+	public void ToggleWorld()
 	{
+		if (_switching)
+			return;
+
 		if (_inMenu)
 			SwitchToMuseum();
 		else

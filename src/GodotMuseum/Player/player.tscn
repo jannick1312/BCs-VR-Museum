@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://hwnuhiun3f40"]
+
+[ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="1_onrkg"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_2hs0m"]
+[ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="2_i3pqv"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_i3pqv"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://c2q5phg8w08o" path="res://addons/godot-xr-tools/functions/movement_jump.tscn" id="5_dw050"]
+[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="7_dw050"]
+[ext_resource type="Script" uid="uid://ccbyeeteu8lll" path="res://Player/PlayerHandInput.cs" id="8_hand_input"]
+[ext_resource type="PackedScene" uid="uid://yjfribcaxes7" path="res://Player/joystick.tscn" id="9_joystick"]
+[ext_resource type="PackedScene" uid="uid://codlm64cqkaum" path="res://Player/quest-touch-plus-left.glb" id="10_controller_left"]
+[ext_resource type="PackedScene" uid="uid://clkdw1ji7g5kk" path="res://Player/quest-touch-plus-right.glb" id="11_controller_right"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nvl01"]
+albedo_color = Color(0.28235295, 0.28235295, 0.28235295, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivps1"]
+albedo_color = Color(0.28118682, 0.28118688, 0.28118682, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dw050"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b26j0"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n7ghd"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Player" type="Node3D" unique_id=1807302450]
+
+[node name="ControllerInput" type="Node" parent="." unique_id=2121966931]
+script = ExtResource("8_hand_input")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1118160618]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=2132045270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="HandInput" type="Node3D" parent="XROrigin3D" unique_id=225066344]
+
+[node name="MovementJoystick" parent="XROrigin3D/HandInput" unique_id=1332699059 instance=ExtResource("9_joystick")]
+visible = false
+
+[node name="LeftTrackedHand" type="XRNode3D" parent="XROrigin3D/HandInput" unique_id=1136845764]
+visible = false
+tracker = &"/user/hand_tracker/left"
+
+[node name="LeftHandTrackingMesh" type="OpenXRFbHandTrackingMesh" parent="XROrigin3D/HandInput/LeftTrackedHand" unique_id=132318351]
+material = SubResource("StandardMaterial3D_nvl01")
+
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/HandInput/LeftTrackedHand/LeftHandTrackingMesh" unique_id=1190331303]
+
+[node name="RightTrackedHand" type="XRNode3D" parent="XROrigin3D/HandInput" unique_id=321923877]
+visible = false
+tracker = &"/user/hand_tracker/right"
+
+[node name="RightHandTrackingMesh" type="OpenXRFbHandTrackingMesh" parent="XROrigin3D/HandInput/RightTrackedHand" unique_id=303478445]
+hand = 1
+material = SubResource("StandardMaterial3D_ivps1")
+bones/0/name = "RightPalm"
+bones/1/name = "RightHand"
+bones/2/name = "RightThumbMetacarpal"
+bones/3/name = "RightThumbProximal"
+bones/4/name = "RightThumbDistal"
+bones/5/name = "RightThumbTip"
+bones/6/name = "RightIndexMetacarpal"
+bones/7/name = "RightIndexProximal"
+bones/8/name = "RightIndexIntermediate"
+bones/9/name = "RightIndexDistal"
+bones/10/name = "RightIndexTip"
+bones/11/name = "RightMiddleMetacarpal"
+bones/12/name = "RightMiddleProximal"
+bones/13/name = "RightMiddleIntermediate"
+bones/14/name = "RightMiddleDistal"
+bones/15/name = "RightMiddleTip"
+bones/16/name = "RightRingMetacarpal"
+bones/17/name = "RightRingProximal"
+bones/18/name = "RightRingIntermediate"
+bones/19/name = "RightRingDistal"
+bones/20/name = "RightRingTip"
+bones/21/name = "RightLittleMetacarpal"
+bones/22/name = "RightLittleProximal"
+bones/23/name = "RightLittleIntermediate"
+bones/24/name = "RightLittleDistal"
+bones/25/name = "RightLittleTip"
+
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/HandInput/RightTrackedHand/RightHandTrackingMesh" unique_id=549946188]
+hand_tracker = &"/user/hand_tracker/right"
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1233295448]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
+tracker = &"left_hand"
+
+[node name="LeftControllerModel" parent="XROrigin3D/LeftController" unique_id=132837792 instance=ExtResource("10_controller_left")]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0)
+
+[node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1572654635 instance=ExtResource("1_onrkg")]
+visible = false
+
+[node name="MovementDirect" parent="XROrigin3D/LeftController" unique_id=162239011 instance=ExtResource("2_2hs0m")]
+order = 8
+max_speed = 1.8
+strafe = true
+
+[node name="FunctionPickup" parent="XROrigin3D/LeftController" unique_id=992250748 instance=ExtResource("3_1jxqw")]
+action_button_action = "__left_controller_trigger_disabled"
+grab_distance = 0.1
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=1855454782]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
+tracker = &"right_hand"
+
+[node name="RightControllerModel" parent="XROrigin3D/RightController" unique_id=1936609313 instance=ExtResource("11_controller_right")]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0)
+
+[node name="RightHand" parent="XROrigin3D/RightController" unique_id=1634325532 instance=ExtResource("2_i3pqv")]
+visible = false
+
+[node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=1172217544 instance=ExtResource("4_1jxqw")]
+turn_mode = 2
+
+[node name="MovementJump" parent="XROrigin3D/RightController" unique_id=1987572354 instance=ExtResource("5_dw050")]
+order = 100
+jump_button_action = "ax_button"
+
+[node name="FunctionPickup" parent="XROrigin3D/RightController" unique_id=175986978 instance=ExtResource("3_1jxqw")]
+
+[node name="FunctionPointer" parent="XROrigin3D/RightController" unique_id=39751939 instance=ExtResource("7_dw050")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.05, -0.1)
+distance = 5.0
+laser_length = 1
+laser_material = SubResource("StandardMaterial3D_dw050")
+laser_hit_material = SubResource("StandardMaterial3D_b26j0")
+show_target = true
+target_radius = 0.025
+target_material = SubResource("StandardMaterial3D_n7ghd")
+collision_mask = 5242881
+
+[node name="PlayerBody" parent="XROrigin3D" unique_id=861404871 instance=ExtResource("3_i3pqv")]

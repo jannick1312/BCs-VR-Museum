@@ -1689,19 +1689,19 @@ action = SubResource("OpenXRAction_sopde")
 binding_path = "/user/hand/right/input/grip_surface/pose"
 
 [sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_l1qei"]
-action = SubResource("OpenXRAction_3k6la")
+action = SubResource("OpenXRAction_6ivru")
 binding_path = "/user/hand/left/input/pinch_ext/value"
 
 [sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_720kg"]
-action = SubResource("OpenXRAction_3k6la")
+action = SubResource("OpenXRAction_6ivru")
 binding_path = "/user/hand/right/input/pinch_ext/value"
 
 [sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_e17n2"]
-action = SubResource("OpenXRAction_i8esw")
+action = SubResource("OpenXRAction_vfhwq")
 binding_path = "/user/hand/left/input/pinch_ext/ready_ext"
 
 [sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_gtuwc"]
-action = SubResource("OpenXRAction_i8esw")
+action = SubResource("OpenXRAction_vfhwq")
 binding_path = "/user/hand/right/input/pinch_ext/ready_ext"
 
 [sub_resource type="OpenXRIPBinding" id="OpenXRIPBinding_rdsma"]
