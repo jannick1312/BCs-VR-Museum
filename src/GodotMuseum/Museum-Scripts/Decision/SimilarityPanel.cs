@@ -1,22 +1,16 @@
 using Godot;
-using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts.Decision;
 
-public partial class DecisionPanel : Node
+public partial class SimilarityPanel : Node
 {
-	[Signal]
-	public delegate void DismissRequestedEventHandler();
-
 	[Signal]
 	public delegate void SimilaritySearchRequestedEventHandler(string vectorJson);
 
 	private string _vectorJson = string.Empty;
-	private static readonly EventLogger Log = new(nameof(DecisionPanel));
 
 	public override void _Ready()
 	{
-		GetNode<Button>("../Panel/OriginalSize").Pressed += () => OnDecisionButtonPressed("Original Size");
 		GetNode<Button>("../Panel/SimilaritySearch").Pressed += OnSimilaritySearchPressed;
 	}
 
@@ -25,15 +19,8 @@ public partial class DecisionPanel : Node
 		_vectorJson = vectorJson;
 	}
 
-	private void OnDecisionButtonPressed(string action)
-	{
-		Log.Info(action);
-		EmitSignal(SignalName.DismissRequested);
-	}
-
 	private void OnSimilaritySearchPressed()
 	{
 		EmitSignal(SignalName.SimilaritySearchRequested, _vectorJson);
-		EmitSignal(SignalName.DismissRequested);
 	}
 }

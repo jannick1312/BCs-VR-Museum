@@ -19,7 +19,6 @@ public partial class SearchController : Node
 	private InputBridge _inputScreen;
 	private Placement.MediaPlacementController _mediaPlacement;
 	private VisibilityController _visibility;
-	private DecisionPopup _decisionPopup;
 	private LineEdit _inputLineEdit;
 	private LineEdit _activeLineEdit;
 	private SearchUseCaseFactory _searchUseCaseFactory;
@@ -34,16 +33,15 @@ public partial class SearchController : Node
 		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
 
 		_inputLineEdit = await this.WaitFor(() => _inputScreen.InputLineEdit, "input line edit");
-		_decisionPopup = await this.WaitFor(FindDecisionPopup, "decision popup");
 
 		_inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
 		_inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);
-		_decisionPopup.SimilaritySearchRequested += SubmitSimilaritySearch;
+		DisplayActionPopup.SimilaritySearchRequestedGlobally += SubmitSimilaritySearch;
 	}
 
-	private DecisionPopup FindDecisionPopup()
+	public override void _ExitTree()
 	{
-		return GetTree().Root.FindChild("DecisionPopup", true, false) as DecisionPopup;
+		DisplayActionPopup.SimilaritySearchRequestedGlobally -= SubmitSimilaritySearch;
 	}
 
 	private void SetActiveInput(LineEdit lineEdit)
@@ -95,7 +93,6 @@ public partial class SearchController : Node
 		if (!_isSearching) return true;
 		_logger.Warning($"{searchName} ignored because another search is already running.");
 		return false;
-
 	}
 
 	private async Task SubmitSearch(Func<Task<DisplayMediaResult>> search, string searchName)

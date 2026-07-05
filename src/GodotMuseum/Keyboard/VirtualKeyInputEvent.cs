@@ -22,11 +22,6 @@ public partial class VirtualKeyInputEvent : Button
 
 	private void OnPressed()
 	{
-		EmitSignal(
-			SignalName.KeyPressed,
-			ScanCodeText,
-			Unicode,
-			ShiftPressed
-		);
+		EmitSignal(SignalName.KeyPressed, ScanCodeText, Unicode, ShiftPressed);
 	}
 }

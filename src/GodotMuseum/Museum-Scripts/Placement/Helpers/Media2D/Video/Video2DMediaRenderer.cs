@@ -9,12 +9,7 @@ public static class Video2DMediaRenderer
 {
 	public static async Task<VideoPlaybackController> Render(Media2DDisplayInstance instance, byte[] bytes, string path, string name)
 	{
-		var player = new VideoStreamPlayer
-		{
-			Stream = new VideoStreamTheora { File = File.Exists(path) ? path : SaveVideo(bytes, name) },
-			Autoplay = false,
-			Loop = false
-		};
+		var player = new VideoStreamPlayer {Stream = new VideoStreamTheora { File = File.Exists(path) ? path : SaveVideo(bytes, name) }, Autoplay = false, Loop = false};
 
 		instance.Item.AddChild(player);
 

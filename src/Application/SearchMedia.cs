@@ -42,7 +42,8 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 				_logger.Warning($"Skipping media item because loading failed: {mediaContent.ErrorMessage}");
 				continue;
 			}
-			items.Add(new DisplayMediaItem(searchItems[i].Vector, searchItems[i].MediaType, mediaContent.Bytes, mediaContent.Path, searchItems[i].Name));
+			var path = mediaContent.Path.Length > 0 ? mediaContent.Path : searchItems[i].RemoteUrl;
+			items.Add(new DisplayMediaItem(searchItems[i].Vector, searchItems[i].MediaType, mediaContent.Bytes, path, searchItems[i].Name));
 		}
 		_logger.Info($"Media search completed. SearchItems={searchItems.Count}, LoadedItems={items.Count}");
 		return DisplayMediaResult.FromMedia(items);

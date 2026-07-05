@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://sc2o12cynikm"]
+[gd_scene format=3 uid="uid://dapkassquu443"]
 
-[ext_resource type="PackedScene" uid="uid://dnvgemmwny4yr" path="res://Museum/MuseumDecision/2Din3DDecision.tscn" id="1_r2hku"]
-[ext_resource type="Script" uid="uid://bj5qjwmob7808" path="res://Museum-Scripts/Decision/DecisionPopup.cs" id="2_decision"]
+[ext_resource type="Script" uid="uid://cy8kdfnmpji7e" path="res://Museum-Scripts/Decision/SimilarityPopup.cs" id="1_77dbp"]
+[ext_resource type="PackedScene" uid="uid://dpors3vgs2mr3" path="res://Museum/MuseumSimilarity/2Din3DSimilarity.tscn" id="2_0rs8b"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_r2hku"]
 top_radius = 0.1
@@ -26,13 +26,14 @@ height = 0.01
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f7deh"]
 albedo_color = Color(0, 0, 0, 1)
 
-[node name="Decision" type="Node3D" unique_id=71677858]
+[node name="Similarity" type="Node3D" unique_id=71677858]
 
-[node name="DecisionPopup" type="Node" parent="." unique_id=880110100]
-script = ExtResource("2_decision")
+[node name="SimilarityPopup" type="Node" parent="." unique_id=880110100]
+script = ExtResource("1_77dbp")
+PanelHostPath = NodePath("../2Din3DSimilarity")
 
-[node name="2Din3DDecision" parent="." unique_id=776647796 instance=ExtResource("1_r2hku")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
+[node name="2Din3DSimilarity" parent="." unique_id=776647796 instance=ExtResource("2_0rs8b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.23201719, 0)
 unshaded = false
 
 [node name="Point" type="Node3D" parent="." unique_id=1622623373]

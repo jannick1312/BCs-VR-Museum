@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BCSVRMuseum.Museum_Scripts.Decision;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 using Godot;
@@ -47,9 +48,10 @@ public sealed class Media2DDisplayInstance
 		ResizeToAspect((float)texture.GetWidth() / texture.GetHeight());
 	}
 
-	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName)
+	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath)
 	{
-		RetrievableMetadata.Store(Item, vector, mediaName);
+		RetrievableMetadata.Store(Item, vector, mediaName, mediaPath);
+		ConfigureActionPopups(vector, mediaPath);
 	}
 
 	private void ResizeToAspect(float aspect)
@@ -71,5 +73,16 @@ public sealed class Media2DDisplayInstance
 		Item.GlobalTransform = new Transform3D(_place.GlobalTransform.Basis.Orthonormalized(), _place.ToGlobal(new Vector3(x, y, 0)));
 		DisplaySurface.Scale = new Vector3(width, height, 1.0f);
 		_frameMaker.UpdateFrame(DisplaySurface, width, height);
+	}
+
+	private void ConfigureActionPopups(IReadOnlyList<double> vector, string mediaPath)
+	{
+		foreach (var child in Item.FindChildren("*", "", true, false))
+		{
+			if (child is not DisplayActionPopup popup) continue;
+			popup.GetParent<Node3D>().Visible = false;
+			popup.SetVector(vector);
+			popup.SetSourcePath(mediaPath);
+		}
 	}
 }

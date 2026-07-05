@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c8gx2wc7hsxf5" path="res://addons/godot-xr-tools/interactables/interactable_hinge.gd" id="1_u41yt"]
 [ext_resource type="Material" uid="uid://cfkuq5ui12ylk" path="res://Materials/Glass/Glass.tres" id="3_3nscg"]
 [ext_resource type="Script" uid="uid://dlojnwxo25bky" path="res://addons/godot-xr-tools/interactables/interactable_handle.gd" id="3_7ofrb"]
+[ext_resource type="PackedScene" uid="uid://sc2o12cynikm" path="res://Museum/MuseumDecision/Decision.tscn" id="4_x1bhh"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_avl46"]
 
@@ -266,3 +267,7 @@ transform = Transform3D(-1.3113417e-08, -0.3, 0, 0.3, -1.3113417e-08, 0, 0, 0, 0
 [node name="OrbCollision" type="CollisionShape3D" parent="Orb" unique_id=476876148]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.81, 0)
 shape = SubResource("SphereShape3D_jotmk")
+
+[node name="Decision" parent="." unique_id=71677858 instance=ExtResource("4_x1bhh")]
+transform = Transform3D(-2.6226834e-08, -0.6, 0, 0.6, -2.6226834e-08, 0, 0, 0, 0.6, -1.747, 0, 0.6)
+visible = false

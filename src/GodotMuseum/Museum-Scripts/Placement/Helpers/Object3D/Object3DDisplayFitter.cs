@@ -19,6 +19,7 @@ public sealed class Object3DDisplayFitter
 	public float Place(Node3D item, Node3D objectNode, Node3D place)
 	{
 		PlaceInstance(item, place);
+		AlignDecisionTowardCenter(item, place.GlobalPosition);
 
 		var slot = item.GetNode<MeshInstance3D>("Hinge/ObjectSlot");
 		slot.Visible = false;
@@ -34,6 +35,38 @@ public sealed class Object3DDisplayFitter
 		var origin = place.GlobalTransform.Origin - basis * (BaseCenter() * scale);
 		item.GlobalTransform = new Transform3D(basis, origin);
 		item.Scale *= scale;
+	}
+
+	private static void AlignDecisionTowardCenter(Node3D item, Vector3 pivot)
+	{
+		var decision = item.GetNodeOrNull<Node3D>("Decision");
+		if (decision == null)
+			return;
+
+		var currentForward = Flatten(decision.GlobalTransform.Basis.Z);
+		var desiredForward = Flatten(Vector3.Zero - decision.GlobalPosition);
+
+		if (currentForward.LengthSquared() <= 0.0001f || desiredForward.LengthSquared() <= 0.0001f)
+			return;
+
+		var angle = SignedHorizontalAngle(currentForward.Normalized(), desiredForward.Normalized());
+		var rotation = new Basis(Vector3.Up, angle);
+		var transform = item.GlobalTransform;
+
+		transform.Basis = rotation * transform.Basis;
+		transform.Origin = pivot + rotation * (transform.Origin - pivot);
+		item.GlobalTransform = transform;
+	}
+
+	private static Vector3 Flatten(Vector3 vector)
+	{
+		vector.Y = 0.0f;
+		return vector;
+	}
+
+	private static float SignedHorizontalAngle(Vector3 from, Vector3 to)
+	{
+		return Mathf.Atan2(from.Cross(to).Dot(Vector3.Up), from.Dot(to));
 	}
 
 	private static void PlaceObject(Node3D objectNode, MeshInstance3D slot)

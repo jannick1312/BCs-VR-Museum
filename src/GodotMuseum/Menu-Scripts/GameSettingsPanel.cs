@@ -84,13 +84,9 @@ public partial class GameSettingsPanel : Node
 	private void ResetToDefaults()
 	{
 		_movementSlider.Value = DefaultSliderValue;
-
 		_turnSlider.Value = DefaultSliderValue;
-
 		_destructionCheckBox.ButtonPressed = false;
-
 		_jumpCheckBox.ButtonPressed = false;
-
 		_gameSettingsStore.SetMediaMode(GameMediaMode.ImagesAnd3D);
 		UpdateModeButtons();
 	}
