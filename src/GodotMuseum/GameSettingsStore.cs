@@ -15,13 +15,11 @@ public partial class GameSettingsStore : Node
 	private readonly EventLogger _logger = new(nameof(GameSettingsStore));
 
 	private bool DestructionEnabled { get; set; }
-	private bool JumpVignetteEnabled { get; set; }
 	public GameMediaMode MediaMode { get; private set; } = GameMediaMode.ImagesAnd3D;
 
-	public void Initialize(bool destructionEnabled, bool jumpVignetteEnabled, GameMediaMode mediaMode)
+	public void Initialize(bool destructionEnabled, GameMediaMode mediaMode)
 	{
 		DestructionEnabled = destructionEnabled;
-		JumpVignetteEnabled = jumpVignetteEnabled;
 		MediaMode = mediaMode;
 	}
 
@@ -29,12 +27,6 @@ public partial class GameSettingsStore : Node
 	{
 		DestructionEnabled = enabled;
 		_logger.Info($"Destruction set to {FormatState(enabled)}.");
-	}
-
-	public void SetJumpVignetteEnabled(bool enabled)
-	{
-		JumpVignetteEnabled = enabled;
-		_logger.Info($"Jump-Vignette set to {FormatState(enabled)}.");
 	}
 
 	public void SetMediaMode(GameMediaMode mode)

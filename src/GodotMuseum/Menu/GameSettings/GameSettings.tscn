@@ -127,6 +127,21 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 corner_detail = 20
 
+[sub_resource type="Gradient" id="Gradient_non53"]
+colors = PackedColorArray(0.92156863, 0.6784314, 0.52156866, 1, 0.19590452, 0.10213908, 0.0585951, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_475vd"]
+gradient = SubResource("Gradient_non53")
+
+[sub_resource type="StyleBoxFlat" id="SkinColourSliderFill"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="StyleBoxFlat" id="SubmitNormal"]
 bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
 corner_radius_top_left = 30
@@ -355,7 +370,7 @@ theme_override_styles/disabled = SubResource("ImagesNormal")
 theme_override_styles/focus = SubResource("ImagesHover")
 text = "Images"
 
-[node name="Jump-Panel" type="Label" parent="Panel" unique_id=539442986]
+[node name="SkinColour-Panel" type="Label" parent="Panel" unique_id=539442986]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 850.0
@@ -368,7 +383,7 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Jump" type="Label" parent="Panel" unique_id=1721144196]
+[node name="SkinColour" type="Label" parent="Panel" unique_id=1721144196]
 layout_mode = 0
 offset_left = 90.0
 offset_top = 850.0
@@ -376,19 +391,32 @@ offset_right = 422.0
 offset_bottom = 1012.50024
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("CurrentLabelStyle")
-text = "Jump-Vignette"
+text = "Skin Colour"
 vertical_alignment = 1
 
-[node name="Jump-Check" type="CheckBox" parent="Panel" unique_id=1534166753]
-layout_mode = 1
-offset_left = 984.5
-offset_top = 850.0
-offset_right = 1152.5
-offset_bottom = 1018.0
-scale = Vector2(0.97, 0.97)
-theme_override_font_sizes/font_size = 48
-theme_override_icons/checked = SubResource("DPITexture_1vbjo")
-theme_override_icons/unchecked = SubResource("DPITexture_rjpxb")
+[node name="SkinColour-Gradient" type="TextureRect" parent="Panel" unique_id=1788410519]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 912.0
+offset_right = 1125.0
+offset_bottom = 948.0
+texture = SubResource("GradientTexture1D_475vd")
+
+[node name="SkinColour-Slider" type="HSlider" parent="Panel" unique_id=1534166753]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 905.0
+offset_right = 1125.0
+offset_bottom = 955.0
+theme_override_styles/slider = SubResource("SkinColourSliderFill")
+theme_override_styles/grabber_area = SubResource("SkinColourSliderFill")
+theme_override_styles/grabber_area_highlight = SubResource("SkinColourSliderFill")
+min_value = 1.0
+max_value = 10.0
+value = 5.0
+tick_count = 10
+ticks_on_borders = true
+ticks_position = 3
 
 [node name="Default" type="Button" parent="Panel" unique_id=690301288]
 layout_mode = 0
