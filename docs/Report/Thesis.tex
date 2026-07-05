@@ -1,0 +1,93 @@
+%% ----------------------------------------------------------------
+%% Thesis.tex -- main
+%% ---------------------------------------------------------------- 
+
+\documentclass[a4paper, 10pt, oneside]{book}
+\usepackage{bthesis}
+\usepackage{bthesistitle}
+
+%% ----------------------------------------------------------------
+
+\supervisor  			{Supervisor}
+\examiner    			{Examiner}
+\authors     			{Authors}
+\email					{E-Mail}
+\matrnr					{}
+\thesistype			{ThesisType}
+\universitylogo		{StyleFiles/LogoUniBasel}
+\universitysignet	{StyleFiles/SignetUniBasel}
+\department 		{Department of Computer Science}
+\faculty					{Natural Science Faculty of the University of Basel}
+\group					{Group \\ Webpage}
+\title						{Title}
+\date					{Hand-In-Date}
+
+
+%% ----------------------------------------------------------------
+
+\begin{document}
+\selectlanguage{english}
+
+\thesisfront	
+\maketitle
+\cleardoublepage
+
+
+%% ----------------------------------------------------------------
+\input{./Front/Acknowledgment}
+\selectlanguage{ngerman}
+\abstract{
+\input{./Front/Abstract_D}}
+\selectlanguage{english}
+\abstract{
+\input{./Front/Abstract_E}}
+
+
+%% ----------------------------------------------------------------
+\renewcommand*\contentsname{Table of Contents}
+\tableofcontents{
+ 	\fancyhead{}
+	\fancyhead[LO]{\nouppercase\leftmark}
+	\fancyhead[RO]{\thepage}
+	\fancyhead[RE]{\nouppercase\leftmark}
+	\fancyhead[LE]{\thepage}
+}
+%\listoffigures 
+%% ----------------------------------------------------------------
+
+%\input{./Front/Abbreviations}
+
+%% ----------------------------------------------------------------
+\thesismain
+
+\input{./Chapters/Chapter1}
+\input{./Chapters/Chapter2}
+\input{./Chapters/Chapter3}
+\input{./Chapters/Chapter4}
+\input{./Chapters/Chapter5}
+\input{./Chapters/Chapter6}
+\input{./Chapters/Chapter7}
+%% ----------------------------------------------------------------
+
+\thesisback
+\addcontentsline{toc}{chapter}{\rm{Bibliography}}
+\bibliographystyle{bthesis}
+\bibliography{Bibliography}
+
+\thesisappendix
+\input{./Back/AppendixA} 
+
+%% ----------------------------------------------------------------
+
+
+
+\clearpage
+\input{./Back/DeclarationOfAuthorship}
+
+
+%% ----------------------------------------------------------------
+
+
+\end{document}
+
+%% ----------------------------------------------------------------

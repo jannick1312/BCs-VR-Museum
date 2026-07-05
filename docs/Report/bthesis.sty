@@ -1,0 +1,221 @@
+%%
+%%  This file is based on 'ECSthesis.cls', by Steve R. Gunn
+%%  and 'phdthesis.sty' by Jamie Stevens.
+%%  
+%%
+%%  2010, Ivan Giangreco
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bthesis}[2010]
+
+% Include any extra LaTeX packages required
+\usepackage[ngerman, english]{babel}
+\usepackage[square, numbers, comma, sort&compress]{natbib}
+\usepackage{verbatim}
+%\usepackage{vector} 
+\usepackage{array}
+\usepackage{amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{vmargin}
+\usepackage{setspace}
+\usepackage[scriptsize]{subfigure}
+\usepackage{booktabs}
+\usepackage{rotating}
+\usepackage{listings}
+\usepackage{lstpatch}
+\usepackage{nomencl}
+\usepackage{float}
+\usepackage{chngcntr}
+\usepackage[bottom,hang]{footmisc} 
+\setlength{\footnotemargin}{10pt}
+\usepackage[hang,small,nooneline]{caption}
+\setlength{\abovecaptionskip}{10pt}
+\setlength{\belowcaptionskip}{10pt}
+\usepackage[pdfpagemode={UseOutlines},bookmarks=true,bookmarksopen=true,
+   bookmarksopenlevel=0,bookmarksnumbered=true,hypertexnames=false,
+   colorlinks,linkcolor={black},citecolor={black},urlcolor={black}, filecolor={black},
+   pdfstartview={FitV},unicode,breaklinks=true]{hyperref}
+   
+
+%% Set the path to graphics
+\graphicspath{{Figures/}}  % Location of the graphics files (set up for graphics to be in PDF format)
+
+%
+%% Set the month name
+\def\today{\ifcase\month\or
+  January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space \number\year}
+
+\onehalfspacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setmarginsrb  { 3.5   cm}  % left margin
+                        { 2   cm}  % top margin
+                        { 3.5   cm}  % right margin
+                        { 2   cm}  % bottom margin
+                        { 0.5   cm}  % head height
+                        { 0.5cm}  % head sep
+                        { 1   cm}  % foot height
+                        { 0.5cm}  % foot sep
+\setlength{\skip\footins}{0.8cm}
+\raggedbottom
+
+
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+\hbox{}
+\thispagestyle{empty}
+\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+
+\newcommand*{\tmpcleardoublepage}{}
+\let\tmpcleardoublepage\cleardoublepage
+
+
+\newcommand*{\thesisfront}{
+\frontmatter
+\renewcommand\chapterheadstartvskip{\vspace*{\baselineskip}}
+\let\cleardoublepage\clearpage
+}
+
+\newcommand*{\thesismain}{
+\addtocontents{toc}{\vspace{2em}} 
+\mainmatter
+\renewcommand\chapterheadstartvskip{\vspace*{-2\baselineskip}}
+\let\cleardoublepage\tmpcleardoublepage
+}
+
+\newcommand*{\thesisappendix}{
+\addtocontents{toc}{\vspace{2em}} 
+\renewcommand\chapterheadstartvskip{\vspace*{\baselineskip}}
+\appendix
+\let\cleardoublepage\clearpage
+}
+
+\newcommand*{\thesisback}{
+\addtocontents{toc}{\vspace{2em}} 
+\renewcommand\chapterheadstartvskip{\vspace*{\baselineskip}}
+\backmatter
+\let\cleardoublepage\clearpage
+\fancyhead[LO]{\nouppercase\leftmark}
+\fancyhead[RO]{\thepage}
+%% make the even pages have the chapter name on the top left
+\fancyhead[RE]{\nouppercase\leftmark}
+\fancyhead[LE]{\thepage}
+
+}
+
+%% Load up the fancy box making package
+\RequirePackage{fancybox}
+
+%% Load up PS insertion package
+%%\RequirePackage{psboxit}
+%%\PScommands
+
+%% Make abbreviation index
+\makenomenclature
+\renewcommand*\nomname{Abbreviations}
+
+%% Count footnotes through whole document
+\counterwithout{footnote}{chapter}
+
+
+%% Load up fancy headers and footers package
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+
+%% Now reset the headers and footers
+\fancyhead{}
+\fancyfoot{}
+\cfoot{}
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+
+%% bring the style into effect
+%% make the odd pages have the section name on the top right
+\fancyhead[LO]{\nouppercase\leftmark}
+\fancyhead[RO]{\thepage}
+%% make the even pages have the chapter name on the top left
+\fancyhead[RE]{\nouppercase\leftmark}
+\fancyhead[LE]{\thepage}
+
+%% now redefine the plain style pages (chapter pages, contents pages)
+\fancypagestyle{plain}{
+\fancyhf{}
+\fancyfoot[RO]{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+}
+
+%% this next section (till \makeatother) makes sure that blank pages
+%% are actually completely blank, cause they're not usually
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+	\hbox{}
+	\vspace*{\fill}
+	\thispagestyle{empty}
+	\newpage
+	\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+
+
+%% now change the section heading to have a line beneath it
+%% load up the fancy title-style package
+\RequirePackage[calcwidth]{titlesec}
+
+%% now change the chapter style
+%% load up the quotchap package
+\RequirePackage[helvetica]{quotchap}
+
+
+%% option for comments
+\usepackage{xcolor,soul}
+\newcommand{\cmt}[1]{\hl{#1}}
+
+%% some beautification
+\doublehyphendemerits=10000    % No consecutive line hyphens.
+\brokenpenalty=10000             		% No broken words across columns/pages.
+\widowpenalty=9999                		% Almost no widows at bottom of page.
+\clubpenalty=9999                 		% Almost no orphans at top of page.
+\interfootnotelinepenalty=9999    % Almost never break footnotes.
+
+%% parameters to set
+\newcommand*{\supervisor}[1]{\def\supname{#1}}
+\newcommand*{\examiner}[1]{\def\examname{#1}}
+\newcommand*{\authors}[1]{\def\authornames{#1}}
+\newcommand*{\email}[1]{\def\emailaddr{#1}}
+\newcommand*{\universitylogo}[1]{\def\unilogo{#1}}
+\newcommand*{\universitysignet}[1]{\def\unisignet{#1}}
+\newcommand*{\department}[1]{\def\deptname{#1}}
+\newcommand*{\faculty}[1]{\def\facname{#1}}
+\newcommand*{\group}[1]{\def\groupname{#1}}
+\newcommand*{\thesistype}[1]{\def\typename{#1}}
+\newcommand*{\matrnr}[1]{\def\matrnumber{#1}}
+
+
+%% special pages
+\addtocounter{secnumdepth}{1}
+\setcounter{tocdepth}{6}
+\newcounter{dummy}
+\newcommand\addtotoc[1]{
+\refstepcounter{dummy}
+\addcontentsline{toc}{chapter}{#1}}
+
+
+\newenvironment{abstract}
+{
+  \thispagestyle{empty} 
+  \par
+}
+{
+  \vfil\vfil\vfil\null
+}
+
+
+\endinput
+%%
+%% End of file 'bthesis.sty'

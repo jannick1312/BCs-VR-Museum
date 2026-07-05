@@ -1,0 +1,57 @@
+%%
+%%  This file is based on 'ECSthesis.cls', by Steve R. Gunn
+%%  and 'phdthesis.sty' by Jamie Stevens.
+%%  
+%%
+%%  2010, Ivan Giangreco
+%%
+
+
+\renewcommand\maketitle{
+  \hypersetup{pdftitle={\@title}}
+  \hypersetup{pdfauthor=\authornames}
+  \thispagestyle{empty}
+  \begin{titlepage}
+    \begin{center}
+      \begin{flushleft}\includegraphics{\unilogo}\end{flushleft}
+      \vfill
+      {\huge \bf \textsf{\@title} \par}
+      \bigskip
+      {\typename \par}
+      \bigskip
+      \bigskip
+      \bigskip
+      \bigskip
+      \bigskip
+ 	  {\facname \par}
+      {\deptname \par}
+      {\groupname \par}
+       \bigskip
+       \bigskip
+      {\large \par}
+      \bigskip
+     Examiner: \examname \\
+     Supervisor: \supname \\
+      \bigskip
+      \bigskip
+      {\authornames \par}
+      \emailaddr \\
+      \matrnumber
+      \vfill
+      \bigskip
+      {\@date \par}
+      \bigskip
+      
+      \bigskip
+	{\includegraphics[width=1.5cm]{\unisignet} }
+    \end{center}
+    \par
+    \vfil\null
+  \end{titlepage}
+  \cleardoublepage
+}
+
+
+
+%%
+%% End of file 'bthesistitle.sty'
