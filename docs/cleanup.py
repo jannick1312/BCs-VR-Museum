@@ -4,6 +4,8 @@ from pathlib import Path
 
 DOCS_DIR = Path(__file__).resolve().parent
 CLEAN_ROOTS = (
+    DOCS_DIR / "Evaluation",
+    DOCS_DIR / "Presentation",
     DOCS_DIR / "Report",
     DOCS_DIR / "WeeklyMeeting",
 )
@@ -64,7 +66,7 @@ def cleanup(dry_run: bool) -> int:
 
 def main() -> None:
     parser = ArgumentParser(
-        description="Remove generated LaTeX files from docs/Report and docs/WeeklyMeeting."
+        description="Remove generated LaTeX files from docs document folders."
     )
     parser.add_argument(
         "--dry-run",

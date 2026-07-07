@@ -169,7 +169,6 @@ target_refresh_rate = 72.0
 
 [node name="SearchSettingsStore" type="Node" parent="." unique_id=378595432]
 script = ExtResource("2_272bh")
-DefaultDeployedIp = "192.168.8.165"
 
 [node name="GameSettingsStore" type="Node" parent="." unique_id=2084563901]
 script = ExtResource("3_2hygf")
