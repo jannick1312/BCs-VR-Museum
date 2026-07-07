@@ -638,7 +638,7 @@ func _update_render() -> void:
 		# If using a temporary material then update the filter mode and force a redraw
 		if _screen_material and not material:
 			_screen_material.texture_filter = (
-				BaseMaterial3D.TEXTURE_FILTER_LINEAR if filter else
+				BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC if filter else
 				BaseMaterial3D.TEXTURE_FILTER_NEAREST)
 			#_dirty |= _DIRTY_REDRAW
 

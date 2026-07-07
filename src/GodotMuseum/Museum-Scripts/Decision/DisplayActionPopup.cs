@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
 
 namespace BCSVRMuseum.Museum_Scripts.Decision;
@@ -134,7 +135,7 @@ public abstract partial class DisplayActionPopup : Node
 		_visibleForSeconds = 0.0;
 		_activePopup = this;
 		FindAndApplyVectorToPanel();
-		_popupRoot.Visible = true;
+		NodeTreeActivator.SetActive(_popupRoot, true);
 	}
 
 	private void HidePopup()
@@ -143,7 +144,7 @@ public abstract partial class DisplayActionPopup : Node
 			_activePopup = null;
 
 		if (_popupRoot != null)
-			_popupRoot.Visible = false;
+			NodeTreeActivator.SetActive(_popupRoot, false);
 
 		_visibleForSeconds = 0.0;
 	}

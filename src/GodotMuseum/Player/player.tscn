@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_1jxqw"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_i3pqv"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_1jxqw"]
-[ext_resource type="PackedScene" uid="uid://c2q5phg8w08o" path="res://addons/godot-xr-tools/functions/movement_jump.tscn" id="5_dw050"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="7_dw050"]
 [ext_resource type="Script" uid="uid://ccbyeeteu8lll" path="res://Player/PlayerHandInput.cs" id="8_hand_input"]
 [ext_resource type="PackedScene" uid="uid://yjfribcaxes7" path="res://Player/joystick.tscn" id="9_joystick"]
@@ -122,10 +121,6 @@ visible = false
 
 [node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=1172217544 instance=ExtResource("4_1jxqw")]
 turn_mode = 2
-
-[node name="MovementJump" parent="XROrigin3D/RightController" unique_id=1987572354 instance=ExtResource("5_dw050")]
-order = 100
-jump_button_action = "ax_button"
 
 [node name="FunctionPickup" parent="XROrigin3D/RightController" unique_id=175986978 instance=ExtResource("3_1jxqw")]
 

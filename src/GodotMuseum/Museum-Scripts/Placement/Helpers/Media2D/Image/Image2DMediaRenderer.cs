@@ -15,6 +15,7 @@ public static class Image2DMediaRenderer
 	{
 		var image = new Godot.Image();
 		image.Load(path);
+		image.GenerateMipmaps();
 		return ImageTexture.CreateFromImage(image);
 	}
 
@@ -22,6 +23,7 @@ public static class Image2DMediaRenderer
 	{
 		var image = new Godot.Image();
 		image.LoadJpgFromBuffer(bytes);
+		image.GenerateMipmaps();
 		return ImageTexture.CreateFromImage(image);
 	}
 }

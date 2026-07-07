@@ -14,4 +14,3 @@ light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 omni_range = 11.799
-omni_shadow_mode = 0

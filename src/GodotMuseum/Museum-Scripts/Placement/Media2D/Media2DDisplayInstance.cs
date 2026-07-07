@@ -42,7 +42,8 @@ public sealed class Media2DDisplayInstance
 		DisplaySurface.MaterialOverride = new StandardMaterial3D
 		{
 			CullMode = BaseMaterial3D.CullModeEnum.Disabled,
-			AlbedoTexture = texture
+			AlbedoTexture = texture,
+			TextureFilter = BaseMaterial3D.TextureFilterEnum.LinearWithMipmapsAnisotropic
 		};
 
 		ResizeToAspect((float)texture.GetWidth() / texture.GetHeight());
@@ -80,7 +81,7 @@ public sealed class Media2DDisplayInstance
 		foreach (var child in Item.FindChildren("*", "", true, false))
 		{
 			if (child is not DisplayActionPopup popup) continue;
-			popup.GetParent<Node3D>().Visible = false;
+			NodeTreeActivator.SetActive(popup.GetParent<Node3D>(), false);
 			popup.SetVector(vector);
 			popup.SetSourcePath(mediaPath);
 		}

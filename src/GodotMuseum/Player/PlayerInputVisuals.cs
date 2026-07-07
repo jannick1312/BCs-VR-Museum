@@ -6,7 +6,6 @@ public sealed class PlayerInputVisuals(Node3D player)
 {
 	private readonly Node _movementDirect = player.FindChild("MovementDirect", true, false);
 	private readonly Node _movementTurn = player.FindChild("MovementTurn", true, false);
-	private readonly Node _movementJump = player.FindChild("MovementJump", true, false);
 	private readonly Node3D _leftControllerModel = FindControllerNode(player, "LeftController", "LeftControllerModel");
 	private readonly Node3D _rightControllerModel = FindControllerNode(player, "RightController", "RightControllerModel");
 	private readonly Node3D _leftControllerHand = FindControllerNode(player, "LeftController", "LeftHand");
@@ -34,7 +33,6 @@ public sealed class PlayerInputVisuals(Node3D player)
 	{
 		SetProcessEnabled(_movementDirect, enabled);
 		SetProcessEnabled(_movementTurn, enabled);
-		SetProcessEnabled(_movementJump, enabled);
 	}
 
 	private static void SetProcessEnabled(Node node, bool enabled)

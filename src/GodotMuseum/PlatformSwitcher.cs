@@ -51,7 +51,7 @@ public partial class PlatformSwitcher : Node
 		_rightHand = (Node3D)_player.FindChild("RightHand", true, false);
 
 		_body = (CharacterBody3D)_player.FindChild("PlayerBody", true, false);
-		_movementNodes = [_player.FindChild("MovementDirect", true, false), _player.FindChild("MovementTurn", true, false), _player.FindChild("MovementJump", true, false)];
+		_movementNodes = [_player.FindChild("MovementDirect", true, false), _player.FindChild("MovementTurn", true, false)];
 
 		await this.WaitFor(() =>
 		{

@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+
+\newcommand{\meetingdate}{8 July 2026}
+\input{../template.tex}
+
+\begin{document}
+
+\done
+\begin{itemize}
+    \item Implemented similarity search and made it accessible from the museum through a popup-based workflow.
+    \item Added vector values from vitrivr to displayed media nodes so that similarity searches can be started from existing results.
+    \item Refactored the Godot-side code and backend integration.
+    \item Added hand tracking support for Meta Quest 3, including switching between controller and hand tracking modes for on-device usage and streaming. Some errors still remain.
+    \item Improved visual quality and reduced warnings, with the tradeoff of lower performance.
+    \item Spent significant time investigating how to export a runnable Godot build for Apple Vision Pro.
+    \item Created first evaluation points and uploaded the German evaluation concept.
+    \item Added templates for the midterm presentation and the written report.
+\end{itemize}
+
+\support
+\begin{itemize}
+    \item Access to a Vive XR Elite headset for testing.
+    \item Access to more videos and 3D assets.
+    \item Feedback on the planned evaluation points.
+    \item .NET xrOS integration is not available yet, so we need to find a way to test the Apple Vision Pro. Maybe streaming over ALVR?
+\end{itemize}
+
+\plan
+\checkpoint{Test streaming to the Apple Vision Pro}
+\checkpoint{Create a new room for original-size 3D assets}
+\checkpoint{Test hand tracking on additional devices}
+\checkpoint{Fix remaining hand tracking and input mode issues}
+\checkpoint{Prepare for the midterm presentation}
+
+\end{document}

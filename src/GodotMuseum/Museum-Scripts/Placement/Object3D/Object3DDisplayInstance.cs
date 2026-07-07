@@ -35,7 +35,7 @@ public sealed class Object3DDisplayInstance
 		foreach (var child in Item.FindChildren("*", "", true, false))
 		{
 			if (child is not DisplayActionPopup popup) continue;
-			popup.GetParent<Node3D>().Visible = false;
+			NodeTreeActivator.SetActive(popup.GetParent<Node3D>(), false);
 			popup.SetVector(vector);
 			popup.SetSourcePath(mediaPath);
 		}
