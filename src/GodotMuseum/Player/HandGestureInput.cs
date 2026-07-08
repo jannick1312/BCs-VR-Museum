@@ -145,6 +145,9 @@ public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMov
 
 	private void PressRightPointerIfNeeded()
 	{
+		if (_rightPointerPressedByHand)
+			return;
+
 		_rightPointerPressedByHand = true;
 		_rightPointer.Call("_button_pressed");
 	}
