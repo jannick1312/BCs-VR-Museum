@@ -454,13 +454,11 @@ albedo_color = Color(0, 0, 0, 1)
 script = ExtResource("8_hand_input")
 PinchAction = &"trigger"
 GripAction = &"grip"
-MovementAction = &"primary"
 PinchThreshold = 0.5
 PinchReleaseThreshold = 0.35
 GrabThreshold = 0.88
 GrabReleaseThreshold = 0.68
 LeftPinchMoveDelaySeconds = 0.4
-ControllerInputActiveThreshold = 0.15
 
 [node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1118160618]
 
