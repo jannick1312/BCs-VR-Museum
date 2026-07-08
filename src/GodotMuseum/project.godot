@@ -53,7 +53,6 @@ anti_aliasing/quality/msaa_2d=1
 anti_aliasing/quality/msaa_3d=1
 lights_and_shadows/positional_shadow/atlas_size.mobile=4096
 
-
 [xr]
 
 openxr/enabled=true

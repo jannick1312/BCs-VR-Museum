@@ -4,13 +4,9 @@ namespace BCSVRMuseum.Keyboard;
 public partial class VirtualKeyInputEvent : Button
 {
 	[Signal]
-	public delegate void KeyPressedEventHandler(
-		string scanCodeText,
-		int unicode,
-		bool shift
-	);
+	public delegate void KeyPressedEventHandler(string scanCodeText, int unicode, bool shift);
 
-	[Export] public string ScanCodeText = "";
+	[Export] public string ScanCodeText;
 	[Export] public int Unicode;
 	[Export] public bool ShiftPressed;
 

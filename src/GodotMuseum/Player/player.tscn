@@ -10,6 +10,12 @@
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="7_dw050"]
 [ext_resource type="Script" uid="uid://ccbyeeteu8lll" path="res://Player/PlayerHandInput.cs" id="8_hand_input"]
 [ext_resource type="PackedScene" uid="uid://yjfribcaxes7" path="res://Player/joystick.tscn" id="9_joystick"]
+[ext_resource type="PackedScene" uid="uid://dbrk4ys6p52ij" path="res://Player/InputArea/input.tscn" id="9_p5o4e"]
+[ext_resource type="Script" uid="uid://c8vnltn217quj" path="res://addons/godot-xr-tools/hands/collision_hand.gd" id="10_collision_hand"]
+[ext_resource type="Script" uid="uid://csciromt1vv0a" path="res://Player/InputArea/InputBridge.cs" id="10_dkpta"]
+[ext_resource type="Shape3D" uid="uid://uc7owi5j7ib0" path="res://addons/godot-xr-tools/hands/scenes/collision/hand_palm.shape" id="11_hand_palm"]
+[ext_resource type="Script" uid="uid://birhengy0njg6" path="res://Museum-Scripts/EnterSubmitTrigger.cs" id="11_lfmf2"]
+[ext_resource type="Script" uid="uid://ceq3su0kf7oor" path="res://Player/InputArea/VisibilityController.cs" id="12_visibility"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nvl01"]
 albedo_color = Color(0.28235295, 0.28235295, 0.28235295, 1)
@@ -446,6 +452,15 @@ albedo_color = Color(0, 0, 0, 1)
 
 [node name="ControllerInput" type="Node" parent="." unique_id=2121966931]
 script = ExtResource("8_hand_input")
+PinchAction = &"trigger"
+GripAction = &"grip"
+MovementAction = &"primary"
+PinchThreshold = 0.5
+PinchReleaseThreshold = 0.35
+GrabThreshold = 0.88
+GrabReleaseThreshold = 0.68
+LeftPinchMoveDelaySeconds = 0.4
+ControllerInputActiveThreshold = 0.15
 
 [node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1118160618]
 
@@ -549,9 +564,37 @@ order = 8
 max_speed = 1.8
 strafe = true
 
-[node name="FunctionPickup" parent="XROrigin3D/LeftController" unique_id=992250748 instance=ExtResource("3_1jxqw")]
+[node name="CollisionHandLeft" type="AnimatableBody3D" parent="XROrigin3D/LeftController" unique_id=473327225]
+collision_layer = 131072
+collision_mask = 262175
+sync_to_physics = false
+script = ExtResource("10_collision_hand")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftController/CollisionHandLeft" unique_id=1976205252]
+shape = ExtResource("11_hand_palm")
+
+[node name="FunctionPickup" parent="XROrigin3D/LeftController/CollisionHandLeft" unique_id=992250748 instance=ExtResource("3_1jxqw")]
 action_button_action = "__left_controller_trigger_disabled"
 grab_distance = 0.1
+grab_collision_mask = 0
+ranged_collision_mask = 0
+
+[node name="Input" parent="XROrigin3D/LeftController" unique_id=1349806940 instance=ExtResource("9_p5o4e")]
+transform = Transform3D(0.1638304, -0.039234936, 0.1077971, 0, 0.18793851, 0.06840402, -0.114715286, -0.05603329, 0.15395021, 0, 0, -0.26930857)
+
+[node name="InputBridge" type="Node" parent="XROrigin3D/LeftController" unique_id=986301867]
+script = ExtResource("10_dkpta")
+ViewportPath = NodePath("../Input/2Din3DPlane/Viewport")
+
+[node name="EnterSubmitTrigger" type="Node" parent="XROrigin3D/LeftController" unique_id=594472320]
+script = ExtResource("11_lfmf2")
+ViewportPath = NodePath("../Input/2Din3DKeyboard/Viewport")
+InputBridgePath = NodePath("../InputBridge")
+
+[node name="VisibilityController" type="Node" parent="XROrigin3D/LeftController" unique_id=53525149]
+script = ExtResource("12_visibility")
+InputRootPath = NodePath("../Input")
+LeftPickupPath = NodePath("../CollisionHandLeft/FunctionPickup")
 
 [node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=1855454782]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
@@ -596,7 +639,16 @@ visible = false
 [node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=1172217544 instance=ExtResource("4_1jxqw")]
 turn_mode = 2
 
-[node name="FunctionPickup" parent="XROrigin3D/RightController" unique_id=175986978 instance=ExtResource("3_1jxqw")]
+[node name="CollisionHandRight" type="AnimatableBody3D" parent="XROrigin3D/RightController" unique_id=1741149389]
+collision_layer = 131072
+collision_mask = 262175
+sync_to_physics = false
+script = ExtResource("10_collision_hand")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightController/CollisionHandRight" unique_id=1049817539]
+shape = ExtResource("11_hand_palm")
+
+[node name="FunctionPickup" parent="XROrigin3D/RightController/CollisionHandRight" unique_id=175986978 instance=ExtResource("3_1jxqw")]
 
 [node name="FunctionPointer" parent="XROrigin3D/RightController" unique_id=39751939 instance=ExtResource("7_dw050")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.05, -0.1)
@@ -605,7 +657,7 @@ laser_length = 1
 laser_material = SubResource("StandardMaterial3D_dw050")
 laser_hit_material = SubResource("StandardMaterial3D_b26j0")
 show_target = true
-target_radius = 0.025
+target_radius = 0.015
 target_material = SubResource("StandardMaterial3D_n7ghd")
 collision_mask = 5242881
 

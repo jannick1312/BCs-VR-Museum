@@ -5,12 +5,12 @@ namespace BCSVRMuseum;
 
 public partial class SearchSettingsStore : Node
 {
-	[Export] public bool DefaultDeployed = true;
-	[Export] public string DefaultDeployedIp = "192.168.1.140";
-	[Export] public string DefaultStreamedIp = "10.34.64.208";
-	[Export] public string MediaFolderPath = @"C:\Users\dbis-\Desktop\BCs\media";
-	[Export] public string LogDirectoryPath = @"C:\Users\dbis-\Desktop\logs\";
-	[Export] public string FallbackLogDirectoryPath = "/sdcard/Android/data/VR.Museum/files/logs";
+	[Export] public bool DefaultDeployed;
+	[Export] public string DefaultDeployedIp;
+	[Export] public string DefaultStreamedIp;
+	[Export] public string MediaFolderPath;
+	[Export] public string LogDirectoryPath;
+	[Export] public string FallbackLogDirectoryPath;
 
 	private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
 	private RuntimeSearchSettings _runtimeSettings;

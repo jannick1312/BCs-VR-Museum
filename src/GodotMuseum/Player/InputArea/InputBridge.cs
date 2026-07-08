@@ -1,5 +1,8 @@
 using Godot;
-namespace BCSVRMuseum.Museum_Scripts;
+
+using BCSVRMuseum.Museum_Scripts;
+
+namespace BCSVRMuseum.Player.InputArea;
 
 public partial class InputBridge : Node
 {

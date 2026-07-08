@@ -30,6 +30,8 @@ albedo_color = Color(0, 0, 0, 1)
 
 [node name="DecisionPopup" type="Node" parent="." unique_id=880110100]
 script = ExtResource("2_decision")
+LifetimeSeconds = 5.0
+PanelHostPath = NodePath("../2Din3DDecision")
 
 [node name="2Din3DDecision" parent="." unique_id=776647796 instance=ExtResource("1_r2hku")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)

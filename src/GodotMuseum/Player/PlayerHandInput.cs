@@ -4,15 +4,15 @@ namespace BCSVRMuseum.Player;
 
 public partial class PlayerHandInput : Node
 {
-	[Export] public StringName PinchAction { get; set; } = "trigger";
-	[Export] public StringName GripAction { get; set; } = "grip";
-	[Export] public StringName MovementAction { get; set; } = "primary";
-	[Export] public float PinchThreshold { get; set; } = 0.5f;
-	[Export] public float PinchReleaseThreshold { get; set; } = 0.35f;
-	[Export] public float GrabThreshold { get; set; } = 0.88f;
-	[Export] public float GrabReleaseThreshold { get; set; } = 0.68f;
-	[Export] public float LeftPinchMoveDelaySeconds { get; set; } = 0.4f;
-	[Export] public float ControllerInputActiveThreshold { get; set; } = 0.15f;
+	[Export] public StringName PinchAction { get; set; }
+	[Export] public StringName GripAction { get; set; }
+	[Export] public StringName MovementAction { get; set; }
+	[Export] public float PinchThreshold { get; set; }
+	[Export] public float PinchReleaseThreshold { get; set; }
+	[Export] public float GrabThreshold { get; set; }
+	[Export] public float GrabReleaseThreshold { get; set; }
+	[Export] public float LeftPinchMoveDelaySeconds { get; set; }
+	[Export] public float ControllerInputActiveThreshold { get; set; }
 
 	private Node3D _player;
 	private Node _playerBody;

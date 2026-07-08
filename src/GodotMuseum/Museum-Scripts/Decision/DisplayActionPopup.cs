@@ -12,8 +12,8 @@ public abstract partial class DisplayActionPopup : Node
 
 	public static event Action<string> SimilaritySearchRequestedGlobally;
 
-	[Export] public float LifetimeSeconds = 5.0f;
-	[Export] public NodePath PanelHostPath = new("../2Din3DDecision");
+	[Export] public float LifetimeSeconds;
+	[Export] public NodePath PanelHostPath;
 
 	private static DisplayActionPopup _activePopup;
 
@@ -23,7 +23,7 @@ public abstract partial class DisplayActionPopup : Node
 	private Node _panelHost;
 	private double _visibleForSeconds;
 
-	public string SourcePath { get; private set; } = string.Empty;
+	private string SourcePath { get; set; } = string.Empty;
 
 	public override async void _Ready()
 	{

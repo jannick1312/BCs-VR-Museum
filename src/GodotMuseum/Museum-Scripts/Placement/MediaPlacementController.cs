@@ -16,7 +16,7 @@ public partial class MediaPlacementController : Node
 	[Export] public NodePath Object3DInstancePath;
 	[Export] public NodePath Object3DPlacesPath;
 	[Export] public float CellPadding;
-	[Export] public float VideoResetDistance = 2.0f;
+	[Export] public float VideoResetDistance;
 
 	private Media2DPlacementStrategy _media2DPlacement;
 	private Object3DPlacementStrategy _object3DPlacement;

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dsq03f1w5lqyc"]
 
 [ext_resource type="Script" uid="uid://eavk7267igp7" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.gd" id="1_flk1r"]
-[ext_resource type="PackedScene" uid="uid://u5ecy8x04wo1" path="res://Museum/InputArea/InputText.tscn" id="2_u5ed7"]
+[ext_resource type="PackedScene" uid="uid://u5ecy8x04wo1" path="res://Player/InputArea/InputText.tscn" id="2_u5ed7"]
 [ext_resource type="Script" uid="uid://cpl5yiyf1ypft" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d_body.gd" id="3_wd3uu"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_8fgmr"]
@@ -14,7 +14,7 @@ viewport_path = NodePath("Viewport")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5ed7"]
 cull_mode = 2
 albedo_texture = SubResource("ViewportTexture_flk1r")
-texture_filter = 1
+texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_06nps"]
 resource_local_to_scene = true

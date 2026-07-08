@@ -15,7 +15,16 @@ public partial class GameSettingsStore : Node
 	private readonly EventLogger _logger = new(nameof(GameSettingsStore));
 
 	private bool DestructionEnabled { get; set; }
+	private string OperatingSystem { get; set; }
+	public bool HandTrackingEnabled { get; private set; }
 	public GameMediaMode MediaMode { get; private set; } = GameMediaMode.ImagesAnd3D;
+
+	public override void _Ready()
+	{
+		OperatingSystem = OS.GetName();
+		HandTrackingEnabled = OperatingSystem is not ("Windows" or "macOS");
+		_logger.Info($"Operating system: {OperatingSystem}. Hand tracking enabled: {FormatState(HandTrackingEnabled)}.");
+	}
 
 	public void Initialize(bool destructionEnabled, GameMediaMode mediaMode)
 	{

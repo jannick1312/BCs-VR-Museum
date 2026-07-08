@@ -7,11 +7,12 @@ public sealed class PlayerInputModeDetector(Node player)
 {
 	private readonly EventLogger _logger = new(nameof(PlayerInputModeDetector));
 	private readonly XRController3D _rightController = (XRController3D)player.FindChild("RightController", true, false);
+	private readonly GameSettingsStore _gameSettingsStore = (GameSettingsStore)player.GetTree().Root.FindChild("GameSettingsStore", true, false);
 	private PlayerInputMode? _lastLoggedMode;
 
 	public PlayerInputMode GetMode()
 	{
-		var mode = IsControllerProfile(GetTrackerProfile(_rightController)) ? PlayerInputMode.Controller : PlayerInputMode.Hand;
+		var mode = !_gameSettingsStore.HandTrackingEnabled || IsControllerProfile(GetTrackerProfile(_rightController)) ? PlayerInputMode.Controller : PlayerInputMode.Hand;
 
 		if (mode == _lastLoggedMode) return mode;
 		_lastLoggedMode = mode;
