@@ -16,12 +16,16 @@ public partial class PlayerHandInput : Node
 	private Node _playerBody;
 	private Node3D _leftTrackedHand;
 	private Node3D _rightTrackedHand;
+	private Node _leftHandMesh;
+	private Node _rightHandMesh;
 	private HandJoystickMovement _leftMovement;
 	private PlayerInputModeDetector _modeDetector;
 	private PlayerInputVisuals _visuals;
 	private HandGestureInput _gestures;
 	private bool _leftHandTrackingActive;
 	private bool _rightHandTrackingActive;
+	private bool _leftFallbackRequired;
+	private bool _rightFallbackRequired;
 
 	public override void _Ready()
 	{
@@ -29,6 +33,12 @@ public partial class PlayerHandInput : Node
 		_playerBody = _player.FindChild("PlayerBody", true, false);
 		_leftTrackedHand = (Node3D)_player.FindChild("LeftTrackedHand", true, false);
 		_rightTrackedHand = (Node3D)_player.FindChild("RightTrackedHand", true, false);
+		_leftHandMesh = _player.FindChild("LeftHandTrackingMesh", true, false);
+		_rightHandMesh = _player.FindChild("RightHandTrackingMesh", true, false);
+		_leftHandMesh.Connect("openxr_fb_hand_tracking_mesh_ready", Callable.From(() => _leftFallbackRequired = false));
+		_leftHandMesh.Connect("openxr_fb_hand_tracking_mesh_unavailable", Callable.From(() => _leftFallbackRequired = true));
+		_rightHandMesh.Connect("openxr_fb_hand_tracking_mesh_ready", Callable.From(() => _rightFallbackRequired = false));
+		_rightHandMesh.Connect("openxr_fb_hand_tracking_mesh_unavailable", Callable.From(() => _rightFallbackRequired = true));
 		_leftMovement = (HandJoystickMovement)_player.FindChild("Movement", true, false);
 		_leftMovement.Configure(_player);
 
@@ -59,12 +69,7 @@ public partial class PlayerHandInput : Node
 		_leftHandTrackingActive = !controllerMode && IsHandTrackerActive(_leftTrackedHand);
 		_rightHandTrackingActive = !controllerMode && IsHandTrackerActive(_rightTrackedHand);
 		_gestures.SetRightPointerNativeActionEnabled(!_rightHandTrackingActive);
-		_visuals.Apply(
-			controllerMode,
-			_leftHandTrackingActive,
-			_rightHandTrackingActive,
-			_leftMovement.IsLocked,
-			IsPlayerMovementEnabled());
+		_visuals.Apply(controllerMode, _leftHandTrackingActive, _rightHandTrackingActive, _leftFallbackRequired, _rightFallbackRequired, _leftMovement.IsLocked, IsPlayerMovementEnabled());
 
 		if (controllerMode || (!_leftHandTrackingActive && !_rightHandTrackingActive))
 		{

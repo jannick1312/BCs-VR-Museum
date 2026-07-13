@@ -3,9 +3,27 @@
 [ext_resource type="Script" uid="uid://c8gx2wc7hsxf5" path="res://addons/godot-xr-tools/interactables/interactable_hinge.gd" id="1_u41yt"]
 [ext_resource type="Material" uid="uid://cfkuq5ui12ylk" path="res://Materials/Glass/Glass.tres" id="3_3nscg"]
 [ext_resource type="Script" uid="uid://dlojnwxo25bky" path="res://addons/godot-xr-tools/interactables/interactable_handle.gd" id="3_7ofrb"]
+[ext_resource type="Material" uid="uid://cl0gutwbpyalo" path="res://Materials/GrabPoint.tres" id="3_qulph"]
 [ext_resource type="PackedScene" uid="uid://sc2o12cynikm" path="res://Museum/MuseumDecision/Decision.tscn" id="4_x1bhh"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_avl46"]
+radius = 0.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_x1bhh"]
+radius = 0.2
+height = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_qulph"]
+radius = 0.2
+height = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_l3jdm"]
+radius = 0.2
+height = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_jth5c"]
+radius = 0.2
+height = 0.4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pfwpl"]
 resource_name = "Distortion.001"
@@ -54,11 +72,13 @@ metadata/extras = {
 transparency = 1
 albedo_color = Color(1, 0, 0, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qulph"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_u41yt"]
 size = Vector3(3, 0.35, 3)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_jotmk"]
-points = PackedVector3Array(1.4669541, 0.175, 1.4666668, -1.5238097, -0.1987722, -1.5235113, -1.5238097, -0.1987722, 1.5235113, 1.5238097, -0.1987722, -1.5235113, -1.4669541, 0.175, -1.4666668, 1.5238097, -0.1987722, 1.5235113, 1.4669541, 0.175, -1.4666668, -1.4669541, 0.175, 1.4666668)
+[sub_resource type="BoxShape3D" id="BoxShape3D_qulph"]
+size = Vector3(3, 0.35, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cyhf2"]
 resource_name = "Marble"
@@ -151,64 +171,156 @@ hinge_limit_max = 99999.0
 metadata/_custom_type_script = "uid://c8gx2wc7hsxf5"
 
 [node name="OriginFront" type="Node3D" parent="Hinge" unique_id=1335416304]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, -7.276099e-08, 0.6)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -1.75, 0, 0.45)
 
 [node name="Handle" type="RigidBody3D" parent="Hinge/OriginFront" unique_id=251892798]
 collision_layer = 262144
 collision_mask = 0
 gravity_scale = 0.0
+freeze = true
 script = ExtResource("3_7ofrb")
 snap_distance = 1.2
 picked_up_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginFront/Handle" unique_id=2141119652]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
 shape = SubResource("SphereShape3D_avl46")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginFront/Handle" unique_id=1909567791]
+mesh = SubResource("SphereMesh_x1bhh")
+surface_material_override/0 = ExtResource("3_qulph")
+
 [node name="OriginBack" type="Node3D" parent="Hinge" unique_id=460407147]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, -7.276099e-08, -0.6)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -1.75, 0, -0.45)
 
 [node name="Handle" type="RigidBody3D" parent="Hinge/OriginBack" unique_id=821819611]
 collision_layer = 262144
 collision_mask = 0
 gravity_scale = 0.0
+freeze = true
 script = ExtResource("3_7ofrb")
 snap_distance = 1.2
 picked_up_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginBack/Handle" unique_id=1398258457]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
 shape = SubResource("SphereShape3D_avl46")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginBack/Handle" unique_id=1881761250]
+material_override = ExtResource("3_qulph")
+mesh = SubResource("SphereMesh_qulph")
+
 [node name="OriginRight" type="Node3D" parent="Hinge" unique_id=1152869873]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0.59999996, 0)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -1.75, 0.45, 0)
 
 [node name="Handle" type="RigidBody3D" parent="Hinge/OriginRight" unique_id=1851343356]
 collision_layer = 262144
 collision_mask = 0
 gravity_scale = 0.0
+freeze = true
 script = ExtResource("3_7ofrb")
 snap_distance = 1.2
 picked_up_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginRight/Handle" unique_id=2052525314]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 0)
 shape = SubResource("SphereShape3D_avl46")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginRight/Handle" unique_id=3948217]
+material_override = ExtResource("3_qulph")
+mesh = SubResource("SphereMesh_l3jdm")
+
 [node name="OriginLeft" type="Node3D" parent="Hinge" unique_id=1877002425]
-transform = Transform3D(1, 0.00024193809, -0.00013219994, -0.00024196213, 1, -0.00015059668, 0.00013215594, 0.0001506353, 1, -1.75, -0.6000001, 0)
+transform = Transform3D(0.6, 0.00014516534, -7.931543e-05, -0.00014517728, 0.6, -9.0361995e-05, 7.929357e-05, 9.038118e-05, 0.6, -1.75, -0.45, 0)
 
 [node name="Handle" type="RigidBody3D" parent="Hinge/OriginLeft" unique_id=1734989485]
 collision_layer = 262144
 collision_mask = 0
 gravity_scale = 0.0
+freeze = true
 script = ExtResource("3_7ofrb")
 snap_distance = 1.2
 picked_up_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginLeft/Handle" unique_id=1546300876]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("SphereShape3D_avl46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginLeft/Handle" unique_id=1352733479]
+material_override = ExtResource("3_qulph")
+mesh = SubResource("SphereMesh_jth5c")
+
+[node name="OriginFrontLeft" type="Node3D" parent="Hinge" unique_id=1925133620]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -1.75, -0.325, 0.325)
+
+[node name="Handle" type="RigidBody3D" parent="Hinge/OriginFrontLeft" unique_id=192251452]
+collision_layer = 262144
+collision_mask = 0
+gravity_scale = 0.0
+freeze = true
+script = ExtResource("3_7ofrb")
+snap_distance = 1.2
+picked_up_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginFrontLeft/Handle" unique_id=1264984715]
+shape = SubResource("SphereShape3D_avl46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginFrontLeft/Handle" unique_id=521712866]
+mesh = SubResource("SphereMesh_x1bhh")
+surface_material_override/0 = ExtResource("3_qulph")
+
+[node name="OriginBackRight" type="Node3D" parent="Hinge" unique_id=795550268]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -1.75, 0.325, -0.325)
+
+[node name="Handle" type="RigidBody3D" parent="Hinge/OriginBackRight" unique_id=103349915]
+collision_layer = 262144
+collision_mask = 0
+gravity_scale = 0.0
+freeze = true
+script = ExtResource("3_7ofrb")
+snap_distance = 1.2
+picked_up_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginBackRight/Handle" unique_id=375952963]
+shape = SubResource("SphereShape3D_avl46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginBackRight/Handle" unique_id=1388582216]
+material_override = ExtResource("3_qulph")
+mesh = SubResource("SphereMesh_qulph")
+
+[node name="OriginFrontRight" type="Node3D" parent="Hinge" unique_id=1743565132]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -1.75, 0.325, 0.325)
+
+[node name="Handle" type="RigidBody3D" parent="Hinge/OriginFrontRight" unique_id=1693005818]
+collision_layer = 262144
+collision_mask = 0
+gravity_scale = 0.0
+freeze = true
+script = ExtResource("3_7ofrb")
+snap_distance = 1.2
+picked_up_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginFrontRight/Handle" unique_id=1309146373]
+shape = SubResource("SphereShape3D_avl46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginFrontRight/Handle" unique_id=580404859]
+material_override = ExtResource("3_qulph")
+mesh = SubResource("SphereMesh_l3jdm")
+
+[node name="OriginBackLeft" type="Node3D" parent="Hinge" unique_id=1679279072]
+transform = Transform3D(0.6, 0.00014516534, -7.931543e-05, -0.00014517728, 0.6, -9.0361995e-05, 7.929357e-05, 9.038118e-05, 0.6, -1.75, -0.325, -0.325)
+
+[node name="Handle" type="RigidBody3D" parent="Hinge/OriginBackLeft" unique_id=1445722446]
+collision_layer = 262144
+collision_mask = 0
+gravity_scale = 0.0
+freeze = true
+script = ExtResource("3_7ofrb")
+snap_distance = 1.2
+picked_up_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hinge/OriginBackLeft/Handle" unique_id=1284876867]
+shape = SubResource("SphereShape3D_avl46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hinge/OriginBackLeft/Handle" unique_id=1490883486]
+material_override = ExtResource("3_qulph")
+mesh = SubResource("SphereMesh_jth5c")
 
 [node name="Orb" type="Node3D" parent="Hinge" unique_id=511419062]
 
@@ -236,10 +348,11 @@ transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0,
 
 [node name="BaseMesh" type="MeshInstance3D" parent="Pillar/Base" unique_id=2081214432]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_qulph")
 mesh = SubResource("BoxMesh_u41yt")
 
 [node name="BaseCollision" type="CollisionShape3D" parent="Pillar/Base" unique_id=158878536]
-shape = SubResource("ConvexPolygonShape3D_jotmk")
+shape = SubResource("BoxShape3D_qulph")
 
 [node name="Curves" type="StaticBody3D" parent="Pillar" unique_id=736029591]
 

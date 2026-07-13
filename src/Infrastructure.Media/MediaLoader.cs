@@ -13,22 +13,22 @@ public class MediaLoader : IMediaLoader
 	{
 		try
 		{
-			_logger.Info($"Loading media. Name='{item.Name}', LocalPath='{item.LocalPath}', RemoteUrl='{item.RemoteUrl}'");
+			_logger.Info($"Media loading started. Name='{item.Name}', LocalPath='{item.LocalPath}', RemoteUrl='{item.RemoteUrl}'.");
 
 			if (File.Exists(item.LocalPath))
 			{
-				_logger.Info($"Loaded media from local path. LocalPath='{item.LocalPath}'");
+				_logger.Info($"Media loaded from local path. LocalPath='{item.LocalPath}'.");
 				return MediaContent.FromPath(item.LocalPath);
 			}
 
-			_logger.Info("Local media not found, loading remote media.");
+			_logger.Info("Local media not found, remote loading started.");
 			var remoteBytes = await _httpClient.GetByteArrayAsync(item.RemoteUrl);
-			_logger.Info($"Loaded media from remote URL. RemoteUrl='{item.RemoteUrl}'");
+			_logger.Info($"Media loaded from remote URL. RemoteUrl='{item.RemoteUrl}'.");
 			return MediaContent.FromBytes(remoteBytes);
 		}
 		catch (TaskCanceledException)
 		{
-			_logger.Warning("Media request timed out.");
+			_logger.Warning($"Media loading timed out. Name='{item.Name}'");
 			return MediaContent.Failure("Media request timed out.");
 		}
 		catch (Exception exception)

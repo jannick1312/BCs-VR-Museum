@@ -14,6 +14,20 @@ public sealed class Object3DDisplayFitter
 	{
 		_template = template;
 		_baseMesh = (MeshInstance3D)_template.FindChild("BaseMesh", true, false);
+		ConfigureCompatibilityOrbMaterial();
+	}
+
+	private void ConfigureCompatibilityOrbMaterial()
+	{
+		var renderingMethod = RenderingServer.GetCurrentRenderingMethod();
+		if (renderingMethod != "gl_compatibility")
+			return;
+
+		var sphere = _template.GetNodeOrNull<MeshInstance3D>("Hinge/Orb/Sphere");
+		var glass = sphere.GetActiveMaterial(0) as StandardMaterial3D;
+
+		glass.RefractionEnabled = false;
+		glass.AlbedoColor = new Color(0.65f, 0.85f, 1.0f, 0.08f);
 	}
 
 	public float Place(Node3D item, Node3D objectNode, Node3D place)
@@ -177,9 +191,6 @@ public sealed class Object3DDisplayFitter
 			bounds = hasBounds ? bounds.Merge(meshBounds) : meshBounds;
 			hasBounds = true;
 		}
-
-		if (!hasBounds)
-			Log.Warning($"3D object '{root.Name}' has no MeshInstance3D children. Using fallback bounds.");
 
 		return hasBounds ? bounds : new Aabb(Vector3.Zero, Vector3.One);
 	}

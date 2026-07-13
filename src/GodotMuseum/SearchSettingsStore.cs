@@ -5,67 +5,77 @@ namespace BCSVRMuseum;
 
 public partial class SearchSettingsStore : Node
 {
-	[Export] public bool DefaultDeployed;
-	[Export] public string DefaultDeployedIp;
-	[Export] public string DefaultStreamedIp;
-	[Export] public string MediaFolderPath;
-	[Export] public string LogDirectoryPath;
-	[Export] public string FallbackLogDirectoryPath;
+	private string _mediaFolderPath;
+	private string _serverIp = "";
+	private string _configSource = "";
 
 	private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
 	private RuntimeSearchSettings _runtimeSettings;
 
-	public bool Deployed => _runtimeSettings.Deployed;
 	public string CurrentIp => _runtimeSettings.CurrentIp;
 	public string CurrentMediaFolderPath => _runtimeSettings.MediaFolderPath;
 
+	public override void _EnterTree()
+	{
+		var logDirectoryPath = ResolveApplicationDirectory("logs", writable: true);
+		EventLogger.Configure(logDirectoryPath);
+	}
+
 	public override void _Ready()
 	{
-		var logDirectoryPath = ResolveLogDirectoryPath(LogDirectoryPath, FallbackLogDirectoryPath);
-		EventLogger.Configure(logDirectoryPath);
-		GD.Print("JSON-Logs are written to: " + logDirectoryPath + "/app.log");
-		GD.Print("Readable logs are written to:" + logDirectoryPath + "/app-readable.log");
-		_logger.Info("Settings loaded.");
+		LoadJsonSettings();
 
-		_runtimeSettings = new RuntimeSearchSettings(DefaultDeployed, DefaultDeployedIp, DefaultStreamedIp, MediaFolderPath);
+		_mediaFolderPath = ResolveApplicationDirectory("media", writable: false);
+
+		_runtimeSettings = new RuntimeSearchSettings(_serverIp, _mediaFolderPath);
+
+		var runtimeProfile = ResolveRuntimeProfile();
+		if (runtimeProfile is not null)
+			_logger.Info($"Search settings initialized. RuntimeProfile='{runtimeProfile}', ConfigSource='{_configSource}', ServerIp='{CurrentIp}'.");
+	}
+
+	private void LoadJsonSettings()
+	{
+		var settings = AppSettingsLoader.Load(out var source);
+		_serverIp = settings.ServerIp;
+		_configSource = source;
 	}
 
 	public void SetServerIp(string ip)
 	{
 		_runtimeSettings.SetCurrentIp(ip);
-		_logger.Info($"Server IP changed. CurrentIp={CurrentIp}");
+		_logger.Info($"Server IP changed. CurrentIp='{CurrentIp}'.");
 	}
 
 	public void RevertServerUrl()
 	{
 		_runtimeSettings.RevertCurrentIp();
-		_logger.Info($"Server IP reverted. CurrentIp={CurrentIp}");
+		_logger.Info($"Server IP reverted. CurrentIp='{CurrentIp}'.");
 	}
 
-	public void SetDeployed(bool deployed)
+	private static string ResolveRuntimeProfile()
 	{
-		_runtimeSettings.SetDeployed(deployed);
-		_logger.Info($"Deployment mode changed. CurrentIp={CurrentIp}");
+		if (OS.HasFeature("quest"))
+			return "quest";
+
+		if (OS.HasFeature("focus"))
+			return "focus";
+
+		return OS.HasFeature("streaming") ? "streamed" : null;
 	}
 
-	private static string ResolvePath(string path)
+	private static string ResolveApplicationDirectory(string directoryName, bool writable)
 	{
-		if (path.StartsWith("user://") || path.StartsWith("res://"))
-			return ProjectSettings.GlobalizePath(path);
+		if (OS.GetName() == "Android")
+			return $"/sdcard/Android/data/VR.Museum/files/{directoryName}";
 
-		return path;
-	}
+		if (OS.HasFeature("editor"))
+		{
+			var godotPath = writable ? $"user://{directoryName}" : $"res://{directoryName}";
+			return ProjectSettings.GlobalizePath(godotPath);
+		}
 
-	private static string ResolveLogDirectoryPath(string primaryPath, string fallbackPath)
-	{
-		var resolvedPrimaryPath = ResolvePath(primaryPath);
-
-		if (System.IO.Directory.Exists(resolvedPrimaryPath))
-			return resolvedPrimaryPath;
-
-		var resolvedFallbackPath = ResolvePath(fallbackPath);
-		GD.Print($"Log directory does not exist: {resolvedPrimaryPath}. Falling back to: {resolvedFallbackPath}");
-
-		return resolvedFallbackPath;
+		var executableDirectory = System.IO.Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
+		return System.IO.Path.Combine(executableDirectory, directoryName);
 	}
 }

@@ -16,7 +16,7 @@ viewport_path = NodePath("2Din3DKeyboard/Viewport")
 transparency = 1
 cull_mode = 2
 albedo_texture = SubResource("ViewportTexture_35l5i")
-texture_filter = 1
+texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r5m5x"]
 resource_local_to_scene = true
@@ -24,7 +24,7 @@ size = Vector3(1.5, 0.75, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_tc8e0"]
 resource_local_to_scene = true
-size = Vector2(1.8, 1.8)
+size = Vector2(1.8, 1.5)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ffolm"]
 viewport_path = NodePath("2Din3DURL/Viewport")
@@ -34,15 +34,15 @@ transparency = 1
 cull_mode = 2
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_ffolm")
-texture_filter = 1
+texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e605b"]
 resource_local_to_scene = true
-size = Vector3(1.8, 1.8, 0.02)
+size = Vector3(1.8, 1.5, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_kqjad"]
 resource_local_to_scene = true
-size = Vector2(1.8, 1.8)
+size = Vector2(1.8, 1.5)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_aino8"]
 viewport_path = NodePath("2Din3DGame/Viewport")
@@ -52,11 +52,11 @@ transparency = 1
 cull_mode = 2
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_aino8")
-texture_filter = 1
+texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kjtmp"]
 resource_local_to_scene = true
-size = Vector3(1.8, 1.8, 0.02)
+size = Vector3(1.8, 1.5, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_exrwh"]
 resource_local_to_scene = true
@@ -70,7 +70,7 @@ transparency = 1
 cull_mode = 2
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_76fpv")
-texture_filter = 1
+texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1hd0"]
 resource_local_to_scene = true

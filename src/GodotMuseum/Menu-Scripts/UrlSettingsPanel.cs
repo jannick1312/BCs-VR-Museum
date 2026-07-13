@@ -13,7 +13,6 @@ public partial class UrlSettingsPanel : Node
 	private Label _currentUrlValueLabel;
 	private Button _submitButton;
 	private Button _revertButton;
-	private CheckBox _deployedCheckBox;
 	private Node3D _keyboard;
 	private CollisionShape3D _keyboardCollisionShape;
 	private int _validationVersion;
@@ -30,7 +29,6 @@ public partial class UrlSettingsPanel : Node
 		_currentUrlValueLabel = (Label)root.FindChild("URLcurrentlyValue", true, false);
 		_submitButton = (Button)root.FindChild("Submit", true, false);
 		_revertButton = (Button)root.FindChild("Revert", true, false);
-		_deployedCheckBox = (CheckBox)root.FindChild("Check", true, false);
 
 		_searchSettingsStore = (SearchSettingsStore)GetTree().Root.FindChild("SearchSettingsStore", true, false);
 		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
@@ -42,8 +40,6 @@ public partial class UrlSettingsPanel : Node
 		_urlInput.TextSubmitted += _ => DismissUrlInput();
 		_submitButton.Pressed += OnSubmitPressed;
 		_revertButton.Pressed += OnRevertPressed;
-		_deployedCheckBox.Toggled += OnDeployedToggled;
-		_deployedCheckBox.ButtonPressed = _searchSettingsStore.Deployed;
 
 		SetKeyboardVisible(false);
 		UpdateCurrentUrlLabel();
@@ -87,13 +83,6 @@ public partial class UrlSettingsPanel : Node
 	private void UpdateCurrentUrlLabel()
 	{
 		_currentUrlValueLabel.Text = _searchSettingsStore.CurrentIp;
-	}
-
-	private void OnDeployedToggled(bool toggledOn)
-	{
-		_searchSettingsStore.SetDeployed(toggledOn);
-		UpdateCurrentUrlLabel();
-		ValidateCurrentUrl();
 	}
 
 	private void OnUrlInputFocusEntered()

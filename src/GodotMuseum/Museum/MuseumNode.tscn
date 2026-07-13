@@ -36,13 +36,16 @@ SearchLimit = 100
 [node name="Media2DDisplayInstance" parent="." unique_id=373268339 instance=ExtResource("5_avl46")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 
+[node name="Picture" parent="Media2DDisplayInstance" index="2" unique_id=148390249]
+cast_shadow = 2
+
 [node name="FrameMaker" type="Node" parent="Media2DDisplayInstance" unique_id=44059174]
 script = ExtResource("7_m6mi2")
 
 [node name="Object3DDisplayInstance" parent="." unique_id=1950581 instance=ExtResource("11_hm1tn")]
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, -7, 0)
 
-[node name="ObjectSlot" parent="Object3DDisplayInstance/Hinge" parent_id_path=PackedInt32Array(1950581, 1572078800) index="5" unique_id=903121435]
+[node name="ObjectSlot" parent="Object3DDisplayInstance/Hinge" parent_id_path=PackedInt32Array(1950581, 1572078800) index="9" unique_id=903121435]
 transform = Transform3D(0.008112016, -0.5496649, 0.017396325, 0.49846923, -2.178878e-08, -0.23244002, 0.23229843, 0.019194711, 0.49816558, -1.75, 0, 0)
 
 [node name="MediaPlacementController" type="Node" parent="." unique_id=379999481]

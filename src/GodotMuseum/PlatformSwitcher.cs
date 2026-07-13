@@ -20,8 +20,6 @@ public partial class PlatformSwitcher : Node
 	private XRCamera3D _camera;
 	private XRController3D _leftController;
 	private XRController3D _rightController;
-	private Node3D _leftHand;
-	private Node3D _rightHand;
 	private Node3D _museum;
 	private Node3D _menu;
 	private Marker3D _museumSpawn;
@@ -46,9 +44,6 @@ public partial class PlatformSwitcher : Node
 
 		_leftController = (XRController3D)_player.FindChild("LeftController", true, false);
 		_rightController = (XRController3D)_player.FindChild("RightController", true, false);
-
-		_leftHand = (Node3D)_player.FindChild("LeftHand", true, false);
-		_rightHand = (Node3D)_player.FindChild("RightHand", true, false);
 
 		_body = (CharacterBody3D)_player.FindChild("PlayerBody", true, false);
 		_movementNodes = [_player.FindChild("MovementDirect", true, false), _player.FindChild("MovementTurn", true, false)];
@@ -102,7 +97,6 @@ public partial class PlatformSwitcher : Node
 			return;
 
 		_rig.GlobalTransform = _lockedMenuRig;
-		LockHands();
 	}
 
 	public async void SwitchToMuseum()
@@ -199,9 +193,4 @@ public partial class PlatformSwitcher : Node
 		node.ProcessMode = enabled ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 	}
 
-	private void LockHands()
-	{
-		_leftHand.GlobalTransform = _leftController.GlobalTransform;
-		_rightHand.GlobalTransform = _rightController.GlobalTransform;
-	}
 }

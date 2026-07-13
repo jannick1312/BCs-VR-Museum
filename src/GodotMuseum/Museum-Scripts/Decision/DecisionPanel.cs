@@ -27,7 +27,7 @@ public partial class DecisionPanel : Node
 
 	private void OnDecisionButtonPressed(string action)
 	{
-		Log.Info(action);
+		Log.Info($"Display action selected. Action='{action}'.");
 		EmitSignal(SignalName.DismissRequested);
 	}
 

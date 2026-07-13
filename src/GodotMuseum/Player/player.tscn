@@ -1,8 +1,8 @@
 [gd_scene format=4 uid="uid://hwnuhiun3f40"]
 
-[ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="1_onrkg"]
+[ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="1_fallback_left"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_2hs0m"]
-[ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="2_i3pqv"]
+[ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="2_fallback_right"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_1jxqw"]
 [ext_resource type="Material" uid="uid://cf0sca247ok4s" path="res://Materials/Controller_White.tres" id="3_apopc"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_i3pqv"]
@@ -468,9 +468,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 [node name="HandInput" type="Node3D" parent="XROrigin3D" unique_id=225066344]
 
 [node name="MovementJoystick" parent="XROrigin3D/HandInput" unique_id=1332699059 instance=ExtResource("9_joystick")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -0.5, 1, -0.5)
 visible = false
 
 [node name="LeftTrackedHand" type="XRNode3D" parent="XROrigin3D/HandInput" unique_id=1136845764]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
 visible = false
 tracker = &"/user/hand_tracker/left"
 
@@ -479,7 +481,13 @@ material = SubResource("StandardMaterial3D_nvl01")
 
 [node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/HandInput/LeftTrackedHand/LeftHandTrackingMesh" unique_id=1190331303]
 
+[node name="LeftFallbackHand" parent="XROrigin3D/HandInput/LeftTrackedHand" unique_id=483268050 instance=ExtResource("1_fallback_left")]
+transform = Transform3D(-4.371139e-08, -1, 4.371139e-08, 0, -4.371139e-08, -1, 1, -4.371139e-08, 1.9106855e-15, 0, 0, 0)
+visible = false
+hand_offset_mode = 4
+
 [node name="RightTrackedHand" type="XRNode3D" parent="XROrigin3D/HandInput" unique_id=321923877]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 visible = false
 tracker = &"/user/hand_tracker/right"
 
@@ -515,6 +523,11 @@ bones/25/name = "RightLittleTip"
 
 [node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/HandInput/RightTrackedHand/RightHandTrackingMesh" unique_id=549946188]
 hand_tracker = &"/user/hand_tracker/right"
+
+[node name="RightFallbackHand" parent="XROrigin3D/HandInput/RightTrackedHand" unique_id=282070247 instance=ExtResource("2_fallback_right")]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 0, 0, 0)
+visible = false
+hand_offset_mode = 4
 
 [node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1233295448]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
@@ -554,9 +567,6 @@ transform = Transform3D(-0.009993546, 0.00023074736, 0.0002752767, -0.0003585871
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_o28un")
 
-[node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1572654635 instance=ExtResource("1_onrkg")]
-visible = false
-
 [node name="MovementDirect" parent="XROrigin3D/LeftController" unique_id=162239011 instance=ExtResource("2_2hs0m")]
 order = 8
 max_speed = 1.8
@@ -564,7 +574,7 @@ strafe = true
 
 [node name="CollisionHandLeft" type="AnimatableBody3D" parent="XROrigin3D/LeftController" unique_id=473327225]
 collision_layer = 131072
-collision_mask = 262175
+collision_mask = 31
 sync_to_physics = false
 script = ExtResource("10_collision_hand")
 
@@ -578,7 +588,7 @@ grab_collision_mask = 0
 ranged_collision_mask = 0
 
 [node name="Input" parent="XROrigin3D/LeftController" unique_id=1349806940 instance=ExtResource("9_p5o4e")]
-transform = Transform3D(0.1638304, -0.039234936, 0.1077971, 0, 0.18793851, 0.06840402, -0.114715286, -0.05603329, 0.15395021, 0, 0, -0.26930857)
+transform = Transform3D(0.19318514, 0, 0.051763803, 0, 0.19999999, 0, -0.051763803, 0, 0.19318514, 0.19999999, 0, -0.19999999)
 
 [node name="InputBridge" type="Node" parent="XROrigin3D/LeftController" unique_id=986301867]
 script = ExtResource("10_dkpta")
@@ -631,15 +641,12 @@ transform = Transform3D(-0.0099935485, -0.00026113648, -0.0002465374, 0.00035851
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_qemgg")
 
-[node name="RightHand" parent="XROrigin3D/RightController" unique_id=1634325532 instance=ExtResource("2_i3pqv")]
-visible = false
-
 [node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=1172217544 instance=ExtResource("4_1jxqw")]
 turn_mode = 2
 
 [node name="CollisionHandRight" type="AnimatableBody3D" parent="XROrigin3D/RightController" unique_id=1741149389]
 collision_layer = 131072
-collision_mask = 262175
+collision_mask = 31
 sync_to_physics = false
 script = ExtResource("10_collision_hand")
 
@@ -647,6 +654,7 @@ script = ExtResource("10_collision_hand")
 shape = ExtResource("11_hand_palm")
 
 [node name="FunctionPickup" parent="XROrigin3D/RightController/CollisionHandRight" unique_id=175986978 instance=ExtResource("3_1jxqw")]
+grab_collision_mask = 262148
 
 [node name="FunctionPointer" parent="XROrigin3D/RightController" unique_id=39751939 instance=ExtResource("7_dw050")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.05, -0.1)

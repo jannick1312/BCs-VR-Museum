@@ -39,7 +39,6 @@ enabled=PackedStringArray("res://addons/blendkit/plugin.cfg", "res://addons/godo
 [rendering]
 
 textures/canvas_textures/default_texture_filter=2
-renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 textures/lossless_compression/force_png=true
 lights_and_shadows/directional_shadow/size.mobile=4096
@@ -52,6 +51,7 @@ textures/default_filters/anisotropic_filtering_level=4
 anti_aliasing/quality/msaa_2d=1
 anti_aliasing/quality/msaa_3d=1
 lights_and_shadows/positional_shadow/atlas_size.mobile=4096
+renderer/rendering_method.focus="gl_compatibility"
 
 [xr]
 

@@ -20,6 +20,7 @@ public partial class SearchController : Node
 	private LineEdit _inputLineEdit;
 	private LineEdit _activeLineEdit;
 	private SearchUseCaseFactory _searchUseCaseFactory;
+	private GameSettingsStore _gameSettingsStore;
 	private readonly EventLogger _logger = new(nameof(SearchController));
 	private bool _isSearching;
 
@@ -28,6 +29,7 @@ public partial class SearchController : Node
 		_inputScreen = GetNode<Player.InputArea.InputBridge>(InputBridgePath);
 		_mediaPlacement = GetNode<Placement.MediaPlacementController>(MediaPlacementControllerPath);
 		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
+		_gameSettingsStore = (GameSettingsStore)GetTree().Root.FindChild("GameSettingsStore", true, false);
 
 		_inputLineEdit = await this.WaitFor(() => _inputScreen.InputLineEdit, "input line edit");
 		_activeLineEdit = _inputLineEdit;
@@ -64,10 +66,11 @@ public partial class SearchController : Node
 
 		_activeLineEdit.Clear();
 		_activeLineEdit.ReleaseFocus();
-		_logger.Info($"Text search submitted. Text={text}");
+		_logger.Info($"Text search submitted. Text='{text}', MediaMode={_gameSettingsStore.CurrentMediaMode}.");
 
 		var application = _searchUseCaseFactory.GetMuseumApplication();
-		await SubmitSearch(() => application.SearchAsync(text, SearchLimit), "Search");
+		var capacity = _mediaPlacement.GetCapacity();
+		await SubmitSearch(() => application.SearchAsync(text, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), "Search");
 	}
 
 	private async void SubmitSimilaritySearch(string vectorJson)
@@ -80,7 +83,8 @@ public partial class SearchController : Node
 		_logger.Info($"Similarity search submitted. VectorLength={vector.Count}");
 
 		var application = _searchUseCaseFactory.GetMuseumApplication();
-		await SubmitSearch(() => application.SearchAsync(vector, SearchLimit), "Similarity search");
+		var capacity = _mediaPlacement.GetCapacity();
+		await SubmitSearch(() => application.SearchAsync(vector, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), "Similarity search");
 	}
 
 	private bool CanSubmitSearch(string searchName)
@@ -93,16 +97,26 @@ public partial class SearchController : Node
 	private async Task SubmitSearch(Func<Task<DisplayMediaResult>> search, string searchName)
 	{
 		_isSearching = true;
-		var result = await search();
-		_isSearching = false;
-
-		if (!result.Success)
+		try
 		{
-			_logger.Warning($"{searchName} failed, output will not be shown.");
-			return;
-		}
+			var result = await search();
 
-		await _mediaPlacement.Place(result.Items);
-		_logger.Info($"{searchName} results shown.");
+			if (!result.Success)
+			{
+				_logger.Warning($"{searchName} failed. Error='{result.ErrorMessage}'. Existing output is kept.");
+				return;
+			}
+
+			await _mediaPlacement.Place(result.Items);
+			_logger.Info($"{searchName} completed. DisplayedItems={result.Items.Count}.");
+		}
+		catch (Exception exception)
+		{
+			_logger.Error($"{searchName} failed unexpectedly", exception);
+		}
+		finally
+		{
+			_isSearching = false;
+		}
 	}
 }

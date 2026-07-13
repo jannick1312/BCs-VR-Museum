@@ -18,14 +18,20 @@ public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealt
 				using var response = await _httpClient.GetAsync(settings.SchemaListUrl);
 
 				if (response.IsSuccessStatusCode)
+				{
+					_logger.Info($"Vitrivr health check succeeded. Attempt={attempt + 1}.");
 					return true;
+				}
+
+				_logger.Warning($"Vitrivr health check returned an unsuccessful status. Attempt={attempt + 1}, StatusCode={(int)response.StatusCode}.");
 			}
 			catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException)
 			{
-				_logger.Warning("Vitrivr schema endpoint check failed.");
+				_logger.Warning($"Vitrivr health check failed. ErrorType={exception.GetType().Name}.");
 			}
 		}
 
+		_logger.Warning("Vitrivr health check exhausted all attempts.");
 		return false;
 	}
 }

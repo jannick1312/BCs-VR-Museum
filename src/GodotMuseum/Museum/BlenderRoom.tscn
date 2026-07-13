@@ -876,6 +876,7 @@ shape = SubResource("ConcavePolygonShape3D_kuf5q")
 
 [node name="CeilingBorder" type="MeshInstance3D" parent="Ceiling" unique_id=1862078288]
 material_override = ExtResource("6_xd4qy")
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_5rrlw")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/CeilingBorder" unique_id=634630360]
@@ -957,6 +958,7 @@ shape = SubResource("ConcavePolygonShape3D_kmjow")
 
 [node name="Frame" type="MeshInstance3D" parent="Ceiling" unique_id=720940538]
 material_override = ExtResource("2_738xm")
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_ibg47")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/Frame" unique_id=1467027201]

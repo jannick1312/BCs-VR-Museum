@@ -10,9 +10,5 @@ public static class MuseumApplicationFactory
 	{
 		var vitrivrSettings = new VitrivrSettings(currentIp, mediaFolderPath);
 
-		return new MuseumApplication(
-			new VitrivrSearchService(vitrivrSettings),
-			new MediaLoader(),
-			new VitrivrServerHealthService(vitrivrSettings));
-	}
+		return new MuseumApplication(new VitrivrSearchService(vitrivrSettings), new MediaLoader(), new VitrivrServerHealthService(vitrivrSettings));}
 }

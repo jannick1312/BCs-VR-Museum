@@ -20,7 +20,7 @@ public static class GodotWait
 			await node.ToSignal(node.GetTree(), SceneTree.SignalName.ProcessFrame);
 		}
 
-		Log.Error($"Timed out waiting for {description} after {maxFrames} frames.");
+		Log.Error($"Godot node wait timed out. Description='{description}', MaxFrames={maxFrames}.");
 		throw new TimeoutException($"Timed out waiting for {description}.");
 	}
 }

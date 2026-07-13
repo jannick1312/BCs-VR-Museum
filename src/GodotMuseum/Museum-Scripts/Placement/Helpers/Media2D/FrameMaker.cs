@@ -45,7 +45,7 @@ public partial class FrameMaker : Node
 
 	public void UpdateFrame(MeshInstance3D picture, float imageWidth, float imageHeight)
 	{
-		var center = picture.GlobalPosition;
+		var center = _displayInstance.GlobalPosition;
 		var basis = picture.GlobalTransform.Basis.Orthonormalized();
 		var right = basis.X.Normalized();
 		var up = basis.Y.Normalized();

@@ -17,7 +17,7 @@ public partial class SearchUseCaseFactory : Node
 
 	public IMuseumApplication GetMuseumApplication()
 	{
-		_logger.Info($"Creating museum application. CurrentIp={_searchSettingsStore.CurrentIp}, MediaFolderPath='{_searchSettingsStore.CurrentMediaFolderPath}'");
+		_logger.Info($"Museum application created. CurrentIp='{_searchSettingsStore.CurrentIp}', MediaFolderPath='{_searchSettingsStore.CurrentMediaFolderPath}'.");
 
 		return MuseumApplicationFactory.CreateVitrivrApplication(_searchSettingsStore.CurrentIp, _searchSettingsStore.CurrentMediaFolderPath);
 	}

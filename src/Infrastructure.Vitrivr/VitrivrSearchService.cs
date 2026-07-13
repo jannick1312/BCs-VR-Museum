@@ -7,7 +7,7 @@ namespace Infrastructure.Vitrivr;
 
 public class VitrivrSearchService(VitrivrSettings settings) : ISearchEngine
 {
-	private readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(5) };
+	private readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(10) };
 	private readonly EventLogger _logger = new(nameof(VitrivrSearchService));
 
 	public async Task<SearchResult> SearchAsync(SearchQuery query)
@@ -24,23 +24,24 @@ public class VitrivrSearchService(VitrivrSettings settings) : ISearchEngine
 
 			if (!response.IsSuccessStatusCode)
 			{
-				_logger.Warning($"Vitrivr request failed with HTTP {(int)response.StatusCode}.");
+				_logger.Warning($"Vitrivr search request failed. StatusCode={(int)response.StatusCode}.");
 				return SearchResult.Failure($"Vitrivr request failed with HTTP {(int)response.StatusCode}.");
 			}
 
 			var result = VitrivrResponseParser.Parse(responseText, settings.MediaFolderPath, settings.MediaBaseUrl);
 
-			_logger.Info("Vitrivr request completed successfully.");
+			if (result.Success)
+				_logger.Info($"Vitrivr search request completed. Items={result.Items.Count}.");
 			return result;
 		}
 		catch (TaskCanceledException)
 		{
-			_logger.Warning("Vitrivr request timed out after 5 seconds.");
+			_logger.Warning("Vitrivr search request timed out.");
 			return SearchResult.Failure("Vitrivr request timed out.");
 		}
 		catch (Exception exception)
 		{
-			_logger.Error("Vitrivr search failed unexpectedly", exception);
+			_logger.Error("Vitrivr search request failed unexpectedly", exception);
 			return SearchResult.Failure(exception.Message);
 		}
 	}

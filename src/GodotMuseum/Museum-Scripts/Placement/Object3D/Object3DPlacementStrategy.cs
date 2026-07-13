@@ -20,6 +20,11 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 		_fitter = new Object3DDisplayFitter(DisplayTemplate);
 	}
 
+	public int GetCapacity()
+	{
+		return PlaceCollector.Collect(PlacesRoot, 1).Count;
+	}
+
 	public async Task Place(IReadOnlyList<DisplayMediaItem> objectItems)
 	{
 		ClearGenerated();

@@ -2,46 +2,26 @@ namespace BCSVRMuseum;
 
 public class RuntimeSearchSettings
 {
-	public bool Deployed { get; private set; }
-	private string DefaultDeployedIp { get; }
-	private string DefaultStreamedIp { get; }
+	private string InitialIp { get; }
 	public string MediaFolderPath { get; }
 
-	private string DeployedIp { get; set; }
-	private string StreamedIp { get; set; }
+	public string CurrentIp { get; private set; }
 
-	public string CurrentIp => Deployed ? DeployedIp : StreamedIp;
-
-	public RuntimeSearchSettings(bool deployed, string defaultDeployedIp, string defaultStreamedIp, string mediaFolderPath)
+	public RuntimeSearchSettings(string defaultIp, string mediaFolderPath)
 	{
-		Deployed = deployed;
-		DefaultDeployedIp = CleanIp(defaultDeployedIp);
-		DefaultStreamedIp = CleanIp(defaultStreamedIp);
+		InitialIp = CleanIp(defaultIp);
 		MediaFolderPath = mediaFolderPath;
-
-		DeployedIp = DefaultDeployedIp;
-		StreamedIp = DefaultStreamedIp;
-	}
-
-	public void SetDeployed(bool deployed)
-	{
-		Deployed = deployed;
+		CurrentIp = InitialIp;
 	}
 
 	public void SetCurrentIp(string ip)
 	{
-		if (Deployed)
-			DeployedIp = CleanIp(ip);
-		else
-			StreamedIp = CleanIp(ip);
+		CurrentIp = CleanIp(ip);
 	}
 
 	public void RevertCurrentIp()
 	{
-		if (Deployed)
-			DeployedIp = DefaultDeployedIp;
-		else
-			StreamedIp = DefaultStreamedIp;
+		CurrentIp = InitialIp;
 	}
 
 	private static string CleanIp(string input)

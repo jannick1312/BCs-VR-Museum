@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D.Image;
@@ -23,6 +24,11 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 	{
 		_cellPadding = cellPadding;
 		_rng.Randomize();
+	}
+
+	public int GetCapacity()
+	{
+		return PlaceCollector.Collect(PlacesRoot, DefaultMaxItemsPerPlace).Sum(group => group.MaxItems);
 	}
 
 	public async Task Place(IReadOnlyList<DisplayMediaItem> mediaItems)

@@ -35,20 +35,23 @@ public partial class MediaPlacementController : Node
 		_object3DPlacement = new Object3DPlacementStrategy(this, object3DInstance, object3DPlaces);
 	}
 
+	public (int Media2D, int Objects3D) GetCapacity()
+	{
+		return (_media2DPlacement.GetCapacity(), _object3DPlacement.GetCapacity());
+	}
+
 	public async Task Place(IReadOnlyList<DisplayMediaItem> items)
 	{
 		var media2DItems = items.Where(item => item.MediaType is MediaType.Image or MediaType.Video).ToList();
 		var object3DItems = items.Where(item => item.MediaType == MediaType.Object3D).ToList();
 
-		if (media2DItems.Count > 0)
-			await _media2DPlacement.Place(media2DItems);
-		else
-			Log.Info("Search result contains no images or videos to display.");
+		await _media2DPlacement.Place(media2DItems);
+		if (media2DItems.Count == 0)
+			Log.Info("No 2D media selected for placement. Items=0.");
 
-		if (object3DItems.Count > 0)
-			await _object3DPlacement.Place(object3DItems);
-		else
-			Log.Info("Search result contains no 3D objects to display.");
+		await _object3DPlacement.Place(object3DItems);
+		if (object3DItems.Count == 0)
+			Log.Info("No 3D media selected for placement. Items=0.");
 	}
 
 	public override void _Process(double delta)

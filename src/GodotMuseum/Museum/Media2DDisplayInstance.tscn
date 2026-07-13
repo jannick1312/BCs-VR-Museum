@@ -4,6 +4,7 @@
 [ext_resource type="Material" uid="uid://cs7ckc4wuhtpf" path="res://Materials/Metal_rough/Metal_rough.tres" id="2_dlchn"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="3_407ho"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="4_yc23p"]
+[ext_resource type="Material" uid="uid://cl0gutwbpyalo" path="res://Materials/GrabPoint.tres" id="5_8j1b3"]
 [ext_resource type="PackedScene" uid="uid://dapkassquu443" path="res://Museum/MuseumSimilarity/Similarity.tscn" id="5_ar2c7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xngas"]
@@ -289,6 +290,10 @@ shadow_mesh = SubResource("ArrayMesh_j0y26")
 
 [sub_resource type="QuadMesh" id="QuadMesh_5belf"]
 
+[sub_resource type="SphereMesh" id="SphereMesh_cv6oc"]
+radius = 0.1
+height = 0.2
+
 [node name="Media2DDisplayInstance" unique_id=806658028 instance=ExtResource("1_bdcga")]
 collision_layer = 5
 gravity_scale = 0.0
@@ -332,11 +337,18 @@ material_override = ExtResource("2_dlchn")
 mesh = SubResource("ArrayMesh_bbgus")
 
 [node name="Picture" type="MeshInstance3D" parent="." index="2" unique_id=148390249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.012)
 mesh = SubResource("QuadMesh_5belf")
 
 [node name="GrabPointHandLeft" parent="." index="3" unique_id=1259348949 instance=ExtResource("3_407ho")]
 
 [node name="GrabPointHandRight" parent="." index="4" unique_id=648857806 instance=ExtResource("4_yc23p")]
+visible = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GrabPointHandRight" index="0" unique_id=869552587]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.045229703, 0.11174379)
+material_override = ExtResource("5_8j1b3")
+mesh = SubResource("SphereMesh_cv6oc")
 
 [node name="Decision" parent="." index="5" unique_id=71677858 instance=ExtResource("5_ar2c7")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0.1)

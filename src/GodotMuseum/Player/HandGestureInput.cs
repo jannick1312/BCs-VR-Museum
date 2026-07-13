@@ -9,6 +9,8 @@ public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMov
 	private readonly Node _leftPickup = FindController(player, "LeftController").FindChild("FunctionPickup", true, false);
 	private readonly Node _rightPickup = FindController(player, "RightController").FindChild("FunctionPickup", true, false);
 	private readonly Node _rightPointer = FindController(player, "RightController").FindChild("FunctionPointer", true, false);
+	private readonly Node _leftFallbackHand = player.FindChild("LeftFallbackHand", true, false);
+	private readonly Node _rightFallbackHand = player.FindChild("RightFallbackHand", true, false);
 	private readonly PlatformSwitcher _platformSwitcher = (PlatformSwitcher)player.GetTree().Root.FindChild("PlatformSwitcher", true, false);
 	private HandGesture _leftGesture;
 	private HandGesture _rightGesture;
@@ -19,6 +21,9 @@ public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMov
 
 	public void Process(bool leftHandActive, bool rightHandActive)
 	{
+		UpdateFallbackPose(_leftFallbackHand, _leftController, leftHandActive);
+		UpdateFallbackPose(_rightFallbackHand, _rightController, rightHandActive);
+
 		if (leftHandActive)
 			_leftGesture = UpdateGesture(_leftController, _leftController.GetFloat(input.PinchAction), _leftGesture, HandSide.Left);
 		else
@@ -59,6 +64,8 @@ public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMov
 		ResetRightGesture();
 		SetPickupEnabled(_leftPickup, true);
 		SetPickupEnabled(_rightPickup, true);
+		_leftFallbackHand.Call("force_grip_trigger", 0.0f, 0.0f);
+		_rightFallbackHand.Call("force_grip_trigger", 0.0f, 0.0f);
 		leftMovement.ForceStop();
 	}
 
@@ -164,6 +171,13 @@ public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMov
 	private static void SetPickupEnabled(Node pickup, bool enabled)
 	{
 		pickup.Set("enabled", enabled);
+	}
+
+	private void UpdateFallbackPose(Node fallbackHand, XRController3D controller, bool handActive)
+	{
+		var grip = handActive ? controller.GetFloat(input.GripAction) : 0.0f;
+		var pinch = handActive ? controller.GetFloat(input.PinchAction) : 0.0f;
+		fallbackHand.Call("force_grip_trigger", grip, pinch);
 	}
 
 	private static XRController3D FindController(Node player, string name)

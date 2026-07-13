@@ -18,16 +18,6 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 corner_detail = 20
 
-[sub_resource type="DPITexture" id="DPITexture_1vbjo"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><rect width=\"14\" height=\"14\" x=\"1\" y=\"1\" fill=\"#fff\" fill-opacity=\".75\" rx=\"2.333\"/><path fill=\"#1a1a1a\" d=\"m11.5 3.75-5.6 5.6-1.7-1.7-1.5 1.5 3.2 3.2 7.1-7.1z\"/></svg>
-"
-base_scale = 10.0
-
-[sub_resource type="DPITexture" id="DPITexture_rjpxb"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><rect width=\"14\" height=\"14\" x=\"1\" y=\"1\" fill=\"#1a1a1a\" fill-opacity=\".5\" rx=\"2.333\"/></svg>
-"
-base_scale = 10.0
-
 [sub_resource type="StyleBoxFlat" id="HttpLabelStyle"]
 bg_color = Color(0.25882354, 0.25882354, 0.25882354, 1)
 corner_radius_top_left = 30
@@ -112,10 +102,10 @@ grow_vertical = 2
 script = ExtResource("1_ii3tl")
 
 [node name="Panel" type="Panel" parent="." unique_id=598254976]
-custom_minimum_size = Vector2(1200, 1200)
+custom_minimum_size = Vector2(1200, 1050)
 layout_mode = 0
 offset_right = 1200.0
-offset_bottom = 1250.0
+offset_bottom = 1050.0
 theme_override_styles/panel = SubResource("PanelStyle")
 
 [node name="Title" type="Label" parent="Panel" unique_id=1440946483]
@@ -130,48 +120,12 @@ text = "Network Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Deployed-Panel" type="Label" parent="Panel" unique_id=1609897984]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 250.0
-offset_right = 1150.0
-offset_bottom = 412.5
-theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("CurrentLabelStyle")
-text = "
-"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Deployed2" type="Label" parent="Panel" unique_id=19596552]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 250.0
-offset_right = 382.0
-offset_bottom = 412.5
-theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("CurrentLabelStyle")
-text = "Deployed?"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Check" type="CheckBox" parent="Panel" unique_id=1873900547]
-custom_minimum_size = Vector2(162.5, 162.5)
-layout_mode = 1
-offset_left = 984.5
-offset_top = 247.5
-offset_right = 1152.5
-offset_bottom = 415.5
-theme_override_font_sizes/font_size = 48
-theme_override_icons/checked = SubResource("DPITexture_1vbjo")
-theme_override_icons/unchecked = SubResource("DPITexture_rjpxb")
-
 [node name="URLcurrently" type="Label" parent="Panel" unique_id=438616413]
 layout_mode = 0
 offset_left = 50.0
-offset_top = 450.0
+offset_top = 237.0
 offset_right = 1150.0
-offset_bottom = 612.5
+offset_bottom = 399.5
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("CurrentLabelStyle")
 text = "
@@ -182,9 +136,9 @@ vertical_alignment = 1
 [node name="URLcurrentlyTitle" type="Label" parent="Panel" unique_id=338616414]
 layout_mode = 0
 offset_left = 50.0
-offset_top = 462.5
+offset_top = 249.5
 offset_right = 1150.0
-offset_bottom = 525.0
+offset_bottom = 312.5
 theme_override_font_sizes/font_size = 45
 text = "Currently using:"
 horizontal_alignment = 1
@@ -193,9 +147,9 @@ vertical_alignment = 1
 [node name="URLcurrentlyValue" type="Label" parent="Panel" unique_id=338616415]
 layout_mode = 0
 offset_left = 50.0
-offset_top = 525.0
+offset_top = 312.0
 offset_right = 1150.0
-offset_bottom = 600.0
+offset_bottom = 387.0
 theme_override_font_sizes/font_size = 50
 text = "xxxxxxxxxxxxxxxxxx"
 horizontal_alignment = 1
@@ -204,9 +158,9 @@ vertical_alignment = 1
 [node name="http___" type="Label" parent="Panel" unique_id=2063773464]
 layout_mode = 0
 offset_left = 50.0
-offset_top = 612.5
+offset_top = 399.5
 offset_right = 300.0
-offset_bottom = 775.0
+offset_bottom = 562.0
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("HttpLabelStyle")
 text = "http://"
@@ -216,9 +170,9 @@ vertical_alignment = 1
 [node name="URLinput" type="LineEdit" parent="Panel" unique_id=1834533491]
 layout_mode = 0
 offset_left = 300.0
-offset_top = 612.5
+offset_top = 399.5
 offset_right = 1150.0
-offset_bottom = 775.0
+offset_bottom = 562.0
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("InputNormal")
 theme_override_styles/focus = SubResource("InputFocus")
@@ -228,9 +182,9 @@ alignment = 1
 [node name="Revert" type="Button" parent="Panel" unique_id=1820918828]
 layout_mode = 0
 offset_left = 50.0
-offset_top = 825.0
+offset_top = 612.0
 offset_right = 575.0
-offset_bottom = 1200.0
+offset_bottom = 987.0
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("RevertNormal")
 theme_override_styles/pressed = SubResource("RevertPressed")
@@ -240,9 +194,9 @@ text = "Revert"
 [node name="Submit" type="Button" parent="Panel" unique_id=690301288]
 layout_mode = 0
 offset_left = 625.0
-offset_top = 825.0
+offset_top = 612.0
 offset_right = 1150.0
-offset_bottom = 1200.0
+offset_bottom = 987.0
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("SubmitNormal")
 theme_override_styles/pressed = SubResource("SubmitPressed")

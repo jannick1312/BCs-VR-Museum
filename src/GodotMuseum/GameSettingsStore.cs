@@ -1,65 +1,46 @@
 using Godot;
 using Logger;
+using Models;
 
 namespace BCSVRMuseum;
-
-public enum GameMediaMode
-{
-	ImagesAnd3D,
-	Images,
-	Objects3D
-}
 
 public partial class GameSettingsStore : Node
 {
 	private readonly EventLogger _logger = new(nameof(GameSettingsStore));
 
-	private bool DestructionEnabled { get; set; }
 	private string OperatingSystem { get; set; }
 	public bool HandTrackingEnabled { get; private set; }
-	public GameMediaMode MediaMode { get; private set; } = GameMediaMode.ImagesAnd3D;
+	public MediaMode CurrentMediaMode { get; private set; } = MediaMode.ImagesAnd3D;
 
 	public override void _Ready()
 	{
 		OperatingSystem = OS.GetName();
 		HandTrackingEnabled = OperatingSystem is not ("Windows" or "macOS");
-		_logger.Info($"Operating system: {OperatingSystem}. Hand tracking enabled: {FormatState(HandTrackingEnabled)}.");
+		_logger.Info($"Game settings initialized. OperatingSystem='{OperatingSystem}', HandTracking={FormatState(HandTrackingEnabled)}.");
 	}
 
-	public void Initialize(bool destructionEnabled, GameMediaMode mediaMode)
+	public void SetMediaMode(MediaMode mode)
 	{
-		DestructionEnabled = destructionEnabled;
-		MediaMode = mediaMode;
-	}
-
-	public void SetDestructionEnabled(bool enabled)
-	{
-		DestructionEnabled = enabled;
-		_logger.Info($"Destruction set to {FormatState(enabled)}.");
-	}
-
-	public void SetMediaMode(GameMediaMode mode)
-	{
-		MediaMode = mode;
-		_logger.Info($"Media mode set to {FormatMode(mode)}.");
+		CurrentMediaMode = mode;
+		_logger.Info($"Media mode changed. MediaMode='{FormatMode(mode)}'.");
 	}
 
 	public void CycleMediaMode()
 	{
-		SetMediaMode(MediaMode switch
+		SetMediaMode(CurrentMediaMode switch
 		{
-			GameMediaMode.ImagesAnd3D => GameMediaMode.Images,
-			GameMediaMode.Images => GameMediaMode.Objects3D,
-			_ => GameMediaMode.ImagesAnd3D
+			MediaMode.ImagesAnd3D => MediaMode.Images,
+			MediaMode.Images => MediaMode.Objects3D,
+			_ => MediaMode.ImagesAnd3D
 		});
 	}
 
-	private static string FormatMode(GameMediaMode mode)
+	private static string FormatMode(MediaMode mode)
 	{
 		return mode switch
 		{
-			GameMediaMode.Images => "Images",
-			GameMediaMode.Objects3D => "3D",
+			MediaMode.Images => "Images",
+			MediaMode.Objects3D => "3D",
 			_ => "Images & 3D"
 		};
 	}
