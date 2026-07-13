@@ -536,33 +536,33 @@ tracker = &"left_hand"
 [node name="LeftControllerModel" type="Node3D" parent="XROrigin3D/LeftController" unique_id=543847285]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0)
 
-[node name="trigger" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1556815474]
+[node name="Trigger" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1556815474]
 transform = Transform3D(-0.009993543, 0.0002307476, 0.0002752766, -0.00035858713, -0.006854888, -0.007271996, 2.0899577e-05, -0.007277173, 0.00685874, -0.0011126054, 0.0014524907, -0.022668768)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_gu6f8")
 surface_material_override/0 = SubResource("StandardMaterial3D_5htga")
 
-[node name="thumbstick" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1143269490]
+[node name="Thumbstick" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1143269490]
 transform = Transform3D(-0.009993546, 0.0002307471, 0.00027527678, -0.000358587, -0.0068548885, -0.007272, 2.0899897e-05, -0.0072771767, 0.0068587405, -0.0011126087, 0.0014524972, -0.02266876)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_dkpta")
 
-[node name="squeeze" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=832631514]
+[node name="Squeeze" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=832631514]
 transform = Transform3D(-0.009993548, 0.00023074736, 0.00027527666, -0.00035858707, -0.006854889, -0.0072719967, 2.0899693e-05, -0.007277174, 0.0068587414, -0.0011126078, 0.0014524935, -0.022668764)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_lfmf2")
 
-[node name="controller_mesh" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1211427715]
+[node name="ControllerMesh" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1211427715]
 transform = Transform3D(-0.009993546, 0.00023074744, 0.0002752766, -0.00035858716, -0.00685489, -0.007271996, 2.089964e-05, -0.0072771725, 0.0068587414, -0.0011126068, 0.0014524936, -0.022668766)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_pisgm")
 
-[node name="x_button" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1097373513]
+[node name="XButton" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=1097373513]
 transform = Transform3D(-0.009993547, 0.0002307474, 0.0002752767, -0.0003585871, -0.006854889, -0.0072719953, 2.0899732e-05, -0.0072771735, 0.00685874, -0.0011126068, 0.0014524935, -0.02266876)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_b1ygp")
 
-[node name="y_button" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=215385206]
+[node name="YButton" type="MeshInstance3D" parent="XROrigin3D/LeftController/LeftControllerModel" unique_id=215385206]
 transform = Transform3D(-0.009993546, 0.00023074736, 0.0002752767, -0.00035858713, -0.006854888, -0.0072719986, 2.0899635e-05, -0.007277175, 0.006858741, -0.0011126064, 0.001452495, -0.022668764)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_o28un")
@@ -592,11 +592,11 @@ transform = Transform3D(0.19318514, 0, 0.051763803, 0, 0.19999999, 0, -0.0517638
 
 [node name="InputBridge" type="Node" parent="XROrigin3D/LeftController" unique_id=986301867]
 script = ExtResource("10_dkpta")
-ViewportPath = NodePath("../Input/2Din3DPlane/Viewport")
+ViewportPath = NodePath("../Input/2DIn3DPlane/Viewport")
 
 [node name="EnterSubmitTrigger" type="Node" parent="XROrigin3D/LeftController" unique_id=594472320]
 script = ExtResource("11_lfmf2")
-ViewportPath = NodePath("../Input/2Din3DKeyboard/Viewport")
+ViewportPath = NodePath("../Input/2DIn3DKeyboard/Viewport")
 InputBridgePath = NodePath("../InputBridge")
 
 [node name="VisibilityController" type="Node" parent="XROrigin3D/LeftController" unique_id=53525149]
@@ -611,32 +611,32 @@ tracker = &"right_hand"
 [node name="RightControllerModel" type="Node3D" parent="XROrigin3D/RightController" unique_id=1639784248]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0)
 
-[node name="thumbstick" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1359640644]
+[node name="Thumbstick" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1359640644]
 transform = Transform3D(-0.0099935485, -0.00026113627, -0.00024653738, 0.00035851926, -0.006854892, -0.0072719967, 2.089949e-05, -0.0072761453, 0.0068598306, 0.0011126078, 0.0014524926, -0.022668764)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_n471f")
 
-[node name="trigger" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=924964150]
+[node name="Trigger" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=924964150]
 transform = Transform3D(-0.009993549, -0.00026113575, -0.0002465371, 0.00035851874, -0.0068548936, -0.0072719976, 2.0899402e-05, -0.007276147, 0.0068598334, 0.0011126064, 0.0014524944, -0.022668768)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_7emwf")
 
-[node name="a_button" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1529327924]
+[node name="AButton" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1529327924]
 transform = Transform3D(-0.009993549, -0.00026113642, -0.0002465375, 0.00035851938, -0.0068548904, -0.007271999, 2.089962e-05, -0.0072761476, 0.0068598296, 0.0011126068, 0.0014524935, -0.022668766)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_hshwv")
 
-[node name="b_button" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1477680947]
+[node name="BButton" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1477680947]
 transform = Transform3D(-0.009993549, -0.00026113642, -0.00024653735, 0.00035851926, -0.0068548936, -0.007271998, 2.0899577e-05, -0.0072761467, 0.0068598334, 0.0011126064, 0.0014524948, -0.022668762)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_gpjlu")
 
-[node name="controller_mesh" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=632572539]
+[node name="ControllerMesh" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=632572539]
 transform = Transform3D(-0.009993549, -0.00026113642, -0.00024653735, 0.0003585193, -0.0068548922, -0.0072719976, 2.089963e-05, -0.0072761457, 0.0068598315, 0.0011126068, 0.0014524936, -0.022668766)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_8mwp6")
 
-[node name="squeeze" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1076355822]
+[node name="Squeeze" type="MeshInstance3D" parent="XROrigin3D/RightController/RightControllerModel" unique_id=1076355822]
 transform = Transform3D(-0.0099935485, -0.00026113648, -0.0002465374, 0.00035851923, -0.006854892, -0.0072719976, 2.0899592e-05, -0.007276146, 0.006859832, 0.0011126054, 0.0014524953, -0.022668768)
 material_override = ExtResource("3_apopc")
 mesh = SubResource("ArrayMesh_qemgg")

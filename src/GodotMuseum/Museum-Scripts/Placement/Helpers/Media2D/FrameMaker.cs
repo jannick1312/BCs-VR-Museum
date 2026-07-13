@@ -6,21 +6,19 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 public partial class FrameMaker : Node
 {
 	private static readonly EventLogger Log = new(nameof(FrameMaker));
-
+	private MeshInstance3D _bottom;
+	private MeshInstance3D _bottomL;
+	private MeshInstance3D _bottomR;
+	private CollisionShape3D _collision;
 	private Node3D _displayInstance;
 	private Node3D _frame;
 	private Node3D _grabLeft;
 	private Node3D _grabRight;
-	private MeshInstance3D _top;
-	private MeshInstance3D _bottom;
 	private MeshInstance3D _left;
 	private MeshInstance3D _right;
+	private MeshInstance3D _top;
 	private MeshInstance3D _topL;
 	private MeshInstance3D _topR;
-	private MeshInstance3D _bottomL;
-	private MeshInstance3D _bottomR;
-
-	private CollisionShape3D _collision;
 
 	public override void _Ready()
 	{

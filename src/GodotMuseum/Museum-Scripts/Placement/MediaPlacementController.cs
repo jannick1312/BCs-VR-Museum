@@ -11,17 +11,17 @@ namespace BCSVRMuseum.Museum_Scripts.Placement;
 
 public partial class MediaPlacementController : Node
 {
+	private static readonly EventLogger Log = new(nameof(MediaPlacementController));
+	private Media2DPlacementStrategy _media2DPlacement;
+	private Object3DPlacementStrategy _object3DPlacement;
+	private Node3D _playerCamera;
+
+	[Export] public float CellPadding;
 	[Export] public NodePath Media2DInstancePath;
 	[Export] public NodePath Media2DPlacesPath;
 	[Export] public NodePath Object3DInstancePath;
 	[Export] public NodePath Object3DPlacesPath;
-	[Export] public float CellPadding;
 	[Export] public float VideoResetDistance;
-
-	private Media2DPlacementStrategy _media2DPlacement;
-	private Object3DPlacementStrategy _object3DPlacement;
-	private Node3D _playerCamera;
-	private static readonly EventLogger Log = new(nameof(MediaPlacementController));
 
 	public override void _Ready()
 	{

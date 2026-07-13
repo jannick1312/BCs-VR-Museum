@@ -1,7 +1,7 @@
+using System.Text.Json;
 using Core;
 using Logger;
 using Models;
-using System.Text.Json;
 
 namespace Infrastructure.Vitrivr;
 
@@ -37,6 +37,7 @@ public static class VitrivrResponseParser
 				seenLocalPaths.Add(item.LocalPath);
 				items.Add(item);
 			}
+
 			Log.Info($"Parsed Vitrivr response. Items={items.Count}");
 			return SearchResult.FromItems(items);
 		}
@@ -74,13 +75,13 @@ public static class VitrivrResponseParser
 	private static IReadOnlyList<double> GetClipVector(JsonElement retrievable)
 	{
 		if (retrievable.TryGetProperty("descriptors", out var descriptors) &&
-			descriptors.TryGetProperty("clip.vector", out var vectorElement))
+		    descriptors.TryGetProperty("clip.vector", out var vectorElement))
 			return ParseVector(vectorElement);
 
 		if (retrievable.TryGetProperty("relationship", out var relationship) &&
-			relationship.TryGetProperty("partOf", out var parentRetrievable) &&
-			parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
-			parentDescriptors.TryGetProperty("clip.vector", out var parentVectorElement))
+		    relationship.TryGetProperty("partOf", out var parentRetrievable) &&
+		    parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
+		    parentDescriptors.TryGetProperty("clip.vector", out var parentVectorElement))
 			return ParseVector(parentVectorElement);
 
 		return [];
@@ -91,10 +92,8 @@ public static class VitrivrResponseParser
 		var vector = new List<double>();
 
 		foreach (var value in vectorElement.EnumerateArray())
-		{
 			if (value.TryGetDouble(out var number))
 				vector.Add(number);
-		}
 
 		return vector;
 	}
@@ -102,13 +101,13 @@ public static class VitrivrResponseParser
 	private static string? GetSourcePath(JsonElement retrievable)
 	{
 		if (retrievable.TryGetProperty("descriptors", out var descriptors) &&
-			descriptors.TryGetProperty("file.path", out var pathElement))
+		    descriptors.TryGetProperty("file.path", out var pathElement))
 			return pathElement.GetString();
 
 		if (retrievable.TryGetProperty("relationship", out var relationship) &&
-			relationship.TryGetProperty("partOf", out var parentRetrievable) &&
-			parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
-			parentDescriptors.TryGetProperty("file.path", out var parentPathElement))
+		    relationship.TryGetProperty("partOf", out var parentRetrievable) &&
+		    parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
+		    parentDescriptors.TryGetProperty("file.path", out var parentPathElement))
 			return parentPathElement.GetString();
 
 		return null;

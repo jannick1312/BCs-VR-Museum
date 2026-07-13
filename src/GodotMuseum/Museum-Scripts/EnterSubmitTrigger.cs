@@ -1,19 +1,21 @@
+using BCSVRMuseum.Player.InputArea;
 using Godot;
+
 namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class EnterSubmitTrigger : Node
 {
-	[Export] public NodePath ViewportPath;
+	private LineEdit _inputLineEdit;
+	private SearchController _submitter;
+
 	[Export] public NodePath Controller;
 	[Export] public NodePath InputBridgePath;
-
-	private SearchController _submitter;
-	private LineEdit _inputLineEdit;
+	[Export] public NodePath ViewportPath;
 
 	public override async void _Ready()
 	{
 		var viewport = GetNode<Viewport>(ViewportPath);
-		var inputBridge = GetNode<Player.InputArea.InputBridge>(InputBridgePath);
+		var inputBridge = GetNode<InputBridge>(InputBridgePath);
 		_submitter = GetNode<SearchController>(Controller);
 
 		var enterKey = await this.WaitFor(() => viewport.FindChild("VirtualKeyEnter", true, false), "enter key");

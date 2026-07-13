@@ -4,23 +4,21 @@ namespace BCSVRMuseum.Player;
 
 public partial class HandJoystickMovement : Node
 {
-	public bool IsLocked { get; private set; }
-
-	private Node _playerBody;
+	private Vector3 _baseLocal;
+	private Basis _basis;
+	private XRCamera3D _camera;
+	private Node3D _handle;
+	private Node3D _handMesh;
+	private Node3D _joystickRoot;
+	private float _length;
 	private Node _movementDirect;
 	private Node _movementTurn;
-	private Node3D _joystickRoot;
-	private Node3D _trackedHand;
-	private Node3D _handMesh;
-	private Node3D _handle;
-	private Node3D _stick;
-	private XRCamera3D _camera;
-
-	private Basis _basis;
-	private Vector3 _baseLocal;
-	private float _length;
-	private float _visualLength;
+	private Node _playerBody;
 	private Vector3 _scale = Vector3.One;
+	private Node3D _stick;
+	private Node3D _trackedHand;
+	private float _visualLength;
+	public bool IsLocked { get; private set; }
 
 	public override void _Ready()
 	{

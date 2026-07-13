@@ -18,5 +18,4 @@ public partial class SimilarityPopup : DisplayActionPopup
 	{
 		((SimilarityPanel)panel).SetVector(vectorJson);
 	}
-
 }

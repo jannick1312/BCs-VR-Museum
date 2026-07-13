@@ -18,6 +18,7 @@ public static class WallImageLayout
 			var slotX = left + i * slotWidth;
 			slots.Add(new Rect2(new Vector2(slotX, bottom), new Vector2(slotWidth, areaHeight)));
 		}
+
 		return slots;
 	}
 }

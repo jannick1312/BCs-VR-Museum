@@ -6,9 +6,9 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 
 public sealed class Object3DDisplayFitter
 {
-	private readonly Node3D _template;
-	private readonly MeshInstance3D _baseMesh;
 	private static readonly EventLogger Log = new(nameof(Object3DDisplayFitter));
+	private readonly MeshInstance3D _baseMesh;
+	private readonly Node3D _template;
 
 	public Object3DDisplayFitter(Node3D template)
 	{
@@ -209,7 +209,7 @@ public sealed class Object3DDisplayFitter
 			new Vector3(min.X, min.Y, max.Z),
 			new Vector3(max.X, min.Y, max.Z),
 			new Vector3(min.X, max.Y, max.Z),
-			new Vector3(max.X, max.Y, max.Z),
+			new Vector3(max.X, max.Y, max.Z)
 		};
 
 		var result = new Aabb(transform * points[0], Vector3.Zero);

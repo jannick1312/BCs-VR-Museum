@@ -184,7 +184,7 @@ text = "Game Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Speed-Panel" type="Label" parent="Panel" unique_id=628148106]
+[node name="SpeedPanel" type="Label" parent="Panel" unique_id=628148106]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 237.0
@@ -217,7 +217,7 @@ offset_bottom = 291.0
 theme_override_font_sizes/font_size = 28
 text = "Movement"
 
-[node name="Movement-Slider" type="HSlider" parent="Panel" unique_id=1164573352]
+[node name="MovementSlider" type="HSlider" parent="Panel" unique_id=1164573352]
 layout_mode = 0
 offset_left = 525.0
 offset_top = 277.0
@@ -243,7 +243,7 @@ theme_override_font_sizes/font_size = 28
 text = "Turn"
 horizontal_alignment = 1
 
-[node name="Turn-Slider" type="HSlider" parent="Panel" unique_id=809574205]
+[node name="TurnSlider" type="HSlider" parent="Panel" unique_id=809574205]
 layout_mode = 0
 offset_left = 525.0
 offset_top = 347.0
@@ -259,7 +259,7 @@ tick_count = 10
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="Mode-Panel" type="Label" parent="Panel" unique_id=1305210176]
+[node name="ModePanel" type="Label" parent="Panel" unique_id=1305210176]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 437.0
@@ -325,7 +325,7 @@ theme_override_styles/disabled = SubResource("ImagesNormal")
 theme_override_styles/focus = SubResource("ImagesHover")
 text = "Images"
 
-[node name="SkinColour-Panel" type="Label" parent="Panel" unique_id=539442986]
+[node name="SkinColourPanel" type="Label" parent="Panel" unique_id=539442986]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 637.0
@@ -349,7 +349,7 @@ theme_override_styles/normal = SubResource("CurrentLabelStyle")
 text = "Skin Colour"
 vertical_alignment = 1
 
-[node name="SkinColour-Gradient" type="TextureRect" parent="Panel" unique_id=1788410519]
+[node name="SkinColourGradient" type="TextureRect" parent="Panel" unique_id=1788410519]
 layout_mode = 0
 offset_left = 525.0
 offset_top = 699.0
@@ -357,7 +357,7 @@ offset_right = 1125.0
 offset_bottom = 735.0
 texture = SubResource("GradientTexture1D_475vd")
 
-[node name="SkinColour-Slider" type="HSlider" parent="Panel" unique_id=1534166753]
+[node name="SkinColourSlider" type="HSlider" parent="Panel" unique_id=1534166753]
 layout_mode = 0
 offset_left = 525.0
 offset_top = 692.0

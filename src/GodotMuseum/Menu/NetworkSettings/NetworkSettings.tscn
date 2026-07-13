@@ -120,7 +120,7 @@ text = "Network Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="URLcurrently" type="Label" parent="Panel" unique_id=438616413]
+[node name="URLCurrently" type="Label" parent="Panel" unique_id=438616413]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 237.0
@@ -133,7 +133,7 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="URLcurrentlyTitle" type="Label" parent="Panel" unique_id=338616414]
+[node name="URLCurrentlyTitle" type="Label" parent="Panel" unique_id=338616414]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 249.5
@@ -144,7 +144,7 @@ text = "Currently using:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="URLcurrentlyValue" type="Label" parent="Panel" unique_id=338616415]
+[node name="URLCurrentlyValue" type="Label" parent="Panel" unique_id=338616415]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 312.0
@@ -155,7 +155,7 @@ text = "xxxxxxxxxxxxxxxxxx"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="http___" type="Label" parent="Panel" unique_id=2063773464]
+[node name="HTTPSchemeLabel" type="Label" parent="Panel" unique_id=2063773464]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 399.5
@@ -167,7 +167,7 @@ text = "http://"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="URLinput" type="LineEdit" parent="Panel" unique_id=1834533491]
+[node name="URLInput" type="LineEdit" parent="Panel" unique_id=1834533491]
 layout_mode = 0
 offset_left = 300.0
 offset_top = 399.5

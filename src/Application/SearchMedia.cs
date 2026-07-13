@@ -1,6 +1,6 @@
 using Core;
-using Models;
 using Logger;
+using Models;
 
 namespace Application;
 
@@ -48,9 +48,11 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 				_logger.Warning($"Media item skipped because loading failed. Name='{searchItems[i].Name}', Error='{mediaContent.ErrorMessage}'.");
 				continue;
 			}
+
 			var path = mediaContent.Path.Length > 0 ? mediaContent.Path : searchItems[i].RemoteUrl;
 			items.Add(new DisplayMediaItem(searchItems[i].Vector, searchItems[i].MediaType, mediaContent.Bytes, path, searchItems[i].Name));
 		}
+
 		_logger.Info($"Media search completed. SelectedItems={searchItems.Count}, LoadedItems={items.Count}.");
 		return DisplayMediaResult.FromMedia(items);
 	}

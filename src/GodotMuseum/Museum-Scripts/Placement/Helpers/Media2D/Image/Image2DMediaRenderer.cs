@@ -1,3 +1,4 @@
+using System.IO;
 using BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 using Godot;
 
@@ -7,7 +8,7 @@ public static class Image2DMediaRenderer
 {
 	public static void Render(Media2DDisplayInstance instance, byte[] bytes, string path)
 	{
-		var texture = System.IO.File.Exists(path) ? LoadTexture(path) : LoadTexture(bytes);
+		var texture = File.Exists(path) ? LoadTexture(path) : LoadTexture(bytes);
 		instance.ShowTexture(texture);
 	}
 

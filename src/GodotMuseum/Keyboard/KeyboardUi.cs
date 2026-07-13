@@ -1,28 +1,19 @@
 using Godot;
+
 namespace BCSVRMuseum.Keyboard;
 
 public partial class KeyboardUi : Control
 {
-	private enum KeyboardMode
-	{
-		LowerCase,
-		UpperCase,
-		Alternate
-	}
-
-	private bool _shiftDown;
-	private bool _capsDown;
 	private bool _altDown;
-
-	private KeyboardMode _mode = KeyboardMode.LowerCase;
-
-	private Button _toggleShift;
-	private Button _toggleCaps;
-	private Button _toggleAlt;
-
-	private Control _lowerCase;
-	private Control _upperCase;
 	private Control _alternate;
+	private bool _capsDown;
+	private Control _lowerCase;
+	private KeyboardMode _mode = KeyboardMode.LowerCase;
+	private bool _shiftDown;
+	private Button _toggleAlt;
+	private Button _toggleCaps;
+	private Button _toggleShift;
+	private Control _upperCase;
 
 	public override void _Ready()
 	{
@@ -147,5 +138,12 @@ public partial class KeyboardUi : Control
 	private static void SetToggleVisual(Button button, bool active)
 	{
 		button.ButtonPressed = active;
+	}
+
+	private enum KeyboardMode
+	{
+		LowerCase,
+		UpperCase,
+		Alternate
 	}
 }

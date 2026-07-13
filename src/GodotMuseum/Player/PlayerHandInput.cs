@@ -4,6 +4,21 @@ namespace BCSVRMuseum.Player;
 
 public partial class PlayerHandInput : Node
 {
+	private HandGestureInput _gestures;
+	private bool _leftFallbackRequired;
+	private Node _leftHandMesh;
+	private bool _leftHandTrackingActive;
+	private HandJoystickMovement _leftMovement;
+	private Node3D _leftTrackedHand;
+	private PlayerInputModeDetector _modeDetector;
+	private Node3D _player;
+	private Node _playerBody;
+	private bool _rightFallbackRequired;
+	private Node _rightHandMesh;
+	private bool _rightHandTrackingActive;
+	private Node3D _rightTrackedHand;
+	private PlayerInputVisuals _visuals;
+
 	[Export] public StringName PinchAction { get; set; }
 	[Export] public StringName GripAction { get; set; }
 	[Export] public float PinchThreshold { get; set; }
@@ -11,21 +26,6 @@ public partial class PlayerHandInput : Node
 	[Export] public float GrabThreshold { get; set; }
 	[Export] public float GrabReleaseThreshold { get; set; }
 	[Export] public float LeftPinchMoveDelaySeconds { get; set; }
-
-	private Node3D _player;
-	private Node _playerBody;
-	private Node3D _leftTrackedHand;
-	private Node3D _rightTrackedHand;
-	private Node _leftHandMesh;
-	private Node _rightHandMesh;
-	private HandJoystickMovement _leftMovement;
-	private PlayerInputModeDetector _modeDetector;
-	private PlayerInputVisuals _visuals;
-	private HandGestureInput _gestures;
-	private bool _leftHandTrackingActive;
-	private bool _rightHandTrackingActive;
-	private bool _leftFallbackRequired;
-	private bool _rightFallbackRequired;
 
 	public override void _Ready()
 	{

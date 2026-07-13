@@ -7,7 +7,6 @@ namespace BCSVRMuseum;
 public partial class GameSettingsStore : Node
 {
 	private readonly EventLogger _logger = new(nameof(GameSettingsStore));
-
 	private string OperatingSystem { get; set; }
 	public bool HandTrackingEnabled { get; private set; }
 	public MediaMode CurrentMediaMode { get; private set; } = MediaMode.ImagesAnd3D;

@@ -22,7 +22,7 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(1.8, 1.8, 0.02)
 
-[node name="2Din3DSettings" type="Node3D" unique_id=776647796]
+[node name="2DIn3DSettings" type="Node3D" unique_id=776647796]
 script = ExtResource("1_o3yjg")
 screen_size = Vector2(1.8, 1.8)
 scene = ExtResource("2_sfyis")

@@ -7,33 +7,31 @@ namespace BCSVRMuseum;
 public partial class PlatformSwitcher : Node
 {
 	private readonly EventLogger _logger = new(nameof(PlatformSwitcher));
-
-	[Export] public NodePath PlayerPath;
-	[Export] public NodePath MuseumNodePath;
-	[Export] public NodePath MenuNodePath;
-	[Export] public NodePath WorldEnvironmentPath;
-	[Export] public Environment MuseumEnvironment;
-	[Export] public Environment MenuEnvironment;
-
+	private CharacterBody3D _body;
+	private XRCamera3D _camera;
+	private bool _inMenu;
+	private Transform3D _lastMuseumBody;
+	private Transform3D _lastMuseumRig;
+	private XRController3D _leftController;
+	private Transform3D _lockedMenuRig;
+	private Node3D _menu;
+	private bool _menuButtonWasPressed;
+	private Marker3D _menuSpawn;
+	private Node[] _movementNodes;
+	private Node3D _museum;
+	private Marker3D _museumSpawn;
 	private Node _player;
 	private Node3D _rig;
-	private XRCamera3D _camera;
-	private XRController3D _leftController;
 	private XRController3D _rightController;
-	private Node3D _museum;
-	private Node3D _menu;
-	private Marker3D _museumSpawn;
-	private Marker3D _menuSpawn;
-	private WorldEnvironment _worldEnvironment;
-	private CharacterBody3D _body;
-	private Node[] _movementNodes;
-
-	private Transform3D _lastMuseumRig;
-	private Transform3D _lastMuseumBody;
-	private Transform3D _lockedMenuRig;
-	private bool _inMenu;
-	private bool _menuButtonWasPressed;
 	private bool _switching;
+	private WorldEnvironment _worldEnvironment;
+
+	[Export] public Environment MenuEnvironment;
+	[Export] public NodePath MenuNodePath;
+	[Export] public Environment MuseumEnvironment;
+	[Export] public NodePath MuseumNodePath;
+	[Export] public NodePath PlayerPath;
+	[Export] public NodePath WorldEnvironmentPath;
 
 	public override async void _Ready()
 	{
@@ -51,10 +49,9 @@ public partial class PlatformSwitcher : Node
 		await this.WaitFor(() =>
 		{
 			foreach (var child in _body.GetChildren())
-			{
 				if (child is CollisionShape3D collisionShape)
 					return collisionShape;
-			}
+
 			return null;
 		}, "player body collision shape");
 
@@ -192,5 +189,4 @@ public partial class PlatformSwitcher : Node
 		node.Set("enabled", enabled);
 		node.ProcessMode = enabled ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 	}
-
 }

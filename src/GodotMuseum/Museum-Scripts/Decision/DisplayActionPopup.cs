@@ -9,21 +9,18 @@ namespace BCSVRMuseum.Museum_Scripts.Decision;
 public abstract partial class DisplayActionPopup : Node
 {
 	private const int PressedEventType = 2;
-
-	public static event Action<string> SimilaritySearchRequestedGlobally;
+	private static DisplayActionPopup _activePopup;
+	private Node _displayRoot;
+	private Node _panelHost;
+	private Node3D _popupRoot;
+	private string _vectorJson = string.Empty;
+	private double _visibleForSeconds;
 
 	[Export] public float LifetimeSeconds;
 	[Export] public NodePath PanelHostPath;
 
-	private static DisplayActionPopup _activePopup;
-
-	private string _vectorJson = string.Empty;
-	private Node3D _popupRoot;
-	private Node _displayRoot;
-	private Node _panelHost;
-	private double _visibleForSeconds;
-
 	private string SourcePath { get; set; } = string.Empty;
+	public static event Action<string> SimilaritySearchRequestedGlobally;
 
 	public override async void _Ready()
 	{
@@ -107,11 +104,10 @@ public abstract partial class DisplayActionPopup : Node
 				continue;
 
 			firstPopup ??= popup;
-			if (popup.GetParent().Name == "Decision")
-			{
-				firstDecisionPopup = popup;
-				break;
-			}
+			if (popup.GetParent().Name != "Decision")
+				continue;
+			firstDecisionPopup = popup;
+			break;
 		}
 
 		return (firstDecisionPopup ?? firstPopup) == this;
@@ -120,10 +116,8 @@ public abstract partial class DisplayActionPopup : Node
 	private bool IsOwnedTarget(Node target)
 	{
 		for (var current = target; current != null; current = current.GetParent())
-		{
 			if (current == _displayRoot)
 				return true;
-		}
 
 		return false;
 	}

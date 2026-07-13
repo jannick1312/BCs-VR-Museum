@@ -1,6 +1,5 @@
-using Godot;
-
 using BCSVRMuseum.Museum_Scripts;
+using Godot;
 
 namespace BCSVRMuseum.Player.InputArea;
 
@@ -28,6 +27,7 @@ public partial class InputBridge : Node
 			if (found != null)
 				return found;
 		}
+
 		return null;
 	}
 }

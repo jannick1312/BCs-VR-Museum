@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D.Image;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D.Video;
-using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
 using Logger;
 using Models;
@@ -15,10 +15,10 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 {
 	private const string GeneratedMediaGroup = "Generated2DMedia";
 	private const int DefaultMaxItemsPerPlace = 4;
+	private static readonly EventLogger Log = new(nameof(Media2DPlacementStrategy));
 	private readonly float _cellPadding;
 	private readonly RandomNumberGenerator _rng = new();
 	private readonly List<VideoPlaybackController> _videos = [];
-	private static readonly EventLogger Log = new(nameof(Media2DPlacementStrategy));
 
 	public Media2DPlacementStrategy(Node owner, Node3D displayRoot, Node placesRoot, float cellPadding) : base(owner, displayRoot, placesRoot, GeneratedMediaGroup)
 	{

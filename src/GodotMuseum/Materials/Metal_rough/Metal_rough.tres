@@ -5,9 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://cyxpxap4p71pt" path="res://Materials/Metal_rough/textures/Metal rough_Roughness.jpg" id="4_is8q5"]
 
 [resource]
-albedo_color = Color(0.30588236, 0.14509805, 0.039215688, 1)
+albedo_color = Color(0.88235295, 0.62352943, 0.39607844, 1)
 albedo_texture = ExtResource("1_fy8ni")
+metallic = 1.0
+roughness = 0.5
 roughness_texture = ExtResource("4_is8q5")
 normal_enabled = true
-normal_scale = 0.9
 normal_texture = ExtResource("3_bxke2")

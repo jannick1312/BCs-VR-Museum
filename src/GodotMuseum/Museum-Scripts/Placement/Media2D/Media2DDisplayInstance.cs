@@ -8,14 +8,10 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 
 public sealed class Media2DDisplayInstance
 {
-	private readonly Node3D _place;
-	private readonly Rect2 _slot;
 	private readonly float _cellPadding;
 	private readonly FrameMaker _frameMaker;
-
-	public Node3D Item { get; }
-
-	private MeshInstance3D DisplaySurface { get; }
+	private readonly Node3D _place;
+	private readonly Rect2 _slot;
 
 	private Media2DDisplayInstance(Node3D item, MeshInstance3D displaySurface, Node3D place, Rect2 slot, float cellPadding)
 	{
@@ -26,6 +22,10 @@ public sealed class Media2DDisplayInstance
 		_cellPadding = cellPadding;
 		_frameMaker = item.GetNode<FrameMaker>("FrameMaker");
 	}
+
+	public Node3D Item { get; }
+
+	private MeshInstance3D DisplaySurface { get; }
 
 	public static Media2DDisplayInstance Create(Node3D template, Node3D displayRoot, string groupName, float cellPadding, Node3D place, Rect2 slot)
 	{
@@ -80,7 +80,8 @@ public sealed class Media2DDisplayInstance
 	{
 		foreach (var child in Item.FindChildren("*", "", true, false))
 		{
-			if (child is not DisplayActionPopup popup) continue;
+			if (child is not DisplayActionPopup popup)
+				continue;
 			NodeTreeActivator.SetActive(popup.GetParent<Node3D>(), false);
 			popup.SetVector(vector);
 			popup.SetSourcePath(mediaPath);

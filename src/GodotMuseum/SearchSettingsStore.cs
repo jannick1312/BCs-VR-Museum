@@ -1,3 +1,4 @@
+using System.IO;
 using Godot;
 using Logger;
 
@@ -5,19 +6,18 @@ namespace BCSVRMuseum;
 
 public partial class SearchSettingsStore : Node
 {
-	private string _mediaFolderPath;
-	private string _serverIp = "";
-	private string _configSource = "";
-
 	private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
+	private string _configSource = "";
+	private string _mediaFolderPath;
 	private RuntimeSearchSettings _runtimeSettings;
+	private string _serverIp = "";
 
 	public string CurrentIp => _runtimeSettings.CurrentIp;
 	public string CurrentMediaFolderPath => _runtimeSettings.MediaFolderPath;
 
 	public override void _EnterTree()
 	{
-		var logDirectoryPath = ResolveApplicationDirectory("logs", writable: true);
+		var logDirectoryPath = ResolveApplicationDirectory("logs", true);
 		EventLogger.Configure(logDirectoryPath);
 	}
 
@@ -25,7 +25,7 @@ public partial class SearchSettingsStore : Node
 	{
 		LoadJsonSettings();
 
-		_mediaFolderPath = ResolveApplicationDirectory("media", writable: false);
+		_mediaFolderPath = ResolveApplicationDirectory("media", false);
 
 		_runtimeSettings = new RuntimeSearchSettings(_serverIp, _mediaFolderPath);
 
@@ -75,7 +75,7 @@ public partial class SearchSettingsStore : Node
 			return ProjectSettings.GlobalizePath(godotPath);
 		}
 
-		var executableDirectory = System.IO.Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
-		return System.IO.Path.Combine(executableDirectory, directoryName);
+		var executableDirectory = Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
+		return Path.Combine(executableDirectory, directoryName);
 	}
 }

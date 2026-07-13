@@ -31,9 +31,9 @@ albedo_color = Color(0, 0, 0, 1)
 [node name="SimilarityPopup" type="Node" parent="." unique_id=880110100]
 script = ExtResource("1_77dbp")
 LifetimeSeconds = 5.0
-PanelHostPath = NodePath("../2Din3DSimilarity")
+PanelHostPath = NodePath("../2DIn3DSimilarity")
 
-[node name="2Din3DSimilarity" parent="." unique_id=776647796 instance=ExtResource("2_0rs8b")]
+[node name="2DIn3DSimilarity" parent="." unique_id=776647796 instance=ExtResource("2_0rs8b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.23201719, 0)
 unshaded = false
 

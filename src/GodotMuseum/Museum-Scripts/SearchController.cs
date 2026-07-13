@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BCSVRMuseum.Museum_Scripts.Decision;
+using BCSVRMuseum.Museum_Scripts.Placement;
+using BCSVRMuseum.Player.InputArea;
 using Godot;
 using Logger;
 using Models;
@@ -11,23 +13,23 @@ namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class SearchController : Node
 {
+	private readonly EventLogger _logger = new(nameof(SearchController));
+	private LineEdit _activeLineEdit;
+	private GameSettingsStore _gameSettingsStore;
+	private LineEdit _inputLineEdit;
+	private InputBridge _inputScreen;
+	private bool _isSearching;
+	private MediaPlacementController _mediaPlacement;
+	private SearchUseCaseFactory _searchUseCaseFactory;
+
 	[Export] public NodePath InputBridgePath;
 	[Export] public NodePath MediaPlacementControllerPath;
 	[Export] public int SearchLimit;
 
-	private Player.InputArea.InputBridge _inputScreen;
-	private Placement.MediaPlacementController _mediaPlacement;
-	private LineEdit _inputLineEdit;
-	private LineEdit _activeLineEdit;
-	private SearchUseCaseFactory _searchUseCaseFactory;
-	private GameSettingsStore _gameSettingsStore;
-	private readonly EventLogger _logger = new(nameof(SearchController));
-	private bool _isSearching;
-
 	public override async void _Ready()
 	{
-		_inputScreen = GetNode<Player.InputArea.InputBridge>(InputBridgePath);
-		_mediaPlacement = GetNode<Placement.MediaPlacementController>(MediaPlacementControllerPath);
+		_inputScreen = GetNode<InputBridge>(InputBridgePath);
+		_mediaPlacement = GetNode<MediaPlacementController>(MediaPlacementControllerPath);
 		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
 		_gameSettingsStore = (GameSettingsStore)GetTree().Root.FindChild("GameSettingsStore", true, false);
 
@@ -89,7 +91,8 @@ public partial class SearchController : Node
 
 	private bool CanSubmitSearch(string searchName)
 	{
-		if (!_isSearching) return true;
+		if (!_isSearching)
+			return true;
 		_logger.Warning($"{searchName} ignored because another search is already running.");
 		return false;
 	}

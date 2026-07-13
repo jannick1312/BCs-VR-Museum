@@ -1,4 +1,5 @@
 using Godot;
+
 namespace BCSVRMuseum.Keyboard;
 
 public partial class VirtualKeyInputEvent : Button
@@ -7,8 +8,8 @@ public partial class VirtualKeyInputEvent : Button
 	public delegate void KeyPressedEventHandler(string scanCodeText, int unicode, bool shift);
 
 	[Export] public string ScanCodeText;
-	[Export] public int Unicode;
 	[Export] public bool ShiftPressed;
+	[Export] public int Unicode;
 
 	public override void _Ready()
 	{

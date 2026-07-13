@@ -5,14 +5,14 @@ namespace BCSVRMuseum.Player.InputArea;
 
 public partial class VisibilityController : Node
 {
-	[Export] public NodePath InputRootPath;
-	[Export] public NodePath LeftPickupPath;
-	[Export] public NodePath MuseumNodePath;
-
+	private bool _inputActive;
 	private Node _inputRoot;
 	private Node _leftPickup;
 	private Node3D _museumNode;
-	private bool _inputActive;
+
+	[Export] public NodePath InputRootPath;
+	[Export] public NodePath LeftPickupPath;
+	[Export] public NodePath MuseumNodePath;
 
 	public override void _Ready()
 	{

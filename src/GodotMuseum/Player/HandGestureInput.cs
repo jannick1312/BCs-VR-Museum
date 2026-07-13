@@ -5,19 +5,19 @@ namespace BCSVRMuseum.Player;
 public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMovement, PlayerHandInput input)
 {
 	private readonly XRController3D _leftController = FindController(player, "LeftController");
-	private readonly XRController3D _rightController = FindController(player, "RightController");
+	private readonly Node _leftFallbackHand = player.FindChild("LeftFallbackHand", true, false);
 	private readonly Node _leftPickup = FindController(player, "LeftController").FindChild("FunctionPickup", true, false);
+	private readonly PlatformSwitcher _platformSwitcher = (PlatformSwitcher)player.GetTree().Root.FindChild("PlatformSwitcher", true, false);
+	private readonly XRController3D _rightController = FindController(player, "RightController");
+	private readonly Node _rightFallbackHand = player.FindChild("RightFallbackHand", true, false);
 	private readonly Node _rightPickup = FindController(player, "RightController").FindChild("FunctionPickup", true, false);
 	private readonly Node _rightPointer = FindController(player, "RightController").FindChild("FunctionPointer", true, false);
-	private readonly Node _leftFallbackHand = player.FindChild("LeftFallbackHand", true, false);
-	private readonly Node _rightFallbackHand = player.FindChild("RightFallbackHand", true, false);
-	private readonly PlatformSwitcher _platformSwitcher = (PlatformSwitcher)player.GetTree().Root.FindChild("PlatformSwitcher", true, false);
 	private HandGesture _leftGesture;
-	private HandGesture _rightGesture;
-	private double _leftPinchStartedAt = -1.0;
 	private bool _leftPinchMoved;
-	private bool _rightPointerPressedByHand;
+	private double _leftPinchStartedAt = -1.0;
+	private HandGesture _rightGesture;
 	private bool _rightPointerNativeActionDisabled;
+	private bool _rightPointerPressedByHand;
 
 	public void Process(bool leftHandActive, bool rightHandActive)
 	{
@@ -46,8 +46,7 @@ public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMov
 			return;
 		}
 
-		var heldLongEnough = _leftPinchStartedAt >= 0.0 &&
-			Time.GetTicksMsec() / 1000.0 - _leftPinchStartedAt >= input.LeftPinchMoveDelaySeconds;
+		var heldLongEnough = _leftPinchStartedAt >= 0.0 && Time.GetTicksMsec() / 1000.0 - _leftPinchStartedAt >= input.LeftPinchMoveDelaySeconds;
 
 		if (heldLongEnough)
 		{
@@ -55,7 +54,9 @@ public sealed class HandGestureInput(Node3D player, HandJoystickMovement leftMov
 			leftMovement.ProcessMovement(delta);
 		}
 		else
+		{
 			leftMovement.ForceStop();
+		}
 	}
 
 	public void Reset()

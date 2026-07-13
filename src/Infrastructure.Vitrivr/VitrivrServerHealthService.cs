@@ -12,7 +12,6 @@ public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealt
 	public async Task<bool> IsReachableAsync()
 	{
 		for (var attempt = 0; attempt < 5; attempt++)
-		{
 			try
 			{
 				using var response = await _httpClient.GetAsync(settings.SchemaListUrl);
@@ -29,7 +28,6 @@ public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealt
 			{
 				_logger.Warning($"Vitrivr health check failed. ErrorType={exception.GetType().Name}.");
 			}
-		}
 
 		_logger.Warning("Vitrivr health check exhausted all attempts.");
 		return false;

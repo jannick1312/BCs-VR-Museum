@@ -6,7 +6,6 @@ public sealed class EventLogger(string source)
 {
 	private static readonly Lock WriteLock = new();
 	private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
-
 	private static string DirectoryPath { get; set; } = Path.Combine(AppContext.BaseDirectory, "logs");
 	private static DateTimeOffset StartTime { get; set; } = DateTimeOffset.UtcNow;
 

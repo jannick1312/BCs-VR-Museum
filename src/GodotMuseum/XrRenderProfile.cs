@@ -4,6 +4,8 @@ namespace BCSVRMuseum;
 
 public partial class XrRenderProfile : Node
 {
+	private Profile _profile;
+
 	[Export] public float QuestStandaloneScale { get; set; }
 	[Export] public float FocusStandaloneScale { get; set; }
 	[Export] public float StreamingScale { get; set; }
@@ -24,8 +26,6 @@ public partial class XrRenderProfile : Node
 	[Export] public bool StreamingSdfgiEnabled { get; set; }
 	[Export] public NodePath StartXrPath { get; set; }
 	[Export] public NodePath PlatformSwitcherPath { get; set; }
-
-	private Profile _profile;
 
 	public override void _EnterTree()
 	{
@@ -54,19 +54,25 @@ public partial class XrRenderProfile : Node
 		return Profile.Streaming;
 	}
 
-	private float GetRenderScale(Profile profile) => profile switch
+	private float GetRenderScale(Profile profile)
 	{
-		Profile.QuestStandalone => QuestStandaloneScale,
-		Profile.FocusStandalone => FocusStandaloneScale,
-		_ => StreamingScale,
-	};
+		return profile switch
+		{
+			Profile.QuestStandalone => QuestStandaloneScale,
+			Profile.FocusStandalone => FocusStandaloneScale,
+			_ => StreamingScale
+		};
+	}
 
-	private float GetRefreshRate(Profile profile) => profile switch
+	private float GetRefreshRate(Profile profile)
 	{
-		Profile.QuestStandalone => QuestRefreshRate,
-		Profile.FocusStandalone => FocusRefreshRate,
-		_ => StreamingRefreshRate,
-	};
+		return profile switch
+		{
+			Profile.QuestStandalone => QuestRefreshRate,
+			Profile.FocusStandalone => FocusRefreshRate,
+			_ => StreamingRefreshRate
+		};
+	}
 
 	private void ConfigureEnvironment(Environment environment, Profile profile)
 	{
@@ -74,25 +80,25 @@ public partial class XrRenderProfile : Node
 		{
 			Profile.QuestStandalone => QuestSsrEnabled,
 			Profile.FocusStandalone => FocusSsrEnabled,
-			_ => StreamingSsrEnabled,
+			_ => StreamingSsrEnabled
 		};
 		environment.SsaoEnabled = profile switch
 		{
 			Profile.QuestStandalone => QuestSsaoEnabled,
 			Profile.FocusStandalone => FocusSsaoEnabled,
-			_ => StreamingSsaoEnabled,
+			_ => StreamingSsaoEnabled
 		};
 		environment.SsilEnabled = profile switch
 		{
 			Profile.QuestStandalone => QuestSsilEnabled,
 			Profile.FocusStandalone => FocusSsilEnabled,
-			_ => StreamingSsilEnabled,
+			_ => StreamingSsilEnabled
 		};
 		environment.SdfgiEnabled = profile switch
 		{
 			Profile.QuestStandalone => QuestSdfgiEnabled,
 			Profile.FocusStandalone => FocusSdfgiEnabled,
-			_ => StreamingSdfgiEnabled,
+			_ => StreamingSdfgiEnabled
 		};
 	}
 
@@ -100,6 +106,6 @@ public partial class XrRenderProfile : Node
 	{
 		QuestStandalone,
 		FocusStandalone,
-		Streaming,
+		Streaming
 	}
 }

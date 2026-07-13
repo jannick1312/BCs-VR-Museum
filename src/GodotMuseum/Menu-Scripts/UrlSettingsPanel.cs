@@ -5,34 +5,33 @@ namespace BCSVRMuseum.Menu_Scripts;
 
 public partial class UrlSettingsPanel : Node
 {
-	private readonly EventLogger _logger = new(nameof(UrlSettingsPanel));
-	private SearchSettingsStore _searchSettingsStore;
-	private SearchUseCaseFactory _searchUseCaseFactory;
-
-	private LineEdit _urlInput;
-	private Label _currentUrlValueLabel;
-	private Button _submitButton;
-	private Button _revertButton;
-	private Node3D _keyboard;
-	private CollisionShape3D _keyboardCollisionShape;
-	private int _validationVersion;
-
 	private static readonly Color CheckingColor = new(1.0f, 0.5f, 0.0f);
 	private static readonly Color ValidColor = new(0.2f, 0.8f, 0.3f);
 	private static readonly Color InvalidColor = new(1.0f, 0.2f, 0.2f);
+	private readonly EventLogger _logger = new(nameof(UrlSettingsPanel));
+	private Label _currentUrlValueLabel;
+	private Node3D _keyboard;
+	private CollisionShape3D _keyboardCollisionShape;
+	private Button _revertButton;
+	private SearchSettingsStore _searchSettingsStore;
+	private SearchUseCaseFactory _searchUseCaseFactory;
+	private Button _submitButton;
+
+	private LineEdit _urlInput;
+	private int _validationVersion;
 
 	public override void _Ready()
 	{
 		var root = GetParent();
 
-		_urlInput = (LineEdit)root.FindChild("URLinput", true, false);
-		_currentUrlValueLabel = (Label)root.FindChild("URLcurrentlyValue", true, false);
+		_urlInput = (LineEdit)root.FindChild("URLInput", true, false);
+		_currentUrlValueLabel = (Label)root.FindChild("URLCurrentlyValue", true, false);
 		_submitButton = (Button)root.FindChild("Submit", true, false);
 		_revertButton = (Button)root.FindChild("Revert", true, false);
 
 		_searchSettingsStore = (SearchSettingsStore)GetTree().Root.FindChild("SearchSettingsStore", true, false);
 		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
-		_keyboard = GetTree().Root.GetNode<Node3D>("Main/MenuNode/2Din3DKeyboard");
+		_keyboard = GetTree().Root.GetNode<Node3D>("Main/MenuNode/2DIn3DKeyboard");
 		_keyboardCollisionShape = (CollisionShape3D)_keyboard.FindChild("CollisionShape3D", true, false);
 
 		_urlInput.FocusEntered += OnUrlInputFocusEntered;
@@ -51,7 +50,7 @@ public partial class UrlSettingsPanel : Node
 		if (!_urlInput.HasFocus())
 			return;
 
-		if (@event is InputEventMouseButton { Pressed: true } mouseButton && !IsInsideUrlInput(mouseButton.Position) || @event is InputEventScreenTouch { Pressed: true } screenTouch && !IsInsideUrlInput(screenTouch.Position))
+		if ((@event is InputEventMouseButton { Pressed: true } mouseButton && !IsInsideUrlInput(mouseButton.Position)) || (@event is InputEventScreenTouch { Pressed: true } screenTouch && !IsInsideUrlInput(screenTouch.Position)))
 			DismissUrlInput();
 	}
 
@@ -64,6 +63,7 @@ public partial class UrlSettingsPanel : Node
 			_logger.Warning("URL submit ignored because input is empty.");
 			return;
 		}
+
 		_searchSettingsStore.SetServerIp(input);
 		_urlInput.Clear();
 		SetKeyboardVisible(false);

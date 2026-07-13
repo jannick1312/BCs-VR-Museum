@@ -2,11 +2,6 @@ namespace Core;
 
 public class MediaContent
 {
-	public bool Success { get; }
-	public byte[] Bytes { get; }
-	public string Path { get; }
-	public string ErrorMessage { get; }
-
 	private MediaContent(bool success, byte[] bytes, string path, string errorMessage)
 	{
 		Success = success;
@@ -14,6 +9,11 @@ public class MediaContent
 		Path = path;
 		ErrorMessage = errorMessage;
 	}
+
+	public bool Success { get; }
+	public byte[] Bytes { get; }
+	public string Path { get; }
+	public string ErrorMessage { get; }
 
 	public static MediaContent FromBytes(byte[] bytes)
 	{

@@ -70,7 +70,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_i4iwy"]
-resource_name = "Room_Wall_0"
+resource_name = "Room_Wall0"
 _surfaces = [{
 "aabb": AABB(3.3137085, 0, -8, 4.6862917, 4, 4.6862917),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -102,7 +102,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_jdbvm"]
-resource_name = "Room_Wall_1"
+resource_name = "Room_Wall1"
 _surfaces = [{
 "aabb": AABB(-3.3137085, 0, -8, 6.627417, 4, 1e-05),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -134,7 +134,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_cq0pt"]
-resource_name = "Room_Wall_2"
+resource_name = "Room_Wall2"
 _surfaces = [{
 "aabb": AABB(-8, 0, -8, 4.6862917, 4, 4.6862917),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -166,7 +166,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_cp0dy"]
-resource_name = "Room_Wall_3"
+resource_name = "Room_Wall3"
 _surfaces = [{
 "aabb": AABB(-8, 0, -3.3137085, 1e-05, 4, 6.627417),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -198,7 +198,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_w0guh"]
-resource_name = "Room_Wall_4"
+resource_name = "Room_Wall4"
 _surfaces = [{
 "aabb": AABB(-8, 0, 3.3137085, 4.6862917, 4, 4.6862917),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -230,7 +230,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kprsy"]
-resource_name = "Room_Wall_5"
+resource_name = "Room_Wall5"
 _surfaces = [{
 "aabb": AABB(-3.3137085, 0, 8, 6.627417, 4, 1e-05),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -262,7 +262,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4ovqt"]
-resource_name = "Room_Wall_6"
+resource_name = "Room_Wall6"
 _surfaces = [{
 "aabb": AABB(3.3137085, 0, 3.3137085, 4.6862917, 4, 4.6862917),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -294,7 +294,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_poeum"]
-resource_name = "Room_Wall_7"
+resource_name = "Room_Wall7"
 _surfaces = [{
 "aabb": AABB(8, 0, -3.3137085, 1e-05, 4, 6.627417),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAA=="),
@@ -450,7 +450,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ygphv"]
-resource_name = "Room_RoofPanel_0-col_Mesh_003"
+resource_name = "Room_RoofPanel0-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(0.0069438335, 4.001197, -7.7901297, 7.783186, 1.4969149, 7.783186),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -485,7 +485,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_dwvq8"]
-resource_name = "Room_RoofPanel_1-col_Mesh_003"
+resource_name = "Room_RoofPanel1-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(-3.2231312, 4.001197, -7.793776, 6.4462624, 1.4969149, 7.783956),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -520,7 +520,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_150cq"]
-resource_name = "Room_RoofPanel_2-col_Mesh_003"
+resource_name = "Room_RoofPanel2-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(-7.7901297, 4.001197, -7.7901297, 7.783186, 1.4969149, 7.783186),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -555,7 +555,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kswki"]
-resource_name = "Room_RoofPanel_3-col_Mesh_003"
+resource_name = "Room_RoofPanel3-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(-7.793776, 4.001197, -3.2231312, 7.783956, 1.4969149, 6.4462624),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -590,7 +590,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_7b3yd"]
-resource_name = "Room_RoofPanel_4-col_Mesh_003"
+resource_name = "Room_RoofPanel4-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(-7.7901297, 4.001197, 0.0069438335, 7.783186, 1.4969149, 7.783186),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -625,7 +625,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_pddh2"]
-resource_name = "Room_RoofPanel_5-col_Mesh_003"
+resource_name = "Room_RoofPanel5-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(-3.2231312, 4.001197, 0.0098200645, 6.4462624, 1.4969149, 7.783956),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -660,7 +660,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_5je6g"]
-resource_name = "Room_RoofPanel_6-col_Mesh_003"
+resource_name = "Room_RoofPanel6-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(0.0069438335, 4.001197, 0.0069438335, 7.783186, 1.4969149, 7.783186),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -695,7 +695,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_edaea"]
-resource_name = "Room_RoofPanel_7-col_Mesh_003"
+resource_name = "Room_RoofPanel7-col_Mesh_003"
 _surfaces = [{
 "aabb": AABB(0.0098200645, 4.001197, -3.2231312, 7.783956, 1.4969149, 6.4462624),
 "attribute_data": PackedByteArray("/38AAP////8AAP//"),
@@ -772,83 +772,83 @@ shape = SubResource("BoxShape3D_room_floor_thick")
 
 [node name="Wall" type="Node3D" parent="." unique_id=1123107160]
 
-[node name="Wall_0" type="StaticBody3D" parent="Wall" unique_id=760524726]
+[node name="Wall0" type="StaticBody3D" parent="Wall" unique_id=760524726]
 
-[node name="CollWall0" type="CollisionShape3D" parent="Wall/Wall_0" unique_id=1892249653]
+[node name="CollWall0" type="CollisionShape3D" parent="Wall/Wall0" unique_id=1892249653]
 transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 6.0104074, 2, -6.0104074)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_0" type="MeshInstance3D" parent="Wall/Wall_0" unique_id=1750170185]
+[node name="Wall0" type="MeshInstance3D" parent="Wall/Wall0" unique_id=1750170185]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_i4iwy")
 
-[node name="Wall_1" type="StaticBody3D" parent="Wall" unique_id=46136996]
+[node name="Wall1" type="StaticBody3D" parent="Wall" unique_id=46136996]
 
-[node name="CollWall_1" type="CollisionShape3D" parent="Wall/Wall_1" unique_id=781780642]
+[node name="CollWall1" type="CollisionShape3D" parent="Wall/Wall1" unique_id=781780642]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 2, -8.5)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_1" type="MeshInstance3D" parent="Wall/Wall_1" unique_id=661950550]
+[node name="Wall1" type="MeshInstance3D" parent="Wall/Wall1" unique_id=661950550]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_jdbvm")
 
-[node name="Wall_2" type="StaticBody3D" parent="Wall" unique_id=541514161]
+[node name="Wall2" type="StaticBody3D" parent="Wall" unique_id=541514161]
 
-[node name="CollWall_2" type="CollisionShape3D" parent="Wall/Wall_2" unique_id=281125481]
+[node name="CollWall2" type="CollisionShape3D" parent="Wall/Wall2" unique_id=281125481]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -6.0104074, 2, -6.0104074)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_2" type="MeshInstance3D" parent="Wall/Wall_2" unique_id=176705247]
+[node name="Wall2" type="MeshInstance3D" parent="Wall/Wall2" unique_id=176705247]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_cq0pt")
 
-[node name="Wall_3" type="StaticBody3D" parent="Wall" unique_id=65202805]
+[node name="Wall3" type="StaticBody3D" parent="Wall" unique_id=65202805]
 
-[node name="CollWall_3" type="CollisionShape3D" parent="Wall/Wall_3" unique_id=268089394]
+[node name="CollWall3" type="CollisionShape3D" parent="Wall/Wall3" unique_id=268089394]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.5, 2, 0)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_3" type="MeshInstance3D" parent="Wall/Wall_3" unique_id=1117011387]
+[node name="Wall3" type="MeshInstance3D" parent="Wall/Wall3" unique_id=1117011387]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_cp0dy")
 
-[node name="Wall_4" type="StaticBody3D" parent="Wall" unique_id=590225767]
+[node name="Wall4" type="StaticBody3D" parent="Wall" unique_id=590225767]
 
-[node name="CollWall_4" type="CollisionShape3D" parent="Wall/Wall_4" unique_id=254417617]
+[node name="CollWall4" type="CollisionShape3D" parent="Wall/Wall4" unique_id=254417617]
 transform = Transform3D(-0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, -0.70710677, -6.0104074, 2, 6.0104074)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_4" type="MeshInstance3D" parent="Wall/Wall_4" unique_id=1802800900]
+[node name="Wall4" type="MeshInstance3D" parent="Wall/Wall4" unique_id=1802800900]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_w0guh")
 
-[node name="Wall_5" type="StaticBody3D" parent="Wall" unique_id=1831757595]
+[node name="Wall5" type="StaticBody3D" parent="Wall" unique_id=1831757595]
 
-[node name="CollWall_5" type="CollisionShape3D" parent="Wall/Wall_5" unique_id=579314019]
+[node name="CollWall5" type="CollisionShape3D" parent="Wall/Wall5" unique_id=579314019]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 8.5)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_5" type="MeshInstance3D" parent="Wall/Wall_5" unique_id=1128132627]
+[node name="Wall5" type="MeshInstance3D" parent="Wall/Wall5" unique_id=1128132627]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_kprsy")
 
-[node name="Wall_6" type="StaticBody3D" parent="Wall" unique_id=2117601128]
+[node name="Wall6" type="StaticBody3D" parent="Wall" unique_id=2117601128]
 
-[node name="CollWall_6" type="CollisionShape3D" parent="Wall/Wall_6" unique_id=1996016311]
+[node name="CollWall6" type="CollisionShape3D" parent="Wall/Wall6" unique_id=1996016311]
 transform = Transform3D(-0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, -0.70710677, 6.0104074, 2, 6.0104074)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_6" type="MeshInstance3D" parent="Wall/Wall_6" unique_id=1488143299]
+[node name="Wall6" type="MeshInstance3D" parent="Wall/Wall6" unique_id=1488143299]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_4ovqt")
 
-[node name="Wall_7" type="StaticBody3D" parent="Wall" unique_id=622707995]
+[node name="Wall7" type="StaticBody3D" parent="Wall" unique_id=622707995]
 
-[node name="CollWall_7" type="CollisionShape3D" parent="Wall/Wall_7" unique_id=1858163384]
+[node name="CollWall7" type="CollisionShape3D" parent="Wall/Wall7" unique_id=1858163384]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.5, 2, 0)
 shape = SubResource("BoxShape3D_room_wall_thick")
 
-[node name="Wall_7" type="MeshInstance3D" parent="Wall/Wall_7" unique_id=1916590073]
+[node name="Wall7" type="MeshInstance3D" parent="Wall/Wall7" unique_id=1916590073]
 material_override = ExtResource("6_xd4qy")
 mesh = SubResource("ArrayMesh_poeum")
 
@@ -884,76 +884,76 @@ mesh = SubResource("ArrayMesh_5rrlw")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/CeilingBorder/StaticBody3D" unique_id=1174546301]
 shape = SubResource("ConcavePolygonShape3D_sgx1s")
 
-[node name="RoofPanel_0" type="MeshInstance3D" parent="Ceiling" unique_id=1094950466]
+[node name="RoofPanel0" type="MeshInstance3D" parent="Ceiling" unique_id=1094950466]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_ygphv")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_0" unique_id=1482460686]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel0" unique_id=1482460686]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_0/StaticBody3D" unique_id=1878600167]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel0/StaticBody3D" unique_id=1878600167]
 shape = SubResource("ConcavePolygonShape3D_23f6y")
 
-[node name="RoofPanel_1" type="MeshInstance3D" parent="Ceiling" unique_id=739995082]
+[node name="RoofPanel1" type="MeshInstance3D" parent="Ceiling" unique_id=739995082]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_dwvq8")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_1" unique_id=359179174]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel1" unique_id=359179174]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_1/StaticBody3D" unique_id=1481287174]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel1/StaticBody3D" unique_id=1481287174]
 shape = SubResource("ConcavePolygonShape3D_47p2j")
 
-[node name="RoofPanel_2" type="MeshInstance3D" parent="Ceiling" unique_id=2469918]
+[node name="RoofPanel2" type="MeshInstance3D" parent="Ceiling" unique_id=2469918]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_150cq")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_2" unique_id=1513942755]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel2" unique_id=1513942755]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_2/StaticBody3D" unique_id=44022573]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel2/StaticBody3D" unique_id=44022573]
 shape = SubResource("ConcavePolygonShape3D_myv2k")
 
-[node name="RoofPanel_3" type="MeshInstance3D" parent="Ceiling" unique_id=836029828]
+[node name="RoofPanel3" type="MeshInstance3D" parent="Ceiling" unique_id=836029828]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_kswki")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_3" unique_id=1758200312]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel3" unique_id=1758200312]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_3/StaticBody3D" unique_id=948169312]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel3/StaticBody3D" unique_id=948169312]
 shape = SubResource("ConcavePolygonShape3D_jf0a2")
 
-[node name="RoofPanel_4" type="MeshInstance3D" parent="Ceiling" unique_id=700298949]
+[node name="RoofPanel4" type="MeshInstance3D" parent="Ceiling" unique_id=700298949]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_7b3yd")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_4" unique_id=338409992]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel4" unique_id=338409992]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_4/StaticBody3D" unique_id=505890954]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel4/StaticBody3D" unique_id=505890954]
 shape = SubResource("ConcavePolygonShape3D_tc5jf")
 
-[node name="RoofPanel_5" type="MeshInstance3D" parent="Ceiling" unique_id=1983031590]
+[node name="RoofPanel5" type="MeshInstance3D" parent="Ceiling" unique_id=1983031590]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_pddh2")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_5" unique_id=1342680860]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel5" unique_id=1342680860]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_5/StaticBody3D" unique_id=363681142]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel5/StaticBody3D" unique_id=363681142]
 shape = SubResource("ConcavePolygonShape3D_sbwfr")
 
-[node name="RoofPanel_6" type="MeshInstance3D" parent="Ceiling" unique_id=1598305503]
+[node name="RoofPanel6" type="MeshInstance3D" parent="Ceiling" unique_id=1598305503]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_5je6g")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_6" unique_id=1212296545]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel6" unique_id=1212296545]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_6/StaticBody3D" unique_id=1777722789]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel6/StaticBody3D" unique_id=1777722789]
 shape = SubResource("ConcavePolygonShape3D_mtvf2")
 
-[node name="RoofPanel_7" type="MeshInstance3D" parent="Ceiling" unique_id=499709387]
+[node name="RoofPanel7" type="MeshInstance3D" parent="Ceiling" unique_id=499709387]
 material_override = ExtResource("3_yuc0x")
 mesh = SubResource("ArrayMesh_edaea")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel_7" unique_id=850710434]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling/RoofPanel7" unique_id=850710434]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel_7/StaticBody3D" unique_id=720122310]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/RoofPanel7/StaticBody3D" unique_id=720122310]
 shape = SubResource("ConcavePolygonShape3D_kmjow")
 
 [node name="Frame" type="MeshInstance3D" parent="Ceiling" unique_id=720940538]

@@ -5,37 +5,36 @@ namespace BCSVRMuseum.Menu_Scripts;
 
 public partial class GameSettingsPanel : Node
 {
-	private HSlider _movementSlider;
-	private HSlider _turnSlider;
-	private HSlider _skinColourSlider;
-	private Button _imagesAnd3DButton;
-	private Button _imagesButton;
-	private Button _objects3DButton;
-	private Button _defaultButton;
-	private Node _movementDirect;
-	private Node _movementTurn;
-	private Node _leftHandTrackingMesh;
-	private Node _rightHandTrackingMesh;
-	private MeshInstance3D _leftFallbackHandMesh;
-	private MeshInstance3D _rightFallbackHandMesh;
-	private GameSettingsStore _gameSettingsStore;
-
 	private const double DefaultSliderValue = 5.0;
 	private const double DefaultSkinColourValue = 5.0;
 	private const float MinMovementSpeed = 0.8f;
 	private const float MaxMovementSpeed = 4.0f;
 	private const float MinTurnSpeed = 0.8f;
 	private const float MaxTurnSpeed = 4.0f;
-	private static readonly Color LightSkinColour = new(0.92f, 0.68f, 0.52f, 1.0f);
-	private static readonly Color DarkSkinColour = new(0.24f, 0.13f, 0.08f, 1.0f);
+	private static readonly Color LightSkinColour = new(0.92f, 0.68f, 0.52f);
+	private static readonly Color DarkSkinColour = new(0.24f, 0.13f, 0.08f);
+	private Button _defaultButton;
+	private GameSettingsStore _gameSettingsStore;
+	private Button _imagesAnd3DButton;
+	private Button _imagesButton;
+	private MeshInstance3D _leftFallbackHandMesh;
+	private Node _leftHandTrackingMesh;
+	private Node _movementDirect;
+	private HSlider _movementSlider;
+	private Node _movementTurn;
+	private Button _objects3DButton;
+	private MeshInstance3D _rightFallbackHandMesh;
+	private Node _rightHandTrackingMesh;
+	private HSlider _skinColourSlider;
+	private HSlider _turnSlider;
 
 	public override void _Ready()
 	{
 		var root = GetParent();
 
-		_movementSlider = (HSlider)root.FindChild("Movement-Slider", true, false);
-		_turnSlider = (HSlider)root.FindChild("Turn-Slider", true, false);
-		_skinColourSlider = (HSlider)root.FindChild("SkinColour-Slider", true, false);
+		_movementSlider = (HSlider)root.FindChild("MovementSlider", true, false);
+		_turnSlider = (HSlider)root.FindChild("TurnSlider", true, false);
+		_skinColourSlider = (HSlider)root.FindChild("SkinColourSlider", true, false);
 		_imagesAnd3DButton = (Button)root.FindChild("Images3D", true, false);
 		_imagesButton = (Button)root.FindChild("Images", true, false);
 		_objects3DButton = (Button)root.FindChild("3D", true, false);

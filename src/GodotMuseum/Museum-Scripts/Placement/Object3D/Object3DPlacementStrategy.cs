@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
+using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 using Godot;
 using Logger;
 using Models;
@@ -11,9 +11,8 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 {
 	private const string GeneratedObjectGroup = "Generated3DObject";
-
-	private readonly Object3DDisplayFitter _fitter;
 	private static readonly EventLogger Log = new(nameof(Object3DPlacementStrategy));
+	private readonly Object3DDisplayFitter _fitter;
 
 	public Object3DPlacementStrategy(Node owner, Node3D displayRoot, Node placesRoot) : base(owner, displayRoot, placesRoot, GeneratedObjectGroup)
 	{

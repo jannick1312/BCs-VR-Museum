@@ -7,12 +7,11 @@ public partial class DecisionPanel : Node
 {
 	[Signal]
 	public delegate void DismissRequestedEventHandler();
-
 	[Signal]
 	public delegate void SimilaritySearchRequestedEventHandler(string vectorJson);
 
-	private string _vectorJson = string.Empty;
 	private static readonly EventLogger Log = new(nameof(DecisionPanel));
+	private string _vectorJson = string.Empty;
 
 	public override void _Ready()
 	{

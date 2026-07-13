@@ -8,8 +8,8 @@ public partial class SettingsPanel : Node
 	private readonly EventLogger _logger = new(nameof(SettingsPanel));
 
 	private Button _closeButton;
-	private Button _startButton;
 	private PlatformSwitcher _platformSwitcher;
+	private Button _startButton;
 
 	public override void _Ready()
 	{

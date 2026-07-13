@@ -1,18 +1,18 @@
+using System.Collections.Generic;
 using BCSVRMuseum.Museum_Scripts.Decision;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
-using System.Collections.Generic;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 
 public sealed class Object3DDisplayInstance
 {
-	public Node3D Item { get; }
-
 	private Object3DDisplayInstance(Node3D item)
 	{
 		Item = item;
 	}
+
+	public Node3D Item { get; }
 
 	public static Object3DDisplayInstance Create(Node3D template, Node3D displayRoot, string groupName)
 	{
@@ -34,7 +34,8 @@ public sealed class Object3DDisplayInstance
 	{
 		foreach (var child in Item.FindChildren("*", "", true, false))
 		{
-			if (child is not DisplayActionPopup popup) continue;
+			if (child is not DisplayActionPopup popup)
+				continue;
 			NodeTreeActivator.SetActive(popup.GetParent<Node3D>(), false);
 			popup.SetVector(vector);
 			popup.SetSourcePath(mediaPath);

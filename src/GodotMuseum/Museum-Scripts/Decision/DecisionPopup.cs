@@ -20,5 +20,4 @@ public partial class DecisionPopup : DisplayActionPopup
 	{
 		((DecisionPanel)panel).SetVector(vectorJson);
 	}
-
 }
