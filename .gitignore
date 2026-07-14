@@ -1136,3 +1136,5 @@ src/GodotMuseum/Blender/
 
 *.import
 tools/
+
+run/stream/media/
