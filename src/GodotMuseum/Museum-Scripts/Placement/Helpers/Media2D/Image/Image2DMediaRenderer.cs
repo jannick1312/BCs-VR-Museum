@@ -1,30 +1,39 @@
 using System.IO;
+using System.Threading.Tasks;
+using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 using Godot;
+using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D.Image;
 
 public static class Image2DMediaRenderer
 {
-	public static void Render(Media2DDisplayInstance instance, byte[] bytes, string path)
+	private static readonly EventLogger Log = new(nameof(Image2DMediaRenderer));
+	private static ImageResourceLoader _loader;
+
+	public static async Task Render(Media2DDisplayInstance instance, string path)
 	{
-		var texture = File.Exists(path) ? LoadTexture(path) : LoadTexture(bytes);
-		instance.ShowTexture(texture);
+		EnsureLoader();
+		var resourcePath = ProjectSettings.LocalizePath(Path.GetFullPath(path).Replace('\\', '/'));
+		var image = await ThreadedResourceLoader.Load<Godot.Image>(resourcePath, instance.Item);
+
+		if (image == null)
+		{
+			Log.Info("Using black fallback texture.");
+			image = Godot.Image.CreateEmpty(1, 1, false, Godot.Image.Format.Rgba8);
+			image.Fill(Colors.Black);
+		}
+
+		instance.ShowTexture(ImageTexture.CreateFromImage(image));
 	}
 
-	private static ImageTexture LoadTexture(string path)
+	private static void EnsureLoader()
 	{
-		var image = new Godot.Image();
-		image.Load(path);
-		image.GenerateMipmaps();
-		return ImageTexture.CreateFromImage(image);
-	}
+		if (_loader != null)
+			return;
 
-	private static ImageTexture LoadTexture(byte[] bytes)
-	{
-		var image = new Godot.Image();
-		image.LoadJpgFromBuffer(bytes);
-		image.GenerateMipmaps();
-		return ImageTexture.CreateFromImage(image);
+		_loader = new ImageResourceLoader();
+		ResourceLoader.AddResourceFormatLoader(_loader, true);
 	}
 }

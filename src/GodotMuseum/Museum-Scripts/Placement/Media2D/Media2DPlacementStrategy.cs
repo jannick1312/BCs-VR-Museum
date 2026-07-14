@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
@@ -14,7 +13,7 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 {
 	private const string GeneratedMediaGroup = "Generated2DMedia";
-	private const int DefaultMaxItemsPerPlace = 4;
+	private const int DefaultMaxItemsPerPlace = 2;
 	private static readonly EventLogger Log = new(nameof(Media2DPlacementStrategy));
 	private readonly float _cellPadding;
 	private readonly RandomNumberGenerator _rng = new();
@@ -28,7 +27,10 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 
 	public int GetCapacity()
 	{
-		return PlaceCollector.Collect(PlacesRoot, DefaultMaxItemsPerPlace).Sum(group => group.MaxItems);
+		var capacity = 0;
+		foreach (var group in PlaceCollector.Collect(PlacesRoot, DefaultMaxItemsPerPlace))
+			capacity += group.MaxItems;
+		return capacity;
 	}
 
 	public async Task Place(IReadOnlyList<DisplayMediaItem> mediaItems)
@@ -38,7 +40,7 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 
 		var placeGroups = PlaceCollector.Collect(PlacesRoot, DefaultMaxItemsPerPlace);
 		var nextMediaIndex = 0;
-		var placedMediaCount = 0;
+		var placementTasks = new List<Task<bool>>();
 
 		foreach (var group in placeGroups)
 		{
@@ -56,10 +58,15 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 				var item = mediaItems[nextMediaIndex];
 				nextMediaIndex++;
 
-				if (await CreateDisplayInstance(item, group.Place, slots[i]))
-					placedMediaCount++;
+				placementTasks.Add(CreateDisplayInstance(item, group.Place, slots[i]));
 			}
 		}
+
+		var placementResults = await Task.WhenAll(placementTasks);
+		var placedMediaCount = 0;
+		foreach (var placed in placementResults)
+			if (placed)
+				placedMediaCount++;
 
 		if (placedMediaCount < mediaItems.Count)
 			Log.Warning($"Placed {placedMediaCount} of {mediaItems.Count} images/videos.");
@@ -81,11 +88,11 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 		switch (mediaItem.MediaType)
 		{
 			case MediaType.Image:
-				Image2DMediaRenderer.Render(instance, mediaItem.Bytes, mediaItem.Path);
+				await Image2DMediaRenderer.Render(instance, mediaItem.Path);
 				break;
 
 			case MediaType.Video:
-				_videos.Add(await Video2DMediaRenderer.Render(instance, mediaItem.Bytes, mediaItem.Path, mediaItem.Name));
+				_videos.Add(await Video2DMediaRenderer.Render(instance, mediaItem.Path));
 				break;
 
 			default:

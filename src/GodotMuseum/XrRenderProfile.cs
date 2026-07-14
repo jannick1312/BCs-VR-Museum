@@ -1,3 +1,4 @@
+using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
 
 namespace BCSVRMuseum;
@@ -7,22 +8,17 @@ public partial class XrRenderProfile : Node
 	private Profile _profile;
 
 	[Export] public float QuestStandaloneScale { get; set; }
-	[Export] public float FocusStandaloneScale { get; set; }
-	[Export] public float StreamingScale { get; set; }
 	[Export] public float QuestRefreshRate { get; set; }
+	[Export] public int QuestMediaLoadWorkers { get; set; } = 1;
+	[Export] public float FocusStandaloneScale { get; set; }
 	[Export] public float FocusRefreshRate { get; set; }
+	[Export] public int FocusMediaLoadWorkers { get; set; } = 1;
+	[Export] public float StreamingScale { get; set; }
 	[Export] public float StreamingRefreshRate { get; set; }
-	[Export] public bool QuestSsrEnabled { get; set; }
-	[Export] public bool FocusSsrEnabled { get; set; }
+	[Export] public int StreamingMediaLoadWorkers { get; set; } = 4;
 	[Export] public bool StreamingSsrEnabled { get; set; }
-	[Export] public bool QuestSsaoEnabled { get; set; }
-	[Export] public bool FocusSsaoEnabled { get; set; }
 	[Export] public bool StreamingSsaoEnabled { get; set; }
-	[Export] public bool QuestSsilEnabled { get; set; }
-	[Export] public bool FocusSsilEnabled { get; set; }
 	[Export] public bool StreamingSsilEnabled { get; set; }
-	[Export] public bool QuestSdfgiEnabled { get; set; }
-	[Export] public bool FocusSdfgiEnabled { get; set; }
 	[Export] public bool StreamingSdfgiEnabled { get; set; }
 	[Export] public NodePath StartXrPath { get; set; }
 	[Export] public NodePath PlatformSwitcherPath { get; set; }
@@ -34,6 +30,7 @@ public partial class XrRenderProfile : Node
 		var startXr = GetNode(StartXrPath);
 		startXr.Set("render_target_size_multiplier", GetRenderScale(_profile));
 		startXr.Set("target_refresh_rate", GetRefreshRate(_profile));
+		ThreadedResourceLoader.ConfigureWorkers(GetMediaLoadWorkers(_profile));
 	}
 
 	public override void _Ready()
@@ -48,10 +45,7 @@ public partial class XrRenderProfile : Node
 			return Profile.Streaming;
 		if (OS.HasFeature("quest"))
 			return Profile.QuestStandalone;
-		if (OS.HasFeature("focus"))
-			return Profile.FocusStandalone;
-
-		return Profile.Streaming;
+		return OS.HasFeature("focus") ? Profile.FocusStandalone : Profile.Streaming;
 	}
 
 	private float GetRenderScale(Profile profile)
@@ -74,32 +68,24 @@ public partial class XrRenderProfile : Node
 		};
 	}
 
+	private int GetMediaLoadWorkers(Profile profile)
+	{
+		return profile switch
+		{
+			Profile.QuestStandalone => QuestMediaLoadWorkers,
+			Profile.FocusStandalone => FocusMediaLoadWorkers,
+			_ => StreamingMediaLoadWorkers
+		};
+	}
+
 	private void ConfigureEnvironment(Environment environment, Profile profile)
 	{
-		environment.SsrEnabled = profile switch
-		{
-			Profile.QuestStandalone => QuestSsrEnabled,
-			Profile.FocusStandalone => FocusSsrEnabled,
-			_ => StreamingSsrEnabled
-		};
-		environment.SsaoEnabled = profile switch
-		{
-			Profile.QuestStandalone => QuestSsaoEnabled,
-			Profile.FocusStandalone => FocusSsaoEnabled,
-			_ => StreamingSsaoEnabled
-		};
-		environment.SsilEnabled = profile switch
-		{
-			Profile.QuestStandalone => QuestSsilEnabled,
-			Profile.FocusStandalone => FocusSsilEnabled,
-			_ => StreamingSsilEnabled
-		};
-		environment.SdfgiEnabled = profile switch
-		{
-			Profile.QuestStandalone => QuestSdfgiEnabled,
-			Profile.FocusStandalone => FocusSdfgiEnabled,
-			_ => StreamingSdfgiEnabled
-		};
+		var allowAdvancedEffects = profile == Profile.Streaming;
+
+		environment.SsrEnabled = allowAdvancedEffects && StreamingSsrEnabled;
+		environment.SsaoEnabled = allowAdvancedEffects && StreamingSsaoEnabled;
+		environment.SsilEnabled = allowAdvancedEffects && StreamingSsilEnabled;
+		environment.SdfgiEnabled = allowAdvancedEffects && StreamingSdfgiEnabled;
 	}
 
 	private enum Profile

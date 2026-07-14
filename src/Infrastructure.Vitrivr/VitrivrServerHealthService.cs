@@ -5,8 +5,7 @@ namespace Infrastructure.Vitrivr;
 
 public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealthService
 {
-	private readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(1) };
-
+	private static readonly HttpClient HttpClient = new() { Timeout = TimeSpan.FromSeconds(1) };
 	private readonly EventLogger _logger = new(nameof(VitrivrServerHealthService));
 
 	public async Task<bool> IsReachableAsync()
@@ -14,7 +13,7 @@ public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealt
 		for (var attempt = 0; attempt < 5; attempt++)
 			try
 			{
-				using var response = await _httpClient.GetAsync(settings.SchemaListUrl);
+				using var response = await HttpClient.GetAsync(settings.SchemaListUrl);
 
 				if (response.IsSuccessStatusCode)
 				{

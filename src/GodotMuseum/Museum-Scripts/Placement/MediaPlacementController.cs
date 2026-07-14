@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 using BCSVRMuseum.Museum_Scripts.Placement.Object3D;
@@ -42,8 +41,13 @@ public partial class MediaPlacementController : Node
 
 	public async Task Place(IReadOnlyList<DisplayMediaItem> items)
 	{
-		var media2DItems = items.Where(item => item.MediaType is MediaType.Image or MediaType.Video).ToList();
-		var object3DItems = items.Where(item => item.MediaType == MediaType.Object3D).ToList();
+		var media2DItems = new List<DisplayMediaItem>();
+		var object3DItems = new List<DisplayMediaItem>();
+		foreach (var item in items)
+			if (item.MediaType is MediaType.Image or MediaType.Video)
+				media2DItems.Add(item);
+			else if (item.MediaType == MediaType.Object3D)
+				object3DItems.Add(item);
 
 		await _media2DPlacement.Place(media2DItems);
 		if (media2DItems.Count == 0)

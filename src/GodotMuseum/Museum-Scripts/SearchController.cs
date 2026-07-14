@@ -72,7 +72,7 @@ public partial class SearchController : Node
 
 		var application = _searchUseCaseFactory.GetMuseumApplication();
 		var capacity = _mediaPlacement.GetCapacity();
-		await SubmitSearch(() => application.SearchAsync(text, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), "Search");
+		await SubmitSearch(() => application.SearchAsync(text, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), application.CompleteMediaPlacement, "Search");
 	}
 
 	private async void SubmitSimilaritySearch(string vectorJson)
@@ -86,7 +86,7 @@ public partial class SearchController : Node
 
 		var application = _searchUseCaseFactory.GetMuseumApplication();
 		var capacity = _mediaPlacement.GetCapacity();
-		await SubmitSearch(() => application.SearchAsync(vector, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), "Similarity search");
+		await SubmitSearch(() => application.SearchAsync(vector, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), application.CompleteMediaPlacement, "Similarity search");
 	}
 
 	private bool CanSubmitSearch(string searchName)
@@ -97,7 +97,7 @@ public partial class SearchController : Node
 		return false;
 	}
 
-	private async Task SubmitSearch(Func<Task<DisplayMediaResult>> search, string searchName)
+	private async Task SubmitSearch(Func<Task<DisplayMediaResult>> search, Action completePlacement, string searchName)
 	{
 		_isSearching = true;
 		try
@@ -111,6 +111,7 @@ public partial class SearchController : Node
 			}
 
 			await _mediaPlacement.Place(result.Items);
+			completePlacement();
 			_logger.Info($"{searchName} completed. DisplayedItems={result.Items.Count}.");
 		}
 		catch (Exception exception)

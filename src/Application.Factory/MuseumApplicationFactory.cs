@@ -6,10 +6,10 @@ namespace Application.Factory;
 
 public static class MuseumApplicationFactory
 {
-	public static IMuseumApplication CreateVitrivrApplication(string currentIp, string mediaFolderPath)
+	public static IMuseumApplication CreateVitrivrApplication(string currentIp, string mediaFolderPath, string mediaRoot)
 	{
 		var vitrivrSettings = new VitrivrSettings(currentIp, mediaFolderPath);
 
-		return new MuseumApplication(new VitrivrSearchService(vitrivrSettings), new MediaLoader(), new VitrivrServerHealthService(vitrivrSettings));
+		return new MuseumApplication(new VitrivrSearchService(vitrivrSettings), new MediaLoader(mediaRoot), new VitrivrServerHealthService(vitrivrSettings));
 	}
 }

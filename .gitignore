@@ -16,7 +16,7 @@ local.properties
 captures/
 .externalNativeBuild/
 .cxx/
-*.apk
+# *.apk
 output.json
 
 # IntelliJ
@@ -1135,3 +1135,4 @@ src/GodotMuseum/android/
 src/GodotMuseum/Blender/
 
 *.import
+tools/

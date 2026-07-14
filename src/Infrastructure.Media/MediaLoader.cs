@@ -4,10 +4,26 @@ using Logger;
 
 namespace Infrastructure.Media;
 
-public class MediaLoader : IMediaLoader
+public class MediaLoader(string mediaRoot) : IMediaLoader
 {
-	private readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(10) };
+	private static readonly HttpClient HttpClient = new() { Timeout = TimeSpan.FromSeconds(30) };
 	private readonly EventLogger _logger = new(nameof(MediaLoader));
+	private readonly MediaStore _mediaStore = MediaStore.ForRoot(mediaRoot);
+
+	public void BeginBatch()
+	{
+		_mediaStore.BeginNext();
+	}
+
+	public void CommitBatch()
+	{
+		_mediaStore.CommitNext();
+	}
+
+	public void ReleasePreviousBatch()
+	{
+		_mediaStore.ReleasePrevious();
+	}
 
 	public async Task<MediaContent> LoadAsync(SearchResultItem item)
 	{
@@ -22,9 +38,12 @@ public class MediaLoader : IMediaLoader
 			}
 
 			_logger.Info("Local media not found, remote loading started.");
-			var remoteBytes = await _httpClient.GetByteArrayAsync(item.RemoteUrl);
+			var remotePath = _mediaStore.NextPath(item.Name);
+			await using var remoteStream = await HttpClient.GetStreamAsync(item.RemoteUrl);
+			await using var fileStream = new FileStream(remotePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
+			await remoteStream.CopyToAsync(fileStream);
 			_logger.Info($"Media loaded from remote URL. RemoteUrl='{item.RemoteUrl}'.");
-			return MediaContent.FromBytes(remoteBytes);
+			return MediaContent.FromPath(remotePath);
 		}
 		catch (TaskCanceledException)
 		{

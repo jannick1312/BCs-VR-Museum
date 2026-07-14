@@ -35,8 +35,10 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 
 		var searchItems = SelectItems(searchResult.Items, limit, mediaMode, maxMedia2D, maxObjects3D);
 		_logger.Info($"Loading media within placement capacity. Max2D={maxMedia2D}, Max3D={maxObjects3D}, SelectedItems={searchItems.Count}.");
+		mediaLoader.BeginBatch();
 		var loadTasks = searchItems.Select(mediaLoader.LoadAsync).ToArray();
 		var mediaContents = await Task.WhenAll(loadTasks);
+		mediaLoader.CommitBatch();
 
 		var items = new List<DisplayMediaItem>();
 		for (var i = 0; i < searchItems.Count; i++)
@@ -49,8 +51,7 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 				continue;
 			}
 
-			var path = mediaContent.Path.Length > 0 ? mediaContent.Path : searchItems[i].RemoteUrl;
-			items.Add(new DisplayMediaItem(searchItems[i].Vector, searchItems[i].MediaType, mediaContent.Bytes, path, searchItems[i].Name));
+			items.Add(new DisplayMediaItem(searchItems[i].Vector, searchItems[i].MediaType, mediaContent.Path, searchItems[i].Name));
 		}
 
 		_logger.Info($"Media search completed. SelectedItems={searchItems.Count}, LoadedItems={items.Count}.");

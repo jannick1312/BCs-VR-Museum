@@ -30,31 +30,41 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 
 		var placeGroups = PlaceCollector.Collect(PlacesRoot, 1);
 		var count = Mathf.Min(objectItems.Count, placeGroups.Count);
-		var placedObjectCount = 0;
+		var placementTasks = new List<Task<bool>>();
 
 		for (var i = 0; i < count; i++)
 		{
 			await WaitForFrame();
 
-			var objectItem = objectItems[i];
-			var instance = Object3DDisplayInstance.Create(DisplayTemplate, DisplayRoot, GeneratedGroup);
-			instance.StoreRetrievableMetadata(objectItem.Vector, objectItem.Name, objectItem.Path);
-			var objectScale = Object3DMediaRenderer.Render(instance, objectItem.Bytes, objectItem.Path, placeGroups[i].Place, _fitter);
-
-			if (objectScale == null)
-			{
-				instance.Item.QueueFree();
-				Log.Warning($"Skipping 3D object '{objectItem.Name}' at index {i} because it could not be loaded.");
-				continue;
-			}
-
-			Log.Info($"Placed 3D object '{objectItem.Name}'. ObjectScale={objectScale}");
-			placedObjectCount++;
+			placementTasks.Add(PlaceObject(objectItems[i], placeGroups[i].Place, i));
 		}
+
+		var placementResults = await Task.WhenAll(placementTasks);
+		var placedObjectCount = 0;
+		foreach (var placed in placementResults)
+			if (placed)
+				placedObjectCount++;
 
 		if (placedObjectCount < objectItems.Count)
 			Log.Warning($"Placed {placedObjectCount} of {objectItems.Count} 3D objects.");
 		else
 			Log.Info($"Placed all {placedObjectCount} 3D objects.");
+	}
+
+	private async Task<bool> PlaceObject(DisplayMediaItem objectItem, Node3D place, int index)
+	{
+		var instance = Object3DDisplayInstance.Create(DisplayTemplate, DisplayRoot, GeneratedGroup);
+		instance.StoreRetrievableMetadata(objectItem.Vector, objectItem.Name, objectItem.Path);
+		var objectScale = await Object3DMediaRenderer.Render(instance, objectItem.Path, place, _fitter);
+
+		if (objectScale == null)
+		{
+			instance.Item.QueueFree();
+			Log.Warning($"Skipping 3D object '{objectItem.Name}' at index {index} because it could not be loaded.");
+			return false;
+		}
+
+		Log.Info($"Placed 3D object '{objectItem.Name}'. ObjectScale={objectScale}");
+		return true;
 	}
 }

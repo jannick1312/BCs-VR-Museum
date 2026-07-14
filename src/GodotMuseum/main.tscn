@@ -135,11 +135,13 @@ size = Vector3(1.8, 1.8, 0.02)
 [node name="XrRenderProfile" type="Node" parent="." unique_id=2004757622]
 script = ExtResource("6_xr_profile")
 QuestStandaloneScale = 1.5
-FocusStandaloneScale = 0.8
-StreamingScale = 1.2
 QuestRefreshRate = 72.0
+QuestMediaLoadWorkers = 1
+FocusStandaloneScale = 0.8
 FocusRefreshRate = 90.0
-StreamingSsrEnabled = true
+FocusMediaLoadWorkers = 1
+StreamingScale = 2.0
+StreamingMediaLoadWorkers = 4
 StreamingSsaoEnabled = true
 StreamingSsilEnabled = true
 StartXrPath = NodePath("../StartXR")

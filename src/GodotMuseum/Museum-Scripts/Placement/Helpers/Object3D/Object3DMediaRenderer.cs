@@ -1,4 +1,6 @@
 using System.IO;
+using System.Threading.Tasks;
+using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 using Godot;
 
@@ -6,22 +8,23 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 
 public static class Object3DMediaRenderer
 {
-	public static float? Render(Object3DDisplayInstance instance, byte[] bytes, string path, Node3D place, Object3DDisplayFitter fitter)
+	private static GltfResourceLoader _loader;
+
+	public static async Task<float?> Render(Object3DDisplayInstance instance, string path, Node3D place, Object3DDisplayFitter fitter)
 	{
-		var objectNode = Load(bytes, path);
+		EnsureLoader();
+		var resourcePath = ProjectSettings.LocalizePath(Path.GetFullPath(path).Replace('\\', '/'));
+		var packedScene = await ThreadedResourceLoader.Load<PackedScene>(resourcePath, instance.Item);
+		var objectNode = packedScene?.Instantiate() as Node3D;
 		return objectNode == null ? null : fitter.Place(instance.Item, objectNode, place);
 	}
 
-	private static Node3D Load(byte[] bytes, string path)
+	private static void EnsureLoader()
 	{
-		var gltf = new GltfDocument();
-		var state = new GltfState();
+		if (_loader != null)
+			return;
 
-		if (File.Exists(path))
-			gltf.AppendFromFile(path, state);
-		else
-			gltf.AppendFromBuffer(bytes, "", state);
-
-		return gltf.GenerateScene(state) as Node3D;
+		_loader = new GltfResourceLoader();
+		ResourceLoader.AddResourceFormatLoader(_loader, true);
 	}
 }

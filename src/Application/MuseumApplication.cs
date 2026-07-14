@@ -18,6 +18,11 @@ public sealed class MuseumApplication(ISearchEngine searchEngine, IMediaLoader m
 		return _searchMedia.ExecuteAsync(vector, limit, mediaMode, maxMedia2D, maxObjects3D);
 	}
 
+	public void CompleteMediaPlacement()
+	{
+		mediaLoader.ReleasePreviousBatch();
+	}
+
 	public Task<bool> IsReachableAsync()
 	{
 		return _validateServer.ExecuteAsync();
