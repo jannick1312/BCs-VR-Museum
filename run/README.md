@@ -3,7 +3,7 @@
 This directory contains the runtime configuration and helper scripts for the
 three supported ways of running the application:
 
-1. Run or deploy directly from the Godot editor.
+1. Deploy directly from the Godot editor.
 2. Sideload an Android APK to a Meta Quest or VIVE Focus headset.
 3. Run the exported Windows application and stream it to a headset.
 
@@ -17,29 +17,25 @@ Every mode uses the same JSON format:
 }
 ```
 
-- `serverIp` is the server address used.
-- The application only reads `config.json`; it never modifies the file.
+- `serverIp` specifies the address of the vitrivr server.
+- The application only reads `config.json`.
 - If no `config.json` is found, `10.34.64.208` is used silently as the built-in
   default.
 
 Media and log paths are not configurable because their names and locations are
-determined automatically.
+determined internally.
 
-## 1. Godot editor and direct Godot deployment
+## 1. Direct Godot deployment
 
 Godot reads:
 
 `src/GodotMuseum/config.json`
 
-When Godot exports or directly deploys the Android project, this file is
-included in the APK through the `*.json` export include filter. On Android, an
-external sideload configuration takes priority if one is present; otherwise,
-the file embedded in the APK is used.
+When Godot deploys the Android project, this file is included in the APK through the `*.json` export include filter. On Android, an external sideload configuration takes priority if one is present; otherwise, the file embedded in the APK is used.
 
-When running in the Godot editor:
-
-- Media directory: `src/GodotMuseum/media`
-- Log directory: Godot's writable `user://logs` directory
+Before deploying from Godot, select the correct export preset for the target VR
+headset under **Project -> Export...**, as the headset type cannot be detected
+automatically.
 
 ## 2. Android APK sideload
 
@@ -88,7 +84,7 @@ The scripts perform only these operations:
 2. Create the app-specific external files directory.
 3. Copy `config.json` to the headset.
 
-The headset file layout is:
+The headset file layout then is:
 
 ```text
 /sdcard/Android/data/VR.Museum/files/
@@ -117,8 +113,7 @@ On macOS or Linux:
 ./logs.sh
 ```
 
-Both scripts show the latest 100 readable log lines and then follow new lines.
-Stop them with `Ctrl+C`.
+Both scripts show the readable log lines and then follow new lines.
 
 ## 3. Windows streaming build
 
@@ -128,37 +123,14 @@ layout:
 ```text
 stream/
 ├── VR-Museum.exe
-├── VR-Museum.console.exe
-├── VR-Museum.pck
 ├── config.json
-├── data_BCS-VR-Museum_windows_x86_64/
+├── libgodotopenxrvendors.dll
 ├── media/
 └── logs/
 ```
 
-The `.console.exe` is useful for diagnostics but is not needed by normal users.
-The `.pck` file and `data_BCS-VR-Museum_windows_x86_64` directory are part of
-the exported application and must remain next to the main `.exe`.
+The `.dll` file is part of the exported application and must remain next to the main `.exe`.
 
 The application loads `config.json` from the directory containing the `.exe`.
 The `media` and `logs` directories are also resolved relative to the `.exe`, so
 absolute Windows paths are not required.
-
-## Configuration lookup order
-
-Android:
-
-1. `/sdcard/Android/data/VR.Museum/files/config.json`
-2. `res://config.json` embedded in the APK
-3. Built-in default: `10.34.64.208`
-
-Exported Windows application:
-
-1. `config.json` next to the `.exe`
-2. `res://config.json` embedded in the export
-3. Built-in default: `10.34.64.208`
-
-Godot editor:
-
-1. `src/GodotMuseum/config.json`
-2. Built-in default: `10.34.64.208`

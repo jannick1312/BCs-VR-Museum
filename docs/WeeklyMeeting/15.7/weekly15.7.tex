@@ -1,0 +1,34 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+
+\newcommand{\meetingdate}{15 July 2026}
+\input{../template.tex}
+
+\begin{document}
+
+\done
+\begin{itemize}
+    \item Prepared separate configurations for standalone deployment and PC streaming, added installation and logging scripts, and documented both workflows.
+    \item Improved hand tracking by adding a fallback hand mesh.
+    \item Limited the number of loaded results to improve performance.
+    \item Improved interaction with displayed media by adding colored grab points.
+    \item Moved image and 3D model loading and rendering work to background threads so that the user interface remains responsive during searches.
+    \item Cleaned up the codebase using editor rules and removed remaining hard-coded configuration paths.
+\end{itemize}
+
+\support
+\begin{itemize}
+    \item Pre-optimization of 3D models: Can you suggest a method for reducing file sizes without losing too much quality, or a way to remove unsupported textures?
+    \item Room with original-size 3D assets: Is this useful? Some assets are scaled to as little as 0.0001\% of their original size, so they would be extremely large in such a room. Should we instead scale each asset to a reasonable size? If so, how should that size be determined, by using minimum and maximum dimensions?
+\end{itemize}
+
+\plan
+\checkpoint{(p3)Test streaming to the Apple Vision Pro}
+\checkpoint{(p1)Investigate how to handle original-size 3D assets}
+\checkpoint{(p1)Investigate pre-optimization of 3D models}
+\checkpoint{(p2)Add sound effects for clicking and walking}
+\checkpoint{(p2)Add a progress bar for asset loading}
+\checkpoint{(p1)Prepare for the midterm presentation}
+
+\end{document}
