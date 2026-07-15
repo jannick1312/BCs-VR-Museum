@@ -1,14 +1,11 @@
-using System;
 using System.IO;
 using System.Text.Json;
 using Godot;
-using FileAccess = Godot.FileAccess;
 
 namespace BCSVRMuseum;
 
 public static class AppSettingsLoader
 {
-	private const string ProjectConfigPath = "res://config.json";
 	private const string ConfigFileName = "config.json";
 	private const string AndroidExternalConfigPath = "/sdcard/Android/data/VR.Museum/files/config.json";
 	private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true };
@@ -33,27 +30,15 @@ public static class AppSettingsLoader
 	private static string[] GetCandidates()
 	{
 		if (OS.GetName() == "Android")
-			return [AndroidExternalConfigPath, ProjectConfigPath];
-
-		if (OS.HasFeature("editor"))
-			return [ProjectConfigPath];
+			return [AndroidExternalConfigPath];
 
 		var executableDirectory = Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
-		return [Path.Combine(executableDirectory, ConfigFileName), ProjectConfigPath];
+		return [Path.Combine(executableDirectory, ConfigFileName)];
 	}
 
 	private static bool TryRead(string path, out string json)
 	{
 		json = "";
-
-		if (path.StartsWith("res://", StringComparison.Ordinal) || path.StartsWith("user://", StringComparison.Ordinal))
-		{
-			if (!FileAccess.FileExists(path))
-				return false;
-
-			json = FileAccess.GetFileAsString(path);
-			return true;
-		}
 
 		if (!File.Exists(path))
 			return false;

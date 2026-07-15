@@ -6,6 +6,7 @@ namespace BCSVRMuseum;
 
 public partial class SearchSettingsStore : Node
 {
+	private static readonly string[] MediaSubdirectories = ["images", "videos", "3d"];
 	private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
 	private string _configSource = "";
 	private string _mediaFolderPath;
@@ -17,7 +18,7 @@ public partial class SearchSettingsStore : Node
 
 	public override void _EnterTree()
 	{
-		var logDirectoryPath = ResolveApplicationDirectory("logs", true);
+		var logDirectoryPath = ResolveApplicationDirectory("logs");
 		EventLogger.Configure(logDirectoryPath);
 	}
 
@@ -25,7 +26,8 @@ public partial class SearchSettingsStore : Node
 	{
 		LoadJsonSettings();
 
-		_mediaFolderPath = ResolveApplicationDirectory("media", false);
+		_mediaFolderPath = ResolveApplicationDirectory("media");
+		CreateMediaDirectories(_mediaFolderPath);
 
 		_runtimeSettings = new RuntimeSearchSettings(_serverIp, _mediaFolderPath);
 
@@ -53,6 +55,13 @@ public partial class SearchSettingsStore : Node
 		_logger.Info($"Server IP reverted. CurrentIp='{CurrentIp}'.");
 	}
 
+	private static void CreateMediaDirectories(string mediaFolderPath)
+	{
+		Directory.CreateDirectory(mediaFolderPath);
+		foreach (var subdirectory in MediaSubdirectories)
+			Directory.CreateDirectory(Path.Combine(mediaFolderPath, subdirectory));
+	}
+
 	private static string ResolveRuntimeProfile()
 	{
 		if (OS.HasFeature("quest"))
@@ -64,16 +73,10 @@ public partial class SearchSettingsStore : Node
 		return OS.HasFeature("streaming") ? "streamed" : null;
 	}
 
-	private static string ResolveApplicationDirectory(string directoryName, bool writable)
+	private static string ResolveApplicationDirectory(string directoryName)
 	{
 		if (OS.GetName() == "Android")
 			return $"/sdcard/Android/data/VR.Museum/files/{directoryName}";
-
-		if (OS.HasFeature("editor"))
-		{
-			var godotPath = writable ? $"user://{directoryName}" : $"res://{directoryName}";
-			return ProjectSettings.GlobalizePath(godotPath);
-		}
 
 		var executableDirectory = Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
 		return Path.Combine(executableDirectory, directoryName);
