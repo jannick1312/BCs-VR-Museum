@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://v0egewsctcwo"]
+
+[ext_resource type="Script" uid="uid://cts86xbatkntk" path="res://Player/Hud/HudController.cs" id="1_hud_controller"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_background"]
+bg_color = Color(0.12, 0.14, 0.16, 0.72)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(0.38, 0.41, 0.44, 0.96)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="Hud" type="Control" unique_id=1310227466]
+custom_minimum_size = Vector2(1200, 800)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1200.0
+offset_bottom = 800.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HudController" type="Node" parent="." unique_id=203054629]
+script = ExtResource("1_hud_controller")
+
+[node name="Frame" type="Line2D" parent="." unique_id=1767955624]
+position = Vector2(0, -12)
+points = PackedVector2Array(170, 64, 222, 108, 978, 108, 1030, 64)
+width = 2.0
+default_color = Color(0.72, 0.74, 0.76, 0.78)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1748591947]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 46.0
+offset_right = 960.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_progress_background")
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
+value = 55.0
+show_percentage = false
+
+[node name="Text" type="Label" parent="." unique_id=1701614189]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 46.0
+offset_right = 960.0
+offset_bottom = 76.0
+theme_override_colors/font_color = Color(0.94, 0.95, 0.96, 0.96)
+theme_override_colors/font_outline_color = Color(0.08, 0.09, 0.1, 0.7)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 17
+text = "Loading..."
+horizontal_alignment = 1
+vertical_alignment = 1

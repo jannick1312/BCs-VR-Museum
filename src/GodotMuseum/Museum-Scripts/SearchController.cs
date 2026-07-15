@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using BCSVRMuseum.Museum_Scripts.Decision;
 using BCSVRMuseum.Museum_Scripts.Placement;
+using BCSVRMuseum.Player.Hud;
 using BCSVRMuseum.Player.InputArea;
 using Godot;
 using Logger;
@@ -32,7 +33,6 @@ public partial class SearchController : Node
 		_mediaPlacement = GetNode<MediaPlacementController>(MediaPlacementControllerPath);
 		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
 		_gameSettingsStore = (GameSettingsStore)GetTree().Root.FindChild("GameSettingsStore", true, false);
-
 		_inputLineEdit = await this.WaitFor(() => _inputScreen.InputLineEdit, "input line edit");
 		_activeLineEdit = _inputLineEdit;
 
@@ -100,6 +100,7 @@ public partial class SearchController : Node
 	private async Task SubmitSearch(Func<Task<DisplayMediaResult>> search, Action completePlacement, string searchName)
 	{
 		_isSearching = true;
+		HudController.Instance.StartLoading();
 		try
 		{
 			var result = await search();
@@ -107,16 +108,20 @@ public partial class SearchController : Node
 			if (!result.Success)
 			{
 				_logger.Warning($"{searchName} failed. Error='{result.ErrorMessage}'. Existing output is kept.");
+				HudController.Instance.Fail();
 				return;
 			}
 
+			HudController.Instance.SetPhase(HudPhase.PreparingResults);
 			await _mediaPlacement.Place(result.Items);
 			completePlacement();
 			_logger.Info($"{searchName} completed. DisplayedItems={result.Items.Count}.");
+			HudController.Instance.Complete();
 		}
 		catch (Exception exception)
 		{
 			_logger.Error($"{searchName} failed unexpectedly", exception);
+			HudController.Instance.Fail();
 		}
 		finally
 		{

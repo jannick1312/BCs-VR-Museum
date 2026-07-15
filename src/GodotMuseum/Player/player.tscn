@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="1_fallback_left"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_2hs0m"]
 [ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="2_fallback_right"]
+[ext_resource type="PackedScene" uid="uid://dx4sgevq37pyq" path="res://Player/Hud/2Din3DHud.tscn" id="2_pisgm"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_1jxqw"]
 [ext_resource type="Material" uid="uid://cf0sca247ok4s" path="res://Materials/Controller_White.tres" id="3_apopc"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_i3pqv"]
@@ -465,6 +466,10 @@ LeftPinchMoveDelaySeconds = 0.4
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=2132045270]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
+[node name="2DIn3DHud" parent="XROrigin3D/XRCamera3D" unique_id=776647796 instance=ExtResource("2_pisgm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+visible = false
+
 [node name="HandInput" type="Node3D" parent="XROrigin3D" unique_id=225066344]
 
 [node name="MovementJoystick" parent="XROrigin3D/HandInput" unique_id=1332699059 instance=ExtResource("9_joystick")]
@@ -596,8 +601,8 @@ ViewportPath = NodePath("../Input/2DIn3DPlane/Viewport")
 
 [node name="EnterSubmitTrigger" type="Node" parent="XROrigin3D/LeftController" unique_id=594472320]
 script = ExtResource("11_lfmf2")
-ViewportPath = NodePath("../Input/2DIn3DKeyboard/Viewport")
 InputBridgePath = NodePath("../InputBridge")
+ViewportPath = NodePath("../Input/2DIn3DKeyboard/Viewport")
 
 [node name="VisibilityController" type="Node" parent="XROrigin3D/LeftController" unique_id=53525149]
 script = ExtResource("12_visibility")

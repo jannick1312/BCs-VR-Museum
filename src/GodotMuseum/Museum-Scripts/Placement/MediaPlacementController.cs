@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 using BCSVRMuseum.Museum_Scripts.Placement.Object3D;
+using BCSVRMuseum.Player.Hud;
 using Godot;
 using Logger;
 using Models;
@@ -49,13 +50,17 @@ public partial class MediaPlacementController : Node
 			else if (item.MediaType == MediaType.Object3D)
 				object3DItems.Add(item);
 
+		HudController.Instance.SetPhase(HudPhase.LoadingImagesAndVideos);
 		await _media2DPlacement.Place(media2DItems);
 		if (media2DItems.Count == 0)
 			Log.Info("No 2D media selected for placement. Items=0.");
 
+		HudController.Instance.SetPhase(HudPhase.Loading3DObjects);
 		await _object3DPlacement.Place(object3DItems);
 		if (object3DItems.Count == 0)
 			Log.Info("No 3D media selected for placement. Items=0.");
+
+		HudController.Instance.SetPhase(HudPhase.Finalizing);
 	}
 
 	public override void _Process(double delta)

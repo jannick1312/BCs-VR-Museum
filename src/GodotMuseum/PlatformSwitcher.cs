@@ -80,7 +80,7 @@ public partial class PlatformSwitcher : Node
 		if (_switching)
 			return;
 
-		var menuButtonPressed = _leftController.IsButtonPressed("menu_button");
+		var menuButtonPressed = _leftController.IsButtonPressed("ax_button");
 
 		if (menuButtonPressed && !_menuButtonWasPressed)
 			ToggleWorld();
