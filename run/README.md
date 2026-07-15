@@ -41,7 +41,7 @@ applicable lookup order exists.
 
 | Operation | Configuration | Media | Logs |
 | --- | --- | --- | --- |
-| Android sideload<br>(`install.sh`/<br>`install.bat`) | `deployment/config.json` is copied to the external Android path, creating or overwriting the destination file. | If `deployment/media` exists, all of its contents are copied into the external Android `media` directory. Files at the same relative path are overwritten and files that exist only on the headset remain untouched. | The installation scripts do not create or modify log files. |
+| Android sideload<br>(`install.sh`/<br>`install.bat`) | `deployment/config.json` is copied to the external Android path, creating or overwriting the destination file. | If `deployment/media` exists, the scripts create the remote `images`, `videos`, and `3d` directories before copying the corresponding local directories. Files at the same relative path are overwritten and files that exist only on the headset remain untouched. | The installation scripts do not create or modify log files. |
 | Deployment from Godot | An existing external `config.json` remains in place and is used. If it is absent, the built-in default is used. | No project media is copied to the external Android `media` directory. Existing external media  remains in place during an APK update. | Godot deployment does not create or modify log files. |
 | Startup on Android | Existing configuration file is read if present. Otherwise the built-in default is used. | The application creates `media` and its subfolder if missing. | The application creates `logs` if missing and creates or clears `.log` files. |
 | Windows streaming startup | `config.json` next to the `.exe` is read if present. Otherwise, the built-in default is used. | The application creates `media` and its subfolder if missing. | The application creates `logs` next to the `.exe` if missing and creates or clears `.log` files. |
@@ -108,8 +108,10 @@ The scripts perform these operations:
 1. Install or update the APK using `adb install -r`.
 2. Create the app-specific external files directory.
 3. Copy `config.json` to the headset.
-4. If `deployment/media` exists, recursively copy its contents to the headset's
-   `media` directory.
+4. If `deployment/media` exists, create the remote `images`, `videos`, and `3d` directories and copy each corresponding local directory that exists.
+5. Recursively grant read, write, and execute permissions (`777`) to the external app files directory and all its contents.
+
+The scripts stop immediately if an installation, directory creation, copy, or permission operation fails.
 
 After installation and the first application startup, the headset layout is:
 
