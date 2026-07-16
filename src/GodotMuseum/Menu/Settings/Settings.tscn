@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bifam2t5wkpb8"]
 
-[ext_resource type="Script" path="res://Menu-Scripts/SettingsPanel.cs" id="1_1g1q2"]
-[ext_resource type="Texture2D" uid="uid://ul6xsjsyi8wu" path="res://Icon/vr-sketch.png" id="2_1g1q2"]
+[ext_resource type="Script" uid="uid://cn6rsss87vxnm" path="res://Menu-Scripts/SettingsPanel.cs" id="1_1g1q2"]
+[ext_resource type="Texture2D" uid="uid://ul6xsjsyi8wu" path="res://Assets/Icon/vr-sketch.png" id="2_1g1q2"]
 
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
 bg_color = Color(1, 1, 1, 0.75686276)

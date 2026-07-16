@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cofl4wbv7c4ku"]
+
+[resource]
+cull_mode = 1
+albedo_color = Color(0.8668292, 0.86682963, 0.86683, 1)
+uv1_triplanar = true

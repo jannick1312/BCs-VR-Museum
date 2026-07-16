@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c2xmvk8w07td2"]
+
+[ext_resource type="Texture2D" uid="uid://b3igntn5yjfvk" path="res://Assets/Materials/Plaster_wall/textures/wall-basecolor.jpg" id="1_qdklg"]
+[ext_resource type="Texture2D" uid="uid://usxgn5xuc6fp" path="res://Assets/Materials/Plaster_wall/textures/wall-roughness.jpg" id="2_rccw4"]
+[ext_resource type="Texture2D" uid="uid://dki2bymskvsoq" path="res://Assets/Materials/Plaster_wall/textures/wall-normal.jpg" id="3_0dabc"]
+
+[resource]
+albedo_color = Color(0.3459457, 0.34594572, 0.3459457, 1)
+albedo_texture = ExtResource("1_qdklg")
+roughness_texture = ExtResource("2_rccw4")
+normal_enabled = true
+normal_texture = ExtResource("3_0dabc")
+heightmap_enabled = true
+heightmap_scale = 0.0
+heightmap_texture = ExtResource("2_rccw4")
+uv1_scale = Vector3(0.02, 0.02, 1)

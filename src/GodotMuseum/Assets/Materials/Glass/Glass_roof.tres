@@ -1,7 +1,7 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://fo6av2uisu1u"]
 
-[ext_resource type="Texture2D" uid="uid://di2hiwslu4x1j" path="res://Materials/Glass/textures/garage_floor_nor_gl_4k.jpg" id="1_fbe4e"]
-[ext_resource type="Texture2D" uid="uid://cv22yuskj3wdj" path="res://Materials/Glass/textures/garage_floor_rough_4k.jpg" id="2_0k8mc"]
+[ext_resource type="Texture2D" uid="uid://di2hiwslu4x1j" path="res://Assets/Materials/Glass/textures/garage_floor_nor_gl_4k.jpg" id="1_fbe4e"]
+[ext_resource type="Texture2D" uid="uid://cv22yuskj3wdj" path="res://Assets/Materials/Glass/textures/garage_floor_rough_4k.jpg" id="2_0k8mc"]
 
 [resource]
 transparency = 1

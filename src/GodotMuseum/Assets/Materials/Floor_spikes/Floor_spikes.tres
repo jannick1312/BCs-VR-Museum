@@ -1,6 +1,6 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://cpmq86kwerpui"]
 
-[ext_resource type="Texture2D" uid="uid://dhfk5rowsydht" path="res://Materials/Floor_spikes/textures/laminate_floor_02_diff_8k.jpg" id="1_wimub"]
+[ext_resource type="Texture2D" uid="uid://dhfk5rowsydht" path="res://Assets/Materials/Floor_spikes/textures/laminate_floor_02_diff_8k.jpg" id="1_wimub"]
 
 [resource]
 albedo_color = Color(0.69253325, 0.5651783, 0.43685386, 1)

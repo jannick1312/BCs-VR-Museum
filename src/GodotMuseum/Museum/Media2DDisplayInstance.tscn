@@ -1,10 +1,10 @@
 [gd_scene format=4 uid="uid://bbgtin8e3itqc"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_bdcga"]
-[ext_resource type="Material" uid="uid://cs7ckc4wuhtpf" path="res://Materials/Metal_rough/Metal_rough.tres" id="2_dlchn"]
+[ext_resource type="Material" uid="uid://cs7ckc4wuhtpf" path="res://Assets/Materials/Metal_rough/Metal_rough.tres" id="2_dlchn"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="3_407ho"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="4_yc23p"]
-[ext_resource type="Material" uid="uid://cl0gutwbpyalo" path="res://Materials/GrabPoint.tres" id="5_8j1b3"]
+[ext_resource type="Material" uid="uid://cl0gutwbpyalo" path="res://Assets/Materials/GrabPoint.tres" id="5_8j1b3"]
 [ext_resource type="PackedScene" uid="uid://dapkassquu443" path="res://Museum/MuseumSimilarity/Similarity.tscn" id="5_ar2c7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xngas"]

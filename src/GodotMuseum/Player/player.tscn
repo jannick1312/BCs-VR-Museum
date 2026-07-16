@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="2_fallback_right"]
 [ext_resource type="PackedScene" uid="uid://dx4sgevq37pyq" path="res://Player/Hud/2Din3DHud.tscn" id="2_pisgm"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_1jxqw"]
-[ext_resource type="Material" uid="uid://cf0sca247ok4s" path="res://Materials/Controller_White.tres" id="3_apopc"]
+[ext_resource type="Material" uid="uid://cf0sca247ok4s" path="res://Assets/Materials/Controller_White.tres" id="3_apopc"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_i3pqv"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_1jxqw"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="7_dw050"]

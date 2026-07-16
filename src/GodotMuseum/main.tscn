@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://b7y5ijto8gvm2" path="res://GameSettingsStore.cs" id="3_2hygf"]
 [ext_resource type="Script" uid="uid://ulmqj7ytbj65" path="res://SearchUseCaseFactory.cs" id="3_272bh"]
 [ext_resource type="PackedScene" uid="uid://djl0v8ero2htq" path="res://Museum/MuseumNode.tscn" id="4_lquwl"]
-[ext_resource type="Texture2D" uid="uid://bb4010j8bdjsi" path="res://HDRi/qwantani_dusk_2_puresky_4k.hdr" id="5_5vw27"]
+[ext_resource type="Texture2D" uid="uid://bb4010j8bdjsi" path="res://Assets/HDRi/qwantani_dusk_2_puresky_4k.hdr" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://dhw4lrm45bj26" path="res://XrRenderProfile.cs" id="6_xr_profile"]
 
 [sub_resource type="Environment" id="Environment_272bh"]
@@ -31,33 +31,6 @@ sky = SubResource("Sky_4c57u")
 sky_rotation = Vector3(0, -1.3962634, 0)
 
 [sub_resource type="Environment" id="Environment_kek77"]
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_edaea"]
-data = PackedVector3Array(0, 0, 0, 3.3137085, 0, -8, 8, 0, -3.3137085, 0, 0, 0, -3.3137085, 0, -8, 3.3137085, 0, -8, 0, 0, 0, -8, 0, -3.3137085, -3.3137085, 0, -8, 0, 0, 0, -8, 0, 3.3137085, -8, 0, -3.3137085, 0, 0, 0, -3.3137085, 0, 8, -8, 0, 3.3137085, 0, 0, 0, 3.3137085, 0, 8, -3.3137085, 0, 8, 0, 0, 0, 8, 0, 3.3137085, 3.3137085, 0, 8, 0, 0, 0, 8, 0, -3.3137085, 8, 0, 3.3137085)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_6s01x"]
-data = PackedVector3Array(3.3137085, 0, -8, 8, 4, -3.3137085, 8, 0, -3.3137085, 3.3137085, 0, -8, 3.3137085, 4, -8, 8, 4, -3.3137085)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_6mrpg"]
-data = PackedVector3Array(-3.3137085, 0, -8, 3.3137085, 4, -8, 3.3137085, 0, -8, -3.3137085, 0, -8, -3.3137085, 4, -8, 3.3137085, 4, -8)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mkm4p"]
-data = PackedVector3Array(-8, 0, -3.3137085, -3.3137085, 4, -8, -3.3137085, 0, -8, -8, 0, -3.3137085, -8, 4, -3.3137085, -3.3137085, 4, -8)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_krcqc"]
-data = PackedVector3Array(-8, 0, 3.3137085, -8, 4, -3.3137085, -8, 0, -3.3137085, -8, 0, 3.3137085, -8, 4, 3.3137085, -8, 4, -3.3137085)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_x48fh"]
-data = PackedVector3Array(-3.3137085, 0, 8, -8, 4, 3.3137085, -8, 0, 3.3137085, -3.3137085, 0, 8, -3.3137085, 4, 8, -8, 4, 3.3137085)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_n8qdl"]
-data = PackedVector3Array(3.3137085, 0, 8, -3.3137085, 4, 8, -3.3137085, 0, 8, 3.3137085, 0, 8, 3.3137085, 4, 8, -3.3137085, 4, 8)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_cv2vy"]
-data = PackedVector3Array(8, 0, 3.3137085, 3.3137085, 4, 8, 3.3137085, 0, 8, 8, 0, 3.3137085, 8, 4, 3.3137085, 3.3137085, 4, 8)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_acjup"]
-data = PackedVector3Array(8, 0, -3.3137085, 8, 4, 3.3137085, 8, 0, 3.3137085, 8, 0, -3.3137085, 8, 4, -3.3137085, 8, 4, 3.3137085)
 
 [sub_resource type="QuadMesh" id="QuadMesh_4c57u"]
 resource_local_to_scene = true
@@ -182,42 +155,6 @@ MuseumNodePath = NodePath("../../../../MuseumNode")
 
 [node name="MuseumNode" parent="." unique_id=1711306997 instance=ExtResource("4_lquwl")]
 
-[node name="CollisionShape3D" parent="MuseumNode/World/BlenderRoom/Floor/StaticBody3D" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 1523517582) index="0" unique_id=1207035660]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_edaea")
-
-[node name="CollWall0" parent="MuseumNode/World/BlenderRoom/Wall/Wall0" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 760524726) index="0" unique_id=1892249653]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_6s01x")
-
-[node name="CollWall1" parent="MuseumNode/World/BlenderRoom/Wall/Wall1" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 46136996) index="0" unique_id=781780642]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_6mrpg")
-
-[node name="CollWall2" parent="MuseumNode/World/BlenderRoom/Wall/Wall2" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 541514161) index="0" unique_id=281125481]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_mkm4p")
-
-[node name="CollWall3" parent="MuseumNode/World/BlenderRoom/Wall/Wall3" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 65202805) index="0" unique_id=268089394]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_krcqc")
-
-[node name="CollWall4" parent="MuseumNode/World/BlenderRoom/Wall/Wall4" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 590225767) index="0" unique_id=254417617]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_x48fh")
-
-[node name="CollWall5" parent="MuseumNode/World/BlenderRoom/Wall/Wall5" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 1831757595) index="0" unique_id=579314019]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_n8qdl")
-
-[node name="CollWall6" parent="MuseumNode/World/BlenderRoom/Wall/Wall6" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 2117601128) index="0" unique_id=1996016311]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_cv2vy")
-
-[node name="CollWall7" parent="MuseumNode/World/BlenderRoom/Wall/Wall7" parent_id_path=PackedInt32Array(1711306997, 927050978, 2104287082, 622707995) index="0" unique_id=1858163384]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_acjup")
-
 [node name="SearchController" parent="MuseumNode" index="2" unique_id=1873299870]
 InputBridgePath = NodePath("../../Player/XROrigin3D/LeftController/InputBridge")
 
@@ -254,8 +191,7 @@ shape = SubResource("BoxShape3D_0odxb")
 
 [editable path="Player"]
 [editable path="MuseumNode"]
-[editable path="MuseumNode/World"]
-[editable path="MuseumNode/World/BlenderRoom"]
+[editable path="MuseumNode/Room"]
 [editable path="MuseumNode/Media2DDisplayInstance"]
 [editable path="MuseumNode/Object3DDisplayInstance"]
 [editable path="MenuNode"]

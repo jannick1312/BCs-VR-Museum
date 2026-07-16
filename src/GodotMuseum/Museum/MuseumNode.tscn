@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://djl0v8ero2htq"]
 
-[ext_resource type="PackedScene" uid="uid://bde7wip0wp3vt" path="res://Museum/MuseumWorld.tscn" id="1_2f86q"]
+[ext_resource type="PackedScene" uid="uid://dsa5w8bt30nwc" path="res://Museum/Room.tscn" id="1_u032k"]
 [ext_resource type="Script" uid="uid://co0mygxye2f0a" path="res://Museum-Scripts/SearchController.cs" id="3_m6mi2"]
 [ext_resource type="PackedScene" uid="uid://bbgtin8e3itqc" path="res://Museum/Media2DDisplayInstance.tscn" id="5_avl46"]
 [ext_resource type="Script" uid="uid://da02bak3hx70k" path="res://Museum-Scripts/Placement/Helpers/Media2D/FrameMaker.cs" id="7_m6mi2"]
@@ -23,7 +23,7 @@ albedo_color = Color(1, 0, 0, 0.31764707)
 
 [node name="MuseumNode" type="Node3D" unique_id=1711306997]
 
-[node name="World" parent="." unique_id=927050978 instance=ExtResource("1_2f86q")]
+[node name="Room" parent="." unique_id=2104287082 instance=ExtResource("1_u032k")]
 
 [node name="StartSpawnPoint" type="Marker3D" parent="." unique_id=1195512689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -50,11 +50,11 @@ transform = Transform3D(0.008112016, -0.5496649, 0.017396325, 0.49846923, -2.178
 
 [node name="MediaPlacementController" type="Node" parent="." unique_id=379999481]
 script = ExtResource("8_bs0q8")
+CellPadding = 0.4
 Media2DInstancePath = NodePath("../Media2DDisplayInstance")
 Media2DPlacesPath = NodePath("../Media2DPlaces")
 Object3DInstancePath = NodePath("../Object3DDisplayInstance")
 Object3DPlacesPath = NodePath("../Object3DPlaces")
-CellPadding = 0.4
 VideoResetDistance = 3.0
 
 [node name="Media2DPlaces" type="Node3D" parent="." unique_id=1319521603]
@@ -105,7 +105,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.15, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
-[editable path="World"]
-[editable path="World/BlenderRoom"]
+[editable path="Room"]
 [editable path="Media2DDisplayInstance"]
 [editable path="Object3DDisplayInstance"]
