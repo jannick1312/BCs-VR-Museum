@@ -9,13 +9,13 @@ public partial class XrRenderProfile : Node
 
 	[Export] public float QuestStandaloneScale { get; set; }
 	[Export] public float QuestRefreshRate { get; set; }
-	[Export] public int QuestMediaLoadWorkers { get; set; } = 1;
+	[Export] public int QuestMediaLoadWorkers { get; set; }
 	[Export] public float FocusStandaloneScale { get; set; }
 	[Export] public float FocusRefreshRate { get; set; }
-	[Export] public int FocusMediaLoadWorkers { get; set; } = 1;
+	[Export] public int FocusMediaLoadWorkers { get; set; }
 	[Export] public float StreamingScale { get; set; }
 	[Export] public float StreamingRefreshRate { get; set; }
-	[Export] public int StreamingMediaLoadWorkers { get; set; } = 4;
+	[Export] public int StreamingMediaLoadWorkers { get; set; }
 	[Export] public bool StreamingSsrEnabled { get; set; }
 	[Export] public bool StreamingSsaoEnabled { get; set; }
 	[Export] public bool StreamingSsilEnabled { get; set; }
