@@ -10,7 +10,6 @@ public abstract partial class DisplayActionPopup : Node
 {
 	private const int PressedEventType = 2;
 	private static DisplayActionPopup _activePopup;
-	private Node _displayRoot;
 	private Node _panelHost;
 	private Node3D _popupRoot;
 	private string _vectorJson = string.Empty;
@@ -20,12 +19,15 @@ public abstract partial class DisplayActionPopup : Node
 	[Export] public NodePath PanelHostPath;
 
 	private string SourcePath { get; set; } = string.Empty;
+	private Node3D DisplayRoot { get; set; }
+
+	public static event Action<Node3D> OriginalSizeRequestedGlobally;
 	public static event Action<string> SimilaritySearchRequestedGlobally;
 
 	public override async void _Ready()
 	{
 		_popupRoot = GetParent<Node3D>();
-		_displayRoot = _popupRoot.GetParent();
+		DisplayRoot = _popupRoot.GetParent<Node3D>();
 		_panelHost = GetNode<Node>(PanelHostPath);
 		HidePopup();
 
@@ -43,6 +45,7 @@ public abstract partial class DisplayActionPopup : Node
 			return;
 
 		_visibleForSeconds += delta;
+
 		if (_visibleForSeconds >= LifetimeSeconds)
 			HidePopup();
 	}
@@ -59,9 +62,15 @@ public abstract partial class DisplayActionPopup : Node
 		SourcePath = sourcePath;
 	}
 
-	protected void RequestSimilaritySearch()
+	protected void RequestOriginalSize()
 	{
-		SimilaritySearchRequestedGlobally?.Invoke(_vectorJson);
+		OriginalSizeRequestedGlobally?.Invoke(DisplayRoot);
+		HidePopup();
+	}
+
+	protected void RequestSimilaritySearch(string vectorJson)
+	{
+		SimilaritySearchRequestedGlobally?.Invoke(vectorJson);
 		HidePopup();
 	}
 
@@ -98,7 +107,7 @@ public abstract partial class DisplayActionPopup : Node
 		DisplayActionPopup firstPopup = null;
 		DisplayActionPopup firstDecisionPopup = null;
 
-		foreach (var child in _displayRoot.FindChildren("*", "", true, false))
+		foreach (var child in DisplayRoot.FindChildren("*", "", true, false))
 		{
 			if (child is not DisplayActionPopup popup)
 				continue;
@@ -116,7 +125,7 @@ public abstract partial class DisplayActionPopup : Node
 	private bool IsOwnedTarget(Node target)
 	{
 		for (var current = target; current != null; current = current.GetParent())
-			if (current == _displayRoot)
+			if (current == DisplayRoot)
 				return true;
 
 		return false;

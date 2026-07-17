@@ -147,11 +147,12 @@ environment = SubResource("Environment_kek77")
 [node name="Player" parent="." unique_id=1807302450 instance=ExtResource("2_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9571701, 0)
 
-[node name="EnterSubmitTrigger" parent="Player/XROrigin3D/LeftController" parent_id_path=PackedInt32Array(1807302450, 1233295448) index="5" unique_id=594472320]
+[node name="EnterSubmitTrigger" parent="Player/XROrigin3D/LeftController" parent_id_path=PackedInt32Array(1807302450, 1233295448) index="6" unique_id=594472320]
 Controller = NodePath("../../../../MuseumNode/SearchController")
 
-[node name="VisibilityController" parent="Player/XROrigin3D/LeftController" parent_id_path=PackedInt32Array(1807302450, 1233295448) index="6" unique_id=53525149]
+[node name="VisibilityController" parent="Player/XROrigin3D/LeftController" parent_id_path=PackedInt32Array(1807302450, 1233295448) index="7" unique_id=53525149]
 MuseumNodePath = NodePath("../../../../MuseumNode")
+OriginalSizeControllerPath = NodePath("../../../../MuseumNode/OriginalSizeController")
 
 [node name="MuseumNode" parent="." unique_id=1711306997 instance=ExtResource("4_lquwl")]
 

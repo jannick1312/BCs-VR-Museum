@@ -13,10 +13,12 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 	private const string GeneratedObjectGroup = "Generated3DObject";
 	private static readonly EventLogger Log = new(nameof(Object3DPlacementStrategy));
 	private readonly Object3DDisplayFitter _fitter;
+	private readonly OriginalSizeController _originalSizeController;
 
-	public Object3DPlacementStrategy(Node owner, Node3D displayRoot, Node placesRoot) : base(owner, displayRoot, placesRoot, GeneratedObjectGroup)
+	public Object3DPlacementStrategy(Node owner, Node3D displayRoot, Node placesRoot, OriginalSizeController originalSizeController) : base(owner, displayRoot, placesRoot, GeneratedObjectGroup)
 	{
 		_fitter = new Object3DDisplayFitter(DisplayTemplate);
+		_originalSizeController = originalSizeController;
 	}
 
 	public int GetCapacity()
@@ -26,6 +28,7 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 
 	public async Task Place(IReadOnlyList<DisplayMediaItem> objectItems)
 	{
+		_originalSizeController.Reset();
 		ClearGenerated();
 
 		var placeGroups = PlaceCollector.Collect(PlacesRoot, 1);
@@ -64,6 +67,7 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 			return false;
 		}
 
+		_originalSizeController.Register(instance);
 		Log.Info($"Placed 3D object '{objectItem.Name}'. ObjectScale={objectScale}");
 		return true;
 	}

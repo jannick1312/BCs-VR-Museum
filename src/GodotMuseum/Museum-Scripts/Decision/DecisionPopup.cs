@@ -13,7 +13,8 @@ public partial class DecisionPopup : DisplayActionPopup
 	{
 		var decisionPanel = (DecisionPanel)panel;
 		decisionPanel.DismissRequested += Dismiss;
-		decisionPanel.SimilaritySearchRequested += _ => RequestSimilaritySearch();
+		decisionPanel.OriginalSizeRequested += RequestOriginalSize;
+		decisionPanel.SimilaritySearchRequested += RequestSimilaritySearch;
 	}
 
 	protected override void ApplyVectorToPanel(Node panel, string vectorJson)

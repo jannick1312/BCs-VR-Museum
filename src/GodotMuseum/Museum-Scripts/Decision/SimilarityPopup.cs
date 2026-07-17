@@ -11,7 +11,8 @@ public partial class SimilarityPopup : DisplayActionPopup
 
 	protected override void BindPanel(Node panel)
 	{
-		((SimilarityPanel)panel).SimilaritySearchRequested += _ => RequestSimilaritySearch();
+		var similarityPanel = (SimilarityPanel)panel;
+		similarityPanel.SimilaritySearchRequested += RequestSimilaritySearch;
 	}
 
 	protected override void ApplyVectorToPanel(Node panel, string vectorJson)

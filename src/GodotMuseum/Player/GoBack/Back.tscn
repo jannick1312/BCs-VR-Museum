@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://d0531an1j7kw3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x77gn"]
+bg_color = Color(1, 1, 1, 0.75686276)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rchd7"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mh2ms"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohaup"]
+bg_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[node name="Control" type="Control" unique_id=1310227466]
+custom_minimum_size = Vector2(1200, 800)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1200.0
+offset_bottom = 800.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=963753650]
+custom_minimum_size = Vector2(600, 312.5)
+layout_mode = 0
+offset_right = 600.0
+offset_bottom = 478.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x77gn")
+
+[node name="Title" type="Label" parent="Panel" unique_id=1307279476]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 550.0
+offset_bottom = 212.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Back to:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Museum" type="Button" parent="Panel" unique_id=1067276429]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 262.5
+offset_right = 550.0
+offset_bottom = 425.0
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_rchd7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mh2ms")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ohaup")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_rchd7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ohaup")
+text = "Museum"

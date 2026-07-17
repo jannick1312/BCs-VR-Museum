@@ -26,11 +26,11 @@ public sealed class Object3DDisplayFitter
 		var sphere = _template.GetNodeOrNull<MeshInstance3D>("Hinge/Orb/Sphere");
 		var glass = sphere.GetActiveMaterial(0) as StandardMaterial3D;
 
-		glass.RefractionEnabled = false;
-		glass.AlbedoColor = new Color(0.65f, 0.85f, 1.0f, 0.08f);
+		glass?.RefractionEnabled = false;
+		glass?.AlbedoColor = new Color(0.65f, 0.85f, 1.0f, 0.08f);
 	}
 
-	public float Place(Node3D item, Node3D objectNode, Node3D place)
+	public float Place(Node3D item, Node3D objectNode, Node3D place, Aabb objectBounds)
 	{
 		PlaceInstance(item, place);
 		AlignDecisionTowardCenter(item, place.GlobalPosition);
@@ -39,7 +39,7 @@ public sealed class Object3DDisplayFitter
 		slot.Visible = false;
 		PlaceObject(objectNode, slot);
 
-		return ScaleToSlot(objectNode, slot);
+		return ScaleToSlot(objectNode, slot, objectBounds);
 	}
 
 	private void PlaceInstance(Node3D item, Node3D place)
@@ -90,15 +90,12 @@ public sealed class Object3DDisplayFitter
 		objectNode.Transform = new Transform3D(slot.Transform.Basis.Orthonormalized(), slot.Transform.Origin);
 	}
 
-	private static float ScaleToSlot(Node3D objectNode, MeshInstance3D slot)
+	private static float ScaleToSlot(Node3D objectNode, MeshInstance3D slot, Aabb objectBounds)
 	{
-		var objectBounds = Bounds(objectNode);
 		var slotBounds = PlacementBounds.ScaledMeshBounds(slot);
 		var scale = FitScale(objectBounds.Size, slotBounds.Size);
 
 		objectNode.Scale *= scale;
-
-		objectBounds = Bounds(objectNode);
 		objectNode.Position -= objectNode.Transform.Basis * objectBounds.GetCenter();
 
 		return scale;
@@ -175,17 +172,17 @@ public sealed class Object3DDisplayFitter
 		return Mathf.Min(sx, Mathf.Min(sy, sz));
 	}
 
-	private static Aabb Bounds(Node3D root)
+	public static Aabb Bounds(Node3D root)
 	{
-		var hasBounds = false;
-		var bounds = new Aabb();
+		var hasBounds = root is MeshInstance3D;
+		var bounds = root is MeshInstance3D rootMesh ? rootMesh.GetAabb() : new Aabb();
 
 		foreach (var node in root.FindChildren("*", "MeshInstance3D", true, false))
 		{
 			if (node is not MeshInstance3D mesh)
 				continue;
 
-			var local = root.GlobalTransform.AffineInverse() * mesh.GlobalTransform;
+			var local = LocalTo(mesh, root);
 			var meshBounds = TransformBounds(local, mesh.GetAabb());
 
 			bounds = hasBounds ? bounds.Merge(meshBounds) : meshBounds;
@@ -195,7 +192,7 @@ public sealed class Object3DDisplayFitter
 		return hasBounds ? bounds : new Aabb(Vector3.Zero, Vector3.One);
 	}
 
-	private static Aabb TransformBounds(Transform3D transform, Aabb bounds)
+	public static Aabb TransformBounds(Transform3D transform, Aabb bounds)
 	{
 		var min = bounds.Position;
 		var max = bounds.End;

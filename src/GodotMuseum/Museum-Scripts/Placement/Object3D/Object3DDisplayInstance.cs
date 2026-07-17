@@ -13,6 +13,11 @@ public sealed class Object3DDisplayInstance
 	}
 
 	public Node3D Item { get; }
+	public Node3D ObjectNode { get; private set; }
+	public Aabb OriginalBounds { get; private set; }
+	public Transform3D OriginalObjectTransform { get; private set; }
+	private Node3D DisplayParent { get; set; }
+	private Transform3D DisplayTransform { get; set; }
 
 	public static Object3DDisplayInstance Create(Node3D template, Node3D displayRoot, string groupName)
 	{
@@ -22,6 +27,25 @@ public sealed class Object3DDisplayInstance
 		NodeTreeActivator.SetActive(item, true);
 
 		return new Object3DDisplayInstance(item);
+	}
+
+	public void AttachObject(Node3D objectNode, Aabb originalBounds)
+	{
+		ObjectNode = objectNode;
+		OriginalBounds = originalBounds;
+		OriginalObjectTransform = objectNode.Transform;
+	}
+
+	public void StoreDisplayPlacement()
+	{
+		DisplayParent = ObjectNode.GetParent<Node3D>();
+		DisplayTransform = ObjectNode.Transform;
+	}
+
+	public void RestoreToDisplay()
+	{
+		ObjectNode.Reparent(DisplayParent, false);
+		ObjectNode.Transform = DisplayTransform;
 	}
 
 	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath)

@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_1jxqw"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="7_dw050"]
 [ext_resource type="Script" uid="uid://ccbyeeteu8lll" path="res://Player/PlayerHandInput.cs" id="8_hand_input"]
+[ext_resource type="PackedScene" uid="uid://7jekf7srjdtb" path="res://Player/GoBack/2Din3DBack.tscn" id="9_go_back"]
 [ext_resource type="PackedScene" uid="uid://yjfribcaxes7" path="res://Player/joystick.tscn" id="9_joystick"]
 [ext_resource type="PackedScene" uid="uid://dbrk4ys6p52ij" path="res://Player/InputArea/input.tscn" id="9_p5o4e"]
 [ext_resource type="Script" uid="uid://c8vnltn217quj" path="res://addons/godot-xr-tools/hands/collision_hand.gd" id="10_collision_hand"]
@@ -595,6 +596,10 @@ ranged_collision_mask = 0
 [node name="Input" parent="XROrigin3D/LeftController" unique_id=1349806940 instance=ExtResource("9_p5o4e")]
 transform = Transform3D(0.19318514, 0, 0.051763803, 0, 0.19999999, 0, -0.051763803, 0, 0.19318514, 0.19999999, 0, -0.19999999)
 
+[node name="GoBack" parent="XROrigin3D/LeftController" unique_id=1939597515 instance=ExtResource("9_go_back")]
+transform = Transform3D(0.19318514, 0, 0.051763803, 0, 0.19999999, 0, -0.051763803, 0, 0.19318514, 0.19999999, 0, -0.19999999)
+visible = false
+
 [node name="InputBridge" type="Node" parent="XROrigin3D/LeftController" unique_id=986301867]
 script = ExtResource("10_dkpta")
 ViewportPath = NodePath("../Input/2DIn3DPlane/Viewport")
@@ -606,6 +611,7 @@ ViewportPath = NodePath("../Input/2DIn3DKeyboard/Viewport")
 
 [node name="VisibilityController" type="Node" parent="XROrigin3D/LeftController" unique_id=53525149]
 script = ExtResource("12_visibility")
+GoBackRootPath = NodePath("../GoBack")
 InputRootPath = NodePath("../Input")
 LeftPickupPath = NodePath("../CollisionHandLeft/FunctionPickup")
 

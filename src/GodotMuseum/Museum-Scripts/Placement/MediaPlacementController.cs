@@ -21,6 +21,7 @@ public partial class MediaPlacementController : Node
 	[Export] public NodePath Media2DPlacesPath;
 	[Export] public NodePath Object3DInstancePath;
 	[Export] public NodePath Object3DPlacesPath;
+	[Export] public NodePath OriginalSizeControllerPath;
 	[Export] public float VideoResetDistance;
 
 	public override void _Ready()
@@ -29,10 +30,11 @@ public partial class MediaPlacementController : Node
 		var media2DPlaces = GetNode(Media2DPlacesPath);
 		var object3DInstance = GetNode<Node3D>(Object3DInstancePath);
 		var object3DPlaces = GetNode(Object3DPlacesPath);
+		var originalSizeController = GetNode<OriginalSizeController>(OriginalSizeControllerPath);
 
 		_playerCamera = (Node3D)GetTree().Root.FindChild("XRCamera3D", true, false);
 		_media2DPlacement = new Media2DPlacementStrategy(this, media2DInstance, media2DPlaces, CellPadding);
-		_object3DPlacement = new Object3DPlacementStrategy(this, object3DInstance, object3DPlaces);
+		_object3DPlacement = new Object3DPlacementStrategy(this, object3DInstance, object3DPlaces, originalSizeController);
 	}
 
 	public (int Media2D, int Objects3D) GetCapacity()
@@ -45,10 +47,15 @@ public partial class MediaPlacementController : Node
 		var media2DItems = new List<DisplayMediaItem>();
 		var object3DItems = new List<DisplayMediaItem>();
 		foreach (var item in items)
-			if (item.MediaType is MediaType.Image or MediaType.Video)
-				media2DItems.Add(item);
-			else if (item.MediaType == MediaType.Object3D)
-				object3DItems.Add(item);
+			switch (item.MediaType)
+			{
+				case MediaType.Image or MediaType.Video:
+					media2DItems.Add(item);
+					break;
+				case MediaType.Object3D:
+					object3DItems.Add(item);
+					break;
+			}
 
 		HudController.Instance.SetPhase(HudPhase.LoadingImagesAndVideos);
 		await _media2DPlacement.Place(media2DItems);

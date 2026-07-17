@@ -1,5 +1,4 @@
 using Godot;
-using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts.Decision;
 
@@ -7,15 +6,18 @@ public partial class DecisionPanel : Node
 {
 	[Signal]
 	public delegate void DismissRequestedEventHandler();
+
+	[Signal]
+	public delegate void OriginalSizeRequestedEventHandler();
+
 	[Signal]
 	public delegate void SimilaritySearchRequestedEventHandler(string vectorJson);
 
-	private static readonly EventLogger Log = new(nameof(DecisionPanel));
 	private string _vectorJson = string.Empty;
 
 	public override void _Ready()
 	{
-		GetNode<Button>("../Panel/OriginalSize").Pressed += () => OnDecisionButtonPressed("Original Size");
+		GetNode<Button>("../Panel/OriginalSize").Pressed += OnOriginalSizePressed;
 		GetNode<Button>("../Panel/SimilaritySearch").Pressed += OnSimilaritySearchPressed;
 	}
 
@@ -24,9 +26,9 @@ public partial class DecisionPanel : Node
 		_vectorJson = vectorJson;
 	}
 
-	private void OnDecisionButtonPressed(string action)
+	private void OnOriginalSizePressed()
 	{
-		Log.Info($"Display action selected. Action='{action}'.");
+		EmitSignal(SignalName.OriginalSizeRequested);
 		EmitSignal(SignalName.DismissRequested);
 	}
 
