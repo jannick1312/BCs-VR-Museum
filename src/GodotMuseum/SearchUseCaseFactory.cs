@@ -8,6 +8,7 @@ namespace BCSVRMuseum;
 public partial class SearchUseCaseFactory : Node
 {
 	private readonly EventLogger _logger = new(nameof(SearchUseCaseFactory));
+
 	private SearchSettingsStore _searchSettingsStore;
 
 	public override void _Ready()
@@ -18,7 +19,6 @@ public partial class SearchUseCaseFactory : Node
 	public IMuseumApplication GetMuseumApplication()
 	{
 		_logger.Info($"Museum application created. CurrentIp='{_searchSettingsStore.CurrentIp}', MediaFolderPath='{_searchSettingsStore.CurrentMediaFolderPath}'.");
-
 		return MuseumApplicationFactory.CreateVitrivrApplication(_searchSettingsStore.CurrentIp, _searchSettingsStore.CurrentMediaFolderPath, ProjectSettings.GlobalizePath("user://"));
 	}
 }

@@ -1,0 +1,253 @@
+[gd_scene format=3 uid="uid://ctqui7myucrcj"]
+
+[ext_resource type="Texture2D" uid="uid://ul6xsjsyi8wu" path="res://Assets/Icon/vr-sketch.png" id="1_c1c4d"]
+[ext_resource type="Script" uid="uid://cm474p51nxqbl" path="res://Tutorial/TutorialController.cs" id="2_controller"]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(1, 1, 1, 0.75686276)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="ContentStyle"]
+bg_color = Color(1, 1, 1, 0.6)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="ButtonNormal"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="ButtonPressed"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="ButtonHover"]
+bg_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="NavNormal"]
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="NavPressed"]
+bg_color = Color(0.08, 0.08, 0.08, 0.92)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="NavHover"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 0.85)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="NavDisabled"]
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[node name="Control" type="Control" unique_id=1310227466]
+custom_minimum_size = Vector2(2400, 2000)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 2400.0
+offset_bottom = 2000.0
+
+[node name="TutorialController" type="Node" parent="." unique_id=1258338325]
+script = ExtResource("2_controller")
+
+[node name="TutorialPanel" type="Panel" parent="." unique_id=1582092052]
+custom_minimum_size = Vector2(2400, 2000)
+layout_mode = 0
+offset_right = 2400.0
+offset_bottom = 2000.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Title" type="Label" parent="TutorialPanel" unique_id=1938225663]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 45.0
+offset_right = 2100.0
+offset_bottom = 190.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Tutorial"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PageIndicator" type="Label" parent="TutorialPanel" unique_id=1026116692]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 1820.0
+offset_right = 1400.0
+offset_bottom = 1940.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "1 / 5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ImageBackground" type="Panel" parent="TutorialPanel" unique_id=536509329]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 220.0
+offset_right = 2140.0
+offset_bottom = 1790.0
+theme_override_styles/panel = SubResource("ContentStyle")
+
+[node name="TextureRect1" type="TextureRect" parent="TutorialPanel" unique_id=802983451]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 260.0
+offset_right = 1444.0
+offset_bottom = 726.0
+texture = ExtResource("1_c1c4d")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="TutorialPanel" unique_id=2111410422]
+visible = false
+layout_mode = 0
+offset_left = 1426.0
+offset_top = -110.0
+offset_right = 2118.0
+offset_bottom = 1264.0
+texture = ExtResource("1_c1c4d")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="TutorialPanel" unique_id=660478152]
+visible = false
+layout_mode = 0
+offset_left = 1182.0
+offset_top = 732.0
+offset_right = 2120.0
+offset_bottom = 1364.0
+texture = ExtResource("1_c1c4d")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="TutorialPanel" unique_id=314758553]
+visible = false
+layout_mode = 0
+offset_left = 596.0
+offset_top = 1062.0
+offset_right = 2100.0
+offset_bottom = 1750.0
+texture = ExtResource("1_c1c4d")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="TutorialPanel" unique_id=1850447535]
+visible = false
+layout_mode = 0
+offset_left = 300.0
+offset_top = 456.0
+offset_right = 1138.0
+offset_bottom = 1502.0
+texture = ExtResource("1_c1c4d")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StartPanel" type="Panel" parent="." unique_id=855879656]
+visible = false
+custom_minimum_size = Vector2(2400, 2000)
+layout_mode = 0
+offset_right = 2400.0
+offset_bottom = 2000.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Title" type="Label" parent="StartPanel" unique_id=363277709]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 600.0
+offset_right = 2100.0
+offset_bottom = 873.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 200
+text = "Tutorial complete!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="StartPanel" unique_id=159076579]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 1000.0
+offset_right = 1650.0
+offset_bottom = 1330.0
+theme_override_font_sizes/font_size = 150
+theme_override_styles/normal = SubResource("ButtonNormal")
+theme_override_styles/pressed = SubResource("ButtonPressed")
+theme_override_styles/hover = SubResource("ButtonHover")
+theme_override_styles/focus = SubResource("ButtonHover")
+text = "Start"
+
+[node name="Left" type="Button" parent="." unique_id=1013010829]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 800.0
+offset_right = 235.0
+offset_bottom = 1200.0
+theme_override_styles/normal = SubResource("NavNormal")
+theme_override_styles/pressed = SubResource("NavPressed")
+theme_override_styles/hover = SubResource("NavHover")
+theme_override_styles/disabled = SubResource("NavDisabled")
+theme_override_styles/focus = SubResource("NavNormal")
+
+[node name="Arrow" type="Line2D" parent="Left" unique_id=767440807]
+points = PackedVector2Array(150, 35, 45, 200, 150, 365)
+width = 18.0
+default_color = Color(1, 1, 1, 0.25)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="Right" type="Button" parent="." unique_id=1410338692]
+layout_mode = 0
+offset_left = 2165.0
+offset_top = 800.0
+offset_right = 2365.0
+offset_bottom = 1200.0
+theme_override_styles/normal = SubResource("NavNormal")
+theme_override_styles/pressed = SubResource("NavPressed")
+theme_override_styles/hover = SubResource("NavHover")
+theme_override_styles/disabled = SubResource("NavDisabled")
+theme_override_styles/focus = SubResource("NavNormal")
+
+[node name="Arrow" type="Line2D" parent="Right" unique_id=399548914]
+points = PackedVector2Array(50, 35, 155, 200, 50, 365)
+width = 18.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true

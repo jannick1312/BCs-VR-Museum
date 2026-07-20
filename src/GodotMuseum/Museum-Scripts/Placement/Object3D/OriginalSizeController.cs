@@ -145,7 +145,7 @@ public partial class OriginalSizeController : Node
 		_body.Velocity = Vector3.Zero;
 
 		var currentForward = Flatten(-_camera.GlobalTransform.Basis.Z);
-		var targetForward = Flatten(-marker.GlobalTransform.Basis.Z);
+		var targetForward = Flatten(-marker.GlobalTransform.Basis.X);
 		var angle = currentForward.SignedAngleTo(targetForward, Vector3.Up);
 		var rotation = new Basis(Vector3.Up, angle);
 		var cameraOffset = _camera.GlobalPosition - _rig.GlobalPosition;

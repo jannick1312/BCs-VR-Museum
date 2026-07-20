@@ -20,11 +20,32 @@ public static class AppSettingsLoader
 				continue;
 
 			source = candidate;
-			return JsonSerializer.Deserialize<AppSettings>(json, JsonOptions)!;
+			return Deserialize(json);
 		}
 
 		source = "built-in default";
 		return new AppSettings();
+	}
+
+	private static AppSettings Deserialize(string json)
+	{
+		try
+		{
+			var settings = JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? new AppSettings();
+			var defaults = new AppSettings();
+
+			if (!Ipv4AddressValidator.IsValid(settings.ServerIp ?? ""))
+				settings.ServerIp = defaults.ServerIp;
+
+			if (string.IsNullOrWhiteSpace(settings.Query))
+				settings.Query = defaults.Query;
+
+			return settings;
+		}
+		catch (JsonException)
+		{
+			return new AppSettings();
+		}
 	}
 
 	private static string[] GetCandidates()

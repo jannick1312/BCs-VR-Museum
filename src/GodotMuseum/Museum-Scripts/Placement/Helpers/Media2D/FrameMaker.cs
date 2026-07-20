@@ -6,6 +6,7 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 public partial class FrameMaker : Node
 {
 	private static readonly EventLogger Log = new(nameof(FrameMaker));
+
 	private MeshInstance3D _bottom;
 	private MeshInstance3D _bottomL;
 	private MeshInstance3D _bottomR;

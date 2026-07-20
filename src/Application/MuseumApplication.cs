@@ -23,8 +23,8 @@ public sealed class MuseumApplication(ISearchEngine searchEngine, IMediaLoader m
 		mediaLoader.ReleasePreviousBatch();
 	}
 
-	public Task<bool> IsReachableAsync()
+	public Task<bool> IsReachableAsync(CancellationToken cancellation)
 	{
-		return _validateServer.ExecuteAsync();
+		return _validateServer.ExecuteAsync(cancellation);
 	}
 }

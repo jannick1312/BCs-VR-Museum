@@ -1,4 +1,5 @@
 using BCSVRMuseum.Museum_Scripts;
+using BCSVRMuseum.Player.Hud;
 using Godot;
 using Logger;
 
@@ -7,8 +8,10 @@ namespace BCSVRMuseum;
 public partial class PlatformSwitcher : Node
 {
 	private readonly EventLogger _logger = new(nameof(PlatformSwitcher));
+
 	private CharacterBody3D _body;
 	private XRCamera3D _camera;
+	private MuseumEntryState _entryState;
 	private bool _inMenu;
 	private Transform3D _lastMuseumBody;
 	private Transform3D _lastMuseumRig;
@@ -44,6 +47,8 @@ public partial class PlatformSwitcher : Node
 		_rightController = (XRController3D)_player.FindChild("RightController", true, false);
 
 		_body = (CharacterBody3D)_player.FindChild("PlayerBody", true, false);
+		var searchSettingsStore = (SearchSettingsStore)GetTree().Root.FindChild("SearchSettingsStore", true, false);
+		_entryState = searchSettingsStore.EntryState;
 		_movementNodes = [_player.FindChild("MovementDirect", true, false), _player.FindChild("MovementTurn", true, false)];
 
 		await this.WaitFor(() =>
@@ -98,6 +103,12 @@ public partial class PlatformSwitcher : Node
 
 	public async void SwitchToMuseum()
 	{
+		if (!_entryState.CanEnterMuseum)
+		{
+			_logger.Warning("Switch to museum ignored because the entry requirements are not met.");
+			return;
+		}
+
 		_body.Velocity = Vector3.Zero;
 
 		_switching = true;
@@ -158,6 +169,7 @@ public partial class PlatformSwitcher : Node
 	{
 		_museum.Visible = museumActive;
 		_menu.Visible = !museumActive;
+		HudController.Instance?.SetMuseumVisible(museumActive);
 		_worldEnvironment.Environment = museumActive ? MuseumEnvironment : MenuEnvironment;
 	}
 

@@ -7,14 +7,18 @@ namespace BCSVRMuseum;
 public partial class SearchSettingsStore : Node
 {
 	private static readonly string[] MediaSubdirectories = ["images", "videos", "3d"];
+
 	private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
+
 	private string _configSource = "";
 	private string _mediaFolderPath;
 	private RuntimeSearchSettings _runtimeSettings;
 	private string _serverIp = "";
-
+	private bool _tutorialEnabled;
+	private string ConfiguredQuery { get; set; } = "";
 	public string CurrentIp => _runtimeSettings.CurrentIp;
 	public string CurrentMediaFolderPath => _runtimeSettings.MediaFolderPath;
+	public MuseumEntryState EntryState { get; private set; }
 
 	public override void _EnterTree()
 	{
@@ -30,16 +34,19 @@ public partial class SearchSettingsStore : Node
 		CreateMediaDirectories(_mediaFolderPath);
 
 		_runtimeSettings = new RuntimeSearchSettings(_serverIp, _mediaFolderPath);
+		EntryState = new MuseumEntryState(_tutorialEnabled);
 
 		var runtimeProfile = ResolveRuntimeProfile();
 		if (runtimeProfile is not null)
-			_logger.Info($"Search settings initialized. RuntimeProfile='{runtimeProfile}', ConfigSource='{_configSource}', ServerIp='{CurrentIp}'.");
+			_logger.Info($"Search settings initialized. RuntimeProfile='{runtimeProfile}', ConfigSource='{_configSource}', ServerIp='{CurrentIp}', Tutorial={EntryState.TutorialEnabled}, Query='{ConfiguredQuery}'.");
 	}
 
 	private void LoadJsonSettings()
 	{
 		var settings = AppSettingsLoader.Load(out var source);
 		_serverIp = settings.ServerIp;
+		_tutorialEnabled = settings.Tutorial;
+		ConfiguredQuery = settings.Query;
 		_configSource = source;
 	}
 

@@ -13,14 +13,18 @@ External configuration files use this JSON format:
 
 ```json
 {
-  "serverIp": "10.34.64.208"
+  "serverIp": "10.34.64.208",
+  "tutorial": true,
+  "query": "test"
 }
 ```
 
-- `serverIp` specifies the address of the vitrivr server.
+- `serverIp` must be an IPv4 address in dotted-decimal notation without a protocol, port or path.
+- `tutorial` is loaded as the configured tutorial flag.
+- `query` is loaded as the configured query text.
 - The application reads `config.json` but never modifies it.
-- If no `config.json` is found, `10.34.64.208` is used silently as the built-in
-  default.
+- If no `config.json` is found, the built-in defaults are `10.34.64.208`, `tutorial: true` and `query: "test"`.
+- Empty or invalid IPv4 values fall back to `10.34.64.208`, and empty query values fall back to `"test"`. Invalid JSON or incompatible value types cause the complete built-in configuration to be used.
 
 Media and log paths are not configurable because their names and locations are
 determined internally.
@@ -34,8 +38,7 @@ The application uses different physical locations depending on where it runs:
 | Android headset | 1. `/sdcard/Android/data/VR.Museum/files/config.json`<br>2. built-in default | `/sdcard/Android/data/VR.Museum/files/media` | `/sdcard/Android/data/VR.Museum/files/logs` |
 | Windows streaming | 1. `config.json` next to the `.exe`<br>2. built-in default | `media` next to the `.exe` | `logs` next to the `.exe` |
 
-The built-in default is used only when none of the configuration files in the
-applicable lookup order exists.
+The built-in default is used when no configuration file exists in the applicable lookup order or when the selected file cannot be deserialized.
 
 ### Creation, copying, and overwrite behavior
 

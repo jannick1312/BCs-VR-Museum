@@ -15,6 +15,7 @@ namespace BCSVRMuseum.Museum_Scripts;
 public partial class SearchController : Node
 {
 	private readonly EventLogger _logger = new(nameof(SearchController));
+
 	private LineEdit _activeLineEdit;
 	private GameSettingsStore _gameSettingsStore;
 	private LineEdit _inputLineEdit;
@@ -77,9 +78,10 @@ public partial class SearchController : Node
 
 	private async void SubmitSimilaritySearch(string vectorJson)
 	{
-		var vector = JsonSerializer.Deserialize<List<double>>(vectorJson);
-
 		if (!CanSubmitSearch("Similarity search"))
+			return;
+
+		if (!TryDeserializeVector(vectorJson, out var vector))
 			return;
 
 		_logger.Info($"Similarity search submitted. VectorLength={vector.Count}");
@@ -93,7 +95,35 @@ public partial class SearchController : Node
 	{
 		if (!_isSearching)
 			return true;
+
 		_logger.Warning($"{searchName} ignored because another search is already running.");
+		return false;
+	}
+
+	private bool TryDeserializeVector(string vectorJson, out List<double> vector)
+	{
+		vector = null;
+
+		if (string.IsNullOrWhiteSpace(vectorJson))
+		{
+			_logger.Warning("Similarity search ignored because the vector is empty.");
+			return false;
+		}
+
+		try
+		{
+			vector = JsonSerializer.Deserialize<List<double>>(vectorJson);
+		}
+		catch (JsonException exception)
+		{
+			_logger.Warning($"Similarity search ignored because the vector JSON is invalid. Error='{exception.Message}'.");
+			return false;
+		}
+
+		if (vector is { Count: > 0 })
+			return true;
+
+		_logger.Warning("Similarity search ignored because the vector contains no values.");
 		return false;
 	}
 
@@ -108,7 +138,7 @@ public partial class SearchController : Node
 			if (!result.Success)
 			{
 				_logger.Warning($"{searchName} failed. Error='{result.ErrorMessage}'. Existing output is kept.");
-				HudController.Instance.Fail();
+				await HudController.Instance.FailAsync();
 				return;
 			}
 
@@ -116,12 +146,12 @@ public partial class SearchController : Node
 			await _mediaPlacement.Place(result.Items);
 			completePlacement();
 			_logger.Info($"{searchName} completed. DisplayedItems={result.Items.Count}.");
-			HudController.Instance.Complete();
+			await HudController.Instance.CompleteAsync();
 		}
 		catch (Exception exception)
 		{
 			_logger.Error($"{searchName} failed unexpectedly", exception);
-			HudController.Instance.Fail();
+			await HudController.Instance.FailAsync();
 		}
 		finally
 		{

@@ -14,7 +14,9 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 {
 	private const string GeneratedMediaGroup = "Generated2DMedia";
 	private const int DefaultMaxItemsPerPlace = 2;
+
 	private static readonly EventLogger Log = new(nameof(Media2DPlacementStrategy));
+
 	private readonly float _cellPadding;
 	private readonly RandomNumberGenerator _rng = new();
 	private readonly List<VideoPlaybackController> _videos = [];

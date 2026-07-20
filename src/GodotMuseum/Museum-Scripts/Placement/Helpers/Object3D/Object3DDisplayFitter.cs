@@ -7,6 +7,7 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 public sealed class Object3DDisplayFitter
 {
 	private static readonly EventLogger Log = new(nameof(Object3DDisplayFitter));
+
 	private readonly MeshInstance3D _baseMesh;
 	private readonly Node3D _template;
 

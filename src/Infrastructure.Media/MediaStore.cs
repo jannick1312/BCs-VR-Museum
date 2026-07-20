@@ -15,11 +15,10 @@ internal sealed class MediaStore
 	public static MediaStore ForRoot(string rootDirectory)
 	{
 		rootDirectory = Path.GetFullPath(rootDirectory);
-		if (!Stores.TryGetValue(rootDirectory, out var store))
-		{
-			store = new MediaStore(rootDirectory);
-			Stores[rootDirectory] = store;
-		}
+		if (Stores.TryGetValue(rootDirectory, out var store))
+			return store;
+		store = new MediaStore(rootDirectory);
+		Stores[rootDirectory] = store;
 
 		return store;
 	}

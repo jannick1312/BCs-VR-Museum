@@ -36,13 +36,10 @@ public partial class ImageResourceLoader : ResourceFormatLoader
 			}
 
 			error = image.GenerateMipmaps();
-			if (error != Error.Ok)
-			{
-				Log.Warning($"Image mipmap generation failed. Error={error}.");
-				return Variant.CreateFrom((long)error);
-			}
-
-			return Variant.CreateFrom(image);
+			if (error == Error.Ok)
+				return Variant.CreateFrom(image);
+			Log.Warning($"Image mipmap generation failed. Error={error}.");
+			return Variant.CreateFrom((long)error);
 		}
 		catch (Exception exception)
 		{

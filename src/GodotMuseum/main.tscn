@@ -34,45 +34,45 @@ sky_rotation = Vector3(0, -1.3962634, 0)
 
 [sub_resource type="QuadMesh" id="QuadMesh_4c57u"]
 resource_local_to_scene = true
-size = Vector2(1.5, 0.75)
+size = Vector2(2.4, 2)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_efxa6"]
-viewport_path = NodePath("MenuNode/2DIn3DKeyboard/Viewport")
+viewport_path = NodePath("MenuNode/2DIn3DTutorial/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dg77c"]
 transparency = 1
 cull_mode = 2
+shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_efxa6")
 texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ycdy4"]
 resource_local_to_scene = true
-size = Vector3(1.5, 0.75, 0.02)
+size = Vector3(2.4, 2, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_w48qg"]
 resource_local_to_scene = true
-size = Vector2(1.8, 1.5)
+size = Vector2(1.5, 0.75)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vivmo"]
-viewport_path = NodePath("MenuNode/2DIn3DURL/Viewport")
+viewport_path = NodePath("MenuNode/2DIn3DKeyboard/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2cqfq"]
 transparency = 1
 cull_mode = 2
-shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_vivmo")
 texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yaehf"]
 resource_local_to_scene = true
-size = Vector3(1.8, 1.5, 0.02)
+size = Vector3(1.5, 0.75, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_074og"]
 resource_local_to_scene = true
 size = Vector2(1.8, 1.5)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_cegan"]
-viewport_path = NodePath("MenuNode/2DIn3DGame/Viewport")
+viewport_path = NodePath("MenuNode/2DIn3DURL/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82xsv"]
 transparency = 1
@@ -87,10 +87,10 @@ size = Vector3(1.8, 1.5, 0.02)
 
 [sub_resource type="QuadMesh" id="QuadMesh_ryguw"]
 resource_local_to_scene = true
-size = Vector2(1.8, 1.8)
+size = Vector2(1.8, 1.5)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_d13ii"]
-viewport_path = NodePath("MenuNode/2DIn3DSettings/Viewport")
+viewport_path = NodePath("MenuNode/2DIn3DGame/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1u8w0"]
 transparency = 1
@@ -100,6 +100,24 @@ albedo_texture = SubResource("ViewportTexture_d13ii")
 texture_filter = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0odxb"]
+resource_local_to_scene = true
+size = Vector3(1.8, 1.5, 0.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_lswn8"]
+resource_local_to_scene = true
+size = Vector2(1.8, 1.8)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_a6jrf"]
+viewport_path = NodePath("MenuNode/2DIn3DSettings/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xuqvo"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_a6jrf")
+texture_filter = 5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qsp4k"]
 resource_local_to_scene = true
 size = Vector3(1.8, 1.8, 0.02)
 
@@ -162,33 +180,40 @@ InputBridgePath = NodePath("../../Player/XROrigin3D/LeftController/InputBridge")
 [node name="MenuNode" parent="." unique_id=227478366 instance=ExtResource("1_w48qg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
 
-[node name="Screen" parent="MenuNode/2DIn3DKeyboard" parent_id_path=PackedInt32Array(227478366, 776647796) index="1" unique_id=1158603700]
+[node name="Screen" parent="MenuNode/2DIn3DTutorial" parent_id_path=PackedInt32Array(227478366, 1987456321) index="1" unique_id=830305756]
 mesh = SubResource("QuadMesh_4c57u")
 surface_material_override/0 = SubResource("StandardMaterial3D_dg77c")
 
-[node name="CollisionShape3D" parent="MenuNode/2DIn3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 776647796, 1711902221) index="0" unique_id=2064986693]
+[node name="CollisionShape3D" parent="MenuNode/2DIn3DTutorial/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1987456321, 1024925121) index="0" unique_id=620411508]
 shape = SubResource("BoxShape3D_ycdy4")
 
-[node name="Screen" parent="MenuNode/2DIn3DURL" parent_id_path=PackedInt32Array(227478366, 1927318274) index="1" unique_id=830305756]
+[node name="Screen" parent="MenuNode/2DIn3DKeyboard" parent_id_path=PackedInt32Array(227478366, 776647796) index="1" unique_id=1158603700]
 mesh = SubResource("QuadMesh_w48qg")
 surface_material_override/0 = SubResource("StandardMaterial3D_2cqfq")
 
-[node name="CollisionShape3D" parent="MenuNode/2DIn3DURL/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1927318274, 1024925121) index="0" unique_id=620411508]
+[node name="CollisionShape3D" parent="MenuNode/2DIn3DKeyboard/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 776647796, 1711902221) index="0" unique_id=2064986693]
 shape = SubResource("BoxShape3D_yaehf")
 
-[node name="Screen" parent="MenuNode/2DIn3DGame" parent_id_path=PackedInt32Array(227478366, 1731874065) index="1" unique_id=830305756]
+[node name="Screen" parent="MenuNode/2DIn3DURL" parent_id_path=PackedInt32Array(227478366, 1927318274) index="1" unique_id=830305756]
 mesh = SubResource("QuadMesh_074og")
 surface_material_override/0 = SubResource("StandardMaterial3D_82xsv")
 
-[node name="CollisionShape3D" parent="MenuNode/2DIn3DGame/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1731874065, 1024925121) index="0" unique_id=620411508]
+[node name="CollisionShape3D" parent="MenuNode/2DIn3DURL/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1927318274, 1024925121) index="0" unique_id=620411508]
 shape = SubResource("BoxShape3D_getpj")
 
-[node name="Screen" parent="MenuNode/2DIn3DSettings" parent_id_path=PackedInt32Array(227478366, 1345467856) index="1" unique_id=830305756]
+[node name="Screen" parent="MenuNode/2DIn3DGame" parent_id_path=PackedInt32Array(227478366, 1731874065) index="1" unique_id=830305756]
 mesh = SubResource("QuadMesh_ryguw")
 surface_material_override/0 = SubResource("StandardMaterial3D_1u8w0")
 
-[node name="CollisionShape3D" parent="MenuNode/2DIn3DSettings/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1345467856, 1024925121) index="0" unique_id=620411508]
+[node name="CollisionShape3D" parent="MenuNode/2DIn3DGame/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1731874065, 1024925121) index="0" unique_id=620411508]
 shape = SubResource("BoxShape3D_0odxb")
+
+[node name="Screen" parent="MenuNode/2DIn3DSettings" parent_id_path=PackedInt32Array(227478366, 1345467856) index="1" unique_id=830305756]
+mesh = SubResource("QuadMesh_lswn8")
+surface_material_override/0 = SubResource("StandardMaterial3D_xuqvo")
+
+[node name="CollisionShape3D" parent="MenuNode/2DIn3DSettings/StaticBody3D" parent_id_path=PackedInt32Array(227478366, 1345467856, 1024925121) index="0" unique_id=620411508]
+shape = SubResource("BoxShape3D_qsp4k")
 
 [editable path="Player"]
 [editable path="MuseumNode"]
@@ -196,6 +221,7 @@ shape = SubResource("BoxShape3D_0odxb")
 [editable path="MuseumNode/Media2DDisplayInstance"]
 [editable path="MuseumNode/Object3DDisplayInstance"]
 [editable path="MenuNode"]
+[editable path="MenuNode/2DIn3DTutorial"]
 [editable path="MenuNode/2DIn3DKeyboard"]
 [editable path="MenuNode/2DIn3DURL"]
 [editable path="MenuNode/2DIn3DGame"]

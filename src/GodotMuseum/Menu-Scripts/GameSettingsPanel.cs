@@ -11,8 +11,10 @@ public partial class GameSettingsPanel : Node
 	private const float MaxMovementSpeed = 4.0f;
 	private const float MinTurnSpeed = 0.8f;
 	private const float MaxTurnSpeed = 4.0f;
+
 	private static readonly Color LightSkinColour = new(0.92f, 0.68f, 0.52f);
 	private static readonly Color DarkSkinColour = new(0.24f, 0.13f, 0.08f);
+
 	private Button _defaultButton;
 	private GameSettingsStore _gameSettingsStore;
 	private Button _imagesAnd3DButton;

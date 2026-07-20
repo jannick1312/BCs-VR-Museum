@@ -15,8 +15,7 @@ public static class Object3DMediaRenderer
 		EnsureLoader();
 		var resourcePath = ProjectSettings.LocalizePath(Path.GetFullPath(path).Replace('\\', '/'));
 		var packedScene = await ThreadedResourceLoader.Load<PackedScene>(resourcePath, instance.Item);
-		var objectNode = packedScene?.Instantiate() as Node3D;
-		if (objectNode == null)
+		if (packedScene?.Instantiate() is not Node3D objectNode)
 			return null;
 
 		var geometryBounds = Object3DDisplayFitter.Bounds(objectNode);

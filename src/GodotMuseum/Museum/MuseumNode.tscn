@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dsa5w8bt30nwc" path="res://Museum/Room.tscn" id="1_u032k"]
 [ext_resource type="Script" uid="uid://co0mygxye2f0a" path="res://Museum-Scripts/SearchController.cs" id="3_m6mi2"]
 [ext_resource type="PackedScene" uid="uid://bbgtin8e3itqc" path="res://Museum/Media2DDisplayInstance.tscn" id="5_avl46"]
-[ext_resource type="Script" path="res://Museum-Scripts/Placement/Object3D/OriginalSizeController.cs" id="6_original_size"]
+[ext_resource type="Script" uid="uid://by0s8dbqnr85n" path="res://Museum-Scripts/Placement/Object3D/OriginalSizeController.cs" id="6_original_size"]
 [ext_resource type="PackedScene" uid="uid://m7ng7h2jy1il" path="res://Museum/ObjectRoom/Rooms.tscn" id="7_m6mb4"]
 [ext_resource type="Script" uid="uid://da02bak3hx70k" path="res://Museum-Scripts/Placement/Helpers/Media2D/FrameMaker.cs" id="7_m6mi2"]
 [ext_resource type="Script" uid="uid://db51p8mctrlr" path="res://Museum-Scripts/Placement/MediaPlacementController.cs" id="8_bs0q8"]
@@ -89,28 +89,28 @@ surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 visible = false
 
 [node name="Place1" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1697069992]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.15, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.05, 2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place2" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1247304891]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.15, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.05, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place3" type="MeshInstance3D" parent="Object3DPlaces" unique_id=2083943530]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.15, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.05, 2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place4" type="MeshInstance3D" parent="Object3DPlaces" unique_id=181321835]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.15, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.05, -2)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="ObjectRooms" parent="." unique_id=1007329805 instance=ExtResource("7_m6mb4")]
 
-[node name="OriginalSizeController" type="Node" parent="."]
+[node name="OriginalSizeController" type="Node" parent="." unique_id=644746653]
 script = ExtResource("6_original_size")
 PlayerPath = NodePath("../../Player")
 RoomsPath = NodePath("../ObjectRooms")

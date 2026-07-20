@@ -25,17 +25,6 @@ public class RuntimeSearchSettings
 
 	private static string CleanIp(string input)
 	{
-		var cleaned = input.Trim();
-
-		cleaned = cleaned.Replace("http://", "");
-		cleaned = cleaned.Replace("https://", "");
-
-		if (cleaned.Contains(':'))
-			cleaned = cleaned.Split(':')[0];
-
-		if (cleaned.Contains('/'))
-			cleaned = cleaned.Split('/')[0];
-
-		return cleaned;
+		return input.Trim();
 	}
 }

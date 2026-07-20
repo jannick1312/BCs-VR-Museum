@@ -2,5 +2,5 @@ namespace Application;
 
 public interface IServerHealthService
 {
-	Task<bool> IsReachableAsync();
+	Task<bool> IsReachableAsync(CancellationToken cancellation);
 }

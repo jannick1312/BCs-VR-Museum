@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 
 namespace BCSVRMuseum.Player.Hud;
@@ -13,13 +14,14 @@ public enum HudPhase
 
 public partial class HudController : Node
 {
+	private bool _active;
 	private int _displayVersion;
 	private StyleBoxFlat _fill;
 	private Color _fillColor;
-
 	private Line2D _frame;
 	private Color _frameColor;
 	private Node3D _hudPlane;
+	private bool _museumVisible;
 	private ProgressBar _progressBar;
 	private Label _text;
 	public static HudController Instance { get; private set; }
@@ -38,16 +40,23 @@ public partial class HudController : Node
 		_progressBar.AddThemeStyleboxOverride("fill", _fill);
 		_fillColor = _fill.BgColor;
 		_frameColor = _frame.DefaultColor;
-		_hudPlane.Visible = false;
+		UpdateVisibility();
 	}
 
 	public void StartLoading()
 	{
 		_displayVersion++;
+		_active = true;
 		_fill.BgColor = _fillColor;
 		_frame.DefaultColor = _frameColor;
-		_hudPlane.Visible = true;
+		UpdateVisibility();
 		SetPhase(HudPhase.Searching);
+	}
+
+	public void SetMuseumVisible(bool visible)
+	{
+		_museumVisible = visible;
+		UpdateVisibility();
 	}
 
 	public void SetPhase(HudPhase phase)
@@ -64,17 +73,17 @@ public partial class HudController : Node
 		};
 	}
 
-	public void Complete()
+	public Task CompleteAsync()
 	{
-		Finish("Complete", new Color("68d391"));
+		return FinishAsync("Complete", new Color("68d391"));
 	}
 
-	public void Fail()
+	public Task FailAsync()
 	{
-		Finish("Search failed", new Color("f56565"));
+		return FinishAsync("Search failed", new Color("f56565"));
 	}
 
-	private async void Finish(string message, Color color)
+	private async Task FinishAsync(string message, Color color)
 	{
 		var version = ++_displayVersion;
 		_progressBar.Value = 100;
@@ -84,6 +93,14 @@ public partial class HudController : Node
 
 		await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
 		if (version == _displayVersion)
-			_hudPlane.Visible = false;
+		{
+			_active = false;
+			UpdateVisibility();
+		}
+	}
+
+	private void UpdateVisibility()
+	{
+		_hudPlane?.Visible = _active && _museumVisible;
 	}
 }
