@@ -1,0 +1,42 @@
+% Slide 06: Exploration loop
+\begin{frame}[c]{Similarity creates a continuous exploration loop}
+\centering
+\begin{tikzpicture}[node distance=0.50cm,every node/.style={font=\scriptsize}]
+  \node[greybox,minimum width=1.85cm,minimum height=0.82cm]
+    (query) {text query};
+  \node[bluebox,right=of query,minimum width=2.10cm,minimum height=0.82cm]
+    (search) {semantic\\search};
+  \node[mintbox,right=of search,minimum width=2.10cm,minimum height=0.82cm]
+    (results) {related\\media};
+  \node[redbox,right=of results,minimum width=2.20cm,minimum height=0.82cm]
+    (exhibition) {spatial\\exhibition};
+  \node[bluebox,right=of exhibition,minimum width=2.10cm,minimum height=0.82cm]
+    (select) {select an\\exhibit};
+
+  \foreach \a/\b in {query/search,search/results,results/exhibition,exhibition/select}
+    \draw[flow] (\a) -- (\b);
+
+  \draw[flow]
+    (select.south) .. controls +(0,-1.05) and +(2.0,-1.05) ..
+    node[below=4pt,tinylabel] {use the exhibit as the next query}
+    (search.south);
+\end{tikzpicture}
+
+\vspace{0.32cm}
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.46\textwidth}
+    \textcolor{unimint!80!black}{\large\textbf{One concept}}
+
+    \vspace{0.10cm}
+    \small
+    The interaction is independent of whether a result is an image, video, or 3D model.
+  \end{column}
+  \begin{column}{0.46\textwidth}
+    \textcolor{unimint!80!black}{\large\textbf{Two entry points}}
+
+    \vspace{0.10cm}
+    \small
+    Exploration can start from language or continue directly from an existing exhibit.
+  \end{column}
+\end{columns}
+\end{frame}

@@ -1,6 +1,5 @@
-% Slide 06: CLIP retrieval
-\section{Retrieval}
-\begin{frame}[c]{CLIP retrieval}
+% Slide 07: Shared embedding space
+\begin{frame}[c]{CLIP creates a shared comparison space}
 \centering
 \begin{tikzpicture}[every node/.style={font=\scriptsize}]
   % Lane headings
@@ -9,7 +8,7 @@
   \node[anchor=west,font=\small\bfseries,text=unired]
     at (-5.5,-0.20) {LIVE QUERY};
   \node[anchor=west,font=\small\bfseries,text=unimint!80!black]
-    at (3,1.70) {SHARED SEARCH};
+    at (3,1.70) {SHARED SPACE};
 
   % Offline collection path
   \node[greybox,minimum width=1.75cm,minimum height=0.75cm]
@@ -36,7 +35,7 @@
   % Shared comparison area
   \draw[unigrey!45,line width=0.6pt] (2.55,1.85) -- (2.55,-1.72);
   \node[mintbox,minimum width=2.35cm,minimum height=0.88cm]
-    (similarity) at (4.75,0.5) {similarity\\with pgvector};
+    (similarity) at (4.75,0.5) {vector\\similarity};
   \node[greybox,minimum width=2.35cm,minimum height=0.68cm]
     (results) at (4.75,-0.75) {ranked results};
 
@@ -49,6 +48,6 @@
 
 \vspace{0.18cm}
 \raggedright\small
-\textbf{Key distinction:} the collection is encoded once, a live search only
+\textbf{Key distinction:} the collection is encoded once; a live search only
 encodes the new query and compares it with the stored vectors.
 \end{frame}

@@ -1,5 +1,5 @@
-% Slide 07: 3D retrieval
-\begin{frame}[c]{3D retrieval}
+% Slide 08: View-based 3D retrieval
+\begin{frame}[c]{Rendered views make 3D models searchable}
 \centering
 \begin{tikzpicture}[node distance=0.52cm, every node/.style={font=\scriptsize}]
   \node[redbox, minimum width=1.7cm, minimum height=0.8cm] (mesh) {3D mesh};
@@ -13,8 +13,8 @@
   \draw[flow] (renders) -- (clip);
   \draw[flow] (clip) -- (vectors);
 
-  \node[mintbox, below=0.95cm of vectors, minimum width=2.0cm] (parent) {parent GLB file};
-  \draw[flow] (vectors) -- node[right,tinylabel] {\code{partOf}} (parent);
+  \node[mintbox, below=0.95cm of vectors, minimum width=2.0cm] (parent) {linked GLB model};
+  \draw[flow] (vectors) -- node[right,tinylabel] {linked to} (parent);
 
 \end{tikzpicture}
 
@@ -22,7 +22,7 @@
 \begin{beamercolorbox}[sep=0.5em,rounded=true]{palette highlight}
 \small
 Rather than encoding the mesh itself, the system searches over rendered views.
-A matching view is linked through \code{partOf} to the original GLB model,
-which is then loaded into the museum.
+A matching view points back to the original GLB model, which is then loaded
+into the museum.
 \end{beamercolorbox}
 \end{frame}
