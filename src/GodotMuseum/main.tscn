@@ -129,9 +129,8 @@ QuestStandaloneScale = 1.5
 QuestRefreshRate = 72.0
 FocusStandaloneScale = 0.8
 FocusRefreshRate = 90.0
-StreamingScale = 2.0
+StreamingScale = 1.0
 StreamingSsaoEnabled = true
-StreamingSsilEnabled = true
 StartXrPath = NodePath("../StartXR")
 PlatformSwitcherPath = NodePath("../PlatformSwitcher")
 
