@@ -7,7 +7,11 @@ namespace BCSVRMuseum.Player.InputArea;
 
 public partial class VisibilityController : Node
 {
+	private const float GripPressThreshold = 0.8f;
+	private const float GripReleaseThreshold = 0.6f;
+
 	private bool _goBackActive;
+	private bool _gripPressed;
 	private Node _goBackRoot;
 	private bool _inputActive;
 	private Node _inputRoot;
@@ -44,11 +48,24 @@ public partial class VisibilityController : Node
 
 	public override void _Process(double delta)
 	{
-		var gripPressed = _leftController.GetIsActive() && _leftController.GetFloat("grip") > 0.6f;
+		UpdateGripState(_leftController.GetFloat("grip"));
 		var inOriginalSizeRoom = _museumNode.Visible && _originalSizeController.IsInOriginalSizeRoom;
 
-		SetInputActive(_museumNode.Visible && !inOriginalSizeRoom && gripPressed);
-		SetGoBackActive(inOriginalSizeRoom && gripPressed);
+		SetInputActive(_museumNode.Visible && !inOriginalSizeRoom && _gripPressed);
+		SetGoBackActive(inOriginalSizeRoom && _gripPressed);
+	}
+
+	private void UpdateGripState(float gripValue)
+	{
+		if (_gripPressed)
+		{
+			if (gripValue < GripReleaseThreshold)
+				_gripPressed = false;
+		}
+		else if (gripValue > GripPressThreshold)
+		{
+			_gripPressed = true;
+		}
 	}
 
 	private void SetGoBackActive(bool active)
