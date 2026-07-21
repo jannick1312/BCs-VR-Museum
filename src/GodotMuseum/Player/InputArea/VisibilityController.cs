@@ -7,15 +7,10 @@ namespace BCSVRMuseum.Player.InputArea;
 
 public partial class VisibilityController : Node
 {
-	private const float GripPressThreshold = 0.8f;
-	private const float GripReleaseThreshold = 0.6f;
-
 	private bool _goBackActive;
-	private bool _gripPressed;
 	private Node _goBackRoot;
 	private bool _inputActive;
 	private Node _inputRoot;
-	private XRController3D _leftController;
 	private Node _leftPickup;
 	private Node3D _museumNode;
 	private OriginalSizeController _originalSizeController;
@@ -31,7 +26,6 @@ public partial class VisibilityController : Node
 		_goBackRoot = GetNode(GoBackRootPath);
 		_inputRoot = GetNode(InputRootPath);
 		_leftPickup = GetNode(LeftPickupPath);
-		_leftController = _leftPickup.GetParent().GetParent<XRController3D>();
 		_museumNode = GetNode<Node3D>(MuseumNodePath);
 		_originalSizeController = GetNode<OriginalSizeController>(OriginalSizeControllerPath);
 
@@ -43,29 +37,17 @@ public partial class VisibilityController : Node
 		var museumButton = await this.WaitFor(
 			() => _goBackRoot.FindChild("Museum", true, false) as Button,
 			"go-back museum button");
-		museumButton.Pressed += _originalSizeController.ReturnToMuseum;
+		if (_originalSizeController != null)
+			museumButton.Pressed += _originalSizeController.ReturnToMuseum;
 	}
 
 	public override void _Process(double delta)
 	{
-		UpdateGripState(_leftController.GetFloat("grip"));
-		var inOriginalSizeRoom = _museumNode.Visible && _originalSizeController.IsInOriginalSizeRoom;
+		var gripPressed = _leftPickup.Get("grip_pressed").AsBool();
+		var inOriginalSizeRoom = _museumNode.Visible && (_originalSizeController?.IsInOriginalSizeRoom ?? false);
 
-		SetInputActive(_museumNode.Visible && !inOriginalSizeRoom && _gripPressed);
-		SetGoBackActive(inOriginalSizeRoom && _gripPressed);
-	}
-
-	private void UpdateGripState(float gripValue)
-	{
-		if (_gripPressed)
-		{
-			if (gripValue < GripReleaseThreshold)
-				_gripPressed = false;
-		}
-		else if (gripValue > GripPressThreshold)
-		{
-			_gripPressed = true;
-		}
+		SetInputActive(_museumNode.Visible && !inOriginalSizeRoom && gripPressed);
+		SetGoBackActive(inOriginalSizeRoom && gripPressed);
 	}
 
 	private void SetGoBackActive(bool active)

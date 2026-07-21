@@ -54,9 +54,6 @@ public static class Object3DMediaRenderer
 
 	private static async Task<PackedScene> LoadFromPack(string packPath, Node owner)
 	{
-		// Mounting changes Godot's global resource filesystem. Keep mounting and
-		// loading one pack atomic; otherwise another result can mount a pack while
-		// the first scene is still being loaded on a worker thread.
 		await PackLoadSlot.WaitAsync();
 		try
 		{
