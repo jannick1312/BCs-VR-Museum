@@ -11,6 +11,7 @@ public partial class VisibilityController : Node
 	private Node _goBackRoot;
 	private bool _inputActive;
 	private Node _inputRoot;
+	private XRController3D _leftController;
 	private Node _leftPickup;
 	private Node3D _museumNode;
 	private OriginalSizeController _originalSizeController;
@@ -26,6 +27,7 @@ public partial class VisibilityController : Node
 		_goBackRoot = GetNode(GoBackRootPath);
 		_inputRoot = GetNode(InputRootPath);
 		_leftPickup = GetNode(LeftPickupPath);
+		_leftController = _leftPickup.GetParent().GetParent<XRController3D>();
 		_museumNode = GetNode<Node3D>(MuseumNodePath);
 		_originalSizeController = GetNode<OriginalSizeController>(OriginalSizeControllerPath);
 
@@ -42,7 +44,7 @@ public partial class VisibilityController : Node
 
 	public override void _Process(double delta)
 	{
-		var gripPressed = _leftPickup.Get("grip_pressed").AsBool();
+		var gripPressed = _leftController.GetIsActive() && _leftController.GetFloat("grip") > 0.6f;
 		var inOriginalSizeRoom = _museumNode.Visible && _originalSizeController.IsInOriginalSizeRoom;
 
 		SetInputActive(_museumNode.Visible && !inOriginalSizeRoom && gripPressed);

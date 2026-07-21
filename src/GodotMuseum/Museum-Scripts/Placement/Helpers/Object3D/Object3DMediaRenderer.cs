@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Object3D;
@@ -14,6 +15,7 @@ public static class Object3DMediaRenderer
 	private static readonly EventLogger Log = new(nameof(Object3DMediaRenderer));
 
 	private static readonly HashSet<string> MountedPacks = new(StringComparer.Ordinal);
+	private static readonly SemaphoreSlim PackLoadSlot = new(1, 1);
 	private static GltfResourceLoader _gltfLoader;
 
 	public static async Task<float?> Render(Object3DDisplayInstance instance, string path, Node3D place, Object3DDisplayFitter fitter)
@@ -52,16 +54,32 @@ public static class Object3DMediaRenderer
 
 	private static async Task<PackedScene> LoadFromPack(string packPath, Node owner)
 	{
-		if (MountedPacks.Add(packPath))
+		// Mounting changes Godot's global resource filesystem. Keep mounting and
+		// loading one pack atomic; otherwise another result can mount a pack while
+		// the first scene is still being loaded on a worker thread.
+		await PackLoadSlot.WaitAsync();
+		try
 		{
-			ProjectSettings.LoadResourcePack(packPath, false);
-			Log.Info($"Mounted 3D object PCK. Path='{packPath}'.");
-		}
+			if (MountedPacks.Add(packPath))
+			{
+				if (!ProjectSettings.LoadResourcePack(packPath, false))
+				{
+					MountedPacks.Remove(packPath);
+					Log.Warning($"3D object PCK could not be mounted. Path='{packPath}'.");
+					return null;
+				}
+				Log.Info($"Mounted 3D object PCK. Path='{packPath}'.");
+			}
 
-		var resourcePath = $"res://native/{Path.GetFileNameWithoutExtension(packPath)}.scn";
-		return await ThreadedResourceLoader.Load<PackedScene>(
-			resourcePath,
-			owner);
+			var resourcePath = $"res://native/{Path.GetFileNameWithoutExtension(packPath)}.scn";
+			return await ThreadedResourceLoader.Load<PackedScene>(
+				resourcePath,
+				owner);
+		}
+		finally
+		{
+			PackLoadSlot.Release();
+		}
 	}
 
 	private static async Task<PackedScene> LoadFromGltf(string gltfPath, Node owner)
