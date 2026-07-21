@@ -30,7 +30,8 @@ public partial class GltfResourceLoader : ResourceFormatLoader
 		{
 			var document = new GltfDocument();
 			var state = new GltfState();
-			var error = document.AppendFromFile(path, state);
+			var bytes = FileAccess.GetFileAsBytes(path);
+			var error = document.AppendFromBuffer(bytes, "", state);
 			if (error != Error.Ok)
 			{
 				Log.Warning($"GLB loading failed. Error={error}.");

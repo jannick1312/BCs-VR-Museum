@@ -1,4 +1,3 @@
-using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
 
 namespace BCSVRMuseum;
@@ -9,13 +8,10 @@ public partial class XrRenderProfile : Node
 
 	[Export] public float QuestStandaloneScale { get; set; }
 	[Export] public float QuestRefreshRate { get; set; }
-	[Export] public int QuestMediaLoadWorkers { get; set; }
 	[Export] public float FocusStandaloneScale { get; set; }
 	[Export] public float FocusRefreshRate { get; set; }
-	[Export] public int FocusMediaLoadWorkers { get; set; }
 	[Export] public float StreamingScale { get; set; }
 	[Export] public float StreamingRefreshRate { get; set; }
-	[Export] public int StreamingMediaLoadWorkers { get; set; }
 	[Export] public bool StreamingSsrEnabled { get; set; }
 	[Export] public bool StreamingSsaoEnabled { get; set; }
 	[Export] public bool StreamingSsilEnabled { get; set; }
@@ -30,7 +26,6 @@ public partial class XrRenderProfile : Node
 		var startXr = GetNode(StartXrPath);
 		startXr.Set("render_target_size_multiplier", GetRenderScale(_profile));
 		startXr.Set("target_refresh_rate", GetRefreshRate(_profile));
-		ThreadedResourceLoader.ConfigureWorkers(GetMediaLoadWorkers(_profile));
 	}
 
 	public override void _Ready()
@@ -65,16 +60,6 @@ public partial class XrRenderProfile : Node
 			Profile.QuestStandalone => QuestRefreshRate,
 			Profile.FocusStandalone => FocusRefreshRate,
 			_ => StreamingRefreshRate
-		};
-	}
-
-	private int GetMediaLoadWorkers(Profile profile)
-	{
-		return profile switch
-		{
-			Profile.QuestStandalone => QuestMediaLoadWorkers,
-			Profile.FocusStandalone => FocusMediaLoadWorkers,
-			_ => StreamingMediaLoadWorkers
 		};
 	}
 
