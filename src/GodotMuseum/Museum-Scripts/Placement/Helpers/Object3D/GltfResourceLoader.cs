@@ -46,7 +46,8 @@ public partial class GltfResourceLoader : ResourceFormatLoader
 
 			var packedScene = new PackedScene();
 			error = packedScene.Pack(scene);
-			if (error == Error.Ok) return Variant.CreateFrom(packedScene);
+			if (error == Error.Ok)
+				return Variant.CreateFrom(packedScene);
 			Log.Warning($"GLB scene packing failed. Error={error}.");
 			return Variant.CreateFrom((long)error);
 		}
