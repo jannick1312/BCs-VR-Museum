@@ -1,0 +1,94 @@
+% Slide 09: System architecture
+\section{Implementation}
+\begin{frame}[c]{Three responsibilities shape the system}
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.30\textwidth}
+    \textcolor{unired}{\LARGE 01}
+
+    \vspace{0.08cm}
+    \large\textbf{XR experience}
+
+    \vspace{0.12cm}
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \raggedright
+    \begin{tikzpicture}[remember picture]
+      \node[redbox,minimum width=2.95cm,minimum height=0.68cm]
+        (experience) {XR client};
+    \end{tikzpicture}
+
+    \vspace{0.18cm}
+    \footnotesize
+    \textbf{Interaction}\\
+    input, navigation, selection
+
+    \vspace{0.20cm}
+    \textbf{Presentation}\\
+    menu, rooms, exhibits
+  \end{column}
+
+  \begin{column}{0.30\textwidth}
+    \textcolor{unired}{\LARGE 02}
+
+    \vspace{0.08cm}
+    \large\textbf{Application logic}
+
+    \vspace{0.12cm}
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \raggedright
+    \begin{tikzpicture}[remember picture]
+      \node[bluebox,minimum width=2.95cm,minimum height=0.68cm]
+        (logic) {use cases};
+    \end{tikzpicture}
+
+    \vspace{0.18cm}
+    \footnotesize
+    \textbf{Orchestration}\\
+    validate, search, limit
+
+    \vspace{0.20cm}
+    \textbf{Backend boundary}\\
+    hides backend details
+  \end{column}
+
+  \begin{column}{0.30\textwidth}
+    \textcolor{unired}{\LARGE 03}
+
+    \vspace{0.08cm}
+    \large\textbf{Retrieval + media}
+
+    \vspace{0.12cm}
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \raggedright
+    \begin{tikzpicture}[remember picture]
+      \node[mintbox,minimum width=2.95cm,minimum height=0.68cm]
+        (retrieval) {retrieval service};
+    \end{tikzpicture}
+
+    \vspace{0.18cm}
+    \footnotesize
+    \textbf{Semantic retrieval}\\
+    embeddings, vector index
+
+    \vspace{0.20cm}
+    \textbf{Delivery}\\
+    local files or HTTP
+  \end{column}
+\end{columns}
+
+\begin{tikzpicture}[remember picture,overlay]
+  \draw[flow] (experience.east) -- node[above=2pt,tinylabel] {intent} (logic.west);
+  \draw[flow] (logic.east) -- node[above=2pt,tinylabel] {query} (retrieval.west);
+\end{tikzpicture}
+
+\vspace{0.16cm}
+\begin{beamercolorbox}[sep=0.50em,rounded=true]{palette highlight}
+  \centering\footnotesize
+  \textbf{Design decision:} separate experience, orchestration, and retrieval so each can evolve independently.
+\end{beamercolorbox}
+\end{frame}
