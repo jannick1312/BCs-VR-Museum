@@ -1,119 +1,37 @@
 \documentclass[aspectratio=169,xcolor=table]{beamer}
-\usepackage{basileabeam}
-\usepackage[english]{babel}
-\usepackage{xcolor}
-\usepackage{amssymb}
-\usepackage{mathtools}
-\usepackage{tabularray}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{makecell}
-\usepackage{graphicx}
-\usepackage{tikz}
-\usetikzlibrary{calc}
-\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
 
-\setbeamerfont{footnote}{size=\tiny}
-\addtobeamertemplate{footnote}{\hskip -1.4em}{}
+\usepackage{basileabeam}
+\input{content/preamble}
 
 \title{Bachelor Thesis Midterm}
-\subtitle{Interactive VR Museum for Image and 3D
-Model Collections}
+\subtitle{A Multimodal XR Museum with vitrivr and Godot}
 \author{Jannick Seper}
 \institute{University of Basel}
-\date{July 15th, 2026}
+\date{22 July 2026}
 
 \ulogo{Template/header}
 \ulistelement{Template/listelement}
-\graphicspath{{./images/}}
+\graphicspath{{./images/}{../}}
 \totalNoSlidesDisabled
-
-% ---- Color Legend ----
-\tikzset{
-  legendbox/.style={
-    draw,
-    rounded corners=1pt,
-    minimum width=0.25cm,
-    minimum height=0.25cm,
-    inner sep=0pt
-  }
-}
-
-\newcommand{\pipelinelegend}{
-\vspace{0.2cm}
-
-\centering
-\begin{tikzpicture}[font=\tiny]
-\node[legendbox, fill=green!15] at (0,0) {};
-\node[right=0.05cm of current bounding box.east, anchor=west] at (0.15,0) {Sensors};
-
-\node[legendbox, fill=blue!10] at (2.2,0) {};
-\node[anchor=west] at (2.35,0) {Transfer / ROS / Data};
-
-\node[legendbox, fill=violet!20] at (5.6,0) {};
-\node[anchor=west] at (5.75,0) {Output};
-
-\node[legendbox, fill=gray!15] at (7.5,0) {};
-\node[anchor=west] at (7.65,0) {Layer};
-\end{tikzpicture}
-}
-
-\newcommand{\code}[1]{\texttt{#1}}
 
 \begin{document}
 
-\setbeamerfont{note page}{size=\tiny}
-\setbeamercovered{invisible}
-\setbeamercovered{again covered={\opaqueness<1->{100}}}
-\renewcommand{\arraystretch}{1.35}
-
-\begin{frame}[t,plain]
-    \titlepage
-\end{frame}
-
-\section{Agenda}
-
-\begin{frame}[c]{Agenda}
-    \tableofcontents
-\end{frame}
-
-\section{Motivation and Idea}
-
-\begin{frame}[c]{Motivation}
-    
-\end{frame}
-
-\begin{frame}[c]{Idea}
-    
-\end{frame}
-
-\section{Current Implementation}
-
-\begin{frame}[c]{Code Parts}
-    
-\end{frame}
-
-\begin{frame}[c]{Code Flow}
-    
-\end{frame}
-
-\section{Demo}
-
-\begin{frame}[c]{Demo}
-    
-\end{frame}
-
-\section{ToDo's}
-
-\begin{frame}[c]{ToDo's}
-    
-\end{frame}
-
-\section{Evaluation}
-
-\begin{frame}[c]{Evaluation}
-    
-\end{frame}
-
+\input{content/01-bachelor-thesis-midterm}
+\input{content/02-key-terms}
+\input{content/03-starting-point}
+\input{content/04-three-project-goals}
+\input{content/05-system-overview}
+\input{content/06-clip-retrieval}
+\input{content/07-3d-retrieval}
+\input{content/08-vitrivr-request}
+\input{content/09-keep-godot-and-vitrivr-replaceable}
+\input{content/10-why-godot}
+\input{content/11-godot-scene-tree}
+\input{content/12-entering-the-museum}
+\input{content/13-media-becomes-exhibits}
+\input{content/14-current-status}
+\input{content/15-demo}
+\input{content/16-evaluation-plan}
+\input{content/17-next-steps}
 
 \end{document}

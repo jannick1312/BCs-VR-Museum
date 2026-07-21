@@ -1,0 +1,78 @@
+% Slide 11: Godot scene tree
+\begin{frame}[c]{Godot scene tree}
+\centering
+\begin{tikzpicture}[every node/.style={font=\scriptsize}]
+  \node[redbox,minimum width=2.20cm,minimum height=0.70cm]
+    (main) {\code{Main}};
+  \node[below=0.30cm of main,font=\scriptsize,text=unigrey]
+    (children) {10 direct child nodes, grouped by role};
+  \draw[flowsoft] (main) -- (children);
+\end{tikzpicture}
+
+\vspace{0.25cm}
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.49\textwidth}
+    \raggedright
+    \textcolor{unired}{\small\bfseries XR RUNTIME}
+
+    \vspace{0.08cm}
+    \begin{tikzpicture}[
+      every node/.style={font=\fontsize{5.5pt}{6.2pt}\selectfont}
+    ]
+      \node[bluebox,inner xsep=3pt,minimum width=2.05cm,minimum height=0.64cm]
+        (profile) at (0,0) {\code{XrRenderProfile}};
+      \node[bluebox,inner xsep=3pt,minimum width=1.30cm,minimum height=0.64cm]
+        (start) at (2.00,0) {\code{StartXR}};
+      \node[bluebox,inner xsep=3pt,minimum width=2.10cm,minimum height=0.64cm]
+        (environment) at (4.12,0) {\code{WorldEnvironment}};
+    \end{tikzpicture}
+
+    \vspace{0.20cm}
+    \textcolor{unired}{\small\bfseries STATE + WIRING}
+
+    \vspace{0.08cm}
+    \begin{tikzpicture}[every node/.style={font=\tiny}]
+      \node[greybox,minimum width=2.65cm,minimum height=0.64cm]
+        (searchstore) at (0,0) {\code{SearchSettingsStore}};
+      \node[greybox,minimum width=2.65cm,minimum height=0.64cm]
+        (gamestore) at (3.15,0) {\code{GameSettingsStore}};
+      \node[greybox,minimum width=2.65cm,minimum height=0.64cm]
+        (factory) at (0,-0.88) {\code{SearchUseCaseFactory}};
+      \node[greybox,minimum width=2.65cm,minimum height=0.64cm]
+        (switcher) at (3.15,-0.88) {\code{PlatformSwitcher}};
+    \end{tikzpicture}
+  \end{column}
+
+  \begin{column}{0.47\textwidth}
+    \raggedright
+    \textcolor{unired}{\small\bfseries SCENE INSTANCES}
+
+    \vspace{0.08cm}
+    \begin{tikzpicture}[every node/.style={font=\tiny}]
+      \node[mintbox,minimum width=1.75cm,minimum height=0.72cm]
+        (player) at (0,0) {\code{Player}};
+      \node[greybox,minimum width=3.60cm,minimum height=0.72cm,align=left]
+        (playerdetail) at (3.00,0)
+        {\code{XROrigin3D}, camera + HUD\\hands + controllers};
+
+      \node[mintbox,minimum width=1.75cm,minimum height=0.72cm]
+        (menu) at (0,-1.02) {\code{MenuNode}};
+      \node[greybox,minimum width=3.60cm,minimum height=0.72cm,align=left]
+        (menudetail) at (3.00,-1.02)
+        {tutorial + keyboard\\server + game settings};
+
+      \node[mintbox,minimum width=1.75cm,minimum height=0.72cm]
+        (museum) at (0,-2.04) {\code{MuseumNode}};
+      \node[greybox,minimum width=3.60cm,minimum height=0.72cm,align=left]
+        (museumdetail) at (3.00,-2.04)
+        {search + room\\media slots + 3D rooms};
+
+      \foreach \a/\b in {
+        player/playerdetail,
+        menu/menudetail,
+        museum/museumdetail}
+        \draw[flowsoft] (\a) -- (\b);
+    \end{tikzpicture}
+  \end{column}
+\end{columns}
+\end{frame}

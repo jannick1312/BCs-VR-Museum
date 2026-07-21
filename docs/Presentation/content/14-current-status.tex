@@ -1,0 +1,104 @@
+% Slide 14: Current status
+\tikzset{
+  importance star/.style={
+    star,
+    star points=5,
+    star point ratio=2.25,
+    minimum size=0.34cm,
+    inner sep=0pt
+  }
+}
+
+\newcommand{\highstar}{%
+  \tikz[baseline=-0.55ex]
+    \node[importance star,draw=unimint,fill=unimint] {};%
+}
+
+\newcommand{\lowstar}{%
+  \tikz[baseline=-0.55ex]
+    \node[importance star,draw=unimint,line width=0.7pt,fill=white] {};%
+}
+
+\newcommand{\mediumstar}{%
+  \begin{tikzpicture}[baseline=-0.55ex]
+    \node[importance star,draw=none,fill=white] (base) {};
+    \begin{scope}
+      \clip (base.south west) rectangle (base.north);
+      \node[importance star,draw=none,fill=unimint] at (base.center) {};
+    \end{scope}
+    \node[importance star,draw=unimint,line width=0.7pt,fill opacity=0]
+      at (base.center) {};
+  \end{tikzpicture}%
+}
+
+\newcommand{\statuscomplete}{%
+  \textcolor{unimint!75!black}{\textbf{Completed}}%
+}
+\newcommand{\statuspartial}{%
+  \textcolor{unired}{\textbf{Partial}}%
+}
+\newcommand{\statusmissing}{%
+  \textcolor{black!48}{\textbf{Missing}}%
+}
+
+\newcommand{\taskitem}[4]{%
+  \parbox[t]{0.82\linewidth}{\raggedright\textbf{#1} #2}%
+  \hfill #3\par
+  \vspace{-0.07cm}
+  #4\par
+  \vspace{0.08cm}
+}
+
+\begin{frame}[c]{Current status}
+\vspace{-0.75cm}
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.30\textwidth}
+    \normalsize\textbf{Backend \& data\\~}
+
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \scriptsize
+    \taskitem{A1}{Ingestion and extraction}
+      {\highstar}{\statuscomplete}
+    \taskitem{A2}{Similarity search integration}
+      {\highstar}{\statuscomplete}
+    \taskitem{A3}{Performance optimization}
+      {\lowstar}{\statuspartial}
+  \end{column}
+
+  \begin{column}{0.34\textwidth}
+    \normalsize\textbf{VR application\\~}
+
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \scriptsize
+    \taskitem{B1}{Scene generation}
+      {\highstar}{\statuscomplete}
+    \taskitem{B2}{OpenXR setup}
+      {\highstar}{\statuscomplete}
+    \taskitem{B3}{User interaction}
+      {\highstar}{\statuspartial}
+    \taskitem{B4}{Advanced user interaction}
+      {\mediumstar}{\statuspartial}
+    \taskitem{B5}{Gesture-based interaction}
+      {\lowstar}{\statuscomplete}
+  \end{column}
+
+  \begin{column}{0.30\textwidth}
+    \normalsize\textbf{Evaluation \& documentation}
+
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \scriptsize
+    \taskitem{D1}{System evaluation}
+      {\highstar}{\statuspartial}
+    \taskitem{D2}{Documentation}
+      {\highstar}{\statusmissing}
+    \taskitem{D3}{User evaluation}
+      {\lowstar}{\statusmissing}
+  \end{column}
+\end{columns}
+\end{frame}

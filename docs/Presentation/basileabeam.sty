@@ -125,7 +125,7 @@
 % nothing
 \else
 \usefonttheme{professionalfonts}
-\usepackage{fontspec}%	
+\usepackage{fontspec}%
 \newfontfamily\utitlefont{Georgia}%
 \setmainfont{Arial}%
 \setsansfont{Arial}%
@@ -154,13 +154,13 @@
     {\parskip0pt\offinterlineskip%
     \hbox{\hskip-\Gm@lmargin\hbox{\vbox{%
     \@tempdima=\textwidth\textwidth=\paperwidth\hsize=\textwidth\def\\{,}\vbox{}\vskip-1.5ex%
-       
+
     % Top Logo.
     \begin{beamercolorbox}[wd=\paperwidth,ht=7ex,leftskip=2ex,dp=0.25\paperheight]{title page header}
         %\includegraphics[height=4ex]{\ulogoint}
         \newline \newline
     \end{beamercolorbox}%
-    
+
     %% Top Logo positioned with tikz
     \begin{tikzpicture}[remember picture,overlay]
 		\node[%
@@ -168,14 +168,14 @@
     ] (img) at (current page.north west) [anchor=north west]{%
 			\includegraphics[height=\ulogoheightint]{\ulogoint}};
     \end{tikzpicture}
-    
+
     \vbox{}\vskip-\beamer@fancy@lineup%
     \vbox{}\vskip-\beamer@fancy@linemid%
     }}%
     \hskip-\Gm@rmargin%
     }}\hfil%
     %
-    
+
     % Title.
     \vskip4ex
     \usebeamerfont{title}\inserttitle\par%
@@ -183,15 +183,15 @@
     \else%
     \vskip0.25ex%
     {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-    \fi%  
+    \fi%
     \def\beamer@decolines@truetext{true}%
     \vskip-.25\beamer@leftmargin%
-    
+
     \begin{beamercolorbox}[wd=\textwidth,ht=.1ex,dp=0ex]{}%
-        \usebeamercolor[bg]{lineup}\hdashrule{\textwidth}{0.5pt}{1pt 1pt} 
+        \usebeamercolor[bg]{lineup}\hdashrule{\textwidth}{0.5pt}{1pt 1pt}
     \end{beamercolorbox}%
     \vspace{2ex}%
-    
+
     % Authors, institute and date
     \begin{beamercolorbox}[wd=\textwidth]{author}
     {%
@@ -245,7 +245,7 @@
 \def\beamer@decolines@truetext{true}%
 \vskip-.5\beamer@leftmargin%
 \begin{beamercolorbox}[wd=\textwidth,ht=.1ex,dp=0ex]{}%
-    \usebeamercolor[bg]{lineup}\hdashrule{\textwidth}{0.5pt}{1pt 1pt} 
+    \usebeamercolor[bg]{lineup}\hdashrule{\textwidth}{0.5pt}{1pt 1pt}
 \end{beamercolorbox}%
 }
 
@@ -266,11 +266,11 @@
 \defbeamertemplate{section in toc}{uni bas}{%
   \leavevmode\leftskip=1.75ex%
   \llap{\small\includegraphics[height=1.6ex]{\ulistelementint}}%
-  \kern1.5ex\inserttocsection\par}  
+  \kern1.5ex\inserttocsection\par}
 
 \setbeamertemplate{section in toc}[uni bas]
 
-%% no line skip after beamer section entries  
+%% no line skip after beamer section entries
 \patchcmd{\beamer@sectionintoc}
   {\vfill}
   {\vskip\itemsep}
@@ -345,7 +345,7 @@
 		}
 	}{}
 }
-	
+
 % Footer.
 \defbeamertemplate*{footline}{decolines theme}
 {
@@ -367,10 +367,10 @@
 <all>
 
 
-\makeatletter 
+\makeatletter
 \def\beamer@framenotesbegin{% at beginning of slide
     \usebeamercolor[fg]{normal text}
-    \gdef\beamer@noteitems{}% 
-    \gdef\beamer@notes{}% 
+    \gdef\beamer@noteitems{}%
+    \gdef\beamer@notes{}%
 }
 \makeatother

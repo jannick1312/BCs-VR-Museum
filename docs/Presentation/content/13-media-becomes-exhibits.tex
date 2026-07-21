@@ -1,0 +1,48 @@
+% Slide 13: Media become exhibits
+\begin{frame}[c]{Media become exhibits}
+\centering
+\begin{tikzpicture}[node distance=0.38cm,every node/.style={font=\scriptsize}]
+  \node[mintbox,minimum width=1.75cm] (response) {retrievables};
+  \node[bluebox,right=of response,minimum width=1.95cm] (prepare) {parse, deduplicate\\and limit};
+  \node[greybox,right=of prepare,minimum width=1.80cm] (load) {local or HTTP\\async load};
+  \node[redbox,right=of load,minimum width=1.95cm] (place) {placement\\strategy};
+  \node[mintbox,right=of place,minimum width=1.75cm] (exhibit) {interactive\\exhibit};
+
+  \foreach \a/\b in {response/prepare,prepare/load,load/place,place/exhibit}
+    \draw[flow] (\a) -- (\b);
+\end{tikzpicture}
+
+\vspace{0.50cm}
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.46\textwidth}
+    \textcolor{unired}{\large\textbf{2D MEDIA}}
+
+    \vspace{0.10cm}
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \vspace{0.14cm}
+    \small
+    Images and videos use centred wall slots and aspect-aware frames.
+  \end{column}
+  \begin{column}{0.46\textwidth}
+    \textcolor{unired}{\large\textbf{3D MODELS}}
+
+    \vspace{0.10cm}
+    \color{unimint}\rule{\linewidth}{1.6pt}
+    \color{black}
+
+    \vspace{0.14cm}
+    \small
+    GLB objects are instanced on stands and fitted to their bounds.
+  \end{column}
+\end{columns}
+
+\vspace{0.42cm}
+\begin{beamercolorbox}[sep=0.55em,rounded=true]{palette highlight}
+  \centering\small
+  Every exhibit stores its path, name, and CLIP vector for \textbf{Similar}.
+  3D models also support \textbf{Original Size}.
+\end{beamercolorbox}
+
+\end{frame}

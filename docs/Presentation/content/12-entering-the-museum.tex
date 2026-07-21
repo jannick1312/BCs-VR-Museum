@@ -1,0 +1,48 @@
+% Slide 12: Entering the museum
+\begin{frame}[c]{Entering the museum}
+\centering
+\begin{tikzpicture}[node distance=0.44cm,every node/.style={font=\scriptsize}]
+  \node[greybox,minimum width=1.65cm,minimum height=0.76cm]
+    (start) {app start};
+  \node[bluebox,right=of start,minimum width=1.75cm,minimum height=0.76cm]
+    (menu) {XR menu};
+  \node[mintbox,right=of menu,minimum width=2.15cm,minimum height=0.76cm]
+    (server) {validate server};
+  \node[bluebox,right=of server,minimum width=2.15cm,minimum height=0.76cm]
+    (tutorial) {optional tutorial};
+  \node[redbox,right=of tutorial,minimum width=1.95cm,minimum height=0.76cm]
+    (museum) {enter museum};
+
+  \foreach \a/\b in {start/menu,menu/server,server/tutorial,tutorial/museum}
+    \draw[flow] (\a) -- (\b);
+\end{tikzpicture}
+
+\vspace{0.48cm}
+\begin{beamercolorbox}[sep=0.55em,rounded=true]{palette highlight}
+  \centering\small
+  \code{CanEnterMuseum}
+  $=$ server valid \textbf{and}
+  (tutorial disabled \textbf{or} completed)
+\end{beamercolorbox}
+
+\vspace{0.45cm}
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.47\textwidth}
+    \raggedright
+    \textcolor{unimint!80!black}{\large\textbf{While in the menu}}
+
+    \vspace{0.10cm}
+    \small
+    The museum is hidden, player movement is disabled, and configuration happens inside XR.
+  \end{column}
+  \begin{column}{0.47\textwidth}
+    \raggedright
+    \textcolor{unimint!80!black}{\large\textbf{On transition}}
+
+    \vspace{0.10cm}
+    \small
+    \code{PlatformSwitcher} moves the XR rig, swaps environment and HUD, and preserves museum state.
+  \end{column}
+\end{columns}
+
+\end{frame}
