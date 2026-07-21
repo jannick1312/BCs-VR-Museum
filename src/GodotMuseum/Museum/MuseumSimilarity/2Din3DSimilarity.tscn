@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://dpors3vgs2mr3"]
+
+[ext_resource type="Script" uid="uid://eavk7267igp7" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.gd" id="1_ec5lh"]
+[ext_resource type="PackedScene" uid="uid://6vek3i2mjuao" path="res://Museum/MuseumSimilarity/Similarity2D.tscn" id="2_g4pyk"]
+[ext_resource type="Script" uid="uid://cpl5yiyf1ypft" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d_body.gd" id="3_qiekj"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_8fgmr"]
+resource_local_to_scene = true
+size = Vector2(1.8, 0.4)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cpvkg"]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_km47d"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_cpvkg")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_06nps"]
+resource_local_to_scene = true
+size = Vector3(1.8, 0.4, 0.02)
+
+[node name="2DIn3DSimilarity" type="Node3D" unique_id=776647796]
+script = ExtResource("1_ec5lh")
+screen_size = Vector2(1.8, 0.4)
+scene = ExtResource("2_g4pyk")
+viewport_size = Vector2(1200, 262.5)
+transparent = 1
+alpha_scissor_threshold = 0.25
+unshaded = true
+filter = true
+scene_properties_keys = PackedStringArray()
+
+[node name="Viewport" type="SubViewport" parent="." unique_id=1496002320]
+disable_3d = true
+transparent_bg = true
+gui_embed_subwindows = true
+size = Vector2i(1200, 262)
+render_target_update_mode = 1
+
+[node name="Screen" type="MeshInstance3D" parent="." unique_id=830305756]
+mesh = SubResource("QuadMesh_8fgmr")
+surface_material_override/0 = SubResource("StandardMaterial3D_km47d")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1024925121]
+collision_layer = 5242881
+script = ExtResource("3_qiekj")
+screen_size = Vector2(1.8, 0.4)
+viewport_size = Vector2(1200, 262.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=620411508]
+shape = SubResource("BoxShape3D_06nps")

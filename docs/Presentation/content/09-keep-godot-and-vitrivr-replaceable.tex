@@ -1,0 +1,29 @@
+% Slide 09: Godot and vitrivr remain replaceable
+\section{Implementation}
+\begin{frame}[c]{Godot and vitrivr remain replaceable}
+\centering
+\begin{tikzpicture}[node distance=0.38cm and 0.55cm, every node/.style={font=\scriptsize}]
+  \node[redbox, minimum width=2.7cm] (godot)
+    {Godot layer\\controllers + scenes};
+  \node[bluebox, below=of godot, minimum width=2.7cm] (abstractions)
+    {Application abstractions\\\code{IMuseumApplication}};
+  \node[bluebox, below=of abstractions, minimum width=2.7cm] (application)
+    {Application use cases\\search + validation};
+  \node[greybox, below=of application, xshift=-1.65cm, minimum width=2.55cm] (core)
+    {Core + Models\\queries and results};
+  \node[mintbox, below=of application, xshift=1.65cm, minimum width=2.55cm] (infra)
+    {Infrastructure\\vitrivr + media};
+
+  \draw[flow] (godot) -- (abstractions);
+  \draw[flow] (abstractions) -- (application);
+  \draw[flow] (application) -- (core);
+  \draw[flow] (application) -- (infra);
+  \draw[flowsoft] (infra) -- (core);
+
+  \node[greybox, right=1.0cm of application, minimum width=2.3cm] (factory)
+    {Factory\\wires implementations};
+  \draw[flowsoft] (factory) -- (abstractions);
+  \draw[flowsoft] (factory) -- (infra);
+\end{tikzpicture}
+
+\end{frame}

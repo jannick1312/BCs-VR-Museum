@@ -1,0 +1,72 @@
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,backgrounds,calc,fit,positioning,shapes.geometric}
+
+\definecolor{unimint}{RGB}{30,165,165}
+\definecolor{unilightmint}{RGB}{165,215,210}
+\definecolor{unidark}{RGB}{45,55,60}
+\definecolor{unigrey}{RGB}{140,145,150}
+\definecolor{unired}{RGB}{210,5,55}
+\definecolor{softblue}{RGB}{232,242,250}
+\definecolor{softmint}{RGB}{232,247,245}
+\definecolor{softred}{RGB}{252,235,239}
+\definecolor{softgrey}{RGB}{244,245,246}
+
+\setbeamerfont{footnote}{size=\tiny}
+\setbeamerfont{caption}{size=\scriptsize}
+\setbeamertemplate{caption}[numbered]
+\setbeamercovered{invisible}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\key}[1]{\textcolor{unired}{\textbf{#1}}}
+\newcommand{\implemented}{\textcolor{unimint}{\textbf{Implemented}}}
+\newcommand{\planned}{\textcolor{unired}{\textbf{Planned}}}
+
+\tikzset{
+  >={Latex[length=2.2mm]},
+  flow/.style={-Latex, line width=0.75pt, draw=unidark},
+  flowsoft/.style={-Latex, line width=0.65pt, draw=unigrey},
+  box/.style={
+    draw=unidark,
+    rounded corners=1.5pt,
+    fill=white,
+    align=center,
+    inner sep=4.5pt,
+    font=\scriptsize
+  },
+  mintbox/.style={box, fill=softmint, draw=unimint},
+  bluebox/.style={box, fill=softblue, draw=blue!55!black},
+  redbox/.style={box, fill=softred, draw=unired},
+  greybox/.style={box, fill=softgrey, draw=unigrey},
+  groupbox/.style={
+    draw=unigrey,
+    rounded corners=2pt,
+    fill=softgrey,
+    inner sep=7pt
+  },
+  tinylabel/.style={font=\tiny, text=unigrey, align=center}
+}
+
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{unired}\bfseries,
+  commentstyle=\color{unigrey},
+  stringstyle=\color{blue!60!black},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  rulecolor=\color{unigrey},
+  backgroundcolor=\color{softgrey},
+  xleftmargin=0.25em,
+  xrightmargin=0.25em,
+  aboveskip=0.3em,
+  belowskip=0.3em
+}

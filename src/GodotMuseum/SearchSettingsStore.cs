@@ -1,44 +1,91 @@
-using Core;
+using System.IO;
 using Godot;
-using Infrastructure.Configuration;
+using Logger;
 
 namespace BCSVRMuseum;
 
 public partial class SearchSettingsStore : Node
 {
-    private RuntimeSearchSettings _runtimeSettings;
+	private static readonly string[] MediaSubdirectories = ["images", "videos", "3d"];
 
-    public bool Deployed => _runtimeSettings.Deployed;
-    public string CurrentIp => _runtimeSettings.CurrentIp;
-    public string MediaFolderPath => _runtimeSettings.MediaFolderPath;
+	private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
 
-    public override void _Ready()
-    {
-        const string settingsPath = "res://appsettings.json";
+	private string _configSource = "";
+	private string _mediaFolderPath;
+	private RuntimeSearchSettings _runtimeSettings;
+	private string _serverIp = "";
+	private bool _tutorialEnabled;
+	private string ConfiguredQuery { get; set; } = "";
+	public string CurrentIp => _runtimeSettings.CurrentIp;
+	public string CurrentMediaFolderPath => _runtimeSettings.MediaFolderPath;
+	public MuseumEntryState EntryState { get; private set; }
 
-        using var file = FileAccess.Open(
-            settingsPath,
-            FileAccess.ModeFlags.Read
-        );
+	public override void _EnterTree()
+	{
+		var logDirectoryPath = ResolveApplicationDirectory("logs");
+		EventLogger.Configure(logDirectoryPath);
+	}
 
-        var json = file.GetAsText();
-        var appSettings = AppSettingsLoader.LoadFromJson(json);
+	public override void _Ready()
+	{
+		LoadJsonSettings();
 
-        _runtimeSettings = new RuntimeSearchSettings(appSettings.Deployed, appSettings.DefaultDeployedIp, appSettings.DefaultStreamedIp, appSettings.MediaFolderPath);
-    }
+		_mediaFolderPath = ResolveApplicationDirectory("media");
+		CreateMediaDirectories(_mediaFolderPath);
 
-    public void SetServerIp(string ip)
-    {
-        _runtimeSettings.SetCurrentIp(ip);
-    }
+		_runtimeSettings = new RuntimeSearchSettings(_serverIp, _mediaFolderPath);
+		EntryState = new MuseumEntryState(_tutorialEnabled);
 
-    public void RevertServerUrl()
-    {
-        _runtimeSettings.RevertCurrentIp();
-    }
+		var runtimeProfile = ResolveRuntimeProfile();
+		if (runtimeProfile is not null)
+			_logger.Info($"Search settings initialized. RuntimeProfile='{runtimeProfile}', ConfigSource='{_configSource}', ServerIp='{CurrentIp}', Tutorial={EntryState.TutorialEnabled}, Query='{ConfiguredQuery}'.");
+	}
 
-    public void SetDeployed(bool deployed)
-    {
-        _runtimeSettings.SetDeployed(deployed);
-    }
+	private void LoadJsonSettings()
+	{
+		var settings = AppSettingsLoader.Load(out var source);
+		_serverIp = settings.ServerIp;
+		_tutorialEnabled = settings.Tutorial;
+		ConfiguredQuery = settings.Query;
+		_configSource = source;
+	}
+
+	public void SetServerIp(string ip)
+	{
+		_runtimeSettings.SetCurrentIp(ip);
+		_logger.Info($"Server IP changed. CurrentIp='{CurrentIp}'.");
+	}
+
+	public void RevertServerUrl()
+	{
+		_runtimeSettings.RevertCurrentIp();
+		_logger.Info($"Server IP reverted. CurrentIp='{CurrentIp}'.");
+	}
+
+	private static void CreateMediaDirectories(string mediaFolderPath)
+	{
+		Directory.CreateDirectory(mediaFolderPath);
+		foreach (var subdirectory in MediaSubdirectories)
+			Directory.CreateDirectory(Path.Combine(mediaFolderPath, subdirectory));
+	}
+
+	private static string ResolveRuntimeProfile()
+	{
+		if (OS.HasFeature("quest"))
+			return "quest";
+
+		if (OS.HasFeature("focus"))
+			return "focus";
+
+		return OS.HasFeature("streaming") ? "streamed" : null;
+	}
+
+	private static string ResolveApplicationDirectory(string directoryName)
+	{
+		if (OS.GetName() == "Android")
+			return $"/sdcard/Android/data/VR.Museum/files/{directoryName}";
+
+		var executableDirectory = Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
+		return Path.Combine(executableDirectory, directoryName);
+	}
 }

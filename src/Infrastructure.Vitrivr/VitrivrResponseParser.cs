@@ -1,67 +1,145 @@
-using Core;
 using System.Text.Json;
+using Core;
+using Logger;
+using Models;
 
 namespace Infrastructure.Vitrivr;
 
 public static class VitrivrResponseParser
 {
-    public static SearchResult Parse(string responseText, string mediaFolderPath, string mediaBaseUrl)
-    {
-        try
-        {
-            using var document = JsonDocument.Parse(responseText);
-            var root = document.RootElement;
+	private static readonly EventLogger Log = new(nameof(VitrivrResponseParser));
 
-            root.TryGetProperty("retrievables", out var retrievables);
+	public static SearchResult Parse(string responseText, string mediaFolderPath, string mediaBaseUrl)
+	{
+		try
+		{
+			using var document = JsonDocument.Parse(responseText);
+			var root = document.RootElement;
 
-            var items = new List<SearchResultItem>();
+			root.TryGetProperty("retrievables", out var retrievables);
 
-            foreach (var retrievable in retrievables.EnumerateArray())
-            {
-                var item = ParseRetrievable(retrievable, mediaFolderPath, mediaBaseUrl);
+			var items = new List<SearchResultItem>();
+			var seenLocalPaths = new List<string>();
 
-                if (item != null)
-                    items.Add(item);
-            }
-            return SearchResult.FromItems(items);
-        }
-        catch (Exception exception)
-        {
-            return SearchResult.Failure(exception.Message);
-        }
-    }
+			foreach (var retrievable in retrievables.EnumerateArray())
+			{
+				var item = ParseRetrievable(retrievable, mediaFolderPath, mediaBaseUrl);
 
-    private static SearchResultItem? ParseRetrievable(JsonElement retrievable, string mediaFolderPath, string mediaBaseUrl)
-    {
-        if (!retrievable.TryGetProperty("descriptors", out var descriptors))
-            return null;
+				if (item == null)
+					continue;
 
-        if (!descriptors.TryGetProperty("file.path", out var pathElement))
-            return null;
+				if (seenLocalPaths.Contains(item.LocalPath))
+				{
+					Log.Info($"Skipping duplicate media file '{item.Name}'.");
+					continue;
+				}
 
-        var sourcePath = pathElement.GetString();
+				seenLocalPaths.Add(item.LocalPath);
+				items.Add(item);
+			}
 
-        if (string.IsNullOrWhiteSpace(sourcePath))
-            return null;
+			Log.Info($"Parsed Vitrivr response. Items={items.Count}");
+			return SearchResult.FromItems(items);
+		}
+		catch (Exception exception)
+		{
+			Log.Error("Failed to parse Vitrivr response", exception);
+			return SearchResult.Failure(exception.Message);
+		}
+	}
 
-        var fileName = Path.GetFileName(sourcePath);
-        var localPath = Path.Combine(mediaFolderPath, fileName);
-        var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + fileName;
-        var mediaType = DetectMediaType(fileName);
+	private static SearchResultItem? ParseRetrievable(JsonElement retrievable, string mediaFolderPath, string mediaBaseUrl)
+	{
+		var sourcePath = GetSourcePath(retrievable);
+		var vector = GetClipVector(retrievable);
 
-        return new SearchResultItem(mediaType, localPath, remoteUrl);
-    }
+		if (string.IsNullOrWhiteSpace(sourcePath) || vector.Count == 0)
+			return null;
 
-    private static MediaType DetectMediaType(string fileName)
-    {
-        var extension = Path.GetExtension(fileName).ToLowerInvariant();
+		var fileName = ExtractFileName(sourcePath);
+		var mediaType = DetectMediaType(fileName);
 
-        return extension switch
-        {
-            ".jpg" or ".jpeg" or ".png" or ".webp" or ".bmp" => MediaType.Image,
-            ".mp4" or ".mov" or ".avi" or ".mkv" or ".webm" => MediaType.Video,
-            ".glb" or ".gltf" or ".obj" or ".fbx" => MediaType.Object3D,
-            _ => MediaType.Unknown
-        };
-    }
+		if (mediaType == MediaType.Unknown)
+		{
+			Log.Info($"Skipping unsupported media file '{fileName}'. Supported formats are .jpg, .ogv and .glb.");
+			return null;
+		}
+
+		var mediaFolderName = GetMediaFolderName(mediaType);
+		var localPath = Path.Combine(mediaFolderPath, mediaFolderName, fileName);
+		var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + mediaFolderName + "/" + fileName;
+
+		return new SearchResultItem(vector, mediaType, localPath, remoteUrl);
+	}
+
+	private static IReadOnlyList<double> GetClipVector(JsonElement retrievable)
+	{
+		if (retrievable.TryGetProperty("descriptors", out var descriptors) &&
+		    descriptors.TryGetProperty("clip.vector", out var vectorElement))
+			return ParseVector(vectorElement);
+
+		if (retrievable.TryGetProperty("relationship", out var relationship) &&
+		    relationship.TryGetProperty("partOf", out var parentRetrievable) &&
+		    parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
+		    parentDescriptors.TryGetProperty("clip.vector", out var parentVectorElement))
+			return ParseVector(parentVectorElement);
+
+		return [];
+	}
+
+	private static IReadOnlyList<double> ParseVector(JsonElement vectorElement)
+	{
+		var vector = new List<double>();
+
+		foreach (var value in vectorElement.EnumerateArray())
+			if (value.TryGetDouble(out var number))
+				vector.Add(number);
+
+		return vector;
+	}
+
+	private static string? GetSourcePath(JsonElement retrievable)
+	{
+		if (retrievable.TryGetProperty("descriptors", out var descriptors) &&
+		    descriptors.TryGetProperty("file.path", out var pathElement))
+			return pathElement.GetString();
+
+		if (retrievable.TryGetProperty("relationship", out var relationship) &&
+		    relationship.TryGetProperty("partOf", out var parentRetrievable) &&
+		    parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
+		    parentDescriptors.TryGetProperty("file.path", out var parentPathElement))
+			return parentPathElement.GetString();
+
+		return null;
+	}
+
+	private static string ExtractFileName(string path)
+	{
+		var normalizedPath = path.Replace('\\', '/');
+		return Path.GetFileName(normalizedPath);
+	}
+
+	private static MediaType DetectMediaType(string fileName)
+	{
+		var extension = Path.GetExtension(fileName).ToLowerInvariant();
+
+		return extension switch
+		{
+			".jpg" => MediaType.Image,
+			".ogv" => MediaType.Video,
+			".glb" => MediaType.Object3D,
+			_ => MediaType.Unknown
+		};
+	}
+
+	private static string GetMediaFolderName(MediaType mediaType)
+	{
+		return mediaType switch
+		{
+			MediaType.Image => "images",
+			MediaType.Video => "videos",
+			MediaType.Object3D => "3d",
+			_ => throw new InvalidOperationException($"Unsupported media type: {mediaType}")
+		};
+	}
 }

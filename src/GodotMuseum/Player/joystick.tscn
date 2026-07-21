@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://yjfribcaxes7"]
+
+[ext_resource type="Script" uid="uid://dmc4m3ladroh0" path="res://Player/HandJoystickMovement.cs" id="1_joystick_script"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_base"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_base"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stick"]
+albedo_color = Color(0.46423507, 0.46423507, 0.46423507, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_stick"]
+radius = 0.01
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_handle"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_handle"]
+radius = 0.05
+height = 0.1
+
+[node name="Joystick" type="Node3D" unique_id=573653955]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+
+[node name="Movement" type="Node" parent="." unique_id=465182401]
+script = ExtResource("1_joystick_script")
+
+[node name="Base" type="MeshInstance3D" parent="." unique_id=1761896788]
+material_override = SubResource("StandardMaterial3D_base")
+mesh = SubResource("SphereMesh_base")
+
+[node name="Stick" type="MeshInstance3D" parent="." unique_id=1896225698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+material_override = SubResource("StandardMaterial3D_stick")
+mesh = SubResource("CapsuleMesh_stick")
+
+[node name="Handle" type="MeshInstance3D" parent="." unique_id=2101199770]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+material_override = SubResource("StandardMaterial3D_handle")
+mesh = SubResource("SphereMesh_handle")

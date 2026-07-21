@@ -21,7 +21,7 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(1.5, 0.75, 0.02)
 
-[node name="2Din3DKeyboard" type="Node3D" unique_id=776647796]
+[node name="2DIn3DKeyboard" type="Node3D" unique_id=776647796]
 script = ExtResource("1_pr5ku")
 screen_size = Vector2(1.5, 0.75)
 scene = ExtResource("2_dclmf")
@@ -45,6 +45,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_s0plr")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1711902221]
 collision_layer = 5242881
+collision_mask = 5
 script = ExtResource("2_otucp")
 screen_size = Vector2(1.5, 0.75)
 viewport_size = Vector2(400, 200)

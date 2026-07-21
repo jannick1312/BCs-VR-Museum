@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b7v3q13s3jgaw"]
+
+[ext_resource type="Texture2D" uid="uid://etgo5jw0u3ei" path="res://Assets/Materials/Gold/textures/Metallic Gold_old_Base Color.jpeg" id="1_aa6x0"]
+[ext_resource type="Texture2D" uid="uid://dki2bymskvsoq" path="res://Assets/Materials/Plaster_wall/textures/wall-normal.jpg" id="2_qc3x1"]
+[ext_resource type="Texture2D" uid="uid://usxgn5xuc6fp" path="res://Assets/Materials/Plaster_wall/textures/wall-roughness.jpg" id="3_2nf1d"]
+
+[resource]
+albedo_texture = ExtResource("1_aa6x0")
+metallic = 1.0
+roughness = 0.6
+roughness_texture = ExtResource("3_2nf1d")
+normal_enabled = true
+normal_texture = ExtResource("2_qc3x1")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 150.0

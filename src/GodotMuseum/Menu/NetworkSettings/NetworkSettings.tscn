@@ -1,0 +1,206 @@
+[gd_scene format=3 uid="uid://drs3gdns8fhnb"]
+
+[ext_resource type="Script" uid="uid://cjid5a7fylxt6" path="res://Menu-Scripts/UrlSettingsPanel.cs" id="1_ii3tl"]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(1, 1, 1, 0.75686276)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="CurrentLabelStyle"]
+bg_color = Color(0.2592937, 0.2592937, 0.25929374, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="HttpLabelStyle"]
+bg_color = Color(0.25882354, 0.25882354, 0.25882354, 1)
+corner_radius_top_left = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="InputNormal"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="InputFocus"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.16026929, 0.16026929, 0.16026929, 0.6)
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="RevertNormal"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="RevertPressed"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="RevertHover"]
+bg_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitNormal"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitPressed"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitHover"]
+bg_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[node name="NetworkSettings" type="Control" unique_id=1310227466]
+layout_mode = 3
+anchors_preset = 0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NetworkSettingsPanel" type="Node" parent="." unique_id=1045959962]
+script = ExtResource("1_ii3tl")
+
+[node name="Panel" type="Panel" parent="." unique_id=598254976]
+custom_minimum_size = Vector2(1200, 1050)
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 1050.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Title" type="Label" parent="Panel" unique_id=1440946483]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 1150.0
+offset_bottom = 212.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Network Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="URLCurrently" type="Label" parent="Panel" unique_id=438616413]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 237.0
+offset_right = 1150.0
+offset_bottom = 399.5
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("CurrentLabelStyle")
+text = "
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="URLCurrentlyTitle" type="Label" parent="Panel" unique_id=338616414]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 249.5
+offset_right = 1150.0
+offset_bottom = 312.5
+theme_override_font_sizes/font_size = 45
+text = "Currently using:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="URLCurrentlyValue" type="Label" parent="Panel" unique_id=338616415]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 312.0
+offset_right = 1150.0
+offset_bottom = 387.0
+theme_override_font_sizes/font_size = 50
+text = "xxxxxxxxxxxxxxxxxx"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HTTPSchemeLabel" type="Label" parent="Panel" unique_id=2063773464]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 399.5
+offset_right = 300.0
+offset_bottom = 562.0
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("HttpLabelStyle")
+text = "http://"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="URLInput" type="LineEdit" parent="Panel" unique_id=1834533491]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 399.5
+offset_right = 1150.0
+offset_bottom = 562.0
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("InputNormal")
+theme_override_styles/focus = SubResource("InputFocus")
+placeholder_text = "Input new URL"
+alignment = 1
+
+[node name="Revert" type="Button" parent="Panel" unique_id=1820918828]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 612.0
+offset_right = 575.0
+offset_bottom = 987.0
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("RevertNormal")
+theme_override_styles/pressed = SubResource("RevertPressed")
+theme_override_styles/hover = SubResource("RevertHover")
+text = "Revert"
+
+[node name="Submit" type="Button" parent="Panel" unique_id=690301288]
+layout_mode = 0
+offset_left = 625.0
+offset_top = 612.0
+offset_right = 1150.0
+offset_bottom = 987.0
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("SubmitNormal")
+theme_override_styles/pressed = SubResource("SubmitPressed")
+theme_override_styles/hover = SubResource("SubmitHover")
+theme_override_styles/disabled = SubResource("SubmitNormal")
+theme_override_styles/focus = SubResource("SubmitHover")
+text = "Submit"

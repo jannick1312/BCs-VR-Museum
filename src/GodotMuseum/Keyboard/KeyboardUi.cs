@@ -1,56 +1,38 @@
 using Godot;
+
 namespace BCSVRMuseum.Keyboard;
 
 public partial class KeyboardUi : Control
 {
-	private enum KeyboardMode
-	{
-		LowerCase,
-		UpperCase,
-		Alternate
-	}
-
-	private bool _shiftDown;
-	private bool _capsDown;
 	private bool _altDown;
-
-	private KeyboardMode _mode = KeyboardMode.LowerCase;
-
-	private Button _toggleShift;
-	private Button _toggleCaps;
-	private Button _toggleAlt;
-
-	private Control _lowerCase;
-	private Control _upperCase;
 	private Control _alternate;
+	private bool _capsDown;
+	private Control _lowerCase;
+	private KeyboardMode _mode = KeyboardMode.LowerCase;
+	private bool _shiftDown;
+	private Button _toggleAlt;
+	private Button _toggleCaps;
+	private Button _toggleShift;
+	private Control _upperCase;
 
 	public override void _Ready()
 	{
-		_toggleShift = GetNodeOrNull<Button>("Panel/Standard/ToggleShift");
-		_toggleCaps = GetNodeOrNull<Button>("Panel/Standard/ToggleCaps");
-		_toggleAlt = GetNodeOrNull<Button>("Panel/Standard/ToggleAlt");
+		_toggleShift = GetNode<Button>("Panel/Standard/ToggleShift");
+		_toggleCaps = GetNode<Button>("Panel/Standard/ToggleCaps");
+		_toggleAlt = GetNode<Button>("Panel/Standard/ToggleAlt");
 
-		_lowerCase = GetNodeOrNull<Control>("Panel/LowerCase");
-		_upperCase = GetNodeOrNull<Control>("Panel/UpperCase");
-		_alternate = GetNodeOrNull<Control>("Panel/Alternate");
+		_lowerCase = GetNode<Control>("Panel/LowerCase");
+		_upperCase = GetNode<Control>("Panel/UpperCase");
+		_alternate = GetNode<Control>("Panel/Alternate");
 
-		if (_toggleShift != null)
-		{
-			_toggleShift.FocusMode = FocusModeEnum.None;
-			_toggleShift.Pressed += OnToggleShiftPressed;
-		}
+		_toggleShift.FocusMode = FocusModeEnum.None;
+		_toggleShift.Pressed += OnToggleShiftPressed;
 
-		if (_toggleCaps != null)
-		{
-			_toggleCaps.FocusMode = FocusModeEnum.None;
-			_toggleCaps.Pressed += OnToggleCapsPressed;
-		}
+		_toggleCaps.FocusMode = FocusModeEnum.None;
+		_toggleCaps.Pressed += OnToggleCapsPressed;
 
-		if (_toggleAlt != null)
-		{
-			_toggleAlt.FocusMode = FocusModeEnum.None;
-			_toggleAlt.Pressed += OnToggleAltPressed;
-		}
+		_toggleAlt.FocusMode = FocusModeEnum.None;
+		_toggleAlt.Pressed += OnToggleAltPressed;
 
 		SetupAllKeys(this);
 		UpdateVisible(true);
@@ -74,7 +56,7 @@ public partial class KeyboardUi : Control
 	{
 		SendKey(scanCodeText, unicode, shift);
 
-		if (!_shiftDown) 
+		if (!_shiftDown)
 			return;
 		_shiftDown = false;
 		UpdateVisible(false);
@@ -146,15 +128,22 @@ public partial class KeyboardUi : Control
 
 		_mode = newMode;
 
-		_lowerCase?.Visible = _mode == KeyboardMode.LowerCase;
+		_lowerCase.Visible = _mode == KeyboardMode.LowerCase;
 
-		_upperCase?.Visible = _mode == KeyboardMode.UpperCase;
+		_upperCase.Visible = _mode == KeyboardMode.UpperCase;
 
-		_alternate?.Visible = _mode == KeyboardMode.Alternate;
+		_alternate.Visible = _mode == KeyboardMode.Alternate;
 	}
 
 	private static void SetToggleVisual(Button button, bool active)
 	{
-		button?.ButtonPressed = active;
+		button.ButtonPressed = active;
+	}
+
+	private enum KeyboardMode
+	{
+		LowerCase,
+		UpperCase,
+		Alternate
 	}
 }

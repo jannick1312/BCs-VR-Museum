@@ -30,7 +30,7 @@ project/assembly_name="BCS-VR-Museum"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/blenderkit/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg")
+enabled=PackedStringArray("res://addons/blendkit/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg")
 
 [physics]
 
@@ -38,23 +38,33 @@ enabled=PackedStringArray("res://addons/blenderkit/plugin.cfg", "res://addons/go
 
 [rendering]
 
-rendering_device/driver.windows="d3d12"
+textures/canvas_textures/default_texture_filter=2
 textures/vram_compression/import_etc2_astc=true
-lights_and_shadows/directional_shadow/size=8192
-lights_and_shadows/directional_shadow/size.mobile=8192
+textures/lossless_compression/force_png=true
+lights_and_shadows/directional_shadow/size.mobile=4096
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality.mobile=2
-lights_and_shadows/positional_shadow/soft_shadow_filter_quality.mobile=2
-environment/ssao/quality=3
-environment/ssil/quality=3
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality=3
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality.mobile=3
+reflections/sky_reflections/roughness_layers=2
+reflections/reflection_atlas/reflection_count=32
+textures/default_filters/anisotropic_filtering_level=4
+anti_aliasing/quality/msaa_2d=1
 anti_aliasing/quality/msaa_3d=1
-scaling_3d/mode=2
-environment/subsurface_scattering/subsurface_scattering_quality=2
-lightmapping/probe_capture/update_speed=60.0
-lights_and_shadows/positional_shadow/atlas_size=8192
-lights_and_shadows/positional_shadow/atlas_size.mobile=8192
-lights_and_shadows/positional_shadow/atlas_quadrant_3_subdiv=3
+lights_and_shadows/positional_shadow/atlas_size.mobile=4096
+renderer/rendering_method.focus="gl_compatibility"
 
 [xr]
 
 openxr/enabled=true
+openxr/reference_space=2
+openxr/extensions/hand_tracking=true
+openxr/extensions/hand_tracking_unobstructed_data_source=true
+openxr/extensions/hand_tracking_controller_data_source=true
+openxr/extensions/hand_interaction_profile=true
+openxr/extensions/render_model=true
 shaders/enabled=true
+openxr/extensions/meta/hand_tracking_aim=true
+openxr/extensions/meta/hand_tracking_mesh=true
+openxr/extensions/meta/hand_tracking_capsules=true
+openxr/extensions/meta/simultaneous_hands_and_controllers=true
+openxr/extensions/meta/render_model=true

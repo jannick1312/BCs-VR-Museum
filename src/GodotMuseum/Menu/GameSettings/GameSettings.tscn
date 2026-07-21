@@ -1,0 +1,388 @@
+[gd_scene format=3 uid="uid://b501xkhtumn0q"]
+
+[ext_resource type="Script" uid="uid://c76wu62qux0cv" path="res://Menu-Scripts/GameSettingsPanel.cs" id="1_8o3aq"]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(1, 1, 1, 0.75686276)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="CurrentLabelStyle"]
+bg_color = Color(0.2592937, 0.2592937, 0.25929374, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SliderTrack"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.11, 0.11, 0.11, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="MovementSliderFill"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.05, 0.21, 0.42, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="TurnSliderFill"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.27, 0.68, 0.96, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Images3DNormal"]
+bg_color = Color(0.12, 0.46, 0.24, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="Images3DPressed"]
+bg_color = Color(0.08, 0.32, 0.17, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="Images3DHover"]
+bg_color = Color(0.17, 0.56, 0.31, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="Objects3DNormal"]
+bg_color = Color(0.46, 0.72, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="Objects3DPressed"]
+bg_color = Color(0.32, 0.5, 0.15, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="Objects3DHover"]
+bg_color = Color(0.55, 0.82, 0.29, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="ImagesNormal"]
+bg_color = Color(0.26, 0.62, 0.23, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="ImagesPressed"]
+bg_color = Color(0.18, 0.43, 0.16, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="ImagesHover"]
+bg_color = Color(0.34, 0.72, 0.31, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="Gradient" id="Gradient_non53"]
+colors = PackedColorArray(0.92156863, 0.6784314, 0.52156866, 1, 0.19590452, 0.10213908, 0.0585951, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_475vd"]
+gradient = SubResource("Gradient_non53")
+
+[sub_resource type="StyleBoxFlat" id="SkinColourSliderFill"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="SubmitNormal"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitPressed"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="SubmitHover"]
+bg_color = Color(0.22, 0.22, 0.22, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+
+[node name="GameSettings" type="Control" unique_id=1310227466]
+layout_mode = 3
+anchors_preset = 0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameSettingsPanel" type="Node" parent="." unique_id=1045959962]
+script = ExtResource("1_8o3aq")
+
+[node name="Panel" type="Panel" parent="." unique_id=598254976]
+custom_minimum_size = Vector2(1200, 1000)
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 1050.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Title" type="Label" parent="Panel" unique_id=1440946483]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 1150.0
+offset_bottom = 212.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Game Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpeedPanel" type="Label" parent="Panel" unique_id=628148106]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 237.0
+offset_right = 1150.0
+offset_bottom = 399.50024
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("CurrentLabelStyle")
+text = "
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Speed" type="Label" parent="Panel" unique_id=401514207]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 237.0
+offset_right = 422.0
+offset_bottom = 399.50024
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("CurrentLabelStyle")
+text = "Speed"
+vertical_alignment = 1
+
+[node name="Movement" type="Label" parent="Panel" unique_id=1518472652]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 252.0
+offset_right = 896.0
+offset_bottom = 291.0
+theme_override_font_sizes/font_size = 28
+text = "Movement"
+
+[node name="MovementSlider" type="HSlider" parent="Panel" unique_id=1164573352]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 277.0
+offset_right = 1125.0
+offset_bottom = 327.0
+theme_override_styles/slider = SubResource("SliderTrack")
+theme_override_styles/grabber_area = SubResource("MovementSliderFill")
+theme_override_styles/grabber_area_highlight = SubResource("MovementSliderFill")
+min_value = 1.0
+max_value = 10.0
+value = 5.0
+tick_count = 10
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="Turn" type="Label" parent="Panel" unique_id=2063348362]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 322.0
+offset_right = 896.0
+offset_bottom = 361.0
+theme_override_font_sizes/font_size = 28
+text = "Turn"
+horizontal_alignment = 1
+
+[node name="TurnSlider" type="HSlider" parent="Panel" unique_id=809574205]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 347.0
+offset_right = 1125.0
+offset_bottom = 397.0
+theme_override_styles/slider = SubResource("SliderTrack")
+theme_override_styles/grabber_area = SubResource("TurnSliderFill")
+theme_override_styles/grabber_area_highlight = SubResource("TurnSliderFill")
+min_value = 1.0
+max_value = 10.0
+value = 5.0
+tick_count = 10
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="ModePanel" type="Label" parent="Panel" unique_id=1305210176]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 437.0
+offset_right = 1150.0
+offset_bottom = 599.50024
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("CurrentLabelStyle")
+text = "
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mode" type="Label" parent="Panel" unique_id=1554271332]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 437.0
+offset_right = 422.0
+offset_bottom = 599.50024
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("CurrentLabelStyle")
+text = "Mode"
+vertical_alignment = 1
+
+[node name="Images3D" type="Button" parent="Panel" unique_id=1049549050]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 459.0
+offset_right = 1125.0
+offset_bottom = 579.0
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("Images3DNormal")
+theme_override_styles/pressed = SubResource("Images3DPressed")
+theme_override_styles/hover = SubResource("Images3DHover")
+theme_override_styles/disabled = SubResource("Images3DNormal")
+theme_override_styles/focus = SubResource("Images3DHover")
+text = "Images & 3D"
+
+[node name="3D" type="Button" parent="Panel" unique_id=1060519369]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 459.0
+offset_right = 1125.0
+offset_bottom = 579.0
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("Objects3DNormal")
+theme_override_styles/pressed = SubResource("Objects3DPressed")
+theme_override_styles/hover = SubResource("Objects3DHover")
+theme_override_styles/disabled = SubResource("Objects3DNormal")
+theme_override_styles/focus = SubResource("Objects3DHover")
+text = "3D"
+
+[node name="Images" type="Button" parent="Panel" unique_id=415381695]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 459.0
+offset_right = 1125.0
+offset_bottom = 579.0
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("ImagesNormal")
+theme_override_styles/pressed = SubResource("ImagesPressed")
+theme_override_styles/hover = SubResource("ImagesHover")
+theme_override_styles/disabled = SubResource("ImagesNormal")
+theme_override_styles/focus = SubResource("ImagesHover")
+text = "Images"
+
+[node name="SkinColourPanel" type="Label" parent="Panel" unique_id=539442986]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 637.0
+offset_right = 1150.0
+offset_bottom = 799.50024
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("CurrentLabelStyle")
+text = "
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkinColour" type="Label" parent="Panel" unique_id=1721144196]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 637.0
+offset_right = 422.0
+offset_bottom = 799.50024
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("CurrentLabelStyle")
+text = "Skin Colour"
+vertical_alignment = 1
+
+[node name="SkinColourGradient" type="TextureRect" parent="Panel" unique_id=1788410519]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 699.0
+offset_right = 1125.0
+offset_bottom = 735.0
+texture = SubResource("GradientTexture1D_475vd")
+
+[node name="SkinColourSlider" type="HSlider" parent="Panel" unique_id=1534166753]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 692.0
+offset_right = 1125.0
+offset_bottom = 742.0
+theme_override_styles/slider = SubResource("SkinColourSliderFill")
+theme_override_styles/grabber_area = SubResource("SkinColourSliderFill")
+theme_override_styles/grabber_area_highlight = SubResource("SkinColourSliderFill")
+min_value = 1.0
+max_value = 10.0
+value = 5.0
+tick_count = 10
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="Default" type="Button" parent="Panel" unique_id=690301288]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 837.0
+offset_right = 1150.0
+offset_bottom = 999.5
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("SubmitNormal")
+theme_override_styles/pressed = SubResource("SubmitPressed")
+theme_override_styles/hover = SubResource("SubmitHover")
+theme_override_styles/disabled = SubResource("SubmitNormal")
+theme_override_styles/focus = SubResource("SubmitHover")
+text = "Default"

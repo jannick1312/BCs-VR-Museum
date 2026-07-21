@@ -1,44 +1,24 @@
-using Application;
+using Application.Abstractions;
+using Application.Factory;
 using Godot;
-using Infrastructure.Media;
-using Infrastructure.Vitrivr;
+using Logger;
 
 namespace BCSVRMuseum;
 
 public partial class SearchUseCaseFactory : Node
 {
-    private SearchSettingsStore _searchSettingsStore;
+	private readonly EventLogger _logger = new(nameof(SearchUseCaseFactory));
 
-    private SearchMedia _cachedUseCase;
-    private string _cachedIp = "";
-    private string _cachedMediaFolderPath = "";
+	private SearchSettingsStore _searchSettingsStore;
 
-    public override async void _Ready()
-    {
-        for (var i = 0; i < 8; i++)
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+	public override void _Ready()
+	{
+		_searchSettingsStore = (SearchSettingsStore)GetTree().Root.FindChild("SearchSettingsStore", true, false);
+	}
 
-        _searchSettingsStore = GetTree().Root.FindChild("SearchSettingsStore", true, false) as SearchSettingsStore;
-    }
-
-    public SearchMedia GetSearchAndLoadMedia()
-    {
-        if (_cachedUseCase != null &&  _cachedIp == _searchSettingsStore.CurrentIp && _cachedMediaFolderPath == _searchSettingsStore.MediaFolderPath)
-        {
-            return _cachedUseCase;
-        }
-
-        var vitrivrSettings = new VitrivrSettings(_searchSettingsStore.CurrentIp, _searchSettingsStore.MediaFolderPath);
-
-        ISearchService searchService = new VitrivrSearchService(vitrivrSettings);
-
-        IMediaLoader mediaLoader = new MediaLoader();
-
-        _cachedUseCase = new SearchMedia(searchService, mediaLoader);
-
-        _cachedIp = _searchSettingsStore.CurrentIp;
-        _cachedMediaFolderPath = _searchSettingsStore.MediaFolderPath;
-
-        return _cachedUseCase;
-    }
+	public IMuseumApplication GetMuseumApplication()
+	{
+		_logger.Info($"Museum application created. CurrentIp='{_searchSettingsStore.CurrentIp}', MediaFolderPath='{_searchSettingsStore.CurrentMediaFolderPath}'.");
+		return MuseumApplicationFactory.CreateVitrivrApplication(_searchSettingsStore.CurrentIp, _searchSettingsStore.CurrentMediaFolderPath, ProjectSettings.GlobalizePath("user://"));
+	}
 }

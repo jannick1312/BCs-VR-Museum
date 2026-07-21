@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dapkassquu443"]
+
+[ext_resource type="Script" uid="uid://cy8kdfnmpji7e" path="res://Museum-Scripts/Decision/SimilarityPopup.cs" id="1_77dbp"]
+[ext_resource type="PackedScene" uid="uid://dpors3vgs2mr3" path="res://Museum/MuseumSimilarity/2Din3DSimilarity.tscn" id="2_0rs8b"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_r2hku"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r2hku"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vw51o"]
+top_radius = 0.075
+bottom_radius = 0.075
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vw51o"]
+albedo_color = Color(0.5033745, 0.5033746, 0.5033746, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lft2l"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f7deh"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Similarity" type="Node3D" unique_id=71677858]
+
+[node name="SimilarityPopup" type="Node" parent="." unique_id=880110100]
+script = ExtResource("1_77dbp")
+LifetimeSeconds = 5.0
+PanelHostPath = NodePath("../2DIn3DSimilarity")
+
+[node name="2DIn3DSimilarity" parent="." unique_id=776647796 instance=ExtResource("2_0rs8b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.23201719, 0)
+unshaded = false
+
+[node name="Point" type="Node3D" parent="." unique_id=1622623373]
+
+[node name="BigPoint" type="MeshInstance3D" parent="Point" unique_id=528514524]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.005)
+mesh = SubResource("CylinderMesh_r2hku")
+surface_material_override/0 = SubResource("StandardMaterial3D_r2hku")
+
+[node name="MiddlePoint" type="MeshInstance3D" parent="Point" unique_id=2139849871]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.015)
+mesh = SubResource("CylinderMesh_vw51o")
+surface_material_override/0 = SubResource("StandardMaterial3D_vw51o")
+
+[node name="SmallPoint" type="MeshInstance3D" parent="Point" unique_id=1067719555]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.025)
+mesh = SubResource("CylinderMesh_lft2l")
+surface_material_override/0 = SubResource("StandardMaterial3D_f7deh")

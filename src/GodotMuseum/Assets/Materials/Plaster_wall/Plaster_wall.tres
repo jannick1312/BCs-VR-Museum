@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cabshhfn3j7gc"]
+
+[ext_resource type="Texture2D" uid="uid://b3igntn5yjfvk" path="res://Assets/Materials/Plaster_wall/textures/wall-basecolor.jpg" id="1_2rf87"]
+[ext_resource type="Texture2D" uid="uid://dki2bymskvsoq" path="res://Assets/Materials/Plaster_wall/textures/wall-normal.jpg" id="2_ec2jk"]
+[ext_resource type="Texture2D" uid="uid://usxgn5xuc6fp" path="res://Assets/Materials/Plaster_wall/textures/wall-roughness.jpg" id="3_hm2gu"]
+
+[resource]
+albedo_texture = ExtResource("1_2rf87")
+roughness_texture = ExtResource("3_hm2gu")
+normal_enabled = true
+normal_texture = ExtResource("2_ec2jk")
+uv1_scale = Vector3(3, 3, 3)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 150.0

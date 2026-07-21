@@ -1,196 +1,204 @@
+using BCSVRMuseum.Museum_Scripts;
+using BCSVRMuseum.Player.Hud;
 using Godot;
+using Logger;
+
 namespace BCSVRMuseum;
 
 public partial class PlatformSwitcher : Node
 {
-	[Export] public NodePath PlayerPath;
-	[Export] public NodePath MuseumNodePath;
-	[Export] public NodePath MenuNodePath;
-	[Export] public NodePath WorldEnvironmentPath;
-	[Export] public Environment MuseumEnvironment;
-	[Export] public Environment MenuEnvironment;
+	private readonly EventLogger _logger = new(nameof(PlatformSwitcher));
 
-	private Node _player;
-	private Node3D _playerRig;
+	private CharacterBody3D _body;
 	private XRCamera3D _camera;
+	private MuseumEntryState _entryState;
+	private bool _inMenu;
+	private Transform3D _lastMuseumBody;
+	private Transform3D _lastMuseumRig;
 	private XRController3D _leftController;
+	private Transform3D _lockedMenuRig;
+	private Node3D _menu;
+	private bool _menuButtonWasPressed;
+	private Marker3D _menuSpawn;
+	private Node[] _movementNodes;
+	private Node3D _museum;
+	private Marker3D _museumSpawn;
+	private Node _player;
+	private Node3D _rig;
 	private XRController3D _rightController;
-	private Node3D _leftHandVisual;
-	private Node3D _rightHandVisual;
-	private Node3D _museumNode;
-	private Node3D _menuNode;
-	private Marker3D _menuSpawnPoint;
-	private Marker3D _startSpawnPoint;
+	private bool _switching;
 	private WorldEnvironment _worldEnvironment;
-	private Node _leftMovement;
-	private Node _rightTurnMovement;
-	private Node _rightJumpMovement;
 
-	private Transform3D _lastMuseumTransform;
-	private Transform3D _lockedMenuTransform;
-	private bool _isInMenu;
-	private bool _bothWerePressed;
+	[Export] public Environment MenuEnvironment;
+	[Export] public NodePath MenuNodePath;
+	[Export] public Environment MuseumEnvironment;
+	[Export] public NodePath MuseumNodePath;
+	[Export] public NodePath PlayerPath;
+	[Export] public NodePath WorldEnvironmentPath;
 
 	public override async void _Ready()
 	{
-		for (var i = 0; i < 8; i++)
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
 		_player = GetNode(PlayerPath);
 
-		_playerRig = _player.FindChild("XROrigin3D", true, false) as Node3D;
-		_camera = _player.FindChild("XRCamera3D", true, false) as XRCamera3D;
+		_rig = (Node3D)_player.FindChild("XROrigin3D", true, false);
+		_camera = (XRCamera3D)_player.FindChild("XRCamera3D", true, false);
 
-		_leftController = _player.FindChild("LeftController", true, false) as XRController3D;
-		_rightController = _player.FindChild("RightController", true, false) as XRController3D;
+		_leftController = (XRController3D)_player.FindChild("LeftController", true, false);
+		_rightController = (XRController3D)_player.FindChild("RightController", true, false);
 
-		_leftHandVisual = _player.FindChild("LeftHand2", true, false) as Node3D;
-		_rightHandVisual = _player.FindChild("RightHand2", true, false) as Node3D;
+		_body = (CharacterBody3D)_player.FindChild("PlayerBody", true, false);
+		var searchSettingsStore = (SearchSettingsStore)GetTree().Root.FindChild("SearchSettingsStore", true, false);
+		_entryState = searchSettingsStore.EntryState;
+		_movementNodes = [_player.FindChild("MovementDirect", true, false), _player.FindChild("MovementTurn", true, false)];
 
-		_leftMovement = _player.FindChild("MovementDirect", true, false);
-		_rightTurnMovement = _player.FindChild("MovementTurn", true, false);
-		_rightJumpMovement = _player.FindChild("MovementJump", true, false);
+		await this.WaitFor(() =>
+		{
+			foreach (var child in _body.GetChildren())
+				if (child is CollisionShape3D collisionShape)
+					return collisionShape;
 
-		_museumNode = GetNode<Node3D>(MuseumNodePath);
-		_menuNode = GetNode<Node3D>(MenuNodePath);
+			return null;
+		}, "player body collision shape");
 
-		_menuSpawnPoint = _menuNode.FindChild("MenuSpawnPoint", true, false) as Marker3D;
-		_startSpawnPoint = _museumNode.FindChild("StartSpawnPoint", true, false) as Marker3D;
-
+		_museum = GetNode<Node3D>(MuseumNodePath);
+		_menu = GetNode<Node3D>(MenuNodePath);
+		_museumSpawn = (Marker3D)_museum.FindChild("StartSpawnPoint", true, false);
+		_menuSpawn = (Marker3D)_menu.FindChild("MenuSpawnPoint", true, false);
 		_worldEnvironment = GetNode<WorldEnvironment>(WorldEnvironmentPath);
 
-		_worldEnvironment.Environment = MuseumEnvironment;
+		MoveCameraTo(_museumSpawn);
+		RememberMuseumTransform();
 
-		SetMuseumActive(true);
-		SetMenuActive(false);
-		SetMovementEnabled(true);
+		SetMovementEnabled(false);
+		SetEnabled(_body, false);
+		SetWorld(false);
+		MoveCameraTo(_menuSpawn);
 
-		MoveCameraExactlyToStartSpawn();
-		if (_playerRig != null) 
-			_lastMuseumTransform = _playerRig.GlobalTransform;
+		_body.GlobalTransform = _rig.GlobalTransform;
+		_lockedMenuRig = _rig.GlobalTransform;
+		_inMenu = true;
+		_logger.Info("Platform switcher initialized in menu.");
 	}
 
 	public override void _Process(double delta)
 	{
-		if (_leftController == null || _rightController == null)
+		if (_switching)
 			return;
-		
-		var bothPressed =
-			_leftController.GetFloat("trigger") > 0.75f &&
-			_rightController.GetFloat("trigger") > 0.75f;
 
-		if (bothPressed && !_bothWerePressed)
+		var menuButtonPressed = _leftController.IsButtonPressed("ax_button");
+
+		if (menuButtonPressed && !_menuButtonWasPressed)
 			ToggleWorld();
 
-		_bothWerePressed = bothPressed;
+		_menuButtonWasPressed = menuButtonPressed;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (!_isInMenu)
+		if (!_inMenu)
 			return;
 
-		_playerRig.GlobalTransform = _lockedMenuTransform;
-
-		if (_leftHandVisual != null && _leftController != null)
-			_leftHandVisual.GlobalTransform = _leftController.GlobalTransform;
-
-		if (_rightHandVisual != null && _rightController != null)
-			_rightHandVisual.GlobalTransform = _rightController.GlobalTransform;
+		_rig.GlobalTransform = _lockedMenuRig;
 	}
 
-	private void ToggleWorld()
+	public async void SwitchToMuseum()
 	{
-		if (_isInMenu)
+		if (!_entryState.CanEnterMuseum)
 		{
-			_isInMenu = false;
-
-			SetMenuActive(false);
-			SetMuseumActive(true);
-
-			_worldEnvironment.Environment = MuseumEnvironment;
-
-			_playerRig.GlobalTransform = _lastMuseumTransform;
-
-			SetMovementEnabled(true);
+			_logger.Warning("Switch to museum ignored because the entry requirements are not met.");
+			return;
 		}
+
+		_body.Velocity = Vector3.Zero;
+
+		_switching = true;
+		_inMenu = false;
+		SetWorld(true);
+		_rig.GlobalTransform = _lastMuseumRig;
+		_body.GlobalTransform = _lastMuseumBody;
+
+		await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+		SetEnabled(_body, true);
+		SetMovementEnabled(true);
+		_logger.Info("Switched from menu to museum world.");
+
+		_switching = false;
+	}
+
+	private void SwitchToMenu()
+	{
+		if (_inMenu || _switching)
+			return;
+
+		_switching = true;
+
+		_body.Velocity = Vector3.Zero;
+
+		RememberMuseumTransform();
+		SetMovementEnabled(false);
+		SetEnabled(_body, false);
+		SetWorld(false);
+		MoveCameraTo(_menuSpawn);
+
+		_body.GlobalTransform = _rig.GlobalTransform;
+		_lockedMenuRig = _rig.GlobalTransform;
+		_inMenu = true;
+		_logger.Info("Switched from museum world to menu.");
+
+		_switching = false;
+	}
+
+	public void ToggleWorld()
+	{
+		if (_switching)
+			return;
+
+		if (_inMenu)
+			SwitchToMuseum();
 		else
-		{
-			_lastMuseumTransform = _playerRig.GlobalTransform;
-
-			SetMovementEnabled(false);
-
-			SetMuseumActive(false);
-			SetMenuActive(true);
-
-			_worldEnvironment.Environment = MenuEnvironment;
-
-			MoveCameraExactlyToMenuSpawn();
-
-			_lockedMenuTransform = _playerRig.GlobalTransform;
-
-			_isInMenu = true;
-		}
+			SwitchToMenu();
 	}
 
-	private void MoveCameraExactlyToStartSpawn()
+	private void RememberMuseumTransform()
 	{
-		if (_startSpawnPoint == null || _camera == null || _playerRig == null)
-			return;
-
-		MoveCameraExactlyToMarker(_startSpawnPoint);
+		_lastMuseumRig = _rig.GlobalTransform;
+		_lastMuseumBody = _body.GlobalTransform;
 	}
 
-	private void MoveCameraExactlyToMenuSpawn()
+	private void SetWorld(bool museumActive)
 	{
-		MoveCameraExactlyToMarker(_menuSpawnPoint);
+		_museum.Visible = museumActive;
+		_menu.Visible = !museumActive;
+		HudController.Instance?.SetMuseumVisible(museumActive);
+		_worldEnvironment.Environment = museumActive ? MuseumEnvironment : MenuEnvironment;
 	}
 
-	private void MoveCameraExactlyToMarker(Marker3D marker)
+	private void MoveCameraTo(Marker3D marker)
 	{
-		var cameraOffset = _camera.GlobalPosition - _playerRig.GlobalPosition;
-		_playerRig.GlobalPosition = marker.GlobalPosition - cameraOffset;
+		_rig.GlobalPosition = marker.GlobalPosition - (_camera.GlobalPosition - _rig.GlobalPosition);
 
-		var cameraForward = -_camera.GlobalTransform.Basis.Z;
-		cameraForward.Y = 0;
+		var cameraForward = Flatten(-_camera.GlobalTransform.Basis.Z);
+		var targetForward = Flatten(-marker.GlobalTransform.Basis.Z);
 
-		cameraForward = cameraForward.Normalized();
-
-		var targetForward = Vector3.Forward;
-		targetForward.Y = 0;
-		targetForward = targetForward.Normalized();
-
-		var angle = cameraForward.SignedAngleTo(targetForward, Vector3.Up);
-
-		_playerRig.RotateY(angle);
-
-		cameraOffset = _camera.GlobalPosition - _playerRig.GlobalPosition;
-		_playerRig.GlobalPosition = marker.GlobalPosition - cameraOffset;
+		_rig.RotateY(cameraForward.SignedAngleTo(targetForward, Vector3.Up));
+		_rig.GlobalPosition = marker.GlobalPosition - (_camera.GlobalPosition - _rig.GlobalPosition);
 	}
 
-	private void SetMuseumActive(bool active)
+	private static Vector3 Flatten(Vector3 vector)
 	{
-		_museumNode.Visible = active;
-	}
-
-	private void SetMenuActive(bool active)
-	{
-		_menuNode.Visible = active;
+		vector.Y = 0;
+		return vector.Normalized();
 	}
 
 	private void SetMovementEnabled(bool enabled)
 	{
-		SetNodeEnabled(_leftMovement, enabled);
-		SetNodeEnabled(_rightTurnMovement, enabled);
-		SetNodeEnabled(_rightJumpMovement, enabled);
+		foreach (var node in _movementNodes)
+			SetEnabled(node, enabled);
 	}
 
-	private void SetNodeEnabled(Node node, bool enabled)
+	private static void SetEnabled(Node node, bool enabled)
 	{
 		node.Set("enabled", enabled);
-
-		node.ProcessMode = enabled
-			? ProcessModeEnum.Inherit
-			: ProcessModeEnum.Disabled;
+		node.ProcessMode = enabled ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 	}
 }

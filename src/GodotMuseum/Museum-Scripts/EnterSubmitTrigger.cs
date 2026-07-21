@@ -1,42 +1,33 @@
+using BCSVRMuseum.Player.InputArea;
 using Godot;
+
 namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class EnterSubmitTrigger : Node
 {
-	[Export] public NodePath ViewportPath;
-	[Export] public NodePath Controller;
-
+	private LineEdit _inputLineEdit;
 	private SearchController _submitter;
+
+	[Export] public NodePath Controller;
+	[Export] public NodePath InputBridgePath;
+	[Export] public NodePath ViewportPath;
 
 	public override async void _Ready()
 	{
-		for (var i = 0; i < 8; i++)
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		var viewport = GetNode<Viewport>(ViewportPath);
+		var inputBridge = GetNode<InputBridge>(InputBridgePath);
+		_submitter = GetNode<SearchController>(Controller);
 
-		var viewport = GetNodeOrNull<Viewport>(ViewportPath);
-		_submitter = GetNodeOrNull<SearchController>(Controller);
-
-		var enterKey = FindNodeByName(viewport, "VirtualKeyEnter");
+		var enterKey = await this.WaitFor(() => viewport.FindChild("VirtualKeyEnter", true, false), "enter key");
+		_inputLineEdit = await this.WaitFor(() => inputBridge.InputLineEdit, "input line edit");
 		enterKey.Connect("pressed", new Callable(this, nameof(OnEnterPressed)));
-	}
-
-	private static Node FindNodeByName(Node node, string name)
-	{
-		if (node.Name.ToString() == name)
-			return node;
-
-		foreach (var child in node.GetChildren())
-		{
-			var found = FindNodeByName(child, name);
-			if (found != null)
-				return found;
-		}
-
-		return null;
 	}
 
 	private void OnEnterPressed()
 	{
+		if (string.IsNullOrWhiteSpace(_inputLineEdit.Text))
+			return;
+
 		_submitter.SubmitText();
 	}
 }

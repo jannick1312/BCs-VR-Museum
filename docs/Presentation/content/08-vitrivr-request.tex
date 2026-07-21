@@ -1,0 +1,70 @@
+% Slide 08: vitrivr request
+\begin{frame}[c]{vitrivr request}
+\raggedright
+\textcolor{unired}{\small\bfseries SIMPLIFIED REQUEST-RESPONSE FLOW}
+
+\vspace{0.12cm}
+\centering
+\resizebox{0.90\textwidth}{!}{%
+\begin{tikzpicture}[remember picture,node distance=0.48cm,every node/.style={font=\scriptsize}]
+  \node[redbox,minimum width=1.55cm] (vrinput) {VR input};
+  \node[bluebox,right=of vrinput,minimum width=1.65cm] (domain) {query object};
+  \node[mintbox,right=of domain,minimum width=1.85cm] (request) {vitrivr request};
+  \node[bluebox,right=of request,minimum width=1.65cm] (client) {parse + load};
+  \node[redbox,right=of client,minimum width=1.65cm] (placement) {VR placement};
+
+  \foreach \a/\b in {vrinput/domain,domain/request,request/client,client/placement}
+    \draw[flow] (\a) -- (\b);
+\end{tikzpicture}%
+}
+
+\vspace{0.75cm}
+\centering
+\resizebox{0.96\textwidth}{!}{%
+\begin{tikzpicture}[remember picture,node distance=0.38cm,every node/.style={font=\scriptsize}]
+  \node[greybox,minimum width=1.45cm] (input)
+    {\code{TEXT}\\or \code{FLOATVECTOR}};
+  \node[mintbox,right=of input,minimum width=1.35cm] (clip)
+    {\code{clip}\\retrieve};
+  \node[bluebox,right=of clip,minimum width=1.60cm] (relations)
+    {\code{relations}\\expand \code{partOf}};
+  \node[bluebox,right=of relations,minimum width=1.60cm] (aggregator)
+    {\code{aggregator}\\combine scores};
+  \node[bluebox,right=of aggregator,minimum width=2.05cm] (lookups)
+    {time, descriptor\\and file lookups};
+  \node[redbox,right=of lookups,minimum width=1.35cm] (response)
+    {retrievables};
+
+  \foreach \a/\b in {input/clip,clip/relations,relations/aggregator,aggregator/lookups,lookups/response}
+    \draw[flow] (\a) -- (\b);
+\end{tikzpicture}%
+}
+
+\begin{tikzpicture}[remember picture,overlay]
+  \draw[
+    draw=unidark,
+    line width=1.0pt,
+    line cap=round
+  ]
+    ([xshift=0.80cm,yshift=-0.1cm]request.south west)
+    to[out=-110,in=5]
+    ([xshift=-0.5cm,yshift=-0.52cm]request.south west);
+  \draw[
+    draw=unidark,
+    line width=1.0pt,
+    line cap=round
+  ]
+    ([xshift=0.30cm,yshift=-0.1cm]request.south east)
+    to[out=-70,in=175]
+    ([xshift=1.65cm,yshift=-0.52cm]request.south east);
+\end{tikzpicture}
+
+\color{black}
+
+\vspace{0.14cm}
+\raggedright\footnotesize
+Only the input mapping changes. Response parsing, media loading, and VR
+placement are shared. The returned vector enables the next result-to-result
+search.
+
+\end{frame}
