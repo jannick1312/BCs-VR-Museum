@@ -69,9 +69,7 @@ public static class Object3DMediaRenderer
 			}
 
 			var resourcePath = $"res://native/{Path.GetFileNameWithoutExtension(packPath)}.scn";
-			return await ThreadedResourceLoader.Load<PackedScene>(
-				resourcePath,
-				owner);
+			return await ThreadedResourceLoader.Load<PackedScene>(resourcePath, owner);
 		}
 		finally
 		{

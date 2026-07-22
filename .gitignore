@@ -1137,7 +1137,6 @@ src/GodotMuseum/Blender/
 *.import
 tools/
 
-run/stream/media/
-run/deployment/media/
+run/media/
 
 docs/docsExt
