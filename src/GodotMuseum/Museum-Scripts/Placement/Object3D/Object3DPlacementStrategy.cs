@@ -28,7 +28,7 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 
 	public async Task Place(IReadOnlyList<DisplayMediaItem> objectItems)
 	{
-		_originalSizeController.Reset();
+		_originalSizeController?.Reset();
 		ClearGenerated();
 
 		var placeGroups = PlaceCollector.Collect(PlacesRoot, 1);
@@ -67,7 +67,7 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 			return false;
 		}
 
-		_originalSizeController.Register(instance);
+		_originalSizeController?.Register(instance);
 		Log.Info($"Placed 3D object '{objectItem.Name}'. ObjectScale={objectScale}");
 		return true;
 	}
