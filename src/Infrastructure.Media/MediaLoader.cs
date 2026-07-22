@@ -1,6 +1,7 @@
 using Application;
 using Core;
 using Logger;
+using Models;
 
 namespace Infrastructure.Media;
 
@@ -29,7 +30,17 @@ public class MediaLoader(string mediaRoot) : IMediaLoader
 	{
 		try
 		{
-			_logger.Info($"Media loading started. Name='{item.Name}', LocalPath='{item.LocalPath}', RemoteUrl='{item.RemoteUrl}'.");
+			_logger.Info($"Media loading started. Name='{item.Name}', MediaType={item.MediaType}, LocalPath='{item.LocalPath}', RemoteUrl='{item.RemoteUrl}'.");
+
+			if (item.MediaType == MediaType.Object3D)
+			{
+				var localPackPath = Path.ChangeExtension(item.LocalPath, ".pck");
+				if (File.Exists(localPackPath))
+				{
+					_logger.Info($"3D object loaded from preferred local PCK. LocalPath='{localPackPath}'.");
+					return MediaContent.FromPath(localPackPath);
+				}
+			}
 
 			if (File.Exists(item.LocalPath))
 			{

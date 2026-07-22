@@ -37,13 +37,14 @@ public partial class VisibilityController : Node
 		var museumButton = await this.WaitFor(
 			() => _goBackRoot.FindChild("Museum", true, false) as Button,
 			"go-back museum button");
-		museumButton.Pressed += _originalSizeController.ReturnToMuseum;
+		if (_originalSizeController != null)
+			museumButton.Pressed += _originalSizeController.ReturnToMuseum;
 	}
 
 	public override void _Process(double delta)
 	{
 		var gripPressed = _leftPickup.Get("grip_pressed").AsBool();
-		var inOriginalSizeRoom = _museumNode.Visible && _originalSizeController.IsInOriginalSizeRoom;
+		var inOriginalSizeRoom = _museumNode.Visible && (_originalSizeController?.IsInOriginalSizeRoom ?? false);
 
 		SetInputActive(_museumNode.Visible && !inOriginalSizeRoom && gripPressed);
 		SetGoBackActive(inOriginalSizeRoom && gripPressed);

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using BCSVRMuseum.Museum_Scripts.Decision;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 using Godot;
@@ -10,7 +8,6 @@ namespace BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 public partial class OriginalSizeController : Node
 {
 	private static readonly EventLogger Log = new(nameof(OriginalSizeController));
-	private readonly Dictionary<Node3D, Object3DDisplayInstance> _instances = new();
 	private Object3DDisplayInstance _activeInstance;
 	private CharacterBody3D _body;
 	private XRCamera3D _camera;
@@ -47,23 +44,11 @@ public partial class OriginalSizeController : Node
 
 		SetRoomActive(_smallRoom, false);
 		SetRoomActive(_largeRoom, false);
-		DisplayActionPopup.OriginalSizeRequestedGlobally += ShowOriginalSize;
-	}
-
-	public override void _ExitTree()
-	{
-		DisplayActionPopup.OriginalSizeRequestedGlobally -= ShowOriginalSize;
-	}
-
-	public void Register(Object3DDisplayInstance instance)
-	{
-		_instances[instance.Item] = instance;
 	}
 
 	public void Reset()
 	{
 		RestoreToDisplay();
-		_instances.Clear();
 	}
 
 	private void RestoreToDisplay()
@@ -86,14 +71,8 @@ public partial class OriginalSizeController : Node
 		Log.Info("Returned from original-size room to museum.");
 	}
 
-	private void ShowOriginalSize(Node3D displayItem)
+	public void ShowOriginalSize(Object3DDisplayInstance instance)
 	{
-		if (!_instances.TryGetValue(displayItem, out var instance))
-		{
-			Log.Warning("Original-size display could not find the selected 3D object instance.");
-			return;
-		}
-
 		if (instance.ObjectNode == null || !IsInstanceValid(instance.ObjectNode))
 		{
 			Log.Warning("Original-size display cannot use an invalid 3D object node.");

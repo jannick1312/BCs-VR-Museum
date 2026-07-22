@@ -5,7 +5,7 @@ namespace BCSVRMuseum;
 public sealed class MuseumEntryState(bool tutorialEnabled)
 {
 	public bool CanEnterMuseum => ServerIsValid && (!TutorialEnabled || TutorialCompleted);
-	private bool ServerIsValid { get; set; }
+	public bool ServerIsValid { get; private set; }
 	public bool TutorialCompleted { get; private set; }
 	public bool TutorialEnabled { get; } = tutorialEnabled;
 	public event Action Changed;

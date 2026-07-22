@@ -15,7 +15,7 @@ public partial class SearchSettingsStore : Node
 	private RuntimeSearchSettings _runtimeSettings;
 	private string _serverIp = "";
 	private bool _tutorialEnabled;
-	private string ConfiguredQuery { get; set; } = "";
+	public string ConfiguredQuery { get; private set; } = "";
 	public string CurrentIp => _runtimeSettings.CurrentIp;
 	public string CurrentMediaFolderPath => _runtimeSettings.MediaFolderPath;
 	public MuseumEntryState EntryState { get; private set; }
@@ -30,7 +30,7 @@ public partial class SearchSettingsStore : Node
 	{
 		LoadJsonSettings();
 
-		_mediaFolderPath = ResolveApplicationDirectory("media");
+		_mediaFolderPath = ResolveMediaDirectory();
 		CreateMediaDirectories(_mediaFolderPath);
 
 		_runtimeSettings = new RuntimeSearchSettings(_serverIp, _mediaFolderPath);
@@ -87,5 +87,15 @@ public partial class SearchSettingsStore : Node
 
 		var executableDirectory = Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
 		return Path.Combine(executableDirectory, directoryName);
+	}
+
+	private static string ResolveMediaDirectory()
+	{
+		if (OS.GetName() == "Android")
+			return "/sdcard/Android/data/VR.Museum/files/media";
+
+		var executableDirectory = Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
+		var sharedRunDirectory = Directory.GetParent(executableDirectory)?.FullName ?? executableDirectory;
+		return Path.Combine(sharedRunDirectory, "media");
 	}
 }

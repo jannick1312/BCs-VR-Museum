@@ -18,10 +18,12 @@ public partial class SearchController : Node
 
 	private LineEdit _activeLineEdit;
 	private GameSettingsStore _gameSettingsStore;
+	private bool _initialQuerySubmitted;
 	private LineEdit _inputLineEdit;
 	private InputBridge _inputScreen;
 	private bool _isSearching;
 	private MediaPlacementController _mediaPlacement;
+	private SearchSettingsStore _searchSettingsStore;
 	private SearchUseCaseFactory _searchUseCaseFactory;
 
 	[Export] public NodePath InputBridgePath;
@@ -33,7 +35,10 @@ public partial class SearchController : Node
 		_inputScreen = GetNode<InputBridge>(InputBridgePath);
 		_mediaPlacement = GetNode<MediaPlacementController>(MediaPlacementControllerPath);
 		_searchUseCaseFactory = (SearchUseCaseFactory)GetTree().Root.FindChild("SearchUseCaseFactory", true, false);
+		_searchSettingsStore = (SearchSettingsStore)GetTree().Root.FindChild("SearchSettingsStore", true, false);
 		_gameSettingsStore = (GameSettingsStore)GetTree().Root.FindChild("GameSettingsStore", true, false);
+		_searchSettingsStore.EntryState.Changed += SubmitInitialQuery;
+		SubmitInitialQuery();
 		_inputLineEdit = await this.WaitFor(() => _inputScreen.InputLineEdit, "input line edit");
 		_activeLineEdit = _inputLineEdit;
 
@@ -44,7 +49,21 @@ public partial class SearchController : Node
 
 	public override void _ExitTree()
 	{
+		_searchSettingsStore?.EntryState.Changed -= SubmitInitialQuery;
 		DisplayActionPopup.SimilaritySearchRequestedGlobally -= SubmitSimilaritySearch;
+	}
+
+	private async void SubmitInitialQuery()
+	{
+		if (_initialQuerySubmitted || !_searchSettingsStore.EntryState.ServerIsValid)
+			return;
+
+		_initialQuerySubmitted = true;
+		var query = _searchSettingsStore.ConfiguredQuery;
+		_logger.Info($"Initial text search submitted. Text='{query}', MediaMode={_gameSettingsStore.CurrentMediaMode}.");
+		var application = _searchUseCaseFactory.GetMuseumApplication();
+		var capacity = _mediaPlacement.GetCapacity();
+		await SubmitSearch(() => application.SearchAsync(query, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), application.CompleteMediaPlacement, "Initial search");
 	}
 
 	private void SetActiveInput(LineEdit lineEdit)

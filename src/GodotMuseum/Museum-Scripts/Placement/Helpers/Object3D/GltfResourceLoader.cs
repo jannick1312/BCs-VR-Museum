@@ -30,7 +30,8 @@ public partial class GltfResourceLoader : ResourceFormatLoader
 		{
 			var document = new GltfDocument();
 			var state = new GltfState();
-			var error = document.AppendFromFile(path, state);
+			var bytes = FileAccess.GetFileAsBytes(path);
+			var error = document.AppendFromBuffer(bytes, "", state);
 			if (error != Error.Ok)
 			{
 				Log.Warning($"GLB loading failed. Error={error}.");
@@ -46,7 +47,8 @@ public partial class GltfResourceLoader : ResourceFormatLoader
 
 			var packedScene = new PackedScene();
 			error = packedScene.Pack(scene);
-			if (error == Error.Ok) return Variant.CreateFrom(packedScene);
+			if (error == Error.Ok)
+				return Variant.CreateFrom(packedScene);
 			Log.Warning($"GLB scene packing failed. Error={error}.");
 			return Variant.CreateFrom((long)error);
 		}

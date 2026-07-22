@@ -595,6 +595,7 @@ ranged_collision_mask = 0
 
 [node name="Input" parent="XROrigin3D/LeftController" unique_id=1349806940 instance=ExtResource("9_p5o4e")]
 transform = Transform3D(0.19318514, 0, 0.051763803, 0, 0.19999999, 0, -0.051763803, 0, 0.19318514, 0.19999999, 0, -0.19999999)
+visible = false
 
 [node name="GoBack" parent="XROrigin3D/LeftController" unique_id=1939597515 instance=ExtResource("9_go_back")]
 transform = Transform3D(0.19318514, 0, 0.051763803, 0, 0.19999999, 0, -0.051763803, 0, 0.19318514, 0.19999999, 0, -0.19999999)

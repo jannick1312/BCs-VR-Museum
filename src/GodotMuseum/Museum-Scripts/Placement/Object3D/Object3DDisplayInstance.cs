@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BCSVRMuseum.Museum_Scripts.Decision;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
@@ -48,19 +49,20 @@ public sealed class Object3DDisplayInstance
 		ObjectNode.Transform = DisplayTransform;
 	}
 
-	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath)
+	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath, Action showOriginalSize)
 	{
 		RetrievableMetadata.Store(Item, vector, mediaName, mediaPath);
-		ConfigureActionPopups(vector, mediaPath);
+		ConfigureActionPopups(vector, mediaPath, showOriginalSize);
 	}
 
-	private void ConfigureActionPopups(IReadOnlyList<double> vector, string mediaPath)
+	private void ConfigureActionPopups(IReadOnlyList<double> vector, string mediaPath, Action showOriginalSize)
 	{
 		foreach (var child in Item.FindChildren("*", "", true, false))
 		{
 			if (child is not DisplayActionPopup popup)
 				continue;
 			NodeTreeActivator.SetActive(popup.GetParent<Node3D>(), false);
+			popup.SetOriginalSizeHandler(showOriginalSize);
 			popup.SetVector(vector);
 			popup.SetSourcePath(mediaPath);
 		}

@@ -54,7 +54,8 @@ public static class AppSettingsLoader
 			return [AndroidExternalConfigPath];
 
 		var executableDirectory = Path.GetDirectoryName(OS.GetExecutablePath()) ?? "";
-		return [Path.Combine(executableDirectory, ConfigFileName)];
+		var sharedRunDirectory = Directory.GetParent(executableDirectory)?.FullName ?? executableDirectory;
+		return [Path.Combine(sharedRunDirectory, ConfigFileName)];
 	}
 
 	private static bool TryRead(string path, out string json)

@@ -127,14 +127,10 @@ size = Vector3(1.8, 1.8, 0.02)
 script = ExtResource("6_xr_profile")
 QuestStandaloneScale = 1.5
 QuestRefreshRate = 72.0
-QuestMediaLoadWorkers = 1
 FocusStandaloneScale = 0.8
 FocusRefreshRate = 90.0
-FocusMediaLoadWorkers = 1
-StreamingScale = 2.0
-StreamingMediaLoadWorkers = 4
+StreamingScale = 1.0
 StreamingSsaoEnabled = true
-StreamingSsilEnabled = true
 StartXrPath = NodePath("../StartXR")
 PlatformSwitcherPath = NodePath("../PlatformSwitcher")
 
