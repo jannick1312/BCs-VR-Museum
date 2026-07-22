@@ -10,6 +10,7 @@ public abstract partial class DisplayActionPopup : Node
 {
 	private const int PressedEventType = 2;
 	private static DisplayActionPopup _activePopup;
+	private Action _originalSizeRequested;
 	private Node _panelHost;
 	private Node3D _popupRoot;
 	private string _vectorJson = string.Empty;
@@ -21,7 +22,6 @@ public abstract partial class DisplayActionPopup : Node
 	private string SourcePath { get; set; } = string.Empty;
 	private Node3D DisplayRoot { get; set; }
 
-	public static event Action<Node3D> OriginalSizeRequestedGlobally;
 	public static event Action<string> SimilaritySearchRequestedGlobally;
 
 	public override async void _Ready()
@@ -62,9 +62,11 @@ public abstract partial class DisplayActionPopup : Node
 		SourcePath = sourcePath;
 	}
 
+	public void SetOriginalSizeHandler(Action handler) => _originalSizeRequested = handler;
+
 	protected void RequestOriginalSize()
 	{
-		OriginalSizeRequestedGlobally?.Invoke(DisplayRoot);
+		_originalSizeRequested?.Invoke();
 		HidePopup();
 	}
 
