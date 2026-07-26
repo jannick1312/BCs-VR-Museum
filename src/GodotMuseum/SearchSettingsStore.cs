@@ -6,7 +6,7 @@ namespace BCSVRMuseum;
 
 public partial class SearchSettingsStore : Node
 {
-	private static readonly string[] MediaSubdirectories = ["images", "videos", "3d"];
+	private static readonly string[] MediaSubdirectories = ["images", "videos", "3dPck"];
 
 	private readonly EventLogger _logger = new(nameof(SearchSettingsStore));
 

@@ -16,27 +16,18 @@ public static class Object3DMediaRenderer
 
 	private static readonly HashSet<string> MountedPacks = new(StringComparer.Ordinal);
 	private static readonly SemaphoreSlim PackLoadSlot = new(1, 1);
-	private static GltfResourceLoader _gltfLoader;
 
 	public static async Task<float?> Render(Object3DDisplayInstance instance, string path, Node3D place, Object3DDisplayFitter fitter)
 	{
 		var mediaPath = Path.GetFullPath(path);
 		var extension = Path.GetExtension(mediaPath);
-		PackedScene packedScene;
-		if (string.Equals(extension, ".pck", StringComparison.OrdinalIgnoreCase))
-		{
-			packedScene = await LoadFromPack(mediaPath, instance.Item);
-		}
-		else if (string.Equals(extension, ".glb", StringComparison.OrdinalIgnoreCase))
-		{
-			packedScene = await LoadFromGltf(mediaPath, instance.Item);
-		}
-		else
+		if (!string.Equals(extension, ".pck", StringComparison.OrdinalIgnoreCase))
 		{
 			Log.Warning($"Unsupported 3D object path. Path='{mediaPath}'.");
 			return null;
 		}
 
+		var packedScene = await LoadFromPack(mediaPath, instance.Item);
 		if (packedScene?.Instantiate() is not Node3D objectNode)
 		{
 			Log.Warning($"3D scene could not be instantiated. Path='{mediaPath}'.");
@@ -59,7 +50,7 @@ public static class Object3DMediaRenderer
 		{
 			if (MountedPacks.Add(packPath))
 			{
-				if (!ProjectSettings.LoadResourcePack(packPath, false))
+				if (!ProjectSettings.LoadResourcePack(packPath, true))
 				{
 					MountedPacks.Remove(packPath);
 					Log.Warning($"3D object PCK could not be mounted. Path='{packPath}'.");
@@ -75,23 +66,5 @@ public static class Object3DMediaRenderer
 		{
 			PackLoadSlot.Release();
 		}
-	}
-
-	private static async Task<PackedScene> LoadFromGltf(string gltfPath, Node owner)
-	{
-		EnsureGltfLoader();
-		var resourcePath = ProjectSettings.LocalizePath(gltfPath.Replace('\\', '/'));
-		return await ThreadedResourceLoader.Load<PackedScene>(
-			resourcePath,
-			owner);
-	}
-
-	private static void EnsureGltfLoader()
-	{
-		if (_gltfLoader != null)
-			return;
-
-		_gltfLoader = new GltfResourceLoader();
-		ResourceLoader.AddResourceFormatLoader(_gltfLoader, true);
 	}
 }

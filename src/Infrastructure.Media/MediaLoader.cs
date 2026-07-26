@@ -32,16 +32,6 @@ public class MediaLoader(string mediaRoot) : IMediaLoader
 		{
 			_logger.Info($"Media loading started. Name='{item.Name}', MediaType={item.MediaType}, LocalPath='{item.LocalPath}', RemoteUrl='{item.RemoteUrl}'.");
 
-			if (item.MediaType == MediaType.Object3D)
-			{
-				var localPackPath = Path.ChangeExtension(item.LocalPath, ".pck");
-				if (File.Exists(localPackPath))
-				{
-					_logger.Info($"3D object loaded from preferred local PCK. LocalPath='{localPackPath}'.");
-					return MediaContent.FromPath(localPackPath);
-				}
-			}
-
 			if (File.Exists(item.LocalPath))
 			{
 				_logger.Info($"Media loaded from local path. LocalPath='{item.LocalPath}'.");

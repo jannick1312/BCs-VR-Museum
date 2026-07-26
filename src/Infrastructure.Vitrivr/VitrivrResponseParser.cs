@@ -61,27 +61,24 @@ public static class VitrivrResponseParser
 
 		if (mediaType == MediaType.Unknown)
 		{
-			Log.Info($"Skipping unsupported media file '{fileName}'. Supported formats are .jpg, .ogv and .glb.");
+			Log.Info($"Skipping unsupported media file '{fileName}'. Supported source formats are .jpg, .ogv, .glb and .pck.");
 			return null;
 		}
 
+		fileName = GetRuntimeFileName(fileName, mediaType);
 		var mediaFolderName = GetMediaFolderName(mediaType);
 		var localPath = Path.Combine(mediaFolderPath, mediaFolderName, fileName);
-		var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + mediaFolderName + "/" + fileName;
+		var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + mediaFolderName + "/" + Uri.EscapeDataString(fileName);
 
 		return new SearchResultItem(vector, mediaType, localPath, remoteUrl);
 	}
 
 	private static IReadOnlyList<double> GetClipVector(JsonElement retrievable)
 	{
-		if (retrievable.TryGetProperty("descriptors", out var descriptors) &&
-		    descriptors.TryGetProperty("clip.vector", out var vectorElement))
+		if (retrievable.TryGetProperty("descriptors", out var descriptors) && descriptors.TryGetProperty("clip.vector", out var vectorElement))
 			return ParseVector(vectorElement);
 
-		if (retrievable.TryGetProperty("relationship", out var relationship) &&
-		    relationship.TryGetProperty("partOf", out var parentRetrievable) &&
-		    parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
-		    parentDescriptors.TryGetProperty("clip.vector", out var parentVectorElement))
+		if (retrievable.TryGetProperty("relationship", out var relationship) && relationship.TryGetProperty("partOf", out var parentRetrievable) && parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) && parentDescriptors.TryGetProperty("clip.vector", out var parentVectorElement))
 			return ParseVector(parentVectorElement);
 
 		return [];
@@ -100,14 +97,10 @@ public static class VitrivrResponseParser
 
 	private static string? GetSourcePath(JsonElement retrievable)
 	{
-		if (retrievable.TryGetProperty("descriptors", out var descriptors) &&
-		    descriptors.TryGetProperty("file.path", out var pathElement))
+		if (retrievable.TryGetProperty("descriptors", out var descriptors) && descriptors.TryGetProperty("file.path", out var pathElement))
 			return pathElement.GetString();
 
-		if (retrievable.TryGetProperty("relationship", out var relationship) &&
-		    relationship.TryGetProperty("partOf", out var parentRetrievable) &&
-		    parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) &&
-		    parentDescriptors.TryGetProperty("file.path", out var parentPathElement))
+		if (retrievable.TryGetProperty("relationship", out var relationship) && relationship.TryGetProperty("partOf", out var parentRetrievable) && parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) && parentDescriptors.TryGetProperty("file.path", out var parentPathElement))
 			return parentPathElement.GetString();
 
 		return null;
@@ -128,8 +121,14 @@ public static class VitrivrResponseParser
 			".jpg" => MediaType.Image,
 			".ogv" => MediaType.Video,
 			".glb" => MediaType.Object3D,
+			".pck" => MediaType.Object3D,
 			_ => MediaType.Unknown
 		};
+	}
+
+	private static string GetRuntimeFileName(string sourceFileName, MediaType mediaType)
+	{
+		return mediaType == MediaType.Object3D ? Path.ChangeExtension(sourceFileName, ".pck") : sourceFileName;
 	}
 
 	private static string GetMediaFolderName(MediaType mediaType)
@@ -138,7 +137,7 @@ public static class VitrivrResponseParser
 		{
 			MediaType.Image => "images",
 			MediaType.Video => "videos",
-			MediaType.Object3D => "3d",
+			MediaType.Object3D => "3dPck",
 			_ => throw new InvalidOperationException($"Unsupported media type: {mediaType}")
 		};
 	}

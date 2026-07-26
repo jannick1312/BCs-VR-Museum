@@ -8,9 +8,9 @@ if errorlevel 1 goto error
 adb push "%RUN_DIR%\config.json" /sdcard/Android/data/VR.Museum/files/config.json
 if errorlevel 1 goto error
 if exist "%RUN_DIR%\media\" (
-	adb shell mkdir -p /sdcard/Android/data/VR.Museum/files/media/images /sdcard/Android/data/VR.Museum/files/media/videos /sdcard/Android/data/VR.Museum/files/media/3d
+	adb shell mkdir -p /sdcard/Android/data/VR.Museum/files/media/images /sdcard/Android/data/VR.Museum/files/media/videos /sdcard/Android/data/VR.Museum/files/media/3dPck
 	if errorlevel 1 goto error
-	for %%D in (images videos 3d) do (
+	for %%D in (images videos 3dPck) do (
 		if exist "%RUN_DIR%\media\%%D\" (
 			adb push "%RUN_DIR%\media\%%D\." /sdcard/Android/data/VR.Museum/files/media/%%D/
 			if errorlevel 1 goto error
