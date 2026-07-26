@@ -1,7 +1,11 @@
 [gd_scene format=3 uid="uid://ctqui7myucrcj"]
 
-[ext_resource type="Texture2D" uid="uid://ul6xsjsyi8wu" path="res://Assets/Icon/vr-sketch.png" id="1_c1c4d"]
 [ext_resource type="Script" uid="uid://cm474p51nxqbl" path="res://Tutorial/TutorialController.cs" id="2_controller"]
+[ext_resource type="Texture2D" uid="uid://bxli6m7v0rj16" path="res://Tutorial/Slides/Slide1.jpg" id="2_yhiv6"]
+[ext_resource type="Texture2D" uid="uid://cykekhojd65l" path="res://Tutorial/Slides/Slide2.jpg" id="3_3oavh"]
+[ext_resource type="Texture2D" uid="uid://bo3cxjo8e74mn" path="res://Tutorial/Slides/Slide3.jpg" id="4_l41xm"]
+[ext_resource type="Texture2D" uid="uid://d0bi4f7nnnjvd" path="res://Tutorial/Slides/Slide4.jpg" id="5_hgldx"]
+[ext_resource type="Texture2D" uid="uid://daavsjateuwyy" path="res://Tutorial/Slides/Slide5.jpg" id="6_3oavh"]
 
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
 bg_color = Color(1, 1, 1, 0.75686276)
@@ -12,7 +16,7 @@ corner_radius_bottom_left = 80
 corner_detail = 20
 
 [sub_resource type="StyleBoxFlat" id="ContentStyle"]
-bg_color = Color(1, 1, 1, 0.6)
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
@@ -125,58 +129,171 @@ offset_bottom = 1790.0
 theme_override_styles/panel = SubResource("ContentStyle")
 
 [node name="TextureRect1" type="TextureRect" parent="TutorialPanel" unique_id=802983451]
+visible = false
 layout_mode = 0
-offset_left = 300.0
-offset_top = 260.0
-offset_right = 1444.0
-offset_bottom = 726.0
-texture = ExtResource("1_c1c4d")
+offset_left = 285.0
+offset_top = 245.0
+offset_right = 2115.0
+offset_bottom = 1765.0
+texture = ExtResource("2_yhiv6")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="TutorialPanel" unique_id=2111410422]
+[node name="Label" type="Label" parent="TutorialPanel/TextureRect1" unique_id=1724426923]
+layout_mode = 0
+offset_right = 1830.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Move your right controller or hand until the black cursor/ball appears. To select, press the trigger or briefly pinch your thumb and index finger together."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="TutorialPanel" unique_id=1505802292]
 visible = false
 layout_mode = 0
-offset_left = 1426.0
-offset_top = -110.0
-offset_right = 2118.0
-offset_bottom = 1264.0
-texture = ExtResource("1_c1c4d")
+offset_left = 285.0
+offset_top = 245.0
+offset_right = 2115.0
+offset_bottom = 1765.0
+texture = ExtResource("3_3oavh")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="TutorialPanel" unique_id=660478152]
+[node name="Label" type="Label" parent="TutorialPanel/TextureRect2" unique_id=1992611730]
+layout_mode = 0
+offset_right = 1830.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "After entering a valid server IP address, briefly pinch with your left hand or press the left controller button to enter the museum. You can also select the Start button. Use the same gesture or button to return to the menu later."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="TutorialPanel" unique_id=1251418773]
 visible = false
 layout_mode = 0
-offset_left = 1182.0
-offset_top = 732.0
-offset_right = 2120.0
-offset_bottom = 1364.0
-texture = ExtResource("1_c1c4d")
+offset_left = 285.0
+offset_top = 245.0
+offset_right = 2115.0
+offset_bottom = 1765.0
+texture = ExtResource("4_l41xm")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="TutorialPanel" unique_id=314758553]
+[node name="Label" type="Label" parent="TutorialPanel/TextureRect3" unique_id=1135081170]
+layout_mode = 0
+offset_right = 1830.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "To move using hand tracking, pinch and hold with your left thumb and index finger, then move the virtual joystick. With controllers, use the left joystick to turn and the right joystick to move."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Move" type="Label" parent="TutorialPanel/TextureRect3" unique_id=1266128467]
+layout_mode = 0
+offset_left = 1316.0
+offset_top = 483.0
+offset_right = 1657.0
+offset_bottom = 652.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Move "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Turn" type="Label" parent="TutorialPanel/TextureRect3" unique_id=58737844]
+layout_mode = 0
+offset_left = 926.0
+offset_top = 483.0
+offset_right = 1267.0
+offset_bottom = 652.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Turn "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="TutorialPanel" unique_id=745897042]
 visible = false
 layout_mode = 0
-offset_left = 596.0
-offset_top = 1062.0
-offset_right = 2100.0
-offset_bottom = 1750.0
-texture = ExtResource("1_c1c4d")
+offset_left = 285.0
+offset_top = 245.0
+offset_right = 2115.0
+offset_bottom = 1765.0
+texture = ExtResource("5_hgldx")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect5" type="TextureRect" parent="TutorialPanel" unique_id=1850447535]
-visible = false
+[node name="Label" type="Label" parent="TutorialPanel/TextureRect4" unique_id=496661588]
 layout_mode = 0
-offset_left = 300.0
-offset_top = 456.0
-offset_right = 1138.0
-offset_bottom = 1502.0
-texture = ExtResource("1_c1c4d")
+offset_right = 1830.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "To create a text query, make a grab gesture or press the left controller’s grip button. To interact with light-blue objects, use the same gesture or the grip button on the right controller."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect5" type="TextureRect" parent="TutorialPanel" unique_id=817954209]
+layout_mode = 0
+offset_left = 285.0
+offset_top = 245.0
+offset_right = 2115.0
+offset_bottom = 1765.0
+texture = ExtResource("6_3oavh")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Label" type="Label" parent="TutorialPanel/TextureRect5" unique_id=1451343076]
+layout_mode = 0
+offset_right = 1830.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Explore the museum and exhibition at your own pace. 
+Interested in a topic? Select an object and use it as a 
+search item."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Similarity" type="Label" parent="TutorialPanel/TextureRect5" unique_id=1651469986]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 904.0
+offset_right = 869.0
+offset_bottom = 1508.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Select “Similarity Search” to start a new search. 
+
+
+
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Original" type="Label" parent="TutorialPanel/TextureRect5" unique_id=887075208]
+layout_mode = 0
+offset_left = 960.0
+offset_top = 778.0
+offset_right = 1808.0
+offset_bottom = 1382.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "To examine a 3D asset more closely, select “Original Size” and explore it at full scale."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="StartPanel" type="Panel" parent="." unique_id=855879656]
 visible = false

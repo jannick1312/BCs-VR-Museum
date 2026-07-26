@@ -16,10 +16,10 @@ public partial class SearchController : Node
 {
 	private readonly EventLogger _logger = new(nameof(SearchController));
 
-	private LineEdit _activeLineEdit;
+	private TextEdit _activeTextEdit;
 	private GameSettingsStore _gameSettingsStore;
 	private bool _initialQuerySubmitted;
-	private LineEdit _inputLineEdit;
+	private TextEdit _inputTextEdit;
 	private InputBridge _inputScreen;
 	private bool _isSearching;
 	private MediaPlacementController _mediaPlacement;
@@ -39,11 +39,11 @@ public partial class SearchController : Node
 		_gameSettingsStore = (GameSettingsStore)GetTree().Root.FindChild("GameSettingsStore", true, false);
 		_searchSettingsStore.EntryState.Changed += SubmitInitialQuery;
 		SubmitInitialQuery();
-		_inputLineEdit = await this.WaitFor(() => _inputScreen.InputLineEdit, "input line edit");
-		_activeLineEdit = _inputLineEdit;
+		_inputTextEdit = await this.WaitFor(() => _inputScreen.InputTextEdit, "input text edit");
+		_activeTextEdit = _inputTextEdit;
 
-		_inputLineEdit.FocusEntered += () => SetActiveInput(_inputLineEdit);
-		_inputLineEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputLineEdit);
+		_inputTextEdit.FocusEntered += () => SetActiveInput(_inputTextEdit);
+		_inputTextEdit.GuiInput += inputEvent => OnInputGuiInput(inputEvent, _inputTextEdit);
 		DisplayActionPopup.SimilaritySearchRequestedGlobally += SubmitSimilaritySearch;
 	}
 
@@ -66,28 +66,28 @@ public partial class SearchController : Node
 		await SubmitSearch(() => application.SearchAsync(query, SearchLimit, _gameSettingsStore.CurrentMediaMode, capacity.Media2D, capacity.Objects3D), application.CompleteMediaPlacement, "Initial search");
 	}
 
-	private void SetActiveInput(LineEdit lineEdit)
+	private void SetActiveInput(TextEdit textEdit)
 	{
-		_activeLineEdit = lineEdit;
+		_activeTextEdit = textEdit;
 	}
 
-	private void OnInputGuiInput(InputEvent inputEvent, LineEdit lineEdit)
+	private void OnInputGuiInput(InputEvent inputEvent, TextEdit textEdit)
 	{
 		if (inputEvent is not InputEventMouseButton { Pressed: true })
 			return;
 
-		_activeLineEdit = lineEdit;
+		_activeTextEdit = textEdit;
 	}
 
 	public async void SubmitText()
 	{
-		var text = _activeLineEdit.Text;
+		var text = _activeTextEdit.Text;
 
 		if (!CanSubmitSearch("Search"))
 			return;
 
-		_activeLineEdit.Clear();
-		_activeLineEdit.ReleaseFocus();
+		_activeTextEdit.Clear();
+		_activeTextEdit.ReleaseFocus();
 		_logger.Info($"Text search submitted. Text='{text}', MediaMode={_gameSettingsStore.CurrentMediaMode}.");
 
 		var application = _searchUseCaseFactory.GetMuseumApplication();

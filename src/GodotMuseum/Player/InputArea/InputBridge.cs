@@ -7,22 +7,22 @@ public partial class InputBridge : Node
 {
 	[Export] public NodePath ViewportPath;
 
-	public LineEdit InputLineEdit { get; private set; }
+	public TextEdit InputTextEdit { get; private set; }
 
 	public override async void _Ready()
 	{
 		var viewport = GetNode<Viewport>(ViewportPath);
-		InputLineEdit = await this.WaitFor(() => FindFirstLineEdit(viewport), "input line edit");
+		InputTextEdit = await this.WaitFor(() => FindFirstTextEdit(viewport), "input text edit");
 	}
 
-	private static LineEdit FindFirstLineEdit(Node node)
+	private static TextEdit FindFirstTextEdit(Node node)
 	{
-		if (node is LineEdit lineEdit)
-			return lineEdit;
+		if (node is TextEdit textEdit)
+			return textEdit;
 
 		foreach (var child in node.GetChildren())
 		{
-			var found = FindFirstLineEdit(child);
+			var found = FindFirstTextEdit(child);
 
 			if (found != null)
 				return found;

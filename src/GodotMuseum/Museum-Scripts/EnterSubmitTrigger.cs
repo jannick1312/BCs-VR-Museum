@@ -5,7 +5,7 @@ namespace BCSVRMuseum.Museum_Scripts;
 
 public partial class EnterSubmitTrigger : Node
 {
-	private LineEdit _inputLineEdit;
+	private TextEdit _inputTextEdit;
 	private SearchController _submitter;
 
 	[Export] public NodePath Controller;
@@ -19,13 +19,13 @@ public partial class EnterSubmitTrigger : Node
 		_submitter = GetNode<SearchController>(Controller);
 
 		var enterKey = await this.WaitFor(() => viewport.FindChild("VirtualKeyEnter", true, false), "enter key");
-		_inputLineEdit = await this.WaitFor(() => inputBridge.InputLineEdit, "input line edit");
+		_inputTextEdit = await this.WaitFor(() => inputBridge.InputTextEdit, "input text edit");
 		enterKey.Connect("pressed", new Callable(this, nameof(OnEnterPressed)));
 	}
 
 	private void OnEnterPressed()
 	{
-		if (string.IsNullOrWhiteSpace(_inputLineEdit.Text))
+		if (string.IsNullOrWhiteSpace(_inputTextEdit.Text))
 			return;
 
 		_submitter.SubmitText();
