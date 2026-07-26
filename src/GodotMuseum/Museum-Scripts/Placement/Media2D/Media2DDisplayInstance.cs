@@ -33,6 +33,7 @@ public sealed class Media2DDisplayInstance
 		item.AddToGroup(groupName);
 		displayRoot.AddChild(item);
 		NodeTreeActivator.SetActive(item, true);
+		item.GetNode<Label3D>("Play").Visible = false;
 
 		return new Media2DDisplayInstance(item, item.GetNode<MeshInstance3D>("Picture"), place, slot, cellPadding);
 	}

@@ -504,6 +504,7 @@ shape = SubResource("ConcavePolygonShape3D_6sxn6")
 
 [node name="RoofFrame" type="MeshInstance3D" parent="Roof" unique_id=226248959]
 material_override = ExtResource("4_aa7qn")
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_ku6b4")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Roof/RoofFrame" unique_id=529800001]

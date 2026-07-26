@@ -1131,12 +1131,21 @@ TSWLatexianTemp*
 # glossaries
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,android,godot,jetbrains,csharp,rider,tex,latex
+
 src/GodotMuseum/android/
 src/GodotMuseum/Blender/
 
 *.import
+
+*.jpg
+*.ogv
+*.pck
+*.apk
+*.exe
+*.dll
+
 tools/
 
-run/media/
-
 docs/docsExt
+
+!run/stream/logs/

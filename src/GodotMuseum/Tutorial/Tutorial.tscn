@@ -167,7 +167,7 @@ offset_right = 1830.0
 offset_bottom = 400.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 60
-text = "After entering a valid server IP address, briefly pinch with your left hand or press the left controller button to enter the museum. You can also select the Start button. Use the same gesture or button to return to the menu later."
+text = "After entering a valid server IP address, briefly pinch with your left hand or press the joystick of the left controller to enter the museum. You can also select the Start button. Use the same gesture or button to return to the menu later."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -258,8 +258,8 @@ offset_right = 1830.0
 offset_bottom = 400.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 60
-text = "Explore the museum and exhibition at your own pace. 
-Interested in a topic? Select an object and use it as a 
+text = "Explore the museum and exhibition at your own pace.
+Interested in a topic? Select an object and use it as a
 search item."
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -273,7 +273,7 @@ offset_right = 869.0
 offset_bottom = 1508.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 60
-text = "Select “Similarity Search” to start a new search. 
+text = "Select “Similarity Search” to start a new search.
 
 
 

@@ -4,9 +4,12 @@ set -e
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 RUN_DIR="$(dirname -- "$SCRIPT_DIR")"
 DEVICE="$1"
+PACKAGE="VR.Museum"
 REMOTE_FILES="/sdcard/Android/data/VR.Museum/files"
 
 adb install -r "$SCRIPT_DIR/$DEVICE/VR-Museum.apk"
+adb shell pm clear "$PACKAGE"
+adb shell rm -rf "$REMOTE_FILES"
 adb shell mkdir -p "$REMOTE_FILES"
 adb push "$RUN_DIR/config.json" "$REMOTE_FILES/config.json"
 

@@ -33,7 +33,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 [node name="SearchController" type="Node" parent="." unique_id=1873299870]
 script = ExtResource("3_m6mi2")
 MediaPlacementControllerPath = NodePath("../MediaPlacementController")
-SearchLimit = 100
+SearchLimit = 300
 
 [node name="Media2DDisplayInstance" parent="." unique_id=373268339 instance=ExtResource("5_avl46")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)

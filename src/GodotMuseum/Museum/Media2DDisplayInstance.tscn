@@ -340,9 +340,18 @@ mesh = SubResource("ArrayMesh_bbgus")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.012)
 mesh = SubResource("QuadMesh_5belf")
 
-[node name="GrabPointHandLeft" parent="." index="3" unique_id=1259348949 instance=ExtResource("3_407ho")]
+[node name="Play" type="Label3D" parent="." index="3" unique_id=1314596185]
+visible = false
+pixel_size = 0.001
+modulate = Color(0.6745098, 0.6745098, 0.6745098, 1)
+outline_modulate = Color(0.67481464, 0.67481464, 0.6748146, 1)
+text = "▶"
+font_size = 144
+outline_size = 10
 
-[node name="GrabPointHandRight" parent="." index="4" unique_id=648857806 instance=ExtResource("4_yc23p")]
+[node name="GrabPointHandLeft" parent="." index="4" unique_id=1259348949 instance=ExtResource("3_407ho")]
+
+[node name="GrabPointHandRight" parent="." index="5" unique_id=648857806 instance=ExtResource("4_yc23p")]
 visible = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="GrabPointHandRight" index="0" unique_id=869552587]
@@ -350,6 +359,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.045229703, 0.11174379)
 material_override = ExtResource("5_8j1b3")
 mesh = SubResource("SphereMesh_cv6oc")
 
-[node name="Decision" parent="." index="5" unique_id=71677858 instance=ExtResource("5_ar2c7")]
+[node name="Decision" parent="." index="6" unique_id=71677858 instance=ExtResource("5_ar2c7")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0.1)
 visible = false
