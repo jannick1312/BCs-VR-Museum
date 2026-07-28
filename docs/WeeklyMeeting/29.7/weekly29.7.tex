@@ -1,0 +1,33 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+
+\newcommand{\meetingdate}{29 July 2026}
+\input{../template.tex}
+
+\begin{document}
+
+\done
+\begin{itemize}
+    \item Implemented dedicated rooms for viewing 3D objects at their original scale, including room selection and navigation back to the main museum.
+    \item Added an illustrated tutorial and improved the text input.
+    \item Added server address validation and prevented users from entering the museum until the server is configured and the tutorial is complete.
+    \item Added a configurable default query that runs automatically when users enter the museum.
+    \item Added video keyframe previews before playback begins.
+    \item Stabilized 3D loading by switching from direct GLB loading to Godot PCK asset packs.
+    \item Added a reproducible media preprocessing pipeline for backups, image and video normalization, 3D conversion and optimization, PCK generation and format validation.
+    \item Added vitrivr ingestion configurations, descriptor-server dependencies, and scripts for starting and resetting the vitrivr services.
+    \item Added setup and architecture documentation for the project, Godot, nginx, Ubuntu, vitrivr, deployment, and the media pipeline.
+\end{itemize}
+
+\support
+\begin{itemize}
+    \item Feedback on the current state of the documentation across the README files and release notes.
+\end{itemize}
+
+\plan
+\checkpoint{(p3)Integrate and test streaming to the Apple Vision Pro}
+\checkpoint{(p1)Prepare and run the user evaluation}
+\checkpoint{(p1)Writing the bachelor thesis}
+
+\end{document}
