@@ -1,0 +1,85 @@
+{
+  "schema": "sandbox",
+  "context": {
+    "contentFactory": "InMemoryContentFactory",
+    "resolvers": ["thumbnailsVideos"]
+  },
+  "operators": {
+    "enumerator": {
+      "factory": "FileSystemEnumerator",
+      "parameters": {
+        "path": "./sandbox/media/videos",
+        "depth": "3",
+        "mediaTypes": "VIDEO"
+      }
+    },
+    "decoder": {
+      "factory": "VideoDecoder",
+      "parameters": {
+        "timeWindowMs": "1000"
+      }
+    },
+    "aggregator": {
+      "factory": "MiddleContentAggregator"
+    },
+    "persister": {
+      "factory": "PersistRetrievableTransformer"
+    },
+    "metadata": {
+      "field": "video"
+    },
+    "source": {
+      "field": "file"
+    },
+    "time": {
+      "field": "time"
+    },
+    "clip": {
+      "field": "clip"
+    },
+    "thumbnail": {
+      "exporter": "thumbnailVideo"
+    }
+  },
+  "operations": {
+    "enumerator": {
+      "operator": "enumerator"
+    },
+    "decoder": {
+      "operator": "decoder",
+      "inputs": ["enumerator"]
+    },
+    "middle": {
+      "operator": "aggregator",
+      "inputs": ["decoder"]
+    },
+    "persist": {
+      "operator": "persister",
+      "inputs": ["middle"]
+    },
+    "metadata": {
+      "operator": "metadata",
+      "inputs": ["persist"]
+    },
+    "source": {
+      "operator": "source",
+      "inputs": ["metadata"]
+    },
+    "time": {
+      "operator": "time",
+      "inputs": ["source"]
+    },
+    "clip": {
+      "operator": "clip",
+      "inputs": ["time"]
+    },
+    "thumbnail": {
+      "operator": "thumbnail",
+      "inputs": ["clip"]
+    }
+  },
+  "output": [
+    "thumbnail"
+  ],
+  "mergeType": "MERGE"
+}

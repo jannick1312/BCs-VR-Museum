@@ -1143,8 +1143,7 @@ src/GodotMuseum/Blender/
 *.apk
 *.exe
 *.dll
-
-tools/
+*.zip
 
 docs/docsExt
 

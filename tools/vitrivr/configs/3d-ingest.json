@@ -1,0 +1,71 @@
+{
+  "schema": "sandbox",
+  "context": {
+    "contentFactory": "InMemoryContentFactory",
+    "resolvers": ["thumbnails3d"]
+  },
+  "operators": {
+    "enumerator": {
+      "factory": "FileSystemEnumerator",
+      "parameters": {
+        "path": "./sandbox/media/3d",
+        "depth": "3",
+        "mediaTypes": "MESH"
+      }
+    },
+    "decoder": {
+      "factory": "MeshDecoder",
+      "parameters": {
+        "timeWindowMs": "10000"
+      }
+    },
+    "persister": {
+      "factory": "PersistRetrievableTransformer"
+    },
+    "metadata": {
+      "field": "video"
+    },
+    "source": {
+      "field": "file"
+    },
+    "clip": {
+      "field": "clip"
+    },
+    "thumbnail": {
+      "exporter": "modelexporter"
+    }
+  },
+  "operations": {
+    "enumerator": {
+      "operator": "enumerator"
+    },
+    "decoder": {
+      "operator": "decoder",
+      "inputs": ["enumerator"]
+    },
+    "persist": {
+      "operator": "persister",
+      "inputs": ["decoder"]
+    },
+    "metadata": {
+      "operator": "metadata",
+      "inputs": ["persist"]
+    },
+    "source": {
+      "operator": "source",
+      "inputs": ["metadata"]
+    },
+    "clip": {
+      "operator": "clip",
+      "inputs": ["source"]
+    },
+    "thumbnail": {
+      "operator": "thumbnail",
+      "inputs": ["clip"]
+    }
+  },
+  "output": [
+    "thumbnail"
+  ],
+  "mergeType": "MERGE"
+}

@@ -1,0 +1,92 @@
+{
+  "schemas": {
+    "sandbox": {
+      "connection": {
+        "database": "PgVectorConnectionProvider",
+        "parameters": {
+          "host": "localhost",
+          "port": "5432",
+          "username": "postgres",
+          "password": "password"
+        }
+      },
+      "fields": {
+        "file": {
+          "factory": "FileSourceMetadata"
+        },
+        "clip": {
+          "factory": "CLIP",
+          "parameters": {
+            "host": "http://localhost:8888"
+          }
+        },
+        "video": {
+          "factory": "VideoSourceMetadata"
+        },
+        "time": {
+          "factory": "TemporalMetadata"
+        }
+      },
+      "resolvers": {
+        "thumbnails3d": {
+          "factory": "DiskResolver",
+          "parameters": {
+            "location": "./sandbox/thumbnails/3d"
+          }
+        },
+        "thumbnailsImages": {
+          "factory": "DiskResolver",
+          "parameters": {
+            "location": "./sandbox/thumbnails/images"
+          }
+        },
+        "thumbnailsVideos": {
+          "factory": "DiskResolver",
+          "parameters": {
+            "location": "./sandbox/thumbnails/videos"
+          }
+        }
+      },
+      "exporters": {
+        "modelexporter": {
+          "factory": "ModelPreviewExporter",
+          "parameters": {
+            "resolver": "thumbnails3d",
+            "maxSideResolution": "400",
+            "mimeType": "GLTF",
+            "distance": "1",
+            "format": "gif",
+            "views": "30"
+          }
+        },
+        "thumbnailImage": {
+          "factory": "ThumbnailExporter",
+          "parameters": {
+            "resolver": "thumbnailsImages",
+            "maxSideResolution": "400",
+            "mimeType": "JPG"
+          }
+        },
+        "thumbnailVideo": {
+          "factory": "ThumbnailExporter",
+          "parameters": {
+            "resolver": "thumbnailsVideos",
+            "maxSideResolution": "400",
+            "mimeType": "JPG"
+          }
+        }
+      },
+      "extractionPipelines": {
+        "3d": {
+          "path": "./example-configs/3d-ingest.json"
+        },
+        "image": {
+          "path": "./example-configs/image-ingest.json"
+        },
+        "video": {
+          "path": "./example-configs/video-ingest.json"
+        }
+      }
+    }
+  }
+}

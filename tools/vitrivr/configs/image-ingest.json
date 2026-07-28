@@ -1,0 +1,61 @@
+{
+  "schema": "sandbox",
+  "context": {
+    "contentFactory": "InMemoryContentFactory",
+    "resolvers": ["thumbnailsImages"]
+  },
+  "operators": {
+    "enumerator": {
+      "factory": "FileSystemEnumerator",
+      "parameters": {
+        "path": "./sandbox/media/images",
+        "depth": "3",
+        "mediaTypes": "IMAGE"
+      }
+    },
+    "decoder": {
+      "factory": "ImageDecoder"
+    },
+    "persister": {
+      "factory": "PersistRetrievableTransformer"
+    },
+    "source": {
+      "field": "file"
+    },
+    "clip": {
+      "field": "clip"
+    },
+    "thumbnail": {
+      "exporter": "thumbnailImage"
+    }
+  },
+  "operations": {
+    "enumerator": {
+      "operator": "enumerator"
+    },
+    "decoder": {
+      "operator": "decoder",
+      "inputs": ["enumerator"]
+    },
+    "persist": {
+      "operator": "persister",
+      "inputs": ["decoder"]
+    },
+    "source": {
+      "operator": "source",
+      "inputs": ["persist"]
+    },
+    "clip": {
+      "operator": "clip",
+      "inputs": ["source"]
+    },
+    "thumbnail": {
+      "operator": "thumbnail",
+      "inputs": ["clip"]
+    }
+  },
+  "output": [
+    "thumbnail"
+  ],
+  "mergeType": "MERGE"
+}
