@@ -11,6 +11,7 @@ size = Vector2(1.8, 1.2)
 viewport_path = NodePath("2DIn3DPlane/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0xy6"]
+transparency = 1
 cull_mode = 2
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_dvsek")
@@ -43,7 +44,11 @@ transform = Transform3D(-2.1855694e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.1855694e-
 
 [node name="2DIn3DPlane" parent="." unique_id=776647796 instance=ExtResource("1_ti2uq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+transparent = 1
 unshaded = true
+
+[node name="Viewport" parent="2DIn3DPlane" index="0" unique_id=1496002320]
+transparent_bg = true
 
 [node name="Screen" parent="2DIn3DPlane" index="1" unique_id=830305756]
 mesh = SubResource("QuadMesh_ohmgf")

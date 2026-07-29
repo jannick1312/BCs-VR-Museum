@@ -27,9 +27,16 @@ public partial class CenteredTextController : Node
 		_textEdit?.TextChanged -= SyncDisplay;
 	}
 
+	public void ResetInput()
+	{
+		_textEdit.Text = string.Empty;
+		_textEdit.ReleaseFocus();
+		SyncDisplay();
+	}
+
 	private void SyncDisplay()
 	{
 		_displayText.Text = _textEdit.Text;
-		_placeholderText.Visible = string.IsNullOrEmpty(_textEdit.Text);
+		_placeholderText.Visible = string.IsNullOrWhiteSpace(_textEdit.Text);
 	}
 }

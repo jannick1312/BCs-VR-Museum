@@ -19,8 +19,8 @@ public partial class SearchController : Node
 	private TextEdit _activeTextEdit;
 	private GameSettingsStore _gameSettingsStore;
 	private bool _initialQuerySubmitted;
-	private TextEdit _inputTextEdit;
 	private InputBridge _inputScreen;
+	private TextEdit _inputTextEdit;
 	private bool _isSearching;
 	private MediaPlacementController _mediaPlacement;
 	private SearchSettingsStore _searchSettingsStore;
@@ -81,7 +81,7 @@ public partial class SearchController : Node
 
 	public async void SubmitText()
 	{
-		var text = _activeTextEdit.Text;
+		var text = _activeTextEdit.Text.Trim();
 
 		if (!CanSubmitSearch("Search"))
 			return;

@@ -50,12 +50,13 @@ public static class Object3DMediaRenderer
 		{
 			if (MountedPacks.Add(packPath))
 			{
-				if (!ProjectSettings.LoadResourcePack(packPath, true))
+				if (!ProjectSettings.LoadResourcePack(packPath))
 				{
 					MountedPacks.Remove(packPath);
 					Log.Warning($"3D object PCK could not be mounted. Path='{packPath}'.");
 					return null;
 				}
+
 				Log.Info($"Mounted 3D object PCK. Path='{packPath}'.");
 			}
 

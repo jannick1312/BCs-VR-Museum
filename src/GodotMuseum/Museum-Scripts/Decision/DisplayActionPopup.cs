@@ -62,7 +62,10 @@ public abstract partial class DisplayActionPopup : Node
 		SourcePath = sourcePath;
 	}
 
-	public void SetOriginalSizeHandler(Action handler) => _originalSizeRequested = handler;
+	public void SetOriginalSizeHandler(Action handler)
+	{
+		_originalSizeRequested = handler;
+	}
 
 	protected void RequestOriginalSize()
 	{

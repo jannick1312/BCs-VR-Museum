@@ -3,6 +3,7 @@ using BCSVRMuseum.Museum_Scripts.Decision;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 using Godot;
+using Models;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Media2D;
 
@@ -50,9 +51,9 @@ public sealed class Media2DDisplayInstance
 		ResizeToAspect((float)texture.GetWidth() / texture.GetHeight());
 	}
 
-	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath)
+	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath, MediaMetadata metadata)
 	{
-		RetrievableMetadata.Store(Item, vector, mediaName, mediaPath);
+		RetrievableMetadata.Store(Item, vector, mediaName, mediaPath, metadata);
 		ConfigureActionPopups(vector, mediaPath);
 	}
 

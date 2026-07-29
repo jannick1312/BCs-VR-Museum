@@ -99,7 +99,8 @@ The shared projects support .NET 9 and .NET 10. Godot uses .NET 10 for the edito
 |---|---|
 | [`MediaType`](Models/MediaType.cs) | Identifies images, videos, and 3D objects |
 | [`MediaMode`](Models/MediaMode.cs) | Selects 2D media, 3D objects, or both |
-| [`DisplayMediaItem`](Models/DisplayMediaItem.cs) | Stores a loaded file, its name, type, and CLIP vector |
+| [`MediaMetadata`](Models/MediaMetadata.cs) | Stores metadata, currently its only vitrivr source ID |
+| [`DisplayMediaItem`](Models/DisplayMediaItem.cs) | Stores a loaded file, its name, type, CLIP vector, optional video start second, and metadata |
 | [`DisplayMediaResult`](Models/DisplayMediaResult.cs) | Stores loaded results or an error |
 
 ### Core
@@ -111,7 +112,7 @@ The shared projects support .NET 9 and .NET 10. Godot uses .NET 10 for the edito
 | [`SearchQuery`](Core/SearchQuery.cs) | Base type for searches with a result limit |
 | [`TextSearchQuery`](Core/TextSearchQuery.cs) | Stores a text query |
 | [`VectorSearchQuery`](Core/VectorSearchQuery.cs) | Stores a vector for similarity search |
-| [`SearchResultItem`](Core/SearchResultItem.cs) | Stores a vector, media type, local path, and remote URL |
+| [`SearchResultItem`](Core/SearchResultItem.cs) | Stores a vector, media type, paths, optional video start second and metadata |
 | [`SearchResult`](Core/SearchResult.cs) | Stores search results or an error |
 | [`MediaContent`](Core/MediaContent.cs) | Stores a loaded media path or an error |
 
@@ -151,10 +152,13 @@ Godot can use these functions without knowing how vitrivr or media loading works
 | [`VitrivrQueryInput`](Infrastructure.Vitrivr/VitrivrQueryInput.cs) | Converts text and vectors into vitrivr inputs |
 | [`VitrivrRequestFactory`](Infrastructure.Vitrivr/VitrivrRequestFactory.cs) | Builds the vitrivr search request |
 | [`VitrivrSearchService`](Infrastructure.Vitrivr/VitrivrSearchService.cs) | Sends search requests to port `7070` |
-| [`VitrivrResponseParser`](Infrastructure.Vitrivr/VitrivrResponseParser.cs) | Reads file paths, media types, and CLIP vectors from the response |
+| [VitrivrResponse](Infrastructure.Vitrivr/VitrivrResponse.cs) | Define the JSON response |
+| [`VitrivrResponseParser`](Infrastructure.Vitrivr/VitrivrResponseParser.cs) | Deserializes and maps file paths, media types, CLIP vectors, video start times and IDs |
 | [`VitrivrServerHealthService`](Infrastructure.Vitrivr/VitrivrServerHealthService.cs) | Checks whether vitrivr is reachable |
 
 vitrivr indexes a 3D model as a GLB. Godot needs the matching PCK at runtime. The response parser therefore changes `3d/<name>.glb` to `3dPck/<name>.pck`.
+
+Image and 3D source results contain `file.path` and `clip.vector` directly in their descriptors. A video result represents a segment: its CLIP vector and `time.start` are stored directly on the segment, while the video file path and source ID are stored in its `partOf` retrievable. The parser therefore falls back to `partOf` only for the file path and uses the parent ID as video metadata.
 
 ### Infrastructure.Media
 
@@ -248,7 +252,7 @@ The menu and museum stay loaded at the same time. `PlatformSwitcher` shows one o
 2. `SearchController` sends the query through `IMuseumApplication`.
 3. `SearchMedia` applies the selected media mode and the available museum capacity.
 4. `VitrivrSearchService` sends the query to `POST /api/sandbox/query`.
-5. `VitrivrResponseParser` reads the returned file paths, media types, and CLIP vectors.
+5. `VitrivrResponseParser` deserializes the typed response and maps paths, CLIP vectors, video start seconds, and source IDs.
 6. `MediaLoader` uses local files or downloads missing files from Nginx.
 7. The loaded files are returned as a `DisplayMediaResult`.
 8. `MediaPlacementController` places the results in the museum.
@@ -271,7 +275,9 @@ The 2D strategy:
 - creates centered display slots
 - keeps the correct image and video proportions
 - creates frames and collisions
-- controls videos based on the player distance
+- displays a video's matched keyframe before playback
+- starts videos at the matched segment when the player approaches
+- restarts videos from the matched segment when the player returns after leaving
 
 The 3D strategy:
 
@@ -282,7 +288,7 @@ The 3D strategy:
 - scales and places the object on a pillar
 - stores the original size
 
-Each exhibit stores its file path, name, and CLIP vector. **Similar** starts a new search with this vector. A 3D exhibit also provides **Original Size**.
+Each exhibit stores its file path, name, CLIP vector and serialized `MediaMetadata`. The metadata currently contains the vitrivr source ID and can be extended later. **Similar** starts a new search with the stored vector. A 3D exhibit also provides **Original Size**.
 
 ## XR interaction
 

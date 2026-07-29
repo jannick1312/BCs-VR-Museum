@@ -51,7 +51,7 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 				continue;
 			}
 
-			items.Add(new DisplayMediaItem(searchItems[i].Vector, searchItems[i].MediaType, mediaContent.Path, searchItems[i].Name));
+			items.Add(new DisplayMediaItem(searchItems[i].Vector, searchItems[i].MediaType, mediaContent.Path, searchItems[i].Name, searchItems[i].StartTimeSeconds, searchItems[i].Metadata));
 		}
 
 		_logger.Info($"Media search completed. SelectedItems={searchItems.Count}, LoadedItems={items.Count}.");

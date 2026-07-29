@@ -16,6 +16,9 @@ size = Vector3(6.627, 2.6, 0.03)
 transparency = 1
 albedo_color = Color(0.9647059, 0.49019608, 0, 0.28627452)
 
+[sub_resource type="BoxMesh" id="BoxMesh_hdgke"]
+size = Vector3(4.5, 2.6, 0.03)
+
 [sub_resource type="BoxMesh" id="BoxMesh_i5sej"]
 size = Vector3(0.9, 0.1, 0.9)
 
@@ -33,7 +36,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 [node name="SearchController" type="Node" parent="." unique_id=1873299870]
 script = ExtResource("3_m6mi2")
 MediaPlacementControllerPath = NodePath("../MediaPlacementController")
-SearchLimit = 300
+SearchLimit = 400
 
 [node name="Media2DDisplayInstance" parent="." unique_id=373268339 instance=ExtResource("5_avl46")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
@@ -63,48 +66,90 @@ VideoResetDistance = 3.0
 [node name="Media2DPlaces" type="Node3D" parent="." unique_id=1319521603]
 visible = false
 
-[node name="4" type="Node3D" parent="Media2DPlaces" unique_id=1889765011]
+[node name="3" type="Node3D" parent="Media2DPlaces" unique_id=1889765011]
 
-[node name="Place1" type="MeshInstance3D" parent="Media2DPlaces/4" unique_id=242816524]
+[node name="Place1" type="MeshInstance3D" parent="Media2DPlaces/3" unique_id=242816524]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -5.646, 2.075, -5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
-[node name="Place2" type="MeshInstance3D" parent="Media2DPlaces/4" unique_id=998115024]
+[node name="Place2" type="MeshInstance3D" parent="Media2DPlaces/3" unique_id=998115024]
 transform = Transform3D(0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, 0.7071067, 5.646, 2.075, -5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
-[node name="Place3" type="MeshInstance3D" parent="Media2DPlaces/4" unique_id=2111513174]
+[node name="Place3" type="MeshInstance3D" parent="Media2DPlaces/3" unique_id=2111513174]
 transform = Transform3D(-0.7071067, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071067, 5.646, 2.075, 5.646)
 mesh = SubResource("BoxMesh_ecgt1")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
-[node name="Place4" type="MeshInstance3D" parent="Media2DPlaces/4" unique_id=156510601]
+[node name="Place4" type="MeshInstance3D" parent="Media2DPlaces/3" unique_id=156510601]
 transform = Transform3D(-0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, -0.7071067, -5.646, 2.075, 5.646)
 mesh = SubResource("BoxMesh_ecgt1")
+surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
+
+[node name="2" type="Node3D" parent="Media2DPlaces" unique_id=1356368238]
+
+[node name="Place1" type="MeshInstance3D" parent="Media2DPlaces/2" unique_id=1985985543]
+transform = Transform3D(-4.3711385e-08, 0, -0.99999994, 0, 1, 0, 0.99999994, 0, -4.3711385e-08, 7.985, 2.075, 0)
+mesh = SubResource("BoxMesh_hdgke")
+surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
+
+[node name="Place2" type="MeshInstance3D" parent="Media2DPlaces/2" unique_id=647273111]
+transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -7.985, 2.075, 0)
+mesh = SubResource("BoxMesh_hdgke")
 surface_material_override/0 = SubResource("StandardMaterial3D_m6mi2")
 
 [node name="Object3DPlaces" type="Node3D" parent="." unique_id=664289943]
 visible = false
 
 [node name="Place1" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1697069992]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.05, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.05, 2.5)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place2" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1247304891]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.05, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.05, -2.5)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place3" type="MeshInstance3D" parent="Object3DPlaces" unique_id=2083943530]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.05, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.05, 2.5)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 
 [node name="Place4" type="MeshInstance3D" parent="Object3DPlaces" unique_id=181321835]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.05, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.05, -2.5)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place5" type="MeshInstance3D" parent="Object3DPlaces" unique_id=775541460]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.05, -7)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place6" type="MeshInstance3D" parent="Object3DPlaces" unique_id=346210513]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.05, -7)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place7" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1217526948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.05, 7)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place8" type="MeshInstance3D" parent="Object3DPlaces" unique_id=134370684]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.05, 7)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place9" type="MeshInstance3D" parent="Object3DPlaces" unique_id=1240278536]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0.05, 6.5)
+mesh = SubResource("BoxMesh_i5sej")
+surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
+
+[node name="Place10" type="MeshInstance3D" parent="Object3DPlaces" unique_id=876304913]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0.05, -6.5)
 mesh = SubResource("BoxMesh_i5sej")
 surface_material_override/0 = SubResource("StandardMaterial3D_6fqx3")
 

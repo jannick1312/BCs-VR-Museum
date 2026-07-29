@@ -57,7 +57,7 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 	private async Task<bool> PlaceObject(DisplayMediaItem objectItem, Node3D place, int index)
 	{
 		var instance = Object3DDisplayInstance.Create(DisplayTemplate, DisplayRoot, GeneratedGroup);
-		instance.StoreRetrievableMetadata(objectItem.Vector, objectItem.Name, objectItem.Path, () => _originalSizeController.ShowOriginalSize(instance));
+		instance.StoreRetrievableMetadata(objectItem.Vector, objectItem.Name, objectItem.Path, objectItem.Metadata, () => _originalSizeController.ShowOriginalSize(instance));
 		var objectScale = await Object3DMediaRenderer.Render(instance, objectItem.Path, place, _fitter);
 
 		if (objectScale == null)

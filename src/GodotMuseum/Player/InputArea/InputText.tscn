@@ -2,6 +2,25 @@
 
 [ext_resource type="Script" uid="uid://bpyurw0ylyxuk" path="res://Player/InputArea/CenteredTextController.cs" id="1_centered"]
 
+[sub_resource type="StyleBoxFlat" id="InputNormal"]
+bg_color = Color(0.078431375, 0.078431375, 0.078431375, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="InputFocus"]
+bg_color = Color(0.078431375, 0.078431375, 0.078431375, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.35, 0.75, 1, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
 [node name="Control" type="Control" unique_id=1310227466]
 custom_minimum_size = Vector2(1200, 800)
 layout_mode = 3
@@ -30,6 +49,8 @@ theme_override_colors/selection_color = Color(0, 0, 0, 0)
 theme_override_colors/font_color = Color(1, 1, 1, 0)
 theme_override_colors/font_placeholder_color = Color(1, 1, 1, 0)
 theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("InputNormal")
+theme_override_styles/focus = SubResource("InputFocus")
 wrap_mode = 1
 
 [node name="DisplayText" type="Label" parent="." unique_id=1442447988]

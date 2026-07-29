@@ -50,6 +50,7 @@ The prototype includes:
 - text search across a prepared multimodal collection
 - similarity search from an existing exhibit
 - images, videos, and 3D models in one result space
+- video results that preview and start at the matching vitrivr segment
 - dynamic placement of media inside the museum
 - original-size rooms for 3D models
 - controller and hand-tracking input

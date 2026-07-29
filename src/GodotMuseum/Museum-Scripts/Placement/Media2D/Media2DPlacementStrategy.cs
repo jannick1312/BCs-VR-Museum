@@ -85,7 +85,7 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 	private async Task<bool> CreateDisplayInstance(DisplayMediaItem mediaItem, Node3D place, Rect2 slot)
 	{
 		var instance = Media2DDisplayInstance.Create(DisplayTemplate, DisplayRoot, GeneratedGroup, _cellPadding, place, slot);
-		instance.StoreRetrievableMetadata(mediaItem.Vector, mediaItem.Name, mediaItem.Path);
+		instance.StoreRetrievableMetadata(mediaItem.Vector, mediaItem.Name, mediaItem.Path, mediaItem.Metadata);
 
 		switch (mediaItem.MediaType)
 		{
@@ -94,7 +94,7 @@ public sealed class Media2DPlacementStrategy : PlacementStrategyBase
 				break;
 
 			case MediaType.Video:
-				_videos.Add(await Video2DMediaRenderer.Render(instance, mediaItem.Path));
+				_videos.Add(await Video2DMediaRenderer.Render(instance, mediaItem.Path, mediaItem.StartTimeSeconds));
 				break;
 
 			default:

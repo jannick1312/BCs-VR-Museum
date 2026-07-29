@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BCSVRMuseum.Museum_Scripts.Decision;
 using BCSVRMuseum.Museum_Scripts.Placement.Helpers.Common;
 using Godot;
+using Models;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 
@@ -49,9 +50,9 @@ public sealed class Object3DDisplayInstance
 		ObjectNode.Transform = DisplayTransform;
 	}
 
-	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath, Action showOriginalSize)
+	public void StoreRetrievableMetadata(IReadOnlyList<double> vector, string mediaName, string mediaPath, MediaMetadata metadata, Action showOriginalSize)
 	{
-		RetrievableMetadata.Store(Item, vector, mediaName, mediaPath);
+		RetrievableMetadata.Store(Item, vector, mediaName, mediaPath, metadata);
 		ConfigureActionPopups(vector, mediaPath, showOriginalSize);
 	}
 

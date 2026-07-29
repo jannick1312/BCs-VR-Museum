@@ -1,7 +1,6 @@
 using Application;
 using Core;
 using Logger;
-using Models;
 
 namespace Infrastructure.Media;
 

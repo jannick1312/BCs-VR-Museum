@@ -8,23 +8,19 @@ namespace Infrastructure.Vitrivr;
 public static class VitrivrResponseParser
 {
 	private static readonly EventLogger Log = new(nameof(VitrivrResponseParser));
+	private static readonly JsonSerializerOptions SerializerOptions = new() { IncludeFields = true };
 
 	public static SearchResult Parse(string responseText, string mediaFolderPath, string mediaBaseUrl)
 	{
 		try
 		{
-			using var document = JsonDocument.Parse(responseText);
-			var root = document.RootElement;
-
-			root.TryGetProperty("retrievables", out var retrievables);
-
+			var response = JsonSerializer.Deserialize<Root>(responseText, SerializerOptions) ?? throw new JsonException("Vitrivr returned an empty JSON response.");
 			var items = new List<SearchResultItem>();
 			var seenLocalPaths = new List<string>();
 
-			foreach (var retrievable in retrievables.EnumerateArray())
+			foreach (var retrievable in response.Retrievables)
 			{
-				var item = ParseRetrievable(retrievable, mediaFolderPath, mediaBaseUrl);
-
+				var item = MapRetrievable(retrievable, mediaFolderPath, mediaBaseUrl);
 				if (item == null)
 					continue;
 
@@ -48,15 +44,13 @@ public static class VitrivrResponseParser
 		}
 	}
 
-	private static SearchResultItem? ParseRetrievable(JsonElement retrievable, string mediaFolderPath, string mediaBaseUrl)
+	private static SearchResultItem? MapRetrievable(Retrievable retrievable, string mediaFolderPath, string mediaBaseUrl)
 	{
-		var sourcePath = GetSourcePath(retrievable);
-		var vector = GetClipVector(retrievable);
+		var parent = retrievable.Relationship?.PartOf;
+		var sourcePath = retrievable.Descriptors?.FilePath ?? parent?.Descriptors?.FilePath;
+		var vector = retrievable.Descriptors?.ClipVector.Where(value => value.HasValue).Select(value => value!.Value).ToArray() ?? [];
 
-		if (string.IsNullOrWhiteSpace(sourcePath) || vector.Count == 0)
-			return null;
-
-		var fileName = ExtractFileName(sourcePath);
+		var fileName = ExtractFileName(sourcePath!);
 		var mediaType = DetectMediaType(fileName);
 
 		if (mediaType == MediaType.Unknown)
@@ -69,59 +63,30 @@ public static class VitrivrResponseParser
 		var mediaFolderName = GetMediaFolderName(mediaType);
 		var localPath = Path.Combine(mediaFolderPath, mediaFolderName, fileName);
 		var remoteUrl = mediaBaseUrl.TrimEnd('/') + "/" + mediaFolderName + "/" + Uri.EscapeDataString(fileName);
+		var startTimeSeconds = ToSeconds(retrievable.Descriptors?.TimeStart);
+		var metadata = new MediaMetadata(parent?.Id ?? retrievable.Id);
 
-		return new SearchResultItem(vector, mediaType, localPath, remoteUrl);
+		return new SearchResultItem(vector, mediaType, localPath, remoteUrl, startTimeSeconds, metadata);
 	}
 
-	private static IReadOnlyList<double> GetClipVector(JsonElement retrievable)
+	private static int? ToSeconds(long? nanoseconds)
 	{
-		if (retrievable.TryGetProperty("descriptors", out var descriptors) && descriptors.TryGetProperty("clip.vector", out var vectorElement))
-			return ParseVector(vectorElement);
-
-		if (retrievable.TryGetProperty("relationship", out var relationship) && relationship.TryGetProperty("partOf", out var parentRetrievable) && parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) && parentDescriptors.TryGetProperty("clip.vector", out var parentVectorElement))
-			return ParseVector(parentVectorElement);
-
-		return [];
-	}
-
-	private static IReadOnlyList<double> ParseVector(JsonElement vectorElement)
-	{
-		var vector = new List<double>();
-
-		foreach (var value in vectorElement.EnumerateArray())
-			if (value.TryGetDouble(out var number))
-				vector.Add(number);
-
-		return vector;
-	}
-
-	private static string? GetSourcePath(JsonElement retrievable)
-	{
-		if (retrievable.TryGetProperty("descriptors", out var descriptors) && descriptors.TryGetProperty("file.path", out var pathElement))
-			return pathElement.GetString();
-
-		if (retrievable.TryGetProperty("relationship", out var relationship) && relationship.TryGetProperty("partOf", out var parentRetrievable) && parentRetrievable.TryGetProperty("descriptors", out var parentDescriptors) && parentDescriptors.TryGetProperty("file.path", out var parentPathElement))
-			return parentPathElement.GetString();
-
-		return null;
+		var seconds = nanoseconds / 1_000_000_000;
+		return seconds is >= 0 and <= int.MaxValue ? (int)seconds.Value : null;
 	}
 
 	private static string ExtractFileName(string path)
 	{
-		var normalizedPath = path.Replace('\\', '/');
-		return Path.GetFileName(normalizedPath);
+		return Path.GetFileName(path.Replace('\\', '/'));
 	}
 
 	private static MediaType DetectMediaType(string fileName)
 	{
-		var extension = Path.GetExtension(fileName).ToLowerInvariant();
-
-		return extension switch
+		return Path.GetExtension(fileName).ToLowerInvariant() switch
 		{
 			".jpg" => MediaType.Image,
 			".ogv" => MediaType.Video,
-			".glb" => MediaType.Object3D,
-			".pck" => MediaType.Object3D,
+			".glb" or ".pck" => MediaType.Object3D,
 			_ => MediaType.Unknown
 		};
 	}

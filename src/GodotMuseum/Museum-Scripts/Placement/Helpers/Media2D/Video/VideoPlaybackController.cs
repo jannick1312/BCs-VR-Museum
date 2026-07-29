@@ -6,15 +6,17 @@ public sealed class VideoPlaybackController
 {
 	private readonly Node3D _item;
 	private readonly Node3D _playIndicator;
+	private readonly double _startPositionSeconds;
 	private readonly VideoStreamPlayer _videoPlayer;
 	private bool _isPlayingForViewer;
 
-	public VideoPlaybackController(Node3D item, VideoStreamPlayer videoPlayer, Node3D playIndicator)
+	public VideoPlaybackController(Node3D item, VideoStreamPlayer videoPlayer, Node3D playIndicator, double startPositionSeconds)
 	{
 		_item = item;
 		_videoPlayer = videoPlayer;
 		_playIndicator = playIndicator;
-		_videoPlayer.Finished += StartFromBeginning;
+		_startPositionSeconds = startPositionSeconds;
+		_videoPlayer.Finished += StartFromKeyframe;
 	}
 
 	public void UpdateForDistance(Node3D camera, float activeDistance)
@@ -29,7 +31,7 @@ public sealed class VideoPlaybackController
 		}
 
 		if (!_isPlayingForViewer)
-			StartFromBeginning();
+			StartFromKeyframe();
 	}
 
 	private void Reset()
@@ -39,13 +41,13 @@ public sealed class VideoPlaybackController
 		_playIndicator.Visible = true;
 	}
 
-	private void StartFromBeginning()
+	private void StartFromKeyframe()
 	{
 		_isPlayingForViewer = true;
 		_playIndicator.Visible = false;
 		_videoPlayer.Paused = false;
 		_videoPlayer.Stop();
-		_videoPlayer.StreamPosition = 0.0;
 		_videoPlayer.Play();
+		_videoPlayer.StreamPosition = _startPositionSeconds;
 	}
 }
