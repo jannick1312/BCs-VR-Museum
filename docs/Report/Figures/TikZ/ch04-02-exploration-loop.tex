@@ -1,0 +1,33 @@
+\begin{tikzpicture}[
+  stage/.style={
+    draw=black!55,
+    rounded corners=2pt,
+    align=center,
+    minimum height=1.05cm,
+    text width=1.85cm,
+    font=\small
+  },
+  flow/.style={->, thick, draw=black!70},
+  >=stealth
+]
+  \node[stage, fill=black!4] (query) at (0,0)
+    {Text\\query};
+  \node[stage, fill=blue!7] (search) at (2.55,0)
+    {Semantic\\search};
+  \node[stage, fill=cyan!7] (results) at (5.10,0)
+    {Related\\media};
+  \node[stage, fill=red!6] (exhibition) at (7.65,0)
+    {Spatial\\exhibition};
+  \node[stage, fill=blue!7] (explore) at (10.20,0)
+    {Explore and\\select exhibits};
+
+  \draw[flow] (query) -- (search);
+  \draw[flow] (search) -- (results);
+  \draw[flow] (results) -- (exhibition);
+  \draw[flow] (exhibition) -- (explore);
+  \draw[flow] (explore.south)
+    .. controls +(0,-0.5) and +(0,-0.5) ..
+    node[pos=0.5, below, font=\scriptsize, text=black!65]
+    {Use a selected exhibit as the next query}
+    (search.south);
+\end{tikzpicture}

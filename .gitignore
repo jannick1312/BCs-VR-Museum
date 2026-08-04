@@ -1146,5 +1146,6 @@ src/GodotMuseum/Blender/
 *.zip
 
 docs/docsExt
+docs/Report/working/
 
 !run/stream/logs/

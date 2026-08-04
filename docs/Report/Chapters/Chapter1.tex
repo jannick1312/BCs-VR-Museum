@@ -1,25 +1,74 @@
 % !TEX root = ../Thesis.tex
 \chapter{Introduction}
+\label{ch:introduction}
 
-This is the introduction to the thesis template. The goal is to give students a starting point on how to format and style their Bachelor or Master thesis\footnote{This document also shows how to use the template.}. 
+\begingroup
+\setaftersecskip{6pt}
+\setlength{\emergencystretch}{2em}
+Digital collections are usually shown on websites or as lists. These formats work well for direct searches, but do not fully provide the spatial and exploratory feel of an exhibition. This thesis studies how found media can instead be presented and explored in a virtual museum that users can move through freely.
 
-Please make sure to always use the most current version of this template, by downloading it always from the original git repository:
-\begin{center}
-	\url{http://www.github.com/ivangiangreco/unibas-latex} 
-\end{center}
+\section{Motivation}
+\label{sec:introduction-motivation}
 
-We will use throughout this tutorial some references to Turing's imitation game~\cite{turing:1950} and the Turing machine~\cite{turing:1936}. You may be interested in reading these papers.
+A digital collection can be accessed from any place and at any time. Standard search interfaces focus on a clear overview and direct access. On a screen, however, the media are shown next to each other in a two-dimensional format. This means that no real sense of space or connection between them is created.
 
-\vspace{1em}
-The package comes with an option regarding the bibliography style.
-You can include the package with
-\begin{verbatim}
-\usepackage[citeauthor]{basilea}
-\end{verbatim}
-to be able to cite authors directly with
-\begin{verbatim}
-\citet{turing:1950}
-\end{verbatim}
+Virtual Reality (VR)\footnote{\emph{Virtual Reality} (VR) is a fully immersive environment that is experienced through a headset and can be explored interactively.} offers a different form of access. Search results become exhibits. A person can move between them and view them from different angles. When a person finds an interesting exhibit, they can continue the search from it. In this way, searching becomes a repeatable path through the collection.
 
-If the option is enabled, then the following reference should print Turing [2]:~\citet{turing:1950}
+VIRTUE already shows images, videos and 3D artifacts in a VR museum \citep{giangreco2019virtue}. A later extension automatically generates image galleries \citep{peterhans2022galleries}. Since then, the vitrivr search backend has also been redesigned \citep{gasser2024engine}. This thesis builds on the new vitrivr-engine and focuses on the VR interface rather than on the development of the search engine itself.
 
+\clearpage
+\section{Initial Situation and Problem Statement}
+\label{sec:introduction-problem}
+
+VIRTUE's automatic gallery focuses on image collections and uses Cineast and Cottontail DB, which are parts of the earlier vitrivr stack \citep{peterhans2022galleries}. vitrivr-VR provides a fully immersive search, but it also uses these older parts \citep{spiess2022vitrivrvr}. MediaMix already uses the modular vitrivr-engine with PostgreSQL and pgvector, but it runs in Mixed Reality \citep{gasser2024engine,arnold2025mediamix}. None of these works shows a VR exhibition in which images, videos and 3D models are brought together from search results. In particular, it is still unclear how text-based and similarity searches can be used to repeatedly create and replace spatial exhibitions.
+
+Images, videos and 3D models need different forms of presentation. The application must handle these differences while arranging all three media types in one exhibition.
+
+The tested VR devices also differ in performance. The application either runs directly on the headset or is streamed from a PC. Input is provided through controllers or hand tracking. Despite these differences, the process in the museum should stay the same.
+
+This situation leads to the following research question:
+
+\begin{quote}
+\emph{How can a multimodal collection be shown as a dynamic VR exhibition using the vitrivr-engine and explored through text and similarity searches?}
+\end{quote}
+
+To answer this question, the VR application connects to the existing search backend. It loads results and shows each medium in a suitable form. Another search can then be started from an exhibited object. These steps should work in the same way on all tested devices.
+
+\section{Project Idea}
+\label{sec:introduction-project-idea}
+
+The project idea is a virtual museum room whose content changes with every search. For this purpose, the backend provides an ordered list of images, videos and 3D models. The application counts the free places, loads the suitable selection and distributes it in the room.
+
+Images and videos hang in suitable frames on the walls and keep their aspect ratio. Videos start at the point that matches the search query. The 3D models stand in their own display places and can be viewed from several sides. When a new search starts, the room stays the same, but the exhibits change.
+
+For each exhibit, the application also stores the vector through which it was found. When a person selects \emph{Similar}, this vector starts a new similarity search. Its results replace the current exhibition. In this way, the collection can be explored step by step.
+
+The museum room does not copy a real building. It serves as a spatial interface for digital collections that can be replaced.
+
+\clearpage
+\section{Scope and Contributions}
+\label{sec:introduction-scope}
+
+\paragraph{Scope} This thesis studies a VR prototype with a prepared collection of images, videos and 3D models. It offers text and similarity searches and can be controlled with controllers or hand tracking. On the Meta Quest 3 and VIVE Focus 3, it runs directly as a standalone application. A Windows version can also be streamed to a supported headset. The work also includes the connection to vitrivr, installation instructions and a usability evaluation with a small group of test participants.
+
+New search or embedding models are not part of this thesis. The same applies to a production-ready system, support for all VR devices and a copy of a real museum. The prototype uses existing components such as vitrivr-engine, Descriptor Server, CLIP, PostgreSQL and pgvector.
+
+\begin{samepage}
+\paragraph{Contributions} The contributions of this thesis are:
+
+\begin{enumerate}
+  \item a concept that transfers search results into a spatial exhibition and connects text searches with similarity searches,
+  \item a VR prototype that shows images, found videos and 3D models together and can be controlled with controllers or hand tracking,
+  \item the connection of the prototype to the vitrivr-engine and the integration of the found media into the museum process and
+  \item an initial evaluation with a small group of test participants and instructions for reproducing the full setup.
+\end{enumerate}
+\end{samepage}
+
+The main contributions are the VR interface and the interaction between search, media and exhibition.
+
+\section{Thesis Outline}
+\label{sec:introduction-outline}
+
+Chapter~\ref{ch:related-work} presents related work on virtual exhibitions and immersive search systems. Chapter~\ref{ch:background} explains multimedia retrieval, vector representations, CLIP, 3D model search and the vitrivr-engine. Chapter~\ref{ch:concepts} describes the design of the VR museum. Chapter~\ref{ch:implementation} presents the technical implementation. Chapter~\ref{ch:evaluation} describes the setup and results of the evaluation. Chapter~\ref{ch:conclusion} answers the research question, discusses the work and presents possible future extensions.
+
+\endgroup

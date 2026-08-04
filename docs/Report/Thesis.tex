@@ -1,6 +1,6 @@
 %% ----------------------------------------------------------------
 %% Thesis.tex -- main
-%% ---------------------------------------------------------------- 
+%% ----------------------------------------------------------------
 
 \documentclass[a4paper, 10pt, oneside]{memoir}
 %% Use the option citeauthor to be able to use citet. The default cite will still work.
@@ -8,24 +8,24 @@
 
 %% ----------------------------------------------------------------
 
-\title				{Thesis Title}
-\thesistype			{Thesis Type (e.g., Bachelor/Master thesis/project)}
+\title				{Interactive VR Museum for Image, Video and 3D Model Collections}
+\thesistype			{Bachelor Thesis}
 
-\department 		    {Department (e.g., Department of Mathematics and Computer Science)}
-\faculty			{Faculty (e.g., Natural Science Faculty of the University of Basel)}
-\research		    {Research Group \\ Webpage}
+\department 		    {Department of Mathematics and Computer Science}
+\faculty			{Natural Science Faculty of the University of Basel}
+\research		    {Databases and Information Systems Group \\ \url{https://dbis.dmi.unibas.ch/}}
 
-\examiner    		{Examiner (e.g., Prof. Dr. Alan Turing)}
-\supervisor  		{Supervisor (e.g., Advisor, MSc.)}
+\examiner    		{Prof. Dr. Heiko Schuldt}
+\supervisor  		{Rahel Arnold and Raphael Waltenspuel}
 
-\authors     		{Author(s)}
-\email				{E-Mail}
-\immatriculnr		{0000-000-000}
+\authors     		{Jannick Seper}
+\email				{jannick.seper@gmail.com}
+\immatriculnr		{22-052-096}
 
-\date				{Hand-In-Date}
+\date				{04.09.26}
 
 % switch here for the german logo to logo-de
-\ulogo				{Template/logo-en} 
+\ulogo				{Template/logo-en}
 
 
 %% ----------------------------------------------------------------
@@ -37,34 +37,33 @@
 \thesisfront
 \maketitle
 \pagestyle{thesis}
-%% ----------------------------------------------------------------
-% \input{./Front/Acknowledgment}
-%% ----------------------------------------------------------------
+
+% Unnumbered front matter. All content remains in THESIS_STICHPUNKTE.txt.
 \input{./Front/Abstract}
-%% ----------------------------------------------------------------
+\input{./Front/Acknowledgment}
 \thesistoc
-%% ----------------------------------------------------------------
-%\thesisnomencl
-%% ----------------------------------------------------------------
+
+% Numbered main chapters.
 \thesismain
 \input{./Chapters/Chapter1}
 \input{./Chapters/Chapter2}
 \input{./Chapters/Chapter3}
-%\input{./Chapters/Chapter4}
-%\input{./Chapters/Chapter5}
-%\input{./Chapters/Chapter6}
-%\input{./Chapters/Chapter7}
+\input{./Chapters/Chapter4}
+\input{./Chapters/Chapter5}
+\input{./Chapters/Chapter6}
+\input{./Chapters/Chapter7}
 %% ----------------------------------------------------------------
 \thesisappendix
 \thesisbib
+\cleardoublepage
+\listoffigures
+\cleardoublepage
 \begin{appendices}
-	\input{./Back/AppendixA} 
+	\input{./Back/AppendixA}
 \end{appendices}
 %% ----------------------------------------------------------------
-\thesisback
-\iflanguage{english}
-  {\includepdf{./Back/wissensch_Redlichkeit_E_09-2023.pdf}}
-  {\includepdf{./Back/wissensch_Redlichkeit_D_09-2023.pdf}}
+%% \thesisback
+%% \includepdf{./Back/wissensch_Redlichkeit_E_09-2023.pdf}
 %% ----------------------------------------------------------------
 \end{document}
 %% ----------------------------------------------------------------
