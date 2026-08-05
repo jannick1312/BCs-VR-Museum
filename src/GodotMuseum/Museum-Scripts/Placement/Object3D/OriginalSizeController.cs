@@ -48,7 +48,10 @@ public partial class OriginalSizeController : Node
 
 	public void Reset()
 	{
-		RestoreToDisplay();
+		if (IsInOriginalSizeRoom)
+			ReturnToMuseum();
+		else
+			RestoreToDisplay();
 	}
 
 	private void RestoreToDisplay()

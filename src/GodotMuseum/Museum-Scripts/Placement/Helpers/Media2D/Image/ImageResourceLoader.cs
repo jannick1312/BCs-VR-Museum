@@ -18,6 +18,11 @@ public partial class ImageResourceLoader : ResourceFormatLoader
 		return true;
 	}
 
+	public override bool _RecognizePath(string path, StringName type)
+	{
+		return !path.StartsWith("res://", StringComparison.OrdinalIgnoreCase);
+	}
+
 	public override string _GetResourceType(string path)
 	{
 		return "Image";
