@@ -5,97 +5,117 @@
 \begingroup
 \setaftersecskip{6pt}
 \setlength{\emergencystretch}{2em}
-This chapter describes the technical background of the VR museum. It first explains multimedia retrieval, semantic search and vector representations. It then presents CLIP and shows how the CLIP principle can be applied to 3D models. Finally, it describes the vitrivr-engine, which provides the search backend for this thesis.
+This chapter describes the technical background of the VR museum. It first introduces Extended Reality and then explains multimedia retrieval, semantic search, and vector representations. It then presents CLIP and shows how the CLIP principle can be applied to 3D models. Finally, it describes the vitrivr-engine, which provides the search backend for this thesis.
 
+\section{Extended Reality}
+\label{sec:background-xr}
+
+\emph{Extended Reality} (XR) is a collective term for Virtual Reality (VR), Augmented Reality (AR), and Mixed Reality (MR) \citep{yildirim2025exploringrealities}. Each combines digital content with the user's surroundings in a different way.
+
+\subsection{Virtual, Augmented and Mixed Reality}
+\label{subsec:background-xr-types}
+
+In VR, users see a digital environment instead of their real surroundings. The view moves with the user, which makes the virtual room feel like a real space instead of an image on a screen. AR keeps the real world visible and overlays it with digital objects or information. In MR, digital content is more integrated into the physical environment and appears as part of the real surroundings \citep{arnold2026mediamix,yildirim2025exploringrealities}.
+
+The system developed in this thesis uses VR, so the room, the exhibits, and the controls are all digital.
+
+\subsection{Interaction}
+\label{subsec:background-xr-interaction}
+
+Looking around is only one part of an XR application. Users also need to move, select objects, and change the scene. Controllers, hand tracking, gaze, and speech provide these actions without relying only on a mouse and keyboard. Different systems use these inputs in different ways. vitrivr-VR supports spoken text queries, movable result views and query terms, and pose-based search using a virtual model \citep{spiess2022vitrivrvr}. MediaMix uses gaze and gestures to select, rotate, move, and resize results and also supports keyboard input \citep{arnold2026mediamix}. This prototype provides the same actions through controllers and hand tracking.
 
 \section{Multimedia Retrieval}
 \label{sec:background-multimedia-retrieval}
 
-Multimedia retrieval means searching collections of images, videos, audio files or other media types. The search can use both existing metadata and the content of a medium. It can use features that can be calculated, such as color, texture, shape and motion \citep{flickner1995qbic}. vitrivr applies this principle to a modular retrieval stack with several query types \citep{rossetto2016vitrivr}.
+Multimedia retrieval means searching collections of images, videos, audio files, or other media types. The search can use both existing metadata and the content of a medium. It can use features that can be calculated, such as color, texture, shape, and motion \citep{flickner1995qbic}. vitrivr is one system that supports several ways to query a multimedia collection \citep{rossetto2016vitrivr}.
 
-In vitrivr-engine, a \emph{descriptor} extracts a feature from a media item. This feature can be a single value, such as an average color value or a vector created by a neural network. A media item can have several such features \citep{gasser2020cottontail,gasser2024engine}. Vectors can generally capture more complex features of a medium.
+\subsection{Collection Preparation and Online Search}
+\label{subsec:background-index-query}
 
-\section{Semantic Search and Vector Representations}
+A retrieval system prepares its collection before users search it. In this step, the media files are decoded and analysed. This is also called indexing or offline feature extraction \citep{flickner1995qbic,gasser2024engine}. Once a user submits a query, the system turns it into a representation that can be compared with the stored collection. vitrivr-engine handles indexing and searching in two separate runtimes. Both runtimes are built from configurable pipelines. The features created during collection preparation form the basis for the search. In vitrivr-engine, a \emph{descriptor} extracts a feature from a media item. The result can be a single value, such as an average color value or a vector created by a neural network. Since a media item can have several features, it can be searched and compared in different ways \citep{gasser2020cottontail,gasser2024engine}.
+
+\subsection{Content-Based and Semantic Retrieval}
+\label{subsec:background-content-semantic}
+
+Content-based retrieval searches the media itself. It does not only use information such as the title, creator, or date. Early systems compared visual features such as color, texture, shape, and motion \citep{flickner1995qbic}. Semantic retrieval focuses on meaning. It can match a query with media that expresses the same meaning, even when the query and result use different words or media types \citep{radford2021clip}.
+
+
+\subsection{Cross-Modal Retrieval}
+\label{subsec:background-cross-modal}
+
+Cross-modal retrieval compares different media types through a shared representation. Text, images, video frames, and rendered views of 3D models can be placed in the same embedding space. Items with a similar meaning are placed close to each other, even when they have different file formats \citep{radford2021clip,waltenspül2024crossmodal}. This makes it possible to search for images, videos, and 3D models with a text query. It is also possible to use an existing media object as the starting point for a similarity search. Cross-modal retrieval connects the mixed collection to the exploration process used in the museum.
+
+
+\enlargethispage{\baselineskip}
+\subsection{Vector Representations and Similarity Search}
 \label{sec:background-vector-representations}
 
-A feature can be represented numerically as a feature vector. In the vector space model, a media object is shown as a point in a space with many dimensions \citep{gasser2020cottontail}. A trained \emph{embedding model} creates such vector representations \citep{seyedmonir2024vectorsearch,radford2021clip}. The similarity of two items is found from the distance between their vectors. In shared image-text embeddings, images and texts with related meanings should be close to each other \citep{radford2021clip,waltenspuel2024crossmodal}.
-
-For a search, the query is also represented as a vector. The system compares it with the stored vectors and finds the nearest neighbors \citep{seyedmonir2024vectorsearch,gasser2020cottontail}. Different distance functions can be used for this comparison. For example, Cottontail DB supports Manhattan, Euclidean and cosine distance, as well as other functions \citep{gasser2020cottontail}. The descriptor and the backend decide which function is used. The nearest vectors form a ranked list, which is usually limited to the first $k$ results. The ranking therefore describes similarity according to the feature that is used.
-
-Figure~\ref{fig:semantic-embedding-space} shows this principle in a simple example with three dimensions. The red query \emph{Computer} is also represented as a vector. Of the stored terms, \emph{CPU} is closest in meaning, so it appears first. \emph{Web Development} is related too, but less closely, so it appears later. Real embeddings have many more than three dimensions. The figure therefore shows a simple projection, not the real feature space.
+A feature vector stores a feature as a list of numbers. In the vector space model, each media object becomes a point in a space with many dimensions \citep{gasser2020cottontail}. A trained \emph{embedding model} creates this vector \citep{seyedmonir2024vectorsearch,radford2021clip}. Two items are considered more similar when their vectors are closer. In a shared image-text space, an image and a text with similar meanings should be near each other \citep{radford2021clip,waltenspül2024crossmodal}. To search the space, the system converts the query into a vector and compares it with the stored vectors \citep{seyedmonir2024vectorsearch,gasser2020cottontail}. The system ranks the vectors by distance and usually returns the top $k$ results based on the selected feature and distance function.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{Figures/ch03-03-semantic-embedding-space.png}
+  \includegraphics[width=\textwidth]{Figures/ch03-03-semantic-embedding-space.pdf}
   \caption[Semantic similarity in an embedding space]{
-    Simple view of a query and terms with similar meanings in a three-dimensional feature space. The green marks show the order of the most similar results.
+    Simplified three-dimensional embedding space for a semantic query. Each labelled term is represented by a point. The red \emph{Computer} query is closest to \emph{CPU}, while a term like \emph{Web Development} is farther away. The green lines show how distance determines the ranking of the results.
   }
   \label{fig:semantic-embedding-space}
 \end{figure}
 
-The query vector can be created from different inputs. For a text search, the description is converted into a vector. For a similarity search, the stored vector of a media object can be used as the query. If no vector is available yet, the media object is embedded in the shared feature space with the same descriptor. The query vector is then compared with the stored vectors \citep{flickner1995qbic,rossetto2016vitrivr}.
+Figure~\ref{fig:semantic-embedding-space} shows a simple three-dimensional example. The red point is the query \emph{Computer}. The term \emph{CPU} is closest to it, so it is returned first. \emph{Web Development} appears later because it is farther away. A real embedding has many more dimensions, so the figure only shows the basic idea.
 
-This type of example search is often called \emph{Query by Example} or \emph{More Like This}. It does not need a new text description. Instead, it uses the representation of a selected result to find its nearest neighbors. In the VR museum, this principle is the basis of the \emph{Similar} action. The vector stored with an exhibit becomes the query for the next search.
+The query vector can be created from different inputs. For a text search, the description is converted into a vector. For a similarity search, the stored vector of a media object can be used as the query. The query vector is then compared with the stored vectors \citep{flickner1995qbic,rossetto2016vitrivr}. A similarity search can begin with a selected media item instead of a new text description. This is often called \emph{Query by Example} or \emph{More Like This}. The system uses the item's representation to find similar items. In the VR museum, the \emph{Similar} action sends the vector stored with an exhibit as the next query.
 
-\clearpage
-\section{CLIP and Multimodal Content}
+\section{Vision-Language Models}
+\label{sec:background-vision-language}
+
+Vision-language models can understand both images and text, making them useful for search tasks that use different media types. In this thesis, searches have to handle text, images, video segments, and rendered views of 3D models. Their representations can be compared in a shared feature space, allowing related content to be retrieved across media types.
+
+\subsection{Joint Multimodal Embedding Spaces}
+\label{subsec:background-joint-embedding}
+
+A joint image-text model uses one encoder for images and another for text, and maps both into the same feature space. Images and texts with related meanings should be close to each other, while unrelated pairs should be farther apart \citep{radford2021clip}.
+
+\subsection{CLIP}
 \label{sec:background-clip}
 
-For a direct comparison, text and visual media must be in the same feature space. CLIP stands for \emph{Contrastive Language--Image Pre-training}. It uses an image encoder and a text encoder. The model is trained to match related images and texts within a batch and to separate pairs that do not belong together \citep{radford2021clip}. This creates comparable representations for images and texts.
+CLIP stands for \emph{Contrastive Language--Image Pre-training}. It follows this joint embedding approach and is trained to match related images and texts within a batch and to separate pairs that do not belong together \citep{radford2021clip}. This creates comparable representations for images and texts. OpenCLIP is one feature descriptor used by vitrivr-engine \citep{gasser2024engine}. It provides an open-source implementation and a family of models based on the CLIP principle \citep{cherti2023openclip}. The configuration in this thesis uses one field named \texttt{clip}, populated by a CLIP descriptor for all supported media types. This allows a text query to be compared with visual vectors stored in the collection, while an image vector can be used for similarity search. The original CLIP model operates on images and text, not complete videos or 3D models. Video frames and rendered views of 3D models can instead be processed as images \citep{spiess2022vitrivrvr,waltenspül2024crossmodal}.
 
-OpenCLIP is one feature descriptor used by vitrivr-engine \citep{gasser2024engine}. It provides an open-source implementation and a family of models that follow the CLIP principle \citep{cherti2023openclip}. The configuration in this thesis uses one field named \texttt{clip}, populated by a CLIP descriptor for all supported media types.
+\subsection{CLIP-Based 3D Model Retrieval}
+\label{sec:background-cross-modal-3d}
 
-Figure~\ref{fig:visual-text-co-embedding} shows the general structure of a visual-text co-embedding in vitrivr. Video frames and text are processed through separate paths and then mapped into the same feature space. Matching videos and sentences should be close to each other, while videos that do not match should be farther away \citep{spiess2022vitrivrvr}.
+Figure~\ref{fig:visual-text-co-embedding} shows how a 3D model is placed in the same semantic space as text and other visual media \citep{waltenspül2024crossmodal}.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{Figures/ch03-01-visual-text-co-embedding.png}
-  \caption[Visual-text co-embedding in vitrivr]{
-    Processing of video frames and text in separate encoder paths and mapping into a shared co-embedding space \protect\citep[Fig.~2]{spiess2022vitrivrvr}.
+  \includegraphics[width=\textwidth]{Figures/ch03-01-visual-text-co-embedding.pdf}
+  \caption[Visual-text co-embedding for cross-modal 3D retrieval]{
+    Cross-modal retrieval pipeline for 3D models. Multiple rendered views of a model are encoded individually and aggregated into one representation. The text query is encoded separately. Both representations are in the same co-embedding space, where their distance can be used for similarity retrieval \protect\citep[Fig.~3]{waltenspül2024crossmodal}.
   }
   \label{fig:visual-text-co-embedding}
 \end{figure}
 
-After training, new images and texts can be embedded independently. This allows a text query to be compared with the visual vectors in the collection. An image vector can also be used for a similarity search.
+A 3D model cannot be processed directly by an image encoder because it has features such as geometry, orientation, topology, and textures. It first has to be rendered from different viewpoints, after which each view can be processed like a normal image. Because not every view captures relevant parts of the object, the vectors from multiple views are combined into one representation. This representation can then be compared with text queries, images, and video frames \citep{waltenspül2024crossmodal}.
 
-The original CLIP model processes images and texts. Individual frames can be used for videos. MediaMix uses this method for its similarity search \citep{arnold2025mediamix}.
-
-\clearpage
-\section{Cross-Modal 3D Model Retrieval}
-\label{sec:background-cross-modal-3d}
-
-A 3D model has features such as geometry, orientation, topology and textures. Models with different file formats, numbers of vertices or texture resolutions can still look almost the same when rendered. For retrieval, this complex representation must therefore be changed into compact features that can be compared \citep{waltenspuel2024crossmodal}.
-
-Methods for describing 3D models can be divided roughly into geometry-based and view-based approaches. Geometry-based methods use features of the spatial structure. View-based methods instead use the visible appearance. For this purpose, the model is rendered from one or more camera positions. Because of perspective and hidden parts, a single view does not always show the full shape. However, it can be processed with existing image descriptors \citep{waltenspuel2024crossmodal}.
-
-A well-known view-based method is \emph{2D Planar View Mapping}, introduced by \citet{chen2003visualsimilarity}. It represents a 3D model through projections from several viewpoints. \citet{waltenspuel2024crossmodal} build on this idea by processing such projections with image-text embedding models.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Figures/ch03-02-cross-modal-view-generation.png}
-  \caption[Generation of 2D views for cross-modal 3D model retrieval]{
-    Creation of two-dimensional views of a 3D model \protect\citep[Fig.~2]{waltenspuel2024crossmodal}.
-  }
-  \label{fig:cross-modal-rabbit}
-\end{figure}
-
-An image-text model converts each view into a vector, resulting in several vectors for one 3D model. Since some views may not show the object clearly, \citet{waltenspuel2024crossmodal} group similar vectors and combine the largest group into a single vector. This vector can then be compared with text-query vectors, enabling text-based retrieval of 3D models.
-
-\clearpage
 \section{The vitrivr Retrieval Stack}
 \label{sec:background-vitrivr}
 
-vitrivr is an open-source stack for content-based multimedia retrieval. Today, the vitrivr-engine is its main backend. It connects media preparation and feature storage with later searches. The engine has a modular design and is not tied to a specific frontend or one media type \citep{gasser2024engine}. In this thesis, the VR museum accesses the engine as a frontend.
+vitrivr is an open-source system for content-based multimedia retrieval. The engine connects media preparation and feature storage with later searches. Because it is modular, it can work with different media types and frontends \citep{gasser2024engine}. The VR museum is one of these frontends. Earlier versions of vitrivr used Cineast as their feature extraction and query-processing engine. Cineast extracts content features while a collection is prepared and uses the stored features to process later search queries. It was the retrieval engine of vitrivr before the development of the vitrivr-engine \citep{rossetto2016vitrivr,gasser2024engine}.
 
-Processing in the vitrivr-engine is split into configurable pipelines. Each pipeline is a sequence of operators with specific jobs, such as decoding a file, segmenting it, extracting a feature, searching vectors or loading additional data. The pipelines used to prepare the collection and run queries share the same data model and database connection \citep{gasser2024engine}.
+\subsection{Architecture}
+\label{subsec:background-vitrivr-architecture}
 
-During preparation, a media source is first recorded and decoded. Depending on the media type, more units can be created from it. For example, a video can be divided into time segments, while several views can be created for a 3D model. Descriptors are used to calculate the key features of each unit. The results and the relationships between them are then stored. By adjusting its configuration, the same engine can process images, videos and 3D models.
+Vitrivr-engine uses configurable pipelines to process the data. A pipeline contains several operators, each with a specific task. For example, it can decode a file, create segments, extract features, search vectors, or load additional data. The pipeline can be configured for images, videos, or 3D models. A frontend communicates with the engine through an API, the frontend does not need to know how the pipelines or the database work internally \citep{gasser2024engine}. During preparation, a media source is first recorded and decoded. Depending on the media type, more units can be created from it. For example, a video can be divided into time segments, while several views can represent a 3D model. Descriptors calculate the features of these units. The results and their relationships are then stored. A frontend accesses the engine through an API without depending on its internal pipeline or database implementation \citep{gasser2024engine}.
 
+\subsection{Data and Query Model}
+\label{subsec:background-vitrivr-model}
 
-At the center of the data model are \emph{Retrievables}. A Retrievable can stand for an entire media file or for a derived part, for example a temporal segment. Fields attached to a Retrievable hold values such as feature vectors or scalar attributes. Relations can link Retrievables, for example a video file and its segments \citep{gasser2024engine}.
+At the center of the data model are \emph{Retrievables}. A Retrievable can be a complete media file or a smaller part, such as a video segment. Fields are used to store feature vectors or other simple values. Relations connect related units, for example a video and its segments \citep{gasser2024engine}.
 
-The vitrivr-engine presented in 2024 used Cottontail DB \citep{gasser2024engine}. MediaMix changed this setup in 2025 and uses PostgreSQL with the pgvector extension instead \citep{arnold2025mediamix,pgvector2026}. This thesis follows the MediaMix setup. Images, videos and 3D models have separate indexing pipelines, but all three write their representations to the shared \texttt{clip} field. The vitrivr Python Descriptor Server produces the CLIP vectors. PostgreSQL stores them as vectors using pgvector and makes them available for similarity search \citep{vitrivrPythonDescriptorServer2026,pgvector2026}.
+\subsection{Configuration Used in This Thesis}
+\label{subsec:background-vitrivr-configuration}
 
-In the VR museum, the backend prepares the collection and processes both text-based and vector-based queries. It then returns a ranked list of results. The frontend uses this list to choose which items fit into the virtual room, present them as exhibits, and allow users to continue exploring through new searches.
+The vitrivr-engine can work with different database implementations \citep{gasser2024engine}. For its vitrivr-engine backend, MediaMix connects PostgreSQL with the pgvector extension \citep{arnold2026mediamix,pgvector2026}. This prototype uses the same database setup. Images, videos, and 3D models have separate indexing pipelines, but all store their representations in the shared \texttt{clip} field. The vitrivr Python Descriptor Server creates the CLIP vectors. PostgreSQL stores these vectors with pgvector and makes them available for similarity search \citep{vitrivrPythonDescriptorServer2026,pgvector2026}.
+
+In the VR museum, the backend prepares the collection and handles text and vector queries. It returns the results in ranked order. The frontend selects the items for which the room has space, shows the exhibition and lets visitors choose an exhibit for the next search.
 
 \endgroup

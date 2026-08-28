@@ -5,139 +5,142 @@
 \begingroup
 \setaftersecskip{6pt}
 \setlength{\emergencystretch}{2em}
-Unlike a list or grid of results, the VR museum moves the search results into a space that visitors can walk through. It arranges the found images, videos and 3D models as an exhibition. Users can move freely, view exhibits from different angles and select exhibits for another search. The museum room stays the same, while the exhibition changes with every new query. This creates a continuous search process in which results are not only shown but can also be explored in space and used again.
+Unlike a list or grid, the VR museum places search results in a space that visitors can walk through. It arranges images, videos and 3D models as an exhibition. Users can move freely, view exhibits from different angles and select one to start another search. The room stays the same, but the exhibition changes with each query. This creates a continuous process in which users can explore results and use them to continue their search.
 
-The first part of this chapter describes how the full system is divided. It then explains how search results are put together as an exhibition based on the available space. The last section describes how users enter the museum and the repeatable exploration cycle.
+The first part of this chapter describes the main parts of the system. It then introduces the interaction model and explains how search results become an exhibition based on the available space. The last section describes how users enter the museum and the exploration cycle.
 
+\enlargethispage{\baselineskip}
 \section{Conceptual Architecture}
 \label{sec:concept-architecture}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\textwidth]{Figures/ch04-01-conceptual-architecture.png}
+  \includegraphics[width=0.9\textwidth]{Figures/ch04-01-conceptual-architecture.pdf}
   \caption[Conceptual architecture of the VR Museum]{
-    Conceptual architecture of the VR museum. The logic connects the frontend to the search function and provides the required media files [\hyperref[generative-ai]{ChatGPT}].
+    Conceptual architecture of the VR museum. The frontend shows the museum and handles user interaction. The application logic connects the frontend to the search system and the required media files.
   }
   \label{fig:conceptual-architecture}
 \end{figure}
 
-Figure~\ref{fig:conceptual-architecture} shows the conceptual architecture of the VR museum. The frontend includes the museum room and interaction through a VR device. It is designed for use on several VR platforms. The museum room, search process and basic interactions stay independent of the specific device. Users can enter text queries, view exhibits and select a medium that is already shown as the starting point of a similarity search.
+Figure~\ref{fig:conceptual-architecture} shows the conceptual architecture of the VR museum. The frontend presents the museum room and handles input. It supports several VR platforms, but the room, search process, and basic interactions stay the same. Visitors can enter text queries, view exhibits, and select an exhibit as the starting point for a similarity search.
 
-The logic connects the museum to the other parts of the system. It turns the input into a search query, considers the media types and available space and prepares the results for the exhibition. The retrieval backend performs the semantic search and returns matching content. It does not decide where or how this content appears in the museum.
+The application logic coordinates a search. It turns the input into a query, considers the selected media types and available space, and prepares the results for the frontend. The retrieval backend performs the semantic search and returns matching content. It does not decide where or how that content appears in the museum.
 
-The collection is prepared before it is searched. Media are converted, checked and prepared for presentation. The backend then indexes the searchable representations. If the game engine is changed, the source media and search index stay available. Presentation files made for a specific frontend may have to be created again.
+The collection is prepared before visitors use the museum. The retrieval backend searches the stored representations, while media delivery provides the files that are shown as exhibits. This separation gives each part one clear role. A part can be replaced if the new component provides the same interface and media formats.
 
-Media delivery is separate from the search process. Depending on the setup, the frontend either loads the file from the local system or gets it from an external server. This separation gives the frontend, application logic, search backend and media delivery clear roles. A component can be replaced as long as it uses the same interface and supports the same media formats.
+\section{User Interaction}
+\label{sec:concept-interaction-model}
 
-\section{Search-Based Exhibition Model}
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[height=4.2cm,keepaspectratio]{Figures/ch04-02-interaction-controller.pdf}
+    \par\smallskip
+    \small (a) VR controller.
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[height=4.2cm,keepaspectratio]{Figures/ch04-02-interaction-pinch.pdf}
+    \par\smallskip
+    \small (b) Hand position for pinching.
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[height=4.2cm,keepaspectratio]{Figures/ch04-02-interaction-grab.pdf}
+    \par\smallskip
+    \small (c) Hand position for grabbing.
+  \end{minipage}
+  \caption[Controller and hand-tracking interaction concepts]{Controller and hand-tracking interaction concepts. Both input modes provide the same actions. [\hyperref[generative-ai]{ChatGPT}].}
+  \label{fig:concept-interaction-inputs}
+\end{figure}
+
+The museum supports VR controllers and hand tracking. Both input modes cover the same actions. Visitors can select interface elements, enter a text query, manipulate exhibits, move through the museum, and switch between the menu and the exhibition. The interaction model defines these actions independently of the input device. Chapter~\ref{ch:implementation} explains how controller buttons and hand gestures are mapped to them.
+
+\section{Search-Based Exhibition}
 \label{sec:concept-museum-model}
 \label{sec:concept-exhibition-generation}
 
-A query searches the prepared collection and returns a ranked list of results. Instead of showing this list directly, the museum uses the results to create a temporary exhibition in the virtual space.
-
+A query searches the prepared collection and returns a ranked list of results. Instead of showing the list directly, the museum uses the results to create an exhibition in the virtual space.
 
 \subsection{Collection, Queries and Search Results}
 
-A \emph{collection} includes all images, videos and 3D models that can be searched. The museum treats each file as a \emph{media object}. For videos, a search result can point to a time segment, while a 3D model may be searched through images taken from different views. These results therefore need a link to the original media object that is shown in the museum.
+A \emph{collection} includes all searchable images, videos, and 3D models. The museum treats each file as a \emph{media object}. A video result may point to a specific time segment, while a 3D model is represented by rendered views during retrieval. Each result therefore needs a link to the original media object shown in the museum.
 
+Queries enter the system in two ways. Users can type a description or select an exhibit from an earlier exhibition as the starting point for a new search. In both cases, the backend produces ranked \emph{search results}. Each result refers to a media object. It also contains the information needed to show it as an exhibit.
 
-Queries enter the system in two ways. Users may type a description or select a media object from an earlier result and use it as an example. In both cases, the backend produces ranked \emph{search results}. A result identifies its media object and supplies the information required to build the corresponding exhibit.
-
-\clearpage
 \subsection{Media-Specific Exhibits}
 
-An \emph{exhibit} is the spatial presentation of a search result. It stays linked to its media object and can later be used as the starting point of a new search. Figure~\ref{fig:concept-presentation-templates} shows the two basic forms for different media.
-
-\paragraph{2D media.}
-Images and videos appear as framed, two-dimensional exhibits. The content keeps its aspect ratio, while the frame adjusts to its dimensions. The frame has the same width on all four sides. This gives very narrow or wide media a consistent frame without changing the shape of their content.
-
-\paragraph{Videos.}
-In addition to the images, a video first shows a preview of the found segment. When a person comes closer, playback starts at the point that matches the query. This keeps the time reference of the search result in the exhibition.
-
-\paragraph{3D media.}
-3D models appear inside a transparent glass sphere on a broken pillar. The sphere creates a clearly separated display space, so the model does not stand loosely on a surface. Within this space, it can be rotated and viewed from several sides without leaving its position in the exhibition. For a closer view, a model can be moved to a separate room. There, its size can be understood more easily without the other exhibits.
+An \emph{exhibit} is the presentation of a search result. Two-dimensional and three-dimensional media use different presentation structures. Figure~\ref{fig:concept-presentation-templates} shows how these structures are used.
 
 \begin{figure}[htbp]
   \centering
   \begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[height=5.5cm]{Figures/ch04-04-2d-frame.png}
+    \includegraphics[width=\textwidth]{Figures/ch04-03-concept-2d-frame.pdf}
     \par\smallskip
-    \small (a) Adjustable frame for two-dimensional media.
+    \small (a) A frame adapts to the proportions of 2D content.
   \end{minipage}
   \hfill
   \begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[height=5.5cm]{Figures/ch04-05-3d-orb-pillar.png}
+    \includegraphics[width=\textwidth]{Figures/ch04-04-concept-3d-display.pdf}
     \par\smallskip
-    \small (b) Display place for a 3D model.
+    \small (b) A 3D model is fitted into its display space.
   \end{minipage}
-  \caption[Media-specific presentation templates]{
-    Media-specific presentation forms in the VR museum. The frame adjusts to the dimensions of an image or video. The pillar and glass sphere form a separate and scalable space for a 3D model.
-  }
+  \caption[Conceptual media-specific presentation forms]{Conceptual presentation forms for two-dimensional and three-dimensional media. The frame keeps images and videos in their original proportions, while the pillar-and-sphere display works with 3D models of different sizes. [\hyperref[generative-ai]{ChatGPT}].}
   \label{fig:concept-presentation-templates}
 \end{figure}
 
-\clearpage
-\subsection{Spatial Placement Areas}
+Images and videos appear as framed exhibits. The content keeps its original aspect ratio, while the frame has the same thickness around it. This gives media with different dimensions a common appearance. A video exhibit also preserves the time reference of the result by starting playback at the retrieved segment.
 
-The positions for exhibits are already defined by the room. Wall areas are used for images and videos, while floor areas are used for 3D objects. A search result is placed in one of these existing areas and does not choose its own position. When a new search is started, only the exhibits change, while the room layout stays the same.
+3D models are presented in a dedicated display space. Visitors can rotate them and view them from different sides. They can also open a model in a separate room, where its scale is easier to understand in relation to the room.
+
+\subsection{Spatial Placement Areas}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{Figures/ch04-03-placement-areas.png}
-  \caption[Placement in the museum room]{
-    Defined placement areas in the museum room. The orange wall areas hold images and videos. The red floor areas define the position and size of the display places for 3D models, but not their rotation toward the center.
-  }
+  \includegraphics[width=0.9\textwidth]{Figures/ch04-05-concept-placement-areas.pdf}
+  \caption[Conceptual placement areas in the museum room]{Conceptual placement areas in the museum room. The orange wall area marks where images and videos can be displayed, while the red floor areas define positions for 3D exhibits. [\hyperref[generative-ai]{ChatGPT}].}
   \label{fig:concept-placement-areas}
 \end{figure}
 
-Figure~\ref{fig:concept-placement-areas} shows both types of areas. Each wall area has a maximum number of 2D exhibits. When a new exhibition starts, the application randomly chooses how many places to use. The wall is then divided into equal sections, with one frame placed in each section. This makes the walls look slightly different in each exhibition, while the limit keeps the exhibits clear and easy to view.
+The room has two types of placement areas, as shown in Figure~\ref{fig:concept-placement-areas}. Images and videos are placed on the walls, while each floor area can contain one 3D object. Based on the media type of a result, the system assigns it to the correct area.
 
-
-Each floor area contains one 3D exhibit. The area controls the dimensions of the whole display, including the pillar, glass sphere and model. Once this size is known, the model is scaled to remain inside the sphere. The same placement method can therefore handle small and large areas.
-
-\clearpage
+\enlargethispage{\baselineskip}
 \subsection{From Search Results to an Exhibition}
 
-An \emph{exhibition} contains all exhibits created from one query. The collection itself does not change. Since space is limited, the room cannot reproduce the complete ranking and shows only the part that can be placed in its available areas.
+An \emph{exhibition} contains the exhibits created from one query. Since the room has limited space, it cannot show the complete ranking. Images and videos share the wall areas, while 3D models use the floor areas. Results are considered in ranking order and assigned to a matching free area. A result is skipped when no area is available. The resulting subset becomes the exhibition and keeps the order of the original ranking.
 
-Images and videos share the wall areas described above, while 3D models use the floor areas. Results are checked in ranking order. If a matching place is free and the media type is enabled, the result is included. Otherwise, it is skipped. In this way, no file is loaded without a place to display it, and the relative order of the included results is preserved.
 
-\subsection{Exhibition Replacement}
-
-Loading a new exhibition takes time. To avoid showing an empty room during this process, the old exhibition remains visible until the next result set and its files are ready. First, the current images and videos are removed, and the new 2D exhibits are placed step by step. The 3D exhibits follow. A failed query or response leaves the previous exhibition untouched. In contrast, a successful result with no media that can be shown clears the exhibition.
-
-\section{Exploration Model}
+\section{Exploration Flow}
 \label{sec:concept-exploration-model}
-
-The museum is designed for a sequence of searches. Its main concept is a cycle of query, exhibition and new query. This allows the collection to be explored step by step. Figure~\ref{fig:concept-exploration-loop} shows this process.
 
 \begin{figure}[htbp]
   \centering
-  \input{Figures/TikZ/ch04-02-exploration-loop}
+  \includegraphics[width=0.9\textwidth]{Figures/ch04-02-exploration-loop.pdf}
   \caption[Continuous exploration loop]{
-    Continuous exploration cycle of the VR museum. A text query creates a spatial exhibition. A selected exhibit can then be used as the next query [\hyperref[generative-ai]{ChatGPT}].
+    Continuous exploration cycle of the VR museum. A text query starts a semantic search and creates an exhibition. Selecting one of the exhibits starts the next search, creating a cycle.
   }
   \label{fig:concept-exploration-loop}
 \end{figure}
 
+The museum is designed for a sequence of searches, as shown in Figure~\ref{fig:concept-exploration-loop}. A query creates an exhibition, and any exhibit can then become the basis of the next query. In this way, users can explore the collection step by step.
+
 \subsection{Guided Entry and Settings}
 
-Before entering the museum, users first see a menu. There, they can check the connection to the backend. They can also select the desired media types and options for movement and presentation. An optional tutorial explains how to select and move objects, how to search, how to run a similarity search and how to view the size of a 3D model in a separate space. Actions can be started with VR controllers or, if the device supports it, with hand tracking. Both input methods use the same conceptual actions. The menu is separate from the museum room and can be opened again later without closing the current exhibition.
+Visitors first see a menu before they enter the museum. They can change the backend connection, select the media types, and set the movement speed. An optional tutorial explains navigation and the main actions. The menu can be opened again at any time, while the current exhibition remains open in the background.
 
-\subsection{Text-Based Entry}
+\subsection{Entry and Exploration}
 
-The process starts with a text query. It defines a topic and creates the first exhibition, so it sets the starting point of the museum. The results can then be viewed in the exhibition.
-
-\subsection{Exploring the Exhibition}
-
-Users can move freely and view individual items more closely. Looking at an item in more detail does not affect the exhibition. A new exhibition is only created when an exhibit is selected as a new query.
+The process starts with a text query. It defines a topic and creates the first exhibition. Visitors can then move through the room and inspect individual exhibits. Selecting an exhibit as a new query or entering another text query creates a new exhibition.
 
 \subsection{Similarity-Based Continuation}
 
-Every exhibit can become the starting point of a similarity search. The \emph{Similar} action searches for media objects that are similar to the selected exhibit. The search result creates a new exhibition.
+Every exhibit can become the starting point of a similarity search. The \emph{Similar} action finds related media objects, and the results form a new exhibition.
 
-A general text query can first open a broad topic. Selecting one exhibit makes the next search more specific. This process can be repeated any number of times and forms the main exploration cycle.
+A text search can cover many different topics. Selecting an exhibit makes the next search more specific. This forms the main exploration cycle. Visitors can repeat this process as often as they want.
 
 \endgroup

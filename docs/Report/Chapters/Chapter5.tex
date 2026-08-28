@@ -5,70 +5,84 @@
 \begingroup
 \setaftersecskip{6pt}
 \setlength{\emergencystretch}{2em}
-Chapter~\ref{ch:concepts} describes the concept of the VR museum. This chapter explains how it was implemented. It covers the choice of technology, the modular structure and the process from a search query to a new exhibition.
+Chapter~\ref{ch:concepts} describes the concept of the VR museum. This chapter explains its implementation, including the choice of technology, the modular structure, the input methods, and the process from a search query to a new exhibition.
 
 \section{Technology Decisions}
 \label{sec:implementation-technology}
 
-\paragraph{Godot and OpenXR} OpenXR was chosen as a common cross-platform interface for several VR devices with different XR\footnote{\emph{Extended Reality} (XR) is a general term for technologies such as VR and \emph{Augmented Reality} (AR).} runtimes \citep{khronosOpenXR}. The standard connects an XR application to the runtime that is used. Godot includes OpenXR as a core interface, and the implementation uses Godot 4.6.2 with .NET support \citep{godotOpenXR,godot462}. Godot XR Tools and the OpenXR Vendors Plugin are used as addons. Godot XR Tools provides user movement, object interaction and user-interface interaction. The OpenXR Vendors Plugin adds vendor-specific extensions and Android OpenXR loaders \citep{godotXRTools,godotOpenXRVendors}. The Meta Quest 3 and VIVE Focus 3 each use their own Android export profile. On Windows, the application uses the active OpenXR runtime and streams the image to the headset. The museum room and its interactions remain the same in every version.
+\paragraph{Godot and OpenXR} The application uses Godot 4.6.2 with .NET and its built-in OpenXR interface \citep{godotOpenXR,godot462}. OpenXR allows the same application to communicate with different XR runtimes \citep{khronosOpenXR}. Godot XR Tools complements this interface with reusable scenes and scripts for building XR applications \citep{godotXRTools}. The OpenXR Vendors Plugin adds the loaders and extensions required by individual headset platforms \citep{godotOpenXRVendors}. Separate export profiles build Android applications for Meta Quest and VIVE Focus. The Windows profile uses the active OpenXR runtime for PC streaming. The museum room and core workflow remain the same. Input and rendering, however, depend on the platform.
 
-\paragraph{Application Layers} The C\# source code is split across several .NET projects so that the search logic and media access are not tied to Godot. Godot handles presentation and input. The general application logic and the adapters for external services are in separate libraries. They do not depend on Godot scenes and are only put together with the current configuration at one central point.
+\paragraph{Application Layers} The C\# code is divided into separate .NET projects so that search logic and media access do not depend on Godot scenes. Godot handles input and presentation, while libraries contain the application logic and adapters for external services. A factory connects these parts. It uses the current server address and the media paths for the selected platform.
 
-\paragraph{Vitrivr and Media Delivery} A new search engine was not part of this thesis, so the museum sends queries to the vitrivr-engine through its REST interface. Pipelines for images, videos and 3D models store their representations in the same CLIP field. The vitrivr Python Descriptor Server calculates these vectors \citep{vitrivrPythonDescriptorServer2026}. PostgreSQL stores them as part of the Retrievables using pgvector. The media files are delivered separately through Nginx \citep{nginxStaticContent2026}.
+\paragraph{Vitrivr and Media Delivery} Developing a new search engine was outside the scope of this thesis. The museum sends text and vector queries to the vitrivr-engine through its HTTP interface. Separate ingestion pipelines store the descriptors of images, videos, and 3D models in the shared \texttt{clip} field. The vitrivr Python Descriptor Server calculates these vectors \citep{vitrivrPythonDescriptorServer2026}. PostgreSQL stores them with pgvector \citep{pgvector2026}. Nginx serves the corresponding media files separately \citep{nginxStaticContent2026}.
 
 \section{Implemented Architecture}
 \label{sec:implementation-architecture}
 
-Figure~\ref{fig:implementation-project-structure} divides the implementation into Godot integration, .NET libraries and external server services. Orange marks the factories, blue the Godot controllers, green the application and its use cases and turquoise the adapters and server components. The dashed arrows mark objects that the \texttt{Museum\allowbreak Application\allowbreak Factory} creates and connects.
-
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{Figures/ch05-01-implemented-architecture.png}
-  \caption[Component structure of the implementation]{Component structure and composition of the Godot integration, .NET libraries and external services.}
+  \includegraphics[width=\textwidth]{Figures/ch05-01-implemented-architecture.pdf}
+  \caption[Simplified structure of the implementation]{Simplified runtime structure of the implementation. Godot controllers access the factory-created \texttt{MuseumApplication}. \texttt{VitrivrSearchService} communicates with vitrivr-engine, while \texttt{MediaLoader} uses local files when available and otherwise obtains them from Nginx.}
   \label{fig:implementation-project-structure}
 \end{figure}
 
-Godot manages input, settings and presentation. The .NET libraries handle the search process and access to external services. The servers perform the search, calculate descriptors, store data and deliver files.
+Figure~\ref{fig:implementation-project-structure} shows the main runtime path. Godot controllers do not create HTTP clients or adapters. They access \texttt{Museum\allowbreak Application} through \texttt{IMuseum\allowbreak Application}. For a search, the application uses \texttt{VitrivrSearchService} to translate queries and responses. \texttt{MediaLoader} then provides the result files. It uses a local copy when available and Nginx otherwise.
 
-The Godot controllers do not create HTTP requests or server adapters themselves. Instead, they receive a complete application and access it through one interface. This makes it clear in the architecture which parts need Godot and which can also work without the VR runtime.
+The figure omits connections to stay readable. \texttt{Search\allowbreak Use\allowbreak Case\allowbreak Factory} reads the server address and media path from Godot's settings store. It then calls \texttt{Museum\allowbreak Application\allowbreak Factory}, which connects the search service, media loader, and \texttt{Vitrivr\allowbreak Server\allowbreak Health\allowbreak Service}. The health service checks the backend before entry. The descriptor server and PostgreSQL database are also omitted. They create and store the searchable data before visitors use the application.
 
-\clearpage
+
 \section{Key Implementation Components}
 \label{sec:implementation-components}
 
-\paragraph{Godot Integration} The \texttt{SearchController} accepts a query, prevents searches from running at the same time and finds the free places for 2D and 3D exhibits. After the search, it passes the loaded media to the strategies of the \texttt{MediaPlacementController}. \texttt{PlayerHandInput} turns controller and hand-tracking input into the same actions. The \texttt{ServerValidationController} checks from the settings menu whether the server can be reached. The \emph{Original Size} action is handled by the \texttt{Original\allowbreak Size\allowbreak Controller}. It moves the selected 3D model into a separate room and returns it afterward.
+\paragraph{Godot Integration} \texttt{ServerValidationController} checks the backend before entry. Once this check succeeds, \texttt{SearchController} submits the configured initial query. Later searches start from entered text or from the CLIP vector stored in a selected exhibit. The controller rejects a new query while another search is running. It gets the available placement areas from \texttt{MediaPlacementController} before calling the application. \texttt{PlayerHandInput} handles hand-tracked input, while \texttt{Original\allowbreak Size\allowbreak Controller} manages the separate viewing rooms for 3D exhibits.
 
-\paragraph{Application Layer} Godot uses the \texttt{IMuseum\allowbreak Application} interface to access the application logic. \texttt{Museum\allowbreak Application} sends search requests to \texttt{Search\allowbreak Media} and server checks to \texttt{Validate\allowbreak Server}. \texttt{Search\allowbreak Media} needs a search engine and a service for loading media. \texttt{Validate\allowbreak Server} only needs a service for checking the server. These interfaces separate the application logic from the vitrivr format, HTTP access and Godot.
+\pagebreak
+\paragraph{Application Layer} The \texttt{IMuseum\allowbreak Application} interface gives Godot access to the application logic. \texttt{Museum\allowbreak Application} forwards searches to \texttt{Search\allowbreak Media} and reachability checks to \texttt{Validate\allowbreak Server}. For each search, \texttt{SearchMedia} creates the query and sends it to the configured search engine. It then selects results that match the chosen media types and the available 2D and 3D capacity. The selected files are loaded concurrently. A file that cannot be loaded is left out of the final result.
 
-\paragraph{Infrastructure and Server Integration} The \texttt{Vitrivr\allowbreak Search\allowbreak Service} acts as the boundary to the vitrivr-engine by translating queries and engine responses. When media are requested, the \texttt{MediaLoader} looks for a local file before downloading it through Nginx. Server checks remain separate from this search path and are handled by the \texttt{VitrivrServerHealthService}.
+\paragraph{Infrastructure and Server Integration} \texttt{Vitrivr\allowbreak Search\allowbreak Service} translates queries and responses for the vitrivr-engine. Its response parser keeps the ranking order and removes duplicate file paths. It also keeps the start time of video segments and maps 3D source paths to their runtime PCK packages\footnote{A PCK file is a Godot resource package that can be loaded at runtime.}. \texttt{MediaLoader} first looks for a local file and uses Nginx only when it needs to download the media. Server validation is handled separately from the search. The interfaces also separate the application logic from Godot and from the specific server implementations.
 
-\paragraph{Object Composition} Controllers do not create these services themselves. When a controller needs the application, it requests it from the \texttt{Search\allowbreak Use\allowbreak Case\allowbreak Factory}. The factory reads the current server and media paths from the Godot settings and passes them to the \texttt{Museum\allowbreak Application\allowbreak Factory}. There, the \texttt{Vitrivr\allowbreak Search\allowbreak Service}, \texttt{MediaLoader} and \texttt{Vitrivr\allowbreak Server\allowbreak Health\allowbreak Service} are created. The factory then connects them to \texttt{SearchMedia}, \texttt{ValidateServer} and \texttt{Museum\allowbreak Application} and returns an \texttt{IMuseum\allowbreak Application}. After these objects are connected, the factory has finished its work. It does not start a separate runtime process. This setup keeps object creation inside the factories, so the other classes only need to know the components they directly use.
+\section{Interaction Input Implementation}
+\label{sec:implementation-interaction-input}
 
-\clearpage
-\section{Runtime Flow}
-\label{sec:implementation-flow}
+Controller input uses the OpenXR action map and Godot XR Tools. The right trigger controls the pointer used for selection. Holding the left grip shows the text-search interface, while the right grip manipulates grabbable objects. The right joystick controls movement, the left joystick controls turning, and pressing the left joystick switches between the menu and the museum.
+
+For hand tracking, \texttt{PlayerHandInput} first determines whether the application is using controllers or hand tracking. \texttt{HandGestureInput} maps a right-hand pinch to the same pointer action as the controller trigger, while grab values handle the pickup actions. This keeps selection and manipulation consistent across the two input modes.
+
+A short left-hand pinch switches between the menu and the museum. If the pinch is held beyond the configured delay, \texttt{HandJoystickMovement} shows a virtual joystick and derives movement and turning from the direction of the tracked hand. Pickup is disabled during a pinch. This prevents the system from treating the same hand movement as two different actions.
+
+\section{Exhibit Construction and Replacement}
+\label{sec:implementation-exhibit-construction}
 
 \begin{figure}[htbp]
   \centering
-  \input{Figures/TikZ/ch05-01-implementation-classes}
-  \caption[Runtime flow of a search]{Simple pipeline of a successful search. The arrows show the order over time [\hyperref[generative-ai]{ChatGPT}].}
-  \label{fig:implementation-classes}
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[height=5.5cm]{Figures/ch04-04-2d-frame.png}
+    \par\smallskip
+    \small (a) Adjustable frame for 2D media.
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[height=5.5cm]{Figures/ch04-05-3d-orb-pillar.png}
+    \par\smallskip
+    \small (b) Display for a 3D model.
+  \end{minipage}
+  \caption[Implemented media-specific exhibits]{Implemented exhibits for two-dimensional and three-dimensional media. The frame and collision area adapt to the 2D content, while the 3D model is scaled to fit inside its display orb. The blue spheres around the display orb show grab points for turning the exhibit.}
+  \label{fig:implementation-presentation-templates}
 \end{figure}
 
-After the server check succeeds, the first configured query runs once. For every text or similarity search, the controller asks the factory for an \texttt{IMuseumApplication}. This instance uses the current server and media paths. The controller then finds free display areas and calls \texttt{SearchMedia}. The use case creates the query from text or a vector that was stored earlier. The adapter then translates the query and response. The parser keeps the original ranking and removes duplicate paths. It links video segments to their full video files and replaces paths to 3D source files with paths to PCK packages\footnote{A PCK file is a Godot project package that contains imported resources and can be loaded at runtime.}. After the application selects the allowed media types within the room capacity, the \texttt{MediaLoader} loads the missing files concurrently through Nginx.
+The placement controller separates the results by media type. For each wall area, the 2D strategy chooses a random number of places up to its configured maximum. The wall is then divided into equal sections. It creates one image or video exhibit in each section and adapts the frame and collision shape to the content, conceptually shown in Figure~\ref{fig:concept-presentation-templates}. Videos initially show a preview and start at the retrieved time when a visitor approaches.
 
-Query or response errors leave the current exhibition in place. Individual exhibits with loading errors are skipped. In contrast, a valid response without media that can be shown clears the room. When placement succeeds, images and videos are added first, followed by 3D models. Only at the end does the \texttt{MediaLoader} release the files from the previous search. Because the available local storage is different on each device, this process prevents files from older searches from building up.
+The 3D strategy assigns one result to each floor area. It loads the model from its PCK package and scales the base of the pillar-and-sphere display to the size of the area before fitting the model inside the glass sphere. The same strategy can therefore handle placement areas of different sizes. The stored model bounds are also used when the \emph{Original Size} action moves a model into a separate viewing room.
 
-The 2D strategy chooses a random number for each wall area and adjusts the frame and collision area. A video first shows the found segment and starts at this point when a person comes closer. The 3D strategy loads and scales the PCK package. The CLIP vector stored with an exhibit is used by \emph{Similar} as the next query.
+The previous exhibition stays visible while the search is running and files are loading. A query or response error leaves it unchanged. After a successful search, the controller replaces the 2D exhibits and then the 3D exhibits one after the other. A valid result without displayable media clears the exhibition. Files from the previous search are released from storage after placement has completed.
 
-\clearpage
 \section{Data Preparation and Deployment}
 \label{sec:implementation-deployment}
 
-Standalone headsets have less processing power and memory than the server used for the backend. The media are therefore optimized and standardized before indexing. The added pipeline backs up the source files and records its steps and errors. If the backup fails, it does not change any media files. Images are stored as JPG files with no more than 2048 pixels in each dimension. Videos are converted to OGV and limited to 2048 pixels along the longest dimension and 30 frames per second. 3D files are converted to GLB and checked. Animations, point clouds, invalid data and models with more than 1.5 million triangles are rejected directly. The presentation supports static, surface-based models. Animations and point clouds are therefore outside the planned format. Invalid or very complex files would also make reliable loading and good performance on standalone headsets more difficult.
+Standalone headsets have less processing power and memory than the backend server. The media pipeline therefore standardizes files before indexing and records its steps and errors in a report. It first creates a timestamped backup. Images become JPG files with a maximum size of 2048 pixels in either dimension. Videos become OGV files. Their longest dimension is limited to 2048 pixels and their frame rate to 30 frames per second. The 3D pipeline converts supported assets to binary glTF (GLB) and validates the result. The museum supports static, surface-based models, so the pipeline rejects animations and point clouds. It also rejects models with more than 1.5 million rendered triangles. Embedded textures are limited to 2048 by 2048 pixels. The application does not load GLB files directly. Instead, the pipeline starts Godot without a graphical interface and imports each GLB file and creates a PCK package for it. Vitrivr searches the GLB representation, while the museum loads the imported scene from the PCK package.
 
-Because direct GLB loading did not work reliably, Godot runs without a graphical interface and creates one PCK package for each model. vitrivr searches the GLB file, while the museum loads the imported scene from the PCK package.
-
-The application has three export profiles. Separate Android applications are created for Quest and Focus. The Windows version is designed for PC streaming. Device-specific render profiles define resolution scaling, refresh rate and extra effects. The external \texttt{config.json} file stores the server address, tutorial option and first query. This makes it possible to use the same build with a different server or media collection.
+The Quest, Focus, and Windows builds use separate rendering profiles for resolution scale and refresh rate. An external \texttt{config.json} provides the server address, tutorial setting, and initial query, allowing the server to be changed without rebuilding the application.
 
 \endgroup

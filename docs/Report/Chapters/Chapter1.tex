@@ -5,70 +5,59 @@
 \begingroup
 \setaftersecskip{6pt}
 \setlength{\emergencystretch}{2em}
-Digital collections are usually shown on websites or as lists. These formats work well for direct searches, but do not fully provide the spatial and exploratory feel of an exhibition. This thesis studies how found media can instead be presented and explored in a virtual museum that users can move through freely.
+Digital collections are often shown on websites or in lists. These formats make direct searches easy, but they do not feel like an exhibition. This thesis studies how found media can instead be presented and explored in a virtual museum that users can move through freely.
 
 \section{Motivation}
 \label{sec:introduction-motivation}
 
-A digital collection can be accessed from any place and at any time. Standard search interfaces focus on a clear overview and direct access. On a screen, however, the media are shown next to each other in a two-dimensional format. This means that no real sense of space or connection between them is created.
+A digital collection is accessible from any place and at any time. Standard search interfaces focus on an overview and direct access to individual objects. They usually present media next to each other in a two-dimensional format. As a result, there is little sense of space or connection between the objects. A virtual museum can present the same objects in a spatial environment while keeping the advantages of digital access.
 
-Virtual Reality (VR)\footnote{\emph{Virtual Reality} is a fully immersive environment that is experienced through a headset and can be explored interactively.} offers a different form of access. Search results become exhibits. A person can move between them and view them from different angles. When a person finds an interesting exhibit, they can continue the search from it. In this way, searching becomes a repeatable path through the collection.
+Since physical museums have limited exhibition space, they can only show a small part of a large collection at once. Virtual museums do not have this limitation and allow a much larger number of objects to be accessed without requiring the original items to be displayed. The objects can remain safely stored, while their digital representations do not age or decay. The same representation can appear in several exhibitions at once, and one virtual exhibition can even bring together objects from different institutions, although the originals are stored in completely different locations.
 
-VIRTUE already shows images, videos and 3D artifacts in a VR museum \citep{giangreco2019virtue}. A later extension automatically generates image galleries \citep{peterhans2022galleries}. Since then, the vitrivr search backend has also been redesigned \citep{gasser2024engine}. This thesis builds on the new vitrivr-engine and focuses on the VR interface rather than on the development of the search engine itself.
+Virtual Reality extends this concept by allowing visitors to experience search results as exhibits that they can walk around and view from different angles. When visitors find an interesting exhibit, they can use it as the starting point for a new search. In this way, searching becomes a repeatable path through the collection.
 
-\clearpage
+\enlargethispage{\baselineskip}
 \section{Initial Situation and Problem Statement}
 \label{sec:introduction-problem}
 
-VIRTUE's automatic gallery focuses on image collections and uses Cineast and Cottontail DB, which are parts of the earlier vitrivr stack \citep{peterhans2022galleries}. vitrivr-VR provides a fully immersive search, but it also uses these older parts \citep{spiess2022vitrivrvr}. MediaMix already uses the modular vitrivr-engine with PostgreSQL and pgvector, but it runs in Mixed Reality \citep{gasser2024engine,arnold2025mediamix}. None of these works shows a VR exhibition in which images, videos and 3D models are brought together from search results. In particular, it is still unclear how text-based and similarity searches can be used to repeatedly create and replace spatial exhibitions.
+Existing systems already show that virtual environments can be used to explore museum collections and present digital exhibits. However, these approaches focus on specific search methods, media types, or forms of interaction. This thesis shows how text-based and similarity-based search can be combined with the presentation of images, videos, and 3D models in a single VR exhibition.
 
-Images, videos and 3D models need different forms of presentation. The application must handle these differences while arranging all three media types in one exhibition.
+Combining these media types introduces several challenges. Images, videos, and 3D models have different characteristics and therefore require different forms of presentation. At the same time, they should still appear as part of one consistent exhibition. The tested VR devices introduce another challenge, because they differ in performance. The application either runs directly on the headset or is streamed from a PC. Input is provided through controllers or hand tracking. Despite these differences, the process in the museum should stay the same.
 
-The tested VR devices also differ in performance. The application either runs directly on the headset or is streamed from a PC. Input is provided through controllers or hand tracking. Despite these differences, the process in the museum should stay the same.
-
-This situation leads to the following research question:
+This leads to the following research question:
 
 \begin{quote}
-\emph{How can a multimodal collection be shown as a dynamic VR exhibition using the vitrivr-engine and explored through text and similarity searches?}
+\emph{How can a multimodal collection be shown as a dynamic VR exhibition using vitrivr-engine and explored through text and similarity searches?}
 \end{quote}
 
-To answer this question, the VR application connects to the existing search backend. It loads results and shows each medium in a suitable form. Another search can then be started from an exhibited object. These steps should work in the same way on all tested devices.
+Answering this question requires both a concept and a prototype. The concept describes how search results become an exhibition and how a visitor can continue the search from an exhibited object. To implement this concept, the VR application connects to the existing search backend. It loads results and shows each medium in a suitable form. Another search can then be started from an exhibited object. These steps should work in the same way on all tested devices.
 
 \section{Project Idea}
 \label{sec:introduction-project-idea}
 
-The project idea is a virtual museum room whose content changes with every search. For this purpose, the backend provides an ordered list of images, videos and 3D models. The application counts the free places, loads the suitable selection and distributes it in the room.
+The project uses one virtual museum room whose exhibition changes with every search. A search returns images, videos, and 3D models, which become exhibits in the room. Images and videos are shown on the walls, while 3D models have their own display areas. A new search replaces the exhibits, but the room stays the same.
 
-Images and videos hang in suitable frames on the walls and keep their aspect ratio. Videos start at the point that matches the search query. The 3D models stand in their own display places and can be viewed from several sides. When a new search starts, the room stays the same, but the exhibits change.
+Every exhibit has a \emph{Similar} action. When a visitor selects it, the selected exhibit starts a new similarity search. The new results are then shown as the next exhibition. This allows visitors to explore the collection step by step. The room is not based on a real museum. Instead, it is a spatial interface for the digital collection.
 
-For each exhibit, the application also stores the vector through which it was found. When a person selects \emph{Similar}, this vector starts a new similarity search. Its results replace the current exhibition. In this way, the collection can be explored step by step.
-
-The museum room does not copy a real building. It serves as a spatial interface for digital collections that can be replaced.
-
-\clearpage
 \section{Scope and Contributions}
 \label{sec:introduction-scope}
 
-\paragraph{Scope} This thesis studies a VR prototype with a prepared collection of images, videos and 3D models. It offers text and similarity searches and can be controlled with controllers or hand tracking. On the Meta Quest 3 and VIVE Focus 3, it runs directly as a standalone application. A Windows version can also be streamed to a supported headset. The work also includes the connection to vitrivr, installation instructions and a usability evaluation with a small group of test participants.
+\paragraph{Scope} This thesis studies a VR prototype with a prepared collection of images, videos, and 3D models. It offers text and similarity searches and can be controlled with controllers or hand tracking. On the Meta Quest 3 and VIVE Focus 3, it runs directly as a standalone application. A Windows version can also be streamed to a supported headset. The work also includes the connection to vitrivr, installation instructions, and a usability evaluation with a small group of participants. New search or embedding models are not part of this thesis. The same applies to a production-ready system, support for all VR devices, and a copy of a real museum. The prototype uses existing components such as vitrivr-engine, Descriptor Server, CLIP, PostgreSQL, and pgvector.
 
-New search or embedding models are not part of this thesis. The same applies to a production-ready system, support for all VR devices and a copy of a real museum. The prototype uses existing components such as vitrivr-engine, Descriptor Server, CLIP, PostgreSQL and pgvector.
+\pagebreak
+\paragraph{Contributions} The contributions of this thesis are
+\begin{enumerate*}[label=(\roman*), itemjoin={{, }}, itemjoin*={{, and }}]
+  \item a concept that transfers a ranked result set into a spatial exhibition
+  \item a VR prototype that shows images, videos, and 3D models together and can be controlled with controllers or hand tracking
+  \item a connection between the prototype and the vitrivr-engine, including the presentation of the media returned by a search
+  \item a usability evaluation with a small group of participants, together with instructions for setting up the complete system.
+\end{enumerate*}
 
-\begin{samepage}
-\paragraph{Contributions} The contributions of this thesis are:
-
-\begin{enumerate}
-  \item a concept that transfers search results into a spatial exhibition and connects text searches with similarity searches,
-  \item a VR prototype that shows images, found videos and 3D models together and can be controlled with controllers or hand tracking,
-  \item the connection of the prototype to the vitrivr-engine and the integration of the found media into the museum process and
-  \item an initial evaluation with a small group of test participants and instructions for reproducing the full setup.
-\end{enumerate}
-\end{samepage}
-
-The main contributions are the VR interface and the interaction between search, media and exhibition.
+So the main contributions are the VR interface and the interaction between search, media, and exhibition.
 
 \section{Thesis Outline}
 \label{sec:introduction-outline}
 
-Chapter~\ref{ch:related-work} presents related work on virtual exhibitions and immersive search systems. Chapter~\ref{ch:background} explains multimedia retrieval, vector representations, CLIP, 3D model search and the vitrivr-engine. Chapter~\ref{ch:concepts} describes the design of the VR museum. Chapter~\ref{ch:implementation} presents the technical implementation. Chapter~\ref{ch:evaluation} describes the setup and results of the evaluation. Chapter~\ref{ch:conclusion} answers the research question, discusses the work and presents possible future extensions.
+The thesis begins with the background in Chapter~\ref{ch:background}. It introduces Extended Reality, multimedia retrieval, vector representations, CLIP, 3D model search, and the vitrivr-engine. Chapter~\ref{ch:related-work} looks at related work on virtual exhibitions and immersive search systems. Chapter~\ref{ch:concepts} introduces the design of the VR museum, and Chapter~\ref{ch:implementation} explains how it was implemented. Chapter~\ref{ch:evaluation} reports the evaluation and its results. Chapter~\ref{ch:conclusion} closes the thesis by answering the research question, discussing the work, and suggesting future improvements.
 
 \endgroup
