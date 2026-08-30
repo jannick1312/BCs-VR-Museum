@@ -2,10 +2,38 @@
 \chapter{Conclusion}
 \label{ch:conclusion}
 
-\section{Summary of the Work}
+\begingroup
+\setaftersecskip{6pt}
+\setlength{\emergencystretch}{2em}
+
+This thesis shows how a ranked multimedia result set can become a VR exhibition and how similarity search can continue the visit from an individual exhibit. The Godot application connects to vitrivr-engine and presents images, videos, and 3D models in the same museum. This chapter summarizes the main contribution, the results, and possible next steps.
 
 \section{Discussion}
 
-\subsection{Answer to the Research Question}
+\paragraph{Summary of Contributions}
+The approach combines multimedia search and virtual exhibitions in one process. A text search returns a ranked list. The application takes as many suitable results as the museum can hold. Images and videos appear on the walls in frames, which adjust to the media. 3D models have their own spaces on the floor. Users can rotate them or view them at their original size in a separate room. Videos start at the time found by the search. A new search replaces the exhibits, but the museum room stays the same.
+
+Exploration does not end after the first search. The application stores the CLIP vector for every exhibit. The \emph{Similar} action sends the vector back to the vitrivr-engine. The selected exhibit then becomes the starting point for the next exhibition. This answers the research question. A ranked list of multimedia results can be shown in a limited VR space where each media type gets a suitable form of presentation, and users can continue exploring through similarity searches.
+
+The prototype runs directly on Meta Quest~3 and VIVE Focus~3. It also runs as a Windows version that is streamed to a headset. OpenXR provides the same basic VR actions on each device. The standalone versions support controllers and hand tracking. Search and loading functions are separate from the Godot scenes. A preparation pipeline converts the media, checks the 3D models, and creates the files needed by the application. A failed request does not change the current exhibition. If only one result cannot be loaded, the application skips it.
+
+\paragraph{Summary of Results}
+Nine participants tested the prototype and produced a mean SUS score of 78.9, which lies between the ratings \emph{good} and \emph{excellent}. Navigation and control received positive feedback in most cases. The original-size view received positive feedback on every device on which it was evaluated.Responses for speed, controllers, hand tracking, and model rotation were more mixed, with several lower ratings on the Focus~3. However, the devices cannot be compared reliably. File-loading and network conditions differed, and test order was uncontrolled.
+
+Written and verbal feedback shows that the system needs to make its current actions clearer and provide tutorial content that remains available. Suggested improvements included labels on the virtual controllers or hands and a clear signal when the exhibition changes. The prototype was usable for the test group, but instructions and interaction details need the most refinement.
+
+\paragraph{Scope and Limitations}
+The prototype was tested with a prepared collection. Other collections may contain different formats, file sizes, or invalid assets. The room only displays the results that could be placed successfully. It does not show the ranking or a similarity score, and it does not explain why some results were not displayed. The museum is therefore better for open exploration than for quickly comparing many results. It adds a new way to explore results but does not replace a standard result list for every task.
+
+This thesis did not measure differences in search quality between media types or across different collections. The response parser and the Godot PCK packages for 3D models also still depend on the current system structure and the current preprocessing pipeline.
+
+The evaluation included only nine participants, and most were familiar with technology. Not every participant tested every version, and the questionnaire always presented the versions in the same order. Because the test order and session duration were not recorded, it is difficult to separate device-related effects from learning or fatigue. The study also focused on subjective ratings and did not record task times, errors, delays, or tracking-loss events. The findings can therefore help improve the next prototype, but they should not be generalised to museum visitors.
 
 \section{Future Work}
+
+A future evaluation should include more participants with different backgrounds. Each version should be rated separately, and the order of the devices should be balanced. A comparison with a standard result list could show which tasks benefit from spatial exploration.
+
+The issues found in the evaluation should be addressed first. The tutorial and controller mappings should remain accessible, and the system should clearly show when something changes. A history view or an additional room could preserve earlier exhibitions and selected objects. Metadata, filters, voice input, or a compact result list could then add search detail while keeping the spatial design.
+
+A further extension would be a shared visit with several users. They could mark and interact with exhibits and explore the same exhibition together.
+\endgroup

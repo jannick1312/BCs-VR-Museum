@@ -5,7 +5,7 @@
 \begingroup
 \setaftersecskip{6pt}
 \setlength{\emergencystretch}{2em}
-Unlike a list or grid, the VR museum places search results in a space that visitors can walk through. It arranges images, videos and 3D models as an exhibition. Users can move freely, view exhibits from different angles and select one to start another search. The room stays the same, but the exhibition changes with each query. This creates a continuous process in which users can explore results and use them to continue their search.
+Unlike a list or grid, the VR museum places search results in a space that visitors can walk through. It arranges images, videos, and 3D models as an exhibition. Users can move freely, view exhibits from different angles, and select one to start another search. The room stays the same, but the contents change after every query. This creates a process in which visitors explore exhibits and use them to continue exploring the topic.
 
 The first part of this chapter describes the main parts of the system. It then introduces the interaction model and explains how search results become an exhibition based on the available space. The last section describes how users enter the museum and the exploration cycle.
 
@@ -16,7 +16,7 @@ The first part of this chapter describes the main parts of the system. It then i
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\textwidth]{Figures/ch04-01-conceptual-architecture.pdf}
-  \caption[Conceptual architecture of the VR Museum]{
+  \caption[Conceptual architecture of the VR museum]{
     Conceptual architecture of the VR museum. The frontend shows the museum and handles user interaction. The application logic connects the frontend to the search system and the required media files.
   }
   \label{fig:conceptual-architecture}
@@ -24,9 +24,9 @@ The first part of this chapter describes the main parts of the system. It then i
 
 Figure~\ref{fig:conceptual-architecture} shows the conceptual architecture of the VR museum. The frontend presents the museum room and handles input. It supports several VR platforms, but the room, search process, and basic interactions stay the same. Visitors can enter text queries, view exhibits, and select an exhibit as the starting point for a similarity search.
 
-The application logic coordinates a search. It turns the input into a query, considers the selected media types and available space, and prepares the results for the frontend. The retrieval backend performs the semantic search and returns matching content. It does not decide where or how that content appears in the museum.
+The application logic sits between the frontend and the retrieval services. It first combines the query with the selected media types and the reported capacity for each media type. Then it prepares a suitable subset of the result set for display. It does not decide where or how that content appears in the museum.
 
-The collection is prepared before visitors use the museum. The retrieval backend searches the stored representations, while media delivery provides the files that are shown as exhibits. This separation gives each part one clear role. A part can be replaced if the new component provides the same interface and media formats.
+The collection is prepared before visitors use the museum. The retrieval backend searches the stored representations, while media delivery provides the files that are shown as exhibits. This separation gives each component one clear role. Each component can be replaced if the replacement provides the same interface and media formats.
 
 \section{User Interaction}
 \label{sec:concept-interaction-model}
@@ -57,7 +57,7 @@ The collection is prepared before visitors use the museum. The retrieval backend
   \label{fig:concept-interaction-inputs}
 \end{figure}
 
-The museum supports VR controllers and hand tracking. Both input modes cover the same actions. Visitors can select interface elements, enter a text query, manipulate exhibits, move through the museum, and switch between the menu and the exhibition. The interaction model defines these actions independently of the input device. Chapter~\ref{ch:implementation} explains how controller buttons and hand gestures are mapped to them.
+The museum supports VR controllers and hand tracking. Both modes cover selection, text search, exhibit manipulation, movement, and switching between the menu and exhibition. The interaction model defines these actions without depending on a specific input device. Chapter~\ref{ch:implementation} explains how they are mapped to controller buttons and hand gestures.
 
 \section{Search-Based Exhibition}
 \label{sec:concept-museum-model}
@@ -67,8 +67,9 @@ A query searches the prepared collection and returns a ranked list of results. I
 
 \subsection{Collection, Queries and Search Results}
 
-A \emph{collection} includes all searchable images, videos, and 3D models. The museum treats each file as a \emph{media object}. A video result may point to a specific time segment, while a 3D model is represented by rendered views during retrieval. Each result therefore needs a link to the original media object shown in the museum.
+A \emph{collection} includes all searchable images, videos, and 3D models. The museum treats each file as a \emph{media object}. A video result identifies a time segment, and rendered views represent a 3D model during search. A result must therefore hold a link back to the original object used for the exhibit.
 
+\clearpage
 Queries enter the system in two ways. Users can type a description or select an exhibit from an earlier exhibition as the starting point for a new search. In both cases, the backend produces ranked \emph{search results}. Each result refers to a media object. It also contains the information needed to show it as an exhibit.
 
 \subsection{Media-Specific Exhibits}
@@ -107,7 +108,7 @@ Images and videos appear as framed exhibits. The content keeps its original aspe
   \label{fig:concept-placement-areas}
 \end{figure}
 
-The room has two types of placement areas, as shown in Figure~\ref{fig:concept-placement-areas}. Images and videos are placed on the walls, while each floor area can contain one 3D object. Based on the media type of a result, the system assigns it to the correct area.
+Figure~\ref{fig:concept-placement-areas} shows orange wall areas for images and videos, and red floor areas that each hold one 3D exhibit. Based on the media type of a result, the system assigns it to the correct area.
 
 \enlargethispage{\baselineskip}
 \subsection{From Search Results to an Exhibition}
@@ -131,7 +132,7 @@ The museum is designed for a sequence of searches, as shown in Figure~\ref{fig:c
 
 \subsection{Guided Entry and Settings}
 
-Visitors first see a menu before they enter the museum. They can change the backend connection, select the media types, and set the movement speed. An optional tutorial explains navigation and the main actions. The menu can be opened again at any time, while the current exhibition remains open in the background.
+The visit starts in a menu with settings for the backend connection, selected media types, movement speed, and additional display and interaction options. An optional tutorial before entering the menu explains navigation and the main actions. Reopening the menu later does not remove the exhibition already shown in the museum.
 
 \subsection{Entry and Exploration}
 
@@ -139,8 +140,6 @@ The process starts with a text query. It defines a topic and creates the first e
 
 \subsection{Similarity-Based Continuation}
 
-Every exhibit can become the starting point of a similarity search. The \emph{Similar} action finds related media objects, and the results form a new exhibition.
-
-A text search can cover many different topics. Selecting an exhibit makes the next search more specific. This forms the main exploration cycle. Visitors can repeat this process as often as they want.
+A text query can describe a broad topic. From there, any exhibit can become the starting point for a similarity search. The \emph{Similar} action finds related media objects, and the results form a new exhibition. Visitors can repeat this cycle to explore the topic further.
 
 \endgroup

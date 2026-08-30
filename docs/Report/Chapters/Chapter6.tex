@@ -2,34 +2,165 @@
 \chapter{Evaluation}
 \label{ch:evaluation}
 
-\section{Evaluation Objectives}
+\begingroup
+\setaftersecskip{6pt}
+\setlength{\emergencystretch}{2em}
+The evaluation examined a first visit to the prototype, from entering a query to exploring the resulting exhibition and interacting with individual exhibits. It also looked for practical problems in three versions: standalone builds for the VIVE Focus~3 and Meta Quest~3, and a Windows build streamed to another Meta Quest~3. Since these setups differed in more than the headset alone, their results are reported separately and descriptively rather than treated as a hardware comparison.
+
+\section{Evaluation Goals}
+
+The evaluation had four main goals. First, the System Usability Scale (SUS) was used to examine how easy the VR museum was to use for the participants. It measured whether the system was easy to understand, easy to learn, and consistent to use.
+
+Second, the evaluation examined whether the museum's main functions were clear during the first use. These functions included navigating the museum, using text and similarity search, and viewing the different media types. For the 3D models, it also looked at whether participants could easily rotate them and view them at their original size.
+
+Third, the evaluation looked for problems that occurred only in a specific technical version. It evaluated the use of controllers across all versions, as well as hand tracking and switching between the two input methods in the standalone versions.
+
+Fourth, participants rated the museum layout and lighting and could suggest improvements in an open question. Their feedback provided additional insights based on their experience with the museum.
+
+Together, these goals cover the complete visit from entering the museum to continuing the exploration through similarity search. They also separate general usability from problems related to a specific device or input method.
+
 
 \section{Materials}
 
 \subsection{Prototype and Hardware}
 
+The evaluation used the prototype described in Chapters~\ref{ch:concepts} and~\ref{ch:implementation}. Three test stations were available:
+
+\begin{itemize}[leftmargin=*]
+  \item VIVE Focus~3 running the standalone version,
+  \item Meta Quest~3 running the standalone version, and
+  \item Meta Quest~3 running the streamed Windows version.
+\end{itemize}
+
+The streaming laptop had an Intel Core i7-10870H at 2.20\,GHz, 32\,GB of DDR4 memory, and an NVIDIA GeForce RTX~3070 Laptop GPU. Meta Horizon Link was used as the OpenXR runtime for streaming to the Meta Quest~3. A 5G mobile router\footnote{\href{https://www.acer.com/ae-en/networking/5g/acer-connect-m4-5g-mobile-hotspot}{Acer Connect M4, 5G Mobile Wi-Fi}} provided a shared hotspot for the laptop and headsets. All three stations needed the university's VPN to reach the vitrivr server. The experience therefore depended on the hotspot and VPN connections.
+
+The devices differ in their display and optical technologies. The VIVE Focus~3 has two LCD panels with 2448~$\times$~2448 pixels per eye. The Meta Quest~3 has 2064~$\times$~2208 pixels per eye \citep{viveFocus3Specs2026,metaQuestDeviceComparison2026}. Meta describes the lenses of the Quest~3 as pancake optics \citep{metaQuest3Pancake2023}. An HTC teardown describes a two-part Fresnel lens design for the Focus~3 lenses \citep{roadToVRFocus3Teardown2021}.
+
+\subsection{Test Version Setup}
+
+Each station ran an exported build. Android builds were installed on the Meta Quest~3 and VIVE Focus~3 for standalone use. The third station streamed the Windows build from the laptop to a Meta Quest~3.
+
+For both Meta Quest~3 versions, all image, video, and 3D files in the test collection were stored locally on the device running the application. Because the VIVE Focus~3 had limited free storage, only the 3D model packages were stored locally. The image and video files were loaded over the network when needed. This may have affected the response speed of the Focus~3 and should therefore be considered when comparing the responsiveness of the versions. Differences cannot be linked only to computing performance or headset hardware.
+
 \subsection{Test Collection}
 
-\subsection{Questionnaire and Logging}
+All versions used the same collection and vitrivr configuration. The media had been prepared with the pipeline described in Section~\ref{sec:implementation-deployment}. The collection contained 128\,718 image files from the National Gallery of Art's open-access collection \citep{nationalGalleryOpenAccess2026}. The video collection provided by the university contained 3\,190 videos from the Marine Video Kit (MVK) \citep{truong2023mvk}. These videos were divided into 108\,388 searchable segments. The university also provided 3\,359 Sketchfab 3D models published under CC0. Of these models, 43 contained animations, one failed glTF validation, ten were point clouds, and 158 exceeded the triangle limit. The preparation pipeline rejected all 212. Three further models failed during vitrivr ingestion and were removed manually, leaving 3\,144 searchable 3D models.
+
+\subsection{Questionnaire}
+
+The Google Forms questionnaire contained 41 questions in ten sections. Appendix~\ref{app:evaluation-questionnaire} provides the complete wording. Participants first answered the ten SUS items \citep{brooke1996sus}, followed by questions about their affinity for technology and previous VR experience.
+
+Filter questions showed only the sections for the versions that a participant had used. Each of the two standalone sections contained eight questions about navigation, controls, response speed, 3D interaction, controllers, and hand tracking. The streaming section contained six questions and did not cover hand tracking. Two general questions reviewed the museum layout and lighting. An open question collected suggestions for improvement.
 
 \section{Method}
 
 \subsection{Participants}
 
+Nine people from the DBIS group participated voluntarily. Seven rated their technology affinity as high or very high, and two as medium. Three participants had used a VR headset once or twice, two had used one between two and five times, three had used one more than five times, and one had never used one. The sample had a strong affinity for technology but mixed levels of VR experience.
+
 \subsection{Tasks and Procedure}
 
+Participants could use the stations in any order and did not have to try all three versions. They were first asked to complete the tutorial and enter the museum. They then returned to the menu, reopened the museum, and explored the different rooms. Participants were asked to use the controllers and, where supported, hand tracking. They were also asked to perform a text query and a similarity query and to rotate a 3D model before opening its original-size view. Participants were asked to observe response speed, clarity of controls, layout, lighting, and any problems.
+
+This guideline ensured that participants tried the same functions in each version. Allowing participants to choose the order of the stations reduced the risk that the first version would receive lower ratings because they were still becoming familiar with the system.
+
+Eight participants used the Quest standalone version, seven used the Focus standalone version, and seven used the streamed version. The order and duration of the sessions with each version were not recorded.
+
+\enlargethispage{\baselineskip}
 \subsection{Measures and Analysis}
+
+For positive SUS items, 1 was subtracted from the response value. For negative items, the response value was subtracted from 5. The sum was multiplied by 2.5, producing a SUS score between 0 and 100 \citep{brooke1996sus}. This score is not a percentage. Because participants completed the SUS only once, it describes the overall system rather than an individual headset.
+
+The five-point responses were analysed descriptively. Because the sample was small, no significance tests or hardware comparisons were performed. Appendix~\ref{app:evaluation-results} contains the complete response distributions and all feedback.
 
 \section{Results}
 
 \subsection{System Usability Scale}
 
-\subsection{Interaction and Presentation}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.96\textwidth]{Figures/ch06-01-sus-score-distribution.pdf}
+  \caption[SUS scores of the participants]{Distribution of the SUS scores for all nine participants. The horizontal axis shows the SUS score. The box represents the middle 50\% of the scores, the dashed line inside the box shows the median, and the $\times$ marks the mean. The whiskers show the full range from the minimum to the maximum score.}
+  \label{fig:evaluation-sus}
+\end{figure}
+
+All nine SUS questionnaires were complete. The individual scores ranged from 70.0 to 82.5, with a mean of 78.9. Based on the ratings by \citet{bangor2009sus}, this mean falls between the ratings \emph{good} and \emph{excellent}.
+
+The figure shows that the positive mean was not caused by a few extreme scores. At the same time, the range shows that the experience was not the same for every participant.
+
+\subsection{Navigation and Core Functions}
+
+Navigation and controls received mostly positive ratings in all versions. Seven of eight participants rated them positively for Quest standalone, as did all seven participants with the Focus standalone version and all seven with the streamed version.
+
+Viewing 3D models at their original size received positive ratings in all 22 completed device sessions, making it the clearest finding. Ratings for rotation were more mixed. Six of eight participants rated it positively for Quest standalone, four of seven for Focus standalone, and six of seven for streaming. Together with the qualitative feedback, this suggests a need to improve instructions and interaction design rather than a clear problem with a specific headset.
+
+\subsection{Response Speed and Input Methods}
+
+Figure~\ref{fig:evaluation-interaction-responses} shows the response distributions for the most notable interaction questions, separated by test version.
+
+\begin{figure}[H]
+  \centering
+  \subbottom[Quest Standalone ($n=8$)]{
+    \includegraphics[width=0.96\textwidth]{Figures/ch06-02-quest-standalone-responses.pdf}
+    \label{fig:evaluation-quest-standalone}
+  }
+
+  \medskip
+  \subbottom[Focus Standalone ($n=7$)]{
+    \includegraphics[width=0.96\textwidth]{Figures/ch06-03-focus-standalone-responses.pdf}
+    \label{fig:evaluation-focus-standalone}
+  }
+
+  \medskip
+  \subbottom[Quest Stream ($n=7$)]{
+    \includegraphics[width=0.96\textwidth]{Figures/ch06-04-quest-stream-responses.pdf}
+    \label{fig:evaluation-quest-stream}
+  }
+  \caption[Interaction ratings for the three test versions]{Response distributions for the three test versions, where $n$ is the number of participants in each test phase. The horizontal axis shows the percentage of responses. The numbers inside the segments show the number of responses.}
+  \label{fig:evaluation-interaction-responses}
+\end{figure}
+
+Response speed showed the clearest difference between the versions. Five of eight participants rated it positively for Quest standalone, and all seven rated it positively for streaming. For the Focus headset, only three of seven ratings were positive, while three were neutral. However, this does not show a hardware advantage. Image and video files were loaded over the network on the Focus, while they were loaded locally in both Quest versions. In addition, the game engine is better optimized for the Quest~3 and the streaming hardware, which may have improved the results for the Quest versions.
+
+The input methods also received more reserved ratings on the Focus. Its controller use received three positive ratings out of seven, compared with six out of eight for Quest standalone and six out of seven for streaming. Hand tracking received positive ratings from three of seven Focus users and six of eight Quest standalone users. Switching between controllers and hand tracking was rated more positively than hand tracking itself, with five out of seven positive ratings for the Focus and seven out of eight for the Quest.
+
+\clearpage
+The single strongly negative rating for the streaming controllers stands out from the otherwise positive responses. However, without event or tracking logs, it is not possible to explain this case technically. The differences in hand tracking also cannot be clearly attributed to the hardware. Camera-based hand tracking is sensitive to several conditions, including visibility, self-occlusion, and lighting \citep{metaGestureDesign2026}.
 
 \subsection{Qualitative Feedback}
+
+Eight of nine participants rated the museum layout positively. The lighting received positive ratings from all nine participants. The sample therefore had a clearly positive view of the museum's spatial design.
+
+Six participants wrote comments, three of which concerned guidance and system feedback. They wanted a tutorial that could be reopened or would reappear after inactivity. They also wanted a clearer indication when the whole exhibition changed. Other suggestions included a search history, more object interactions, exhibit metadata, a way to force the selection to a desired media type, easier text input, better collisions, and lower default movement and rotation speeds.
+
+A setting for showing only search results with 3D objects already existed. However, the tutorial neither explained nor showed it, so participants may not have noticed or used it. The comment could also be understood as a request for the backend to search only for 3D objects. That option was omitted because it could exclude more relevant results from other media types and work against the intended progression of a cross-media search.
+
+Participants also made three related verbal suggestions. They suggested that the tutorial should remain available while the application is running, that button or hand pose labels should appear when users look at the virtual controllers or hands, and that users should be able to rotate a 3D model with the joystick after selecting an interaction sphere. These suggestions show the need for a tutorial that remains available and clearer instructions for interacting with 3D models.
 
 \section{Discussion}
 
 \subsection{Interpretation of the Results}
 
-\subsection{Limitations}
+The mean SUS score of 78.9 and the mostly positive ratings for navigation, controls, original-size viewing, museum layout, and lighting show that the prototype's core process was usable for the group studied. Original-size viewing received positive ratings for every device on which it was evaluated. This suggests that an important goal for presenting 3D models in VR was achieved.
+
+The weaker results concern transitions and input details rather than the museum's general design. Response speed, controller use, hand tracking, and model rotation varied more between versions. Although the comments do not explain every rating, they mention that the current state and available actions were not clear enough. A tutorial that can be reopened, labels on controllers or hands, clearer feedback during loading, and joystick-based rotation directly address this pattern.
+
+The evaluation helped confirm that the proposed approach works in practice. Participants used text search to create a VR exhibition with images, videos, and 3D models, and then continued exploring the collection through similarity search.
+
+\subsection{Technical Context for Differences Between Devices}
+
+In conversations, participants gave different views of the visual quality of the versions. Some found the Focus~3 sharper but considered its museum room less visually pleasing. Others described the standalone Quest~3 as less sharp but rated its usable field of view more positively. This feedback was not collected systematically and therefore provides only additional observations.
+
+The differences may be caused by the lenses or by how each device renders the image. Image quality also depends on factors such as rendering resolution, software support, and how the headset is worn. Previous research has shown that display technology, optics, and headset configuration can affect image quality in VR \citep{koulieris2019neareye,bhansali2024contrast}. However, because these factors were not controlled in the evaluation, it is not possible to say exactly what caused the differences reported by the participants.
+
+\subsection{Limitations of the Evaluation}
+
+The main limitation is the small group of nine participants. Most were familiar with technology and had experience in this field. Their responses are useful for improving the prototype but are not representative of museum visitors.
+
+Neither station order nor session duration was recorded, and questionnaire sections always appeared in the same sequence. Learning, growing familiarity, or fatigue may consequently have influenced later ratings.
+
+The analysis is also limited to participant ratings and comments. It lacks measurements of errors, search latency, tracking loss, and retrieval quality, which makes a technical explanation of individual negative responses impossible.
+
+Finally, each participant completed the SUS once after using the system rather than once per version. The reported differences therefore remain descriptive.
+
+\endgroup
