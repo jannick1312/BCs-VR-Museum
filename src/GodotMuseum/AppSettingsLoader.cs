@@ -4,12 +4,20 @@ using Godot;
 
 namespace BCSVRMuseum;
 
+/// <summary>
+/// Loads and checks application settings for the current platform.
+/// </summary>
 public static class AppSettingsLoader
 {
 	private const string ConfigFileName = "config.json";
 	private const string AndroidExternalConfigPath = "/sdcard/Android/data/VR.Museum/files/config.json";
 	private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true };
 
+	/// <summary>
+	/// Loads settings from the config file.
+	/// </summary>
+	/// <param name="source">The config file path or the built-in default label.</param>
+	/// <returns>The loaded application settings.</returns>
 	public static AppSettings Load(out string source)
 	{
 		source = "";
@@ -27,6 +35,11 @@ public static class AppSettingsLoader
 		return new AppSettings();
 	}
 
+	/// <summary>
+	/// Reads config values from text and fixes invalid values.
+	/// </summary>
+	/// <param name="json">The config file contents.</param>
+	/// <returns>The checked application settings.</returns>
 	private static AppSettings Deserialize(string json)
 	{
 		try
@@ -48,6 +61,10 @@ public static class AppSettingsLoader
 		}
 	}
 
+	/// <summary>
+	/// Gets the config file paths for the current platform.
+	/// </summary>
+	/// <returns>The config file paths in search order.</returns>
 	private static string[] GetCandidates()
 	{
 		if (OS.GetName() == "Android")
@@ -58,6 +75,12 @@ public static class AppSettingsLoader
 		return [Path.Combine(sharedRunDirectory, ConfigFileName)];
 	}
 
+	/// <summary>
+	/// Reads a config file when it exists.
+	/// </summary>
+	/// <param name="path">The config file path.</param>
+	/// <param name="json">The file contents when reading succeeds.</param>
+	/// <returns><see langword="true"/> if the file was read and <see langword="false"/> otherwise.</returns>
 	private static bool TryRead(string path, out string json)
 	{
 		json = "";

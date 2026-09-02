@@ -10,6 +10,9 @@ using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Object3D;
 
+/// <summary>
+/// Loads packed 3D model scenes and adds them to museum displays.
+/// </summary>
 public static class Object3DMediaRenderer
 {
 	private static readonly EventLogger Log = new(nameof(Object3DMediaRenderer));
@@ -17,6 +20,14 @@ public static class Object3DMediaRenderer
 	private static readonly HashSet<string> MountedPacks = new(StringComparer.Ordinal);
 	private static readonly SemaphoreSlim PackLoadSlot = new(1, 1);
 
+	/// <summary>
+	/// Loads a packed scene and fits it to a display.
+	/// </summary>
+	/// <param name="instance">The display instance receiving the 3D model.</param>
+	/// <param name="path">The path to the Godot package file.</param>
+	/// <param name="place">The museum placement area.</param>
+	/// <param name="fitter">The fitter used to position the display and 3D model.</param>
+	/// <returns>A task containing the applied 3D model scale or <see langword="null"/> when loading fails.</returns>
 	public static async Task<float?> Render(Object3DDisplayInstance instance, string path, Node3D place, Object3DDisplayFitter fitter)
 	{
 		var mediaPath = Path.GetFullPath(path);
@@ -43,6 +54,12 @@ public static class Object3DMediaRenderer
 		return scale;
 	}
 
+	/// <summary>
+	/// Opens a resource pack once and loads its scene.
+	/// </summary>
+	/// <param name="packPath">The full path to the Godot package file.</param>
+	/// <param name="owner">The node used while the scene loads.</param>
+	/// <returns>A task containing the loaded scene or <see langword="null"/> if loading fails.</returns>
 	private static async Task<PackedScene> LoadFromPack(string packPath, Node owner)
 	{
 		await PackLoadSlot.WaitAsync();

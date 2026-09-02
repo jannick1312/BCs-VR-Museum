@@ -1,5 +1,8 @@
 namespace BCSVRMuseum;
 
+/// <summary>
+/// Represents startup settings loaded from the config file.
+/// </summary>
 public sealed class AppSettings
 {
 	public string ServerIp { get; set; } = "10.34.64.208";

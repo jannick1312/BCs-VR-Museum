@@ -5,6 +5,9 @@ using Logger;
 
 namespace BCSVRMuseum;
 
+/// <summary>
+/// Lists the possible states of a server check.
+/// </summary>
 public enum ServerValidationStatus
 {
 	Checking,
@@ -12,12 +15,21 @@ public enum ServerValidationStatus
 	Invalid
 }
 
+/// <summary>
+/// Checks the current server address and reports changes.
+/// </summary>
+/// <param name="searchSettingsStore">The store containing the current server address.</param>
+/// <param name="searchUseCaseFactory">The factory used to create the museum application.</param>
+/// <param name="entryState">The museum entry state to update.</param>
 public sealed class ServerValidationController(SearchSettingsStore searchSettingsStore, SearchUseCaseFactory searchUseCaseFactory, MuseumEntryState entryState) : IDisposable
 {
 	private readonly EventLogger _logger = new(nameof(ServerValidationController));
 
 	private CancellationTokenSource _cancellation;
 
+	/// <summary>
+	/// Stops any server check.
+	/// </summary>
 	public void Dispose()
 	{
 		CancelCurrentValidation();
@@ -25,6 +37,10 @@ public sealed class ServerValidationController(SearchSettingsStore searchSetting
 
 	public event Action<ServerValidationStatus> StatusChanged;
 
+	/// <summary>
+	/// Checks the current server address.
+	/// </summary>
+	/// <returns>A task that completes when the check finishes.</returns>
 	public async Task ValidateCurrentServerAsync()
 	{
 		CancelCurrentValidation();
@@ -68,6 +84,9 @@ public sealed class ServerValidationController(SearchSettingsStore searchSetting
 		}
 	}
 
+	/// <summary>
+	/// Stops the current server check when one is running.
+	/// </summary>
 	private void CancelCurrentValidation()
 	{
 		_cancellation?.Cancel();

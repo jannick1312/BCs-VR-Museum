@@ -3,8 +3,16 @@ using Core;
 
 namespace Infrastructure.Vitrivr;
 
+/// <summary>
+/// Creates request bodies for Vitrivr searches.
+/// </summary>
 public static class VitrivrRequestFactory
 {
+	/// <summary>
+	/// Creates the Vitrivr request body for a search query.
+	/// </summary>
+	/// <param name="query">The search query for the request.</param>
+	/// <returns>The request text.</returns>
 	public static string BuildRequestBody(SearchQuery query)
 	{
 		var input = VitrivrQueryInput.From(query);

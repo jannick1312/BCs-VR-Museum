@@ -3,11 +3,20 @@ using Logger;
 
 namespace Infrastructure.Vitrivr;
 
+/// <summary>
+/// Checks a Vitrivr server by sending up to five requests.
+/// </summary>
+/// <param name="settings">The Vitrivr connection settings.</param>
 public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealthService
 {
 	private static readonly HttpClient HttpClient = new() { Timeout = TimeSpan.FromSeconds(1) };
 	private readonly EventLogger _logger = new(nameof(VitrivrServerHealthService));
 
+	/// <summary>
+	/// Tries up to five times to reach the Vitrivr server.
+	/// </summary>
+	/// <param name="cancellation">A token that stops the check.</param>
+	/// <returns>A task containing <see langword="true"/> if the server is reachable and <see langword="false"/> otherwise.</returns>
 	public async Task<bool> IsReachableAsync(CancellationToken cancellation)
 	{
 		for (var attempt = 0; attempt < 5; attempt++)
@@ -38,3 +47,7 @@ public class VitrivrServerHealthService(VitrivrSettings settings) : IServerHealt
 		return false;
 	}
 }
+
+
+
+// Codex helped add cancellation support to the server check so an earlier check can stop when a new check starts.

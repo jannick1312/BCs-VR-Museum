@@ -5,6 +5,9 @@ using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 
+/// <summary>
+/// Moves 3D models into separate rooms for original-size viewing.
+/// </summary>
 public partial class OriginalSizeController : Node
 {
 	private static readonly EventLogger Log = new(nameof(OriginalSizeController));
@@ -26,6 +29,9 @@ public partial class OriginalSizeController : Node
 
 	public bool IsInOriginalSizeRoom => _activeInstance != null;
 
+	/// <summary>
+	/// Finds the player, viewing rooms, and room size markers.
+	/// </summary>
 	public override void _Ready()
 	{
 		var player = GetNode<Node>(PlayerPath);
@@ -46,6 +52,9 @@ public partial class OriginalSizeController : Node
 		SetRoomActive(_largeRoom, false);
 	}
 
+	/// <summary>
+	/// Closes any active original-size display.
+	/// </summary>
 	public void Reset()
 	{
 		if (IsInOriginalSizeRoom)
@@ -54,6 +63,9 @@ public partial class OriginalSizeController : Node
 			RestoreToDisplay();
 	}
 
+	/// <summary>
+	/// Returns the 3D model and disables the viewing rooms.
+	/// </summary>
 	private void RestoreToDisplay()
 	{
 		_activeInstance?.RestoreToDisplay();
@@ -65,6 +77,9 @@ public partial class OriginalSizeController : Node
 			SetRoomActive(_largeRoom, false);
 	}
 
+	/// <summary>
+	/// Returns the 3D model and moves the player to the museum.
+	/// </summary>
 	public void ReturnToMuseum()
 	{
 		var returnTransform = _museumReturnBodyTransform;
@@ -74,6 +89,10 @@ public partial class OriginalSizeController : Node
 		Log.Info("Returned from original-size room to museum.");
 	}
 
+	/// <summary>
+	/// Places a 3D model in a room where it fits and moves the player there.
+	/// </summary>
+	/// <param name="instance">The 3D model display to present at original size.</param>
 	public void ShowOriginalSize(Object3DDisplayInstance instance)
 	{
 		if (instance.ObjectNode == null || !IsInstanceValid(instance.ObjectNode))
@@ -97,12 +116,24 @@ public partial class OriginalSizeController : Node
 		Log.Info($"Showing 3D object in original-size room. Room='{room.Name}', Scale={origin.Scale.X}.");
 	}
 
+	/// <summary>
+	/// Checks if a 3D model's original bounds fit inside the small viewing room.
+	/// </summary>
+	/// <param name="instance">The 3D model display to evaluate.</param>
+	/// <returns><see langword="true"/> if the 3D model fits without scaling and <see langword="false"/> otherwise.</returns>
 	private bool FitsInSmallRoom(Object3DDisplayInstance instance)
 	{
 		var maximum = PlacementBounds.ScaledMeshBounds(_smallMax).Size;
 		return OriginalSizeFitter.Fits(instance.OriginalBounds, maximum);
 	}
 
+	/// <summary>
+	/// Moves a 3D model into the selected room and fits it inside.
+	/// </summary>
+	/// <param name="instance">The 3D model display being moved.</param>
+	/// <param name="origin">The room node receiving the 3D model.</param>
+	/// <param name="maximum">The marker defining the room's maximum model size.</param>
+	/// <param name="applyMinimum">If the small room's minimum display size should be used.</param>
 	private void MoveObjectToRoom(Object3DDisplayInstance instance, Node3D origin, MeshInstance3D maximum, bool applyMinimum)
 	{
 		PrepareObject(instance, origin);
@@ -115,6 +146,11 @@ public partial class OriginalSizeController : Node
 		origin.Position = position;
 	}
 
+	/// <summary>
+	/// Moves a 3D model to the room and restores its original transform.
+	/// </summary>
+	/// <param name="instance">The 3D model display being moved.</param>
+	/// <param name="origin">The room node receiving the 3D model.</param>
 	private static void PrepareObject(Object3DDisplayInstance instance, Node3D origin)
 	{
 		origin.Transform = Transform3D.Identity;
@@ -122,6 +158,10 @@ public partial class OriginalSizeController : Node
 		instance.ObjectNode.Transform = instance.OriginalObjectTransform;
 	}
 
+	/// <summary>
+	/// Moves the player to an entry marker.
+	/// </summary>
+	/// <param name="marker">The target entry marker.</param>
 	private void TeleportPlayer(Marker3D marker)
 	{
 		_body.Velocity = Vector3.Zero;
@@ -139,12 +179,22 @@ public partial class OriginalSizeController : Node
 		_body.Call("teleport", delta * _body.GlobalTransform);
 	}
 
+	/// <summary>
+	/// Removes the vertical part of a direction.
+	/// </summary>
+	/// <param name="vector">The direction to flatten.</param>
+	/// <returns>The horizontal direction with a length of 1.</returns>
 	private static Vector3 Flatten(Vector3 vector)
 	{
 		vector.Y = 0.0f;
 		return vector.Normalized();
 	}
 
+	/// <summary>
+	/// Updates a viewing room's visibility, interaction, and size markers.
+	/// </summary>
+	/// <param name="room">The viewing room to update.</param>
+	/// <param name="active">If the room should be active.</param>
 	private static void SetRoomActive(Node3D room, bool active)
 	{
 		NodeTreeActivator.SetActive(room, active);
@@ -152,3 +202,7 @@ public partial class OriginalSizeController : Node
 		room.GetNodeOrNull<MeshInstance3D>("Max")?.Set(Node3D.PropertyName.Visible, false);
 	}
 }
+
+
+
+// All calculations in this file were implemented with the assistance of Codex.

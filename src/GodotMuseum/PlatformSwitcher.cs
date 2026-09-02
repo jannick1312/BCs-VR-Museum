@@ -5,6 +5,9 @@ using Logger;
 
 namespace BCSVRMuseum;
 
+/// <summary>
+/// Switches the player between the menu and museum worlds.
+/// </summary>
 public partial class PlatformSwitcher : Node
 {
 	private readonly EventLogger _logger = new(nameof(PlatformSwitcher));
@@ -36,6 +39,9 @@ public partial class PlatformSwitcher : Node
 	[Export] public NodePath PlayerPath;
 	[Export] public NodePath WorldEnvironmentPath;
 
+	/// <summary>
+	/// Finds the needed scene nodes and places the player in the menu.
+	/// </summary>
 	public override async void _Ready()
 	{
 		_player = GetNode(PlayerPath);
@@ -80,6 +86,10 @@ public partial class PlatformSwitcher : Node
 		_logger.Info("Platform switcher initialized in menu.");
 	}
 
+	/// <summary>
+	/// Checks the menu button and switches between menu and museum.
+	/// </summary>
+	/// <param name="delta">The frame time in seconds.</param>
 	public override void _Process(double delta)
 	{
 		if (_switching)
@@ -93,6 +103,10 @@ public partial class PlatformSwitcher : Node
 		_menuButtonWasPressed = menuButtonPressed;
 	}
 
+	/// <summary>
+	/// Keeps the player rig fixed while the menu is active.
+	/// </summary>
+	/// <param name="delta">The physics frame time in seconds.</param>
 	public override void _PhysicsProcess(double delta)
 	{
 		if (!_inMenu)
@@ -101,6 +115,9 @@ public partial class PlatformSwitcher : Node
 		_rig.GlobalTransform = _lockedMenuRig;
 	}
 
+	/// <summary>
+	/// Moves the player into the museum when entry requirements are met.
+	/// </summary>
 	public async void SwitchToMuseum()
 	{
 		if (!_entryState.CanEnterMuseum)
@@ -125,6 +142,9 @@ public partial class PlatformSwitcher : Node
 		_switching = false;
 	}
 
+	/// <summary>
+	/// Saves the museum position and moves the player into the menu.
+	/// </summary>
 	private void SwitchToMenu()
 	{
 		if (_inMenu || _switching)
@@ -148,6 +168,9 @@ public partial class PlatformSwitcher : Node
 		_switching = false;
 	}
 
+	/// <summary>
+	/// Switches between the menu and museum worlds.
+	/// </summary>
 	public void ToggleWorld()
 	{
 		if (_switching)
@@ -159,12 +182,19 @@ public partial class PlatformSwitcher : Node
 			SwitchToMenu();
 	}
 
+	/// <summary>
+	/// Saves the player position and rotation for the return to the museum.
+	/// </summary>
 	private void RememberMuseumTransform()
 	{
 		_lastMuseumRig = _rig.GlobalTransform;
 		_lastMuseumBody = _body.GlobalTransform;
 	}
 
+	/// <summary>
+	/// Shows the selected world and uses its lighting settings.
+	/// </summary>
+	/// <param name="museumActive">If the museum world should be active.</param>
 	private void SetWorld(bool museumActive)
 	{
 		_museum.Visible = museumActive;
@@ -173,6 +203,10 @@ public partial class PlatformSwitcher : Node
 		_worldEnvironment.Environment = museumActive ? MuseumEnvironment : MenuEnvironment;
 	}
 
+	/// <summary>
+	/// Moves and turns the camera rig to match a spawn marker.
+	/// </summary>
+	/// <param name="marker">The target camera marker.</param>
 	private void MoveCameraTo(Marker3D marker)
 	{
 		_rig.GlobalPosition = marker.GlobalPosition - (_camera.GlobalPosition - _rig.GlobalPosition);
@@ -184,18 +218,32 @@ public partial class PlatformSwitcher : Node
 		_rig.GlobalPosition = marker.GlobalPosition - (_camera.GlobalPosition - _rig.GlobalPosition);
 	}
 
+	/// <summary>
+	/// Removes the vertical part of a direction and sets its length to 1.
+	/// </summary>
+	/// <param name="vector">The direction to flatten.</param>
+	/// <returns>The horizontal direction with a length of 1.</returns>
 	private static Vector3 Flatten(Vector3 vector)
 	{
 		vector.Y = 0;
 		return vector.Normalized();
 	}
 
+	/// <summary>
+	/// Turns all player movement parts on or off.
+	/// </summary>
+	/// <param name="enabled">If movement should be enabled.</param>
 	private void SetMovementEnabled(bool enabled)
 	{
 		foreach (var node in _movementNodes)
 			SetEnabled(node, enabled);
 	}
 
+	/// <summary>
+	/// Turns a node on or off.
+	/// </summary>
+	/// <param name="node">The node to update.</param>
+	/// <param name="enabled">If the node should be enabled.</param>
 	private static void SetEnabled(Node node, bool enabled)
 	{
 		node.Set("enabled", enabled);

@@ -3,6 +3,9 @@ using Godot;
 
 namespace BCSVRMuseum.Museum_Scripts;
 
+/// <summary>
+/// Submits museum text input when the virtual Enter key is pressed.
+/// </summary>
 public partial class EnterSubmitTrigger : Node
 {
 	private CenteredTextController _inputController;
@@ -13,6 +16,9 @@ public partial class EnterSubmitTrigger : Node
 	[Export] public NodePath InputBridgePath;
 	[Export] public NodePath ViewportPath;
 
+	/// <summary>
+	/// Finds the text input and connects the virtual Enter key.
+	/// </summary>
 	public override async void _Ready()
 	{
 		var viewport = GetNode<Viewport>(ViewportPath);
@@ -25,6 +31,9 @@ public partial class EnterSubmitTrigger : Node
 		enterKey.Connect("pressed", new Callable(this, nameof(OnEnterPressed)));
 	}
 
+	/// <summary>
+	/// Submits non-empty text and resets the input display.
+	/// </summary>
 	private void OnEnterPressed()
 	{
 		if (!string.IsNullOrWhiteSpace(_inputTextEdit.Text))

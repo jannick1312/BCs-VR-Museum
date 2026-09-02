@@ -3,6 +3,9 @@ using Godot;
 
 namespace BCSVRMuseum.Player.Hud;
 
+/// <summary>
+/// Lists steps of a media search.
+/// </summary>
 public enum HudPhase
 {
 	Searching = 8,
@@ -12,6 +15,9 @@ public enum HudPhase
 	Finalizing = 92
 }
 
+/// <summary>
+/// Shows search progress and the final result in the status display.
+/// </summary>
 public partial class HudController : Node
 {
 	private bool _active;
@@ -26,6 +32,9 @@ public partial class HudController : Node
 	private Label _text;
 	public static HudController Instance { get; private set; }
 
+	/// <summary>
+	/// Finds the status controls and stores initial colours.
+	/// </summary>
 	public override void _Ready()
 	{
 		Instance = this;
@@ -43,6 +52,9 @@ public partial class HudController : Node
 		UpdateVisibility();
 	}
 
+	/// <summary>
+	/// Starts loading feedback and resets it to the searching step.
+	/// </summary>
 	public void StartLoading()
 	{
 		_displayVersion++;
@@ -53,12 +65,20 @@ public partial class HudController : Node
 		SetPhase(HudPhase.Searching);
 	}
 
+	/// <summary>
+	/// Stores if the museum is visible and updates the status display.
+	/// </summary>
+	/// <param name="visible">If the museum world is visible.</param>
 	public void SetMuseumVisible(bool visible)
 	{
 		_museumVisible = visible;
 		UpdateVisibility();
 	}
 
+	/// <summary>
+	/// Updates the progress value and message for a search step.
+	/// </summary>
+	/// <param name="phase">The phase to display.</param>
 	public void SetPhase(HudPhase phase)
 	{
 		_progressBar.Value = (int)phase;
@@ -73,16 +93,30 @@ public partial class HudController : Node
 		};
 	}
 
+	/// <summary>
+	/// Shows a success message before hiding the status display.
+	/// </summary>
+	/// <returns>A task that completes after the message delay.</returns>
 	public Task CompleteAsync()
 	{
 		return FinishAsync("Complete", new Color("68d391"));
 	}
 
+	/// <summary>
+	/// Shows an error message before hiding the status display.
+	/// </summary>
+	/// <returns>A task that completes after the message delay.</returns>
 	public Task FailAsync()
 	{
 		return FinishAsync("Search failed", new Color("f56565"));
 	}
 
+	/// <summary>
+	/// Shows a final message and hides it if no newer message was shown.
+	/// </summary>
+	/// <param name="message">The final status message.</param>
+	/// <param name="color">The colour applied to the progress fill and frame.</param>
+	/// <returns>A task that completes after the message delay.</returns>
 	private async Task FinishAsync(string message, Color color)
 	{
 		var version = ++_displayVersion;
@@ -99,6 +133,9 @@ public partial class HudController : Node
 		}
 	}
 
+	/// <summary>
+	/// Shows the status display only while a message is active in the museum.
+	/// </summary>
 	private void UpdateVisibility()
 	{
 		_hudPlane?.Visible = _active && _museumVisible;

@@ -3,6 +3,9 @@ using Logger;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 
+/// <summary>
+/// Fits a frame, collision box, and grab points around an image or video.
+/// </summary>
 public partial class FrameMaker : Node
 {
 	private static readonly EventLogger Log = new(nameof(FrameMaker));
@@ -21,6 +24,9 @@ public partial class FrameMaker : Node
 	private MeshInstance3D _topL;
 	private MeshInstance3D _topR;
 
+	/// <summary>
+	/// Finds the frame parts.
+	/// </summary>
 	public override void _Ready()
 	{
 		_displayInstance = GetParent<Node3D>();
@@ -42,6 +48,12 @@ public partial class FrameMaker : Node
 		_bottomR = _frame.GetNode<MeshInstance3D>("BottomR");
 	}
 
+	/// <summary>
+	/// Fits the frame, collision shape, and grab points to a displayed image.
+	/// </summary>
+	/// <param name="picture">The mesh displaying the image.</param>
+	/// <param name="imageWidth">The displayed image width.</param>
+	/// <param name="imageHeight">The displayed image height.</param>
 	public void UpdateFrame(MeshInstance3D picture, float imageWidth, float imageHeight)
 	{
 		var center = _displayInstance.GlobalPosition;
@@ -76,6 +88,13 @@ public partial class FrameMaker : Node
 		UpdateGrabPointsLocal();
 	}
 
+	/// <summary>
+	/// Places the inner edge of a frame corner at a target position.
+	/// </summary>
+	/// <param name="corner">The corner mesh to place.</param>
+	/// <param name="target">The target inner-corner position.</param>
+	/// <param name="left">If the corner is on the left edge.</param>
+	/// <param name="bottom">If the corner is on the bottom edge.</param>
 	private static void PlaceCornerLocal(MeshInstance3D corner, Vector3 target, bool left, bool bottom)
 	{
 		corner.Position = target;
@@ -90,6 +109,12 @@ public partial class FrameMaker : Node
 		corner.Position += correction;
 	}
 
+	/// <summary>
+	/// Fits a horizontal frame part between two corners.
+	/// </summary>
+	/// <param name="mesh">The horizontal segment to place.</param>
+	/// <param name="leftCorner">The corner at the left end.</param>
+	/// <param name="rightCorner">The corner at the right end.</param>
 	private static void PlaceHLocal(MeshInstance3D mesh, MeshInstance3D leftCorner, MeshInstance3D rightCorner)
 	{
 		var l = leftCorner.GetAabb();
@@ -108,6 +133,12 @@ public partial class FrameMaker : Node
 			Log.Warning($"Horizontal frame mesh '{mesh.Name}' has zero base length.");
 	}
 
+	/// <summary>
+	/// Fits a vertical frame part between two corners.
+	/// </summary>
+	/// <param name="mesh">The vertical segment to place.</param>
+	/// <param name="topCorner">The corner at the top end.</param>
+	/// <param name="bottomCorner">The corner at the bottom end.</param>
 	private static void PlaceVLocal(MeshInstance3D mesh, MeshInstance3D topCorner, MeshInstance3D bottomCorner)
 	{
 		var t = topCorner.GetAabb();
@@ -126,6 +157,13 @@ public partial class FrameMaker : Node
 			Log.Warning($"Vertical frame mesh '{mesh.Name}' has zero base length.");
 	}
 
+	/// <summary>
+	/// Fits the interaction collision box to the displayed image.
+	/// </summary>
+	/// <param name="center">The image center in the scene.</param>
+	/// <param name="basis">The image orientation.</param>
+	/// <param name="imageWidth">The displayed image width.</param>
+	/// <param name="imageHeight">The displayed image height.</param>
 	private void UpdateCollision(Vector3 center, Basis basis, float imageWidth, float imageHeight)
 	{
 		var box = (BoxShape3D)_collision.Shape;
@@ -134,6 +172,9 @@ public partial class FrameMaker : Node
 		_collision.GlobalTransform = new Transform3D(basis, center);
 	}
 
+	/// <summary>
+	/// Positions the grab points beside the vertical frame segments.
+	/// </summary>
 	private void UpdateGrabPointsLocal()
 	{
 		var l = _left.GetAabb();
@@ -145,3 +186,7 @@ public partial class FrameMaker : Node
 		_grabRight.GlobalPosition = _frame.ToGlobal(rc + new Vector3(0, -0.08f, 0));
 	}
 }
+
+
+
+// All calculations in this file were implemented with the assistance of Codex.

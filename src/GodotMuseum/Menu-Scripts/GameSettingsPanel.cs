@@ -3,6 +3,9 @@ using Models;
 
 namespace BCSVRMuseum.Menu_Scripts;
 
+/// <summary>
+/// Sets movement, hand colour, and media mode from the menu.
+/// </summary>
 public partial class GameSettingsPanel : Node
 {
 	private const double DefaultSliderValue = 5.0;
@@ -30,6 +33,9 @@ public partial class GameSettingsPanel : Node
 	private HSlider _skinColourSlider;
 	private HSlider _turnSlider;
 
+	/// <summary>
+	/// Finds the settings controls, uses their values, and connects events.
+	/// </summary>
 	public override void _Ready()
 	{
 		var root = GetParent();
@@ -68,16 +74,28 @@ public partial class GameSettingsPanel : Node
 		UpdateModeButtons();
 	}
 
+	/// <summary>
+	/// Sets the selected walking speed.
+	/// </summary>
+	/// <param name="value">The movement slider value.</param>
 	private void OnMovementSliderChanged(double value)
 	{
 		_movementDirect.Set("max_speed", MapSliderValue(value, MinMovementSpeed, MaxMovementSpeed));
 	}
 
+	/// <summary>
+	/// Sets the selected turning speed.
+	/// </summary>
+	/// <param name="value">The turn slider value.</param>
 	private void OnTurnSliderChanged(double value)
 	{
 		_movementTurn.Set("smooth_turn_speed", MapSliderValue(value, MinTurnSpeed, MaxTurnSpeed));
 	}
 
+	/// <summary>
+	/// Sets the selected skin colour on tracked hands.
+	/// </summary>
+	/// <param name="value">The skin colour slider value.</param>
 	private void OnSkinColourSliderChanged(double value)
 	{
 		var skinColour = MapSkinColour(value);
@@ -86,12 +104,18 @@ public partial class GameSettingsPanel : Node
 		ApplyHandMaterialColour(_rightHandTrackingMesh, skinColour);
 	}
 
+	/// <summary>
+	/// Selects the next media mode and refreshes the mode buttons.
+	/// </summary>
 	private void CycleMode()
 	{
 		_gameSettingsStore.CycleMediaMode();
 		UpdateModeButtons();
 	}
 
+	/// <summary>
+	/// Restores all game settings to their default values.
+	/// </summary>
 	private void ResetToDefaults()
 	{
 		_movementSlider.Value = DefaultSliderValue;
@@ -101,6 +125,9 @@ public partial class GameSettingsPanel : Node
 		UpdateModeButtons();
 	}
 
+	/// <summary>
+	/// Shows the button for the current media mode.
+	/// </summary>
 	private void UpdateModeButtons()
 	{
 		var currentMode = _gameSettingsStore.CurrentMediaMode;
@@ -110,27 +137,53 @@ public partial class GameSettingsPanel : Node
 		SetModeButtonVisible(_objects3DButton, currentMode == MediaMode.Objects3D);
 	}
 
+	/// <summary>
+	/// Changes a slider value to a value between the minimum and maximum.
+	/// </summary>
+	/// <param name="value">The slider value from 1 to 10.</param>
+	/// <param name="minOutput">The output value at the lower end.</param>
+	/// <param name="maxOutput">The output value at the upper end.</param>
+	/// <returns>The mapped output value.</returns>
 	private static float MapSliderValue(double value, float minOutput, float maxOutput)
 	{
 		var normalized = Mathf.InverseLerp(1.0f, 10.0f, (float)value);
 		return Mathf.Lerp(minOutput, maxOutput, normalized);
 	}
 
+	/// <summary>
+	/// Blends skin colours based on the slider value.
+	/// </summary>
+	/// <param name="value">The skin colour slider value.</param>
+	/// <returns>The selected skin colour.</returns>
 	private static Color MapSkinColour(double value)
 	{
 		var normalized = Mathf.InverseLerp(1.0f, 10.0f, (float)value);
 		return LightSkinColour.Lerp(DarkSkinColour, normalized);
 	}
 
+	/// <summary>
+	/// Sets the colour of a tracked hand.
+	/// </summary>
+	/// <param name="handMesh">The hand mesh.</param>
+	/// <param name="colour">The colour to apply.</param>
 	private static void ApplyHandMaterialColour(Node handMesh, Color colour)
 	{
 		var material = handMesh.Get("material").AsGodotObject() as StandardMaterial3D;
 		material?.AlbedoColor = colour;
 	}
 
+	/// <summary>
+	/// Shows or hides a media mode button.
+	/// </summary>
+	/// <param name="button">The mode button to update.</param>
+	/// <param name="visible">If the button should be active and visible.</param>
 	private static void SetModeButtonVisible(Button button, bool visible)
 	{
 		button.Visible = visible;
 		button.ProcessMode = visible ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 	}
 }
+
+
+
+// Codex helped implement the slider mapping.

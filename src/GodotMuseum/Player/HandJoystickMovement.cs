@@ -2,6 +2,9 @@ using Godot;
 
 namespace BCSVRMuseum.Player;
 
+/// <summary>
+/// Changes left-hand motion into virtual joystick movement.
+/// </summary>
 public partial class HandJoystickMovement : Node
 {
 	private Vector3 _baseLocal;
@@ -20,6 +23,9 @@ public partial class HandJoystickMovement : Node
 	private float _visualLength;
 	public bool IsLocked { get; private set; }
 
+	/// <summary>
+	/// Finds the joystick parts.
+	/// </summary>
 	public override void _Ready()
 	{
 		_joystickRoot = GetParent<Node3D>();
@@ -30,6 +36,10 @@ public partial class HandJoystickMovement : Node
 		_length = _visualLength * _scale.X;
 	}
 
+	/// <summary>
+	/// Connects the joystick to player movement and hand tracking.
+	/// </summary>
+	/// <param name="player">The player node.</param>
 	public void Configure(Node3D player)
 	{
 		_playerBody = player.FindChild("PlayerBody", true, false);
@@ -40,6 +50,10 @@ public partial class HandJoystickMovement : Node
 		_camera = (XRCamera3D)player.FindChild("XRCamera3D", true, false);
 	}
 
+	/// <summary>
+	/// Updates the virtual joystick and applies movement while locked.
+	/// </summary>
+	/// <param name="delta">The physics frame time in seconds.</param>
 	public void ProcessMovement(float delta)
 	{
 		if (!IsLocked)
@@ -59,11 +73,17 @@ public partial class HandJoystickMovement : Node
 		MovePlayer(forward * forwardAmount * speed, turnAmount * turnSpeed * delta);
 	}
 
+	/// <summary>
+	/// Stops joystick movement and restores the hand visual.
+	/// </summary>
 	public void ForceStop()
 	{
 		Stop();
 	}
 
+	/// <summary>
+	/// Locks the joystick below the hand.
+	/// </summary>
 	private void Start()
 	{
 		IsLocked = true;
@@ -87,6 +107,9 @@ public partial class HandJoystickMovement : Node
 		SetVisual(Vector3.Up);
 	}
 
+	/// <summary>
+	/// Hides the joystick.
+	/// </summary>
 	private void Stop()
 	{
 		if (!IsLocked)
@@ -97,6 +120,10 @@ public partial class HandJoystickMovement : Node
 		_joystickRoot.Visible = false;
 	}
 
+	/// <summary>
+	/// Gets the hand direction inside the joystick.
+	/// </summary>
+	/// <returns>The local joystick direction with a length of 1.</returns>
 	private Vector3 UpdateJoystick()
 	{
 		var rawDirection = _trackedHand.Position - _baseLocal;
@@ -109,6 +136,10 @@ public partial class HandJoystickMovement : Node
 		return localDirection;
 	}
 
+	/// <summary>
+	/// Positions and rotates the joystick handle and stick.
+	/// </summary>
+	/// <param name="localDirection">The joystick direction with a length of 1.</param>
 	private void SetVisual(Vector3 localDirection)
 	{
 		var handlePosition = localDirection * _visualLength;
@@ -119,9 +150,18 @@ public partial class HandJoystickMovement : Node
 		_stick.RotateObjectLocal(Vector3.Right, Mathf.Pi * 0.5f);
 	}
 
+	/// <summary>
+	/// Sends translation and rotation commands to the player body.
+	/// </summary>
+	/// <param name="velocity">The requested movement velocity.</param>
+	/// <param name="rotation">The requested yaw rotation.</param>
 	private void MovePlayer(Vector3 velocity, float rotation)
 	{
 		_playerBody.Call("move_player", velocity);
 		_playerBody.Call("rotate_player", rotation);
 	}
 }
+
+
+
+// Codex helped implement the direction and rotation calculations in this file.

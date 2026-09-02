@@ -3,8 +3,18 @@ using Godot;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D;
 
+/// <summary>
+/// Splits a wall area into slots for images and videos.
+/// </summary>
 public static class WallImageLayout
 {
+	/// <summary>
+	/// Creates up to four equal horizontal slots.
+	/// </summary>
+	/// <param name="count">The number of slots.</param>
+	/// <param name="areaWidth">The available area width.</param>
+	/// <param name="areaHeight">The available area height.</param>
+	/// <returns>The centered slot rectangles.</returns>
 	public static List<Rect2> CreateCenteredHorizontalSlots(int count, float areaWidth, float areaHeight)
 	{
 		var slots = new List<Rect2>();
@@ -22,3 +32,7 @@ public static class WallImageLayout
 		return slots;
 	}
 }
+
+
+
+// All calculations in this file were implemented with the assistance of Codex.

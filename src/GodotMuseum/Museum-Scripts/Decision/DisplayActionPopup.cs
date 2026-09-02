@@ -6,6 +6,9 @@ using Godot;
 
 namespace BCSVRMuseum.Museum_Scripts.Decision;
 
+/// <summary>
+/// Shows actions for a selected media item.
+/// </summary>
 public abstract partial class DisplayActionPopup : Node
 {
 	private const int PressedEventType = 2;
@@ -24,6 +27,9 @@ public abstract partial class DisplayActionPopup : Node
 
 	public static event Action<string> SimilaritySearchRequestedGlobally;
 
+	/// <summary>
+	/// Finds the popup panel and connects events.
+	/// </summary>
 	public override async void _Ready()
 	{
 		_popupRoot = GetParent<Node3D>();
@@ -39,6 +45,10 @@ public abstract partial class DisplayActionPopup : Node
 		pointer.Connect("pointing_event", new Callable(this, nameof(OnPointerEvent)));
 	}
 
+	/// <summary>
+	/// Hides the popup after the set amount of time.
+	/// </summary>
+	/// <param name="delta">The frame time in seconds.</param>
 	public override void _Process(double delta)
 	{
 		if (_popupRoot is not { Visible: true })
@@ -50,6 +60,10 @@ public abstract partial class DisplayActionPopup : Node
 			HidePopup();
 	}
 
+	/// <summary>
+	/// Stores a feature vector for similarity search actions.
+	/// </summary>
+	/// <param name="vector">The feature vector for the media.</param>
 	public void SetVector(IReadOnlyList<double> vector)
 	{
 		_vectorJson = JsonSerializer.Serialize(vector);
@@ -57,43 +71,85 @@ public abstract partial class DisplayActionPopup : Node
 		HidePopup();
 	}
 
+	/// <summary>
+	/// Stores the file path of the displayed media.
+	/// </summary>
+	/// <param name="sourcePath">The media file path.</param>
 	public void SetSourcePath(string sourcePath)
 	{
 		SourcePath = sourcePath;
 	}
 
+	/// <summary>
+	/// Sets the action to run when original-size display is requested.
+	/// </summary>
+	/// <param name="handler">The action to run.</param>
 	public void SetOriginalSizeHandler(Action handler)
 	{
 		_originalSizeRequested = handler;
 	}
 
+	/// <summary>
+	/// Calls the original-size action and closes the popup.
+	/// </summary>
 	protected void RequestOriginalSize()
 	{
 		_originalSizeRequested?.Invoke();
 		HidePopup();
 	}
 
+	/// <summary>
+	/// Sends a similarity search request and closes the popup.
+	/// </summary>
+	/// <param name="vectorJson">The stored feature vector.</param>
 	protected void RequestSimilaritySearch(string vectorJson)
 	{
 		SimilaritySearchRequestedGlobally?.Invoke(vectorJson);
 		HidePopup();
 	}
 
+	/// <summary>
+	/// Closes the popup without selecting an action.
+	/// </summary>
 	protected void Dismiss()
 	{
 		HidePopup();
 	}
 
+	/// <summary>
+	/// Finds the action panel inside a created panel scene.
+	/// </summary>
+	/// <param name="sceneInstance">The panel scene instance.</param>
+	/// <returns>The action panel.</returns>
 	protected abstract Node FindPanel(Node sceneInstance);
+
+	/// <summary>
+	/// Connects the action signals from a panel.
+	/// </summary>
+	/// <param name="panel">The action panel to bind.</param>
 	protected abstract void BindPanel(Node panel);
+
+	/// <summary>
+	/// Sets the stored feature vector on an action panel.
+	/// </summary>
+	/// <param name="panel">The action panel to update.</param>
+	/// <param name="vectorJson">The stored feature vector.</param>
 	protected abstract void ApplyVectorToPanel(Node panel, string vectorJson);
 
+	/// <summary>
+	/// Finds the action panel in the host's current scene instance.
+	/// </summary>
+	/// <returns>The action panel, or <see langword="null"/> when no scene is available.</returns>
 	private Node FindPanel()
 	{
 		var sceneInstance = _panelHost.Call("get_scene_instance").AsGodotObject() as Node;
 		return sceneInstance == null ? null : FindPanel(sceneInstance);
 	}
 
+	/// <summary>
+	/// Opens the popup when its media is selected.
+	/// </summary>
+	/// <param name="eventVariant">The pointer event sent by the input.</param>
 	private void OnPointerEvent(Variant eventVariant)
 	{
 		var pointerEvent = eventVariant.AsGodotObject();
@@ -107,6 +163,10 @@ public abstract partial class DisplayActionPopup : Node
 		ShowPopup();
 	}
 
+	/// <summary>
+	/// Checks if this is the popup for this display.
+	/// </summary>
+	/// <returns><see langword="true"/> if this popup should handle selection and <see langword="false"/> otherwise.</returns>
 	private bool IsPrimaryPopup()
 	{
 		DisplayActionPopup firstPopup = null;
@@ -127,6 +187,11 @@ public abstract partial class DisplayActionPopup : Node
 		return (firstDecisionPopup ?? firstPopup) == this;
 	}
 
+	/// <summary>
+	/// Checks if a selected node belongs to this display.
+	/// </summary>
+	/// <param name="target">The selected node.</param>
+	/// <returns><see langword="true"/> if the node is below the display root and <see langword="false"/> otherwise.</returns>
 	private bool IsOwnedTarget(Node target)
 	{
 		for (var current = target; current != null; current = current.GetParent())
@@ -136,6 +201,9 @@ public abstract partial class DisplayActionPopup : Node
 		return false;
 	}
 
+	/// <summary>
+	/// Shows this popup and closes any other open popup.
+	/// </summary>
 	private void ShowPopup()
 	{
 		_activePopup?.HidePopup();
@@ -146,6 +214,9 @@ public abstract partial class DisplayActionPopup : Node
 		NodeTreeActivator.SetActive(_popupRoot, true);
 	}
 
+	/// <summary>
+	/// Hides the popup and resets its timer.
+	/// </summary>
 	private void HidePopup()
 	{
 		if (_activePopup == this)
@@ -157,6 +228,9 @@ public abstract partial class DisplayActionPopup : Node
 		_visibleForSeconds = 0.0;
 	}
 
+	/// <summary>
+	/// Updates the current panel with the feature vector.
+	/// </summary>
 	private void FindAndApplyVectorToPanel()
 	{
 		var panel = _panelHost == null ? null : FindPanel();
@@ -164,6 +238,10 @@ public abstract partial class DisplayActionPopup : Node
 			ApplyVectorToPanel(panel);
 	}
 
+	/// <summary>
+	/// Sets the feature vector on a panel when it is ready.
+	/// </summary>
+	/// <param name="panel">The action panel to update.</param>
 	private void ApplyVectorToPanel(Node panel)
 	{
 		if (_vectorJson.Length == 0)

@@ -4,8 +4,18 @@ using Godot;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Helpers.Media2D.Video;
 
+/// <summary>
+/// Creates video playback for wall displays.
+/// </summary>
 public static class Video2DMediaRenderer
 {
+	/// <summary>
+	/// Creates a paused video texture at its set start time.
+	/// </summary>
+	/// <param name="instance">The display instance receiving the video texture.</param>
+	/// <param name="path">The video file path.</param>
+	/// <param name="startTimeSeconds">The optional playback start time in seconds.</param>
+	/// <returns>A task containing the controller used to update playback.</returns>
 	public static async Task<VideoPlaybackController> Render(Media2DDisplayInstance instance, string path, int? startTimeSeconds)
 	{
 		var player = new VideoStreamPlayer { Stream = new VideoStreamTheora { File = path }, Autoplay = false, Loop = false };

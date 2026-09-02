@@ -8,6 +8,9 @@ using Models;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement.Object3D;
 
+/// <summary>
+/// Loads and places 3D models in museum displays.
+/// </summary>
 public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 {
 	private const string GeneratedObjectGroup = "Generated3DObject";
@@ -15,17 +18,33 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 	private readonly Object3DDisplayFitter _fitter;
 	private readonly OriginalSizeController _originalSizeController;
 
+	/// <summary>
+	/// Sets up 3D model placement for the display areas.
+	/// </summary>
+	/// <param name="owner">The node that runs placement tasks.</param>
+	/// <param name="displayRoot">The template root used to create displays.</param>
+	/// <param name="placesRoot">The root containing 3D model placement areas.</param>
+	/// <param name="originalSizeController">The controller used for original-size viewing.</param>
 	public Object3DPlacementStrategy(Node owner, Node3D displayRoot, Node placesRoot, OriginalSizeController originalSizeController) : base(owner, displayRoot, placesRoot, GeneratedObjectGroup)
 	{
 		_fitter = new Object3DDisplayFitter(DisplayTemplate);
 		_originalSizeController = originalSizeController;
 	}
 
+	/// <summary>
+	/// Gets the number of places for 3D models.
+	/// </summary>
+	/// <returns>The total number of places for 3D models.</returns>
 	public int GetCapacity()
 	{
 		return PlaceCollector.Collect(PlacesRoot, 1).Count;
 	}
 
+	/// <summary>
+	/// Places 3D models on the museum displays.
+	/// </summary>
+	/// <param name="objectItems">The 3D models to place.</param>
+	/// <returns>A task that completes when 3D model placement finishes.</returns>
 	public async Task Place(IReadOnlyList<DisplayMediaItem> objectItems)
 	{
 		_originalSizeController?.Reset();
@@ -54,6 +73,13 @@ public sealed class Object3DPlacementStrategy : PlacementStrategyBase
 			Log.Info($"Placed all {placedObjectCount} 3D objects.");
 	}
 
+	/// <summary>
+	/// Creates one display and loads its 3D model.
+	/// </summary>
+	/// <param name="objectItem">The media item describing the 3D model.</param>
+	/// <param name="place">The museum placement area.</param>
+	/// <param name="index">The 3D model's index in the current placement.</param>
+	/// <returns>A task containing <see langword="true"/> if the 3D model was loaded and placed and <see langword="false"/> otherwise.</returns>
 	private async Task<bool> PlaceObject(DisplayMediaItem objectItem, Node3D place, int index)
 	{
 		var instance = Object3DDisplayInstance.Create(DisplayTemplate, DisplayRoot, GeneratedGroup);

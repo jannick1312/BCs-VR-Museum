@@ -2,6 +2,9 @@ using Godot;
 
 namespace BCSVRMuseum.Player;
 
+/// <summary>
+/// Manages controller and tracked-hand input.
+/// </summary>
 public partial class PlayerHandInput : Node
 {
 	private HandGestureInput _gestures;
@@ -27,6 +30,9 @@ public partial class PlayerHandInput : Node
 	[Export] public float GrabReleaseThreshold { get; set; }
 	[Export] public float LeftPinchMoveDelaySeconds { get; set; }
 
+	/// <summary>
+	/// Finds player input nodes and creates hand input helpers.
+	/// </summary>
 	public override void _Ready()
 	{
 		_player = FindPlayer();
@@ -49,6 +55,10 @@ public partial class PlayerHandInput : Node
 		_gestures.Reset();
 	}
 
+	/// <summary>
+	/// Finds the player node in the scene tree.
+	/// </summary>
+	/// <returns>The player node.</returns>
 	private Node3D FindPlayer()
 	{
 		var node = GetParent();
@@ -63,6 +73,10 @@ public partial class PlayerHandInput : Node
 		return GetParent<Node3D>();
 	}
 
+	/// <summary>
+	/// Updates the input mode, hand visuals, and tracked-hand gestures.
+	/// </summary>
+	/// <param name="delta">The frame time in seconds.</param>
 	public override void _Process(double delta)
 	{
 		var controllerMode = _modeDetector.GetMode() == PlayerInputMode.Controller;
@@ -80,16 +94,29 @@ public partial class PlayerHandInput : Node
 		_gestures.Process(_leftHandTrackingActive, _rightHandTrackingActive);
 	}
 
+	/// <summary>
+	/// Updates hand movement during physics frames.
+	/// </summary>
+	/// <param name="delta">The physics frame time in seconds.</param>
 	public override void _PhysicsProcess(double delta)
 	{
 		_gestures.ProcessMovement(_leftHandTrackingActive, IsPlayerMovementEnabled(), (float)delta);
 	}
 
+	/// <summary>
+	/// Checks if player movement is turned on.
+	/// </summary>
+	/// <returns><see langword="true"/> when player movement is enabled and <see langword="false"/> otherwise.</returns>
 	private bool IsPlayerMovementEnabled()
 	{
 		return _playerBody.ProcessMode != ProcessModeEnum.Disabled;
 	}
 
+	/// <summary>
+	/// Checks if a hand is being tracked.
+	/// </summary>
+	/// <param name="trackedHand">The tracked-hand node to inspect.</param>
+	/// <returns><see langword="true"/> if tracking is active and <see langword="false"/> otherwise.</returns>
 	private static bool IsHandTrackerActive(Node3D trackedHand)
 	{
 		return ((XRNode3D)trackedHand).GetIsActive();

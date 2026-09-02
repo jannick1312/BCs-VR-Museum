@@ -5,11 +5,20 @@ using Logger;
 
 namespace Infrastructure.Vitrivr;
 
+/// <summary>
+/// Runs media searches on a Vitrivr server.
+/// </summary>
+/// <param name="settings">The settings used for Vitrivr searches.</param>
 public class VitrivrSearchService(VitrivrSettings settings) : ISearchEngine
 {
 	private static readonly HttpClient HttpClient = new() { Timeout = TimeSpan.FromSeconds(10) };
 	private readonly EventLogger _logger = new(nameof(VitrivrSearchService));
 
+	/// <summary>
+	/// Sends a media search to the Vitrivr server.
+	/// </summary>
+	/// <param name="query">The search to send.</param>
+	/// <returns>A task containing the search result from the server.</returns>
 	public async Task<SearchResult> SearchAsync(SearchQuery query)
 	{
 		try

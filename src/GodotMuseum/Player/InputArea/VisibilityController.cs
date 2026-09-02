@@ -5,6 +5,9 @@ using Godot;
 
 namespace BCSVRMuseum.Player.InputArea;
 
+/// <summary>
+/// Manages visibility of controls on the left hand.
+/// </summary>
 public partial class VisibilityController : Node
 {
 	private bool _goBackActive;
@@ -21,6 +24,9 @@ public partial class VisibilityController : Node
 	[Export] public NodePath MuseumNodePath;
 	[Export] public NodePath OriginalSizeControllerPath;
 
+	/// <summary>
+	/// Finds the required nodes and connects the return button.
+	/// </summary>
 	public override async void _Ready()
 	{
 		_goBackRoot = GetNode(GoBackRootPath);
@@ -41,6 +47,10 @@ public partial class VisibilityController : Node
 			museumButton.Pressed += _originalSizeController.ReturnToMuseum;
 	}
 
+	/// <summary>
+	/// Shows the search or return control while the left grip is pressed.
+	/// </summary>
+	/// <param name="delta">The frame time in seconds.</param>
 	public override void _Process(double delta)
 	{
 		var gripPressed = _leftPickup.Get("grip_pressed").AsBool();
@@ -50,6 +60,10 @@ public partial class VisibilityController : Node
 		SetGoBackActive(inOriginalSizeRoom && gripPressed);
 	}
 
+	/// <summary>
+	/// Sets the return control as active or inactive.
+	/// </summary>
+	/// <param name="active">If the return control should be active.</param>
 	private void SetGoBackActive(bool active)
 	{
 		if (_goBackActive == active)
@@ -59,6 +73,10 @@ public partial class VisibilityController : Node
 		NodeTreeActivator.SetActive(_goBackRoot, active);
 	}
 
+	/// <summary>
+	/// Sets the search input as active or inactive.
+	/// </summary>
+	/// <param name="active">If the search input should be active.</param>
 	private void SetInputActive(bool active)
 	{
 		if (_inputActive == active)

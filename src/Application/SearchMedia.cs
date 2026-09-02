@@ -4,10 +4,24 @@ using Models;
 
 namespace Application;
 
+/// <summary>
+/// Searches for media and loads the results for display.
+/// </summary>
+/// <param name="searchEngine">The search engine used to find media.</param>
+/// <param name="mediaLoader">The loader used to load the selected media.</param>
 public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 {
 	private readonly EventLogger _logger = new(nameof(SearchMedia));
 
+	/// <summary>
+	/// Searches for media that matches the text.
+	/// </summary>
+	/// <param name="text">The text to search for.</param>
+	/// <param name="limit">The maximum number of results to return.</param>
+	/// <param name="mediaMode">The types of media to include.</param>
+	/// <param name="maxMedia2D">The maximum number of images and videos to load.</param>
+	/// <param name="maxObjects3D">The maximum number of 3D models to load.</param>
+	/// <returns>A task containing the loaded media result.</returns>
 	public async Task<DisplayMediaResult> ExecuteAsync(string text, int limit, MediaMode mediaMode, int maxMedia2D, int maxObjects3D)
 	{
 		_logger.Info($"Text search started. Query='{text}', Limit={limit}, MediaMode={mediaMode}.");
@@ -16,6 +30,15 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 		return await ExecuteAsync(query, limit, mediaMode, maxMedia2D, maxObjects3D);
 	}
 
+	/// <summary>
+	/// Searches for media that is similar to the feature vector.
+	/// </summary>
+	/// <param name="vector">The feature vector used for the similarity search.</param>
+	/// <param name="limit">The maximum number of results to return.</param>
+	/// <param name="mediaMode">The types of media to include.</param>
+	/// <param name="maxMedia2D">The maximum number of images and videos to load.</param>
+	/// <param name="maxObjects3D">The maximum number of 3D models to load.</param>
+	/// <returns>A task containing the loaded media result.</returns>
 	public async Task<DisplayMediaResult> ExecuteAsync(IReadOnlyList<double> vector, int limit, MediaMode mediaMode, int maxMedia2D, int maxObjects3D)
 	{
 		_logger.Info($"Similarity search started. VectorLength={vector.Count}, Limit={limit}, MediaMode={mediaMode}.");
@@ -24,6 +47,15 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 		return await ExecuteAsync(query, limit, mediaMode, maxMedia2D, maxObjects3D);
 	}
 
+	/// <summary>
+	/// Runs a search and loads the selected media.
+	/// </summary>
+	/// <param name="query">The search to run.</param>
+	/// <param name="limit">The maximum number of results to return.</param>
+	/// <param name="mediaMode">The types of media to include.</param>
+	/// <param name="maxMedia2D">The maximum number of images and videos to load.</param>
+	/// <param name="maxObjects3D">The maximum number of 3D models to load.</param>
+	/// <returns>A task containing the loaded media result.</returns>
 	private async Task<DisplayMediaResult> ExecuteAsync(SearchQuery query, int limit, MediaMode mediaMode, int maxMedia2D, int maxObjects3D)
 	{
 		var searchResult = await searchEngine.SearchAsync(query);
@@ -58,6 +90,15 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 		return DisplayMediaResult.FromMedia(items);
 	}
 
+	/// <summary>
+	/// Selects search results that match the media mode and placement limits.
+	/// </summary>
+	/// <param name="candidates">The search results to select from.</param>
+	/// <param name="limit">The maximum number of items to select.</param>
+	/// <param name="mediaMode">The types of media to include.</param>
+	/// <param name="maxMedia2D">The maximum number of images and videos to select.</param>
+	/// <param name="maxObjects3D">The maximum number of 3D models to select.</param>
+	/// <returns>The selected search results.</returns>
 	private static List<SearchResultItem> SelectItems(IReadOnlyList<SearchResultItem> candidates, int limit, MediaMode mediaMode, int maxMedia2D, int maxObjects3D)
 	{
 		var selected = new List<SearchResultItem>();
@@ -90,6 +131,12 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 		return selected;
 	}
 
+	/// <summary>
+	/// Checks if a media type is allowed by the selected media mode.
+	/// </summary>
+	/// <param name="mediaType">The media type to check.</param>
+	/// <param name="mediaMode">The selected media mode.</param>
+	/// <returns><see langword="true"/> if the media type is allowed and <see langword="false"/> otherwise.</returns>
 	private static bool IsAllowed(MediaType mediaType, MediaMode mediaMode)
 	{
 		return mediaMode switch
@@ -100,3 +147,7 @@ public class SearchMedia(ISearchEngine searchEngine, IMediaLoader mediaLoader)
 		};
 	}
 }
+
+
+
+// Codex helped implement the logic that selects how many images, videos, and 3D models can be loaded.

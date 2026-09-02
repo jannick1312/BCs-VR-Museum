@@ -9,6 +9,9 @@ using Models;
 
 namespace BCSVRMuseum.Museum_Scripts.Placement;
 
+/// <summary>
+/// Sends images, videos, and 3D models to their matching placement strategies.
+/// </summary>
 public partial class MediaPlacementController : Node
 {
 	private static readonly EventLogger Log = new(nameof(MediaPlacementController));
@@ -24,6 +27,9 @@ public partial class MediaPlacementController : Node
 	[Export] public NodePath OriginalSizeControllerPath;
 	[Export] public float VideoResetDistance;
 
+	/// <summary>
+	/// Finds the placement nodes and creates the media placement strategies.
+	/// </summary>
 	public override void _Ready()
 	{
 		var media2DInstance = GetNode<Node3D>(Media2DInstancePath);
@@ -37,11 +43,20 @@ public partial class MediaPlacementController : Node
 		_object3DPlacement = new Object3DPlacementStrategy(this, object3DInstance, object3DPlaces, originalSizeController);
 	}
 
+	/// <summary>
+	/// Gets the placement capacity for images, videos, and 3D models.
+	/// </summary>
+	/// <returns>The number of places for images and videos and the number of places for 3D models.</returns>
 	public (int Media2D, int Objects3D) GetCapacity()
 	{
 		return (_media2DPlacement.GetCapacity(), _object3DPlacement.GetCapacity());
 	}
 
+	/// <summary>
+	/// Groups loaded media by type and places it in the museum.
+	/// </summary>
+	/// <param name="items">The media items to place.</param>
+	/// <returns>A task that completes when media placement finishes.</returns>
 	public async Task Place(IReadOnlyList<DisplayMediaItem> items)
 	{
 		var media2DItems = new List<DisplayMediaItem>();
@@ -70,6 +85,10 @@ public partial class MediaPlacementController : Node
 		HudController.Instance.SetPhase(HudPhase.Finalizing);
 	}
 
+	/// <summary>
+	/// Updates video playback based on the player's distance to a display.
+	/// </summary>
+	/// <param name="delta">The frame time in seconds.</param>
 	public override void _Process(double delta)
 	{
 		_media2DPlacement.UpdateVideos(_playerCamera, VideoResetDistance);

@@ -4,6 +4,9 @@ using Logger;
 
 namespace BCSVRMuseum.Tutorial;
 
+/// <summary>
+/// Shows tutorial pages before the user enters the museum.
+/// </summary>
 public partial class TutorialController : Node
 {
 	private static readonly Color ActiveArrowColor = Colors.White;
@@ -26,6 +29,9 @@ public partial class TutorialController : Node
 	private Node3D _tutorialHost;
 	private Panel _tutorialPanel;
 
+	/// <summary>
+	/// Finds the tutorial controls and shows the first state.
+	/// </summary>
 	public override void _Ready()
 	{
 		var root = GetParent();
@@ -57,16 +63,26 @@ public partial class TutorialController : Node
 			ShowStep(0);
 	}
 
+	/// <summary>
+	/// Displays the previous tutorial step.
+	/// </summary>
 	private void ShowPrevious()
 	{
 		ShowStep(_step - 1);
 	}
 
+	/// <summary>
+	/// Displays the next tutorial step.
+	/// </summary>
 	private void ShowNext()
 	{
 		ShowStep(_step + 1);
 	}
 
+	/// <summary>
+	/// Displays a tutorial page or the final start panel.
+	/// </summary>
+	/// <param name="step">The step index to display.</param>
 	private void ShowStep(int step)
 	{
 		_step = Mathf.Clamp(step, 0, _pages.Count);
@@ -87,6 +103,9 @@ public partial class TutorialController : Node
 		_rightArrow.DefaultColor = _rightButton.Disabled ? DisabledArrowColor : ActiveArrowColor;
 	}
 
+	/// <summary>
+	/// Finishes the tutorial and shows the normal menu again.
+	/// </summary>
 	private void CompleteTutorial()
 	{
 		_entryState.CompleteTutorial();
@@ -94,6 +113,10 @@ public partial class TutorialController : Node
 		_logger.Info("Tutorial completed.");
 	}
 
+	/// <summary>
+	/// Switches between tutorial and normal menu panels.
+	/// </summary>
+	/// <param name="active">If the tutorial should be active.</param>
 	private void SetTutorialActive(bool active)
 	{
 		foreach (var panelName in NormalMenuPanelNames)
@@ -102,6 +125,11 @@ public partial class TutorialController : Node
 		SetPanelEnabled(_tutorialHost, active);
 	}
 
+	/// <summary>
+	/// Shows or hides a panel and turns its input and collision on or off.
+	/// </summary>
+	/// <param name="panel">The panel to update.</param>
+	/// <param name="enabled">If the panel should be enabled.</param>
 	private static void SetPanelEnabled(Node3D panel, bool enabled)
 	{
 		panel.Visible = enabled;
