@@ -1,0 +1,29 @@
+% 13-why-limit-results
+\begin{frame}[c]{Why limit results?}
+\begin{columns}[c,onlytextwidth]
+  \begin{column}{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}[every node/.style={font=\scriptsize}]
+      \node[anchor=west,font=\small\bfseries,text=unired] at (-2.65,1.75) {RANKED RESULTS};
+      \foreach \y/\label/\style in {1.05/{1 image}/mintbox,0.35/{2 model}/bluebox,-0.35/{3 video}/mintbox,-1.05/{4 image}/greybox,-1.75/{5 model}/greybox}{
+        \node[\style,minimum width=2.25cm,minimum height=0.48cm] at (-1.45,\y) {\label};
+      }
+      \node[redbox,minimum width=2.45cm,minimum height=1.05cm] (capacity) at (2.15,0.35) {free wall slots\\+ free floor areas};
+      \draw[flow] (0.05,0.35) -- (capacity.west);
+      \node[greybox,minimum width=2.45cm,minimum height=0.70cm] at (2.15,-1.35) {skip when no matching\\space remains};
+    \end{tikzpicture}
+  \end{column}
+  \begin{column}{0.46\textwidth}
+    \textcolor{unimint!80!black}{\large\bfseries WHY THIS MATTERS}
+
+    \vspace{0.12cm}
+    \small
+    \begin{itemize}
+      \item Keep the exhibition walkable.
+      \item Respect wall and floor capacity.
+      \item Select in retrieval order.
+      \item Avoid unnecessary loading and resource use.
+    \end{itemize}
+  \end{column}
+\end{columns}
+\end{frame}

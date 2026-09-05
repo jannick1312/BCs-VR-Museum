@@ -1,0 +1,52 @@
+% 08-clip
+\begin{frame}[c]{CLIP}
+\centering
+\begin{tikzpicture}[every node/.style={font=\scriptsize}]
+  % Lane headings
+  \node[anchor=west,font=\small\bfseries,text=unired]
+    at (-5.5,1.70) {OFFLINE COLLECTION};
+  \node[anchor=west,font=\small\bfseries,text=unired]
+    at (-5.5,-0.20) {LIVE QUERY};
+  \node[anchor=west,font=\small\bfseries,text=unimint!80!black]
+    at (3,1.70) {SHARED SPACE};
+
+  % Offline collection path
+  \node[greybox,minimum width=1.75cm,minimum height=0.75cm]
+    (media) at (-4.45,0.93) {media files};
+  \node[bluebox,minimum width=2.15cm,minimum height=0.75cm]
+    (imageencoder) at (-1.55,0.93) {CLIP image\\encoder};
+  \node[mintbox,minimum width=2.05cm,minimum height=0.75cm]
+    (stored) at (1.10,0.93) {stored media\\vectors};
+
+  \draw[flow] (media) -- (imageencoder);
+  \draw[flow] (imageencoder) -- (stored);
+
+  % Live query path
+  \node[greybox,minimum width=1.75cm,minimum height=0.75cm]
+    (query) at (-4.45,-0.97) {text query};
+  \node[bluebox,minimum width=2.15cm,minimum height=0.75cm]
+    (textencoder) at (-1.55,-0.97) {CLIP text\\encoder};
+  \node[mintbox,minimum width=2.05cm,minimum height=0.75cm]
+    (queryvector) at (1.10,-0.97) {query vector};
+
+  \draw[flow] (query) -- (textencoder);
+  \draw[flow] (textencoder) -- (queryvector);
+
+  % Shared comparison area
+  \draw[unigrey!45,line width=0.6pt] (2.55,1.85) -- (2.55,-1.72);
+  \node[mintbox,minimum width=2.35cm,minimum height=0.88cm]
+    (similarity) at (4.75,0.5) {vector\\similarity};
+  \node[greybox,minimum width=2.35cm,minimum height=0.68cm]
+    (results) at (4.75,-0.75) {ranked results};
+
+  \draw[flow] (stored.east) to[out=10,in=155] (similarity.north west);
+  \draw[flow] (queryvector.east) to[out=0,in=205] (similarity.south west);
+  \draw[flow] (similarity) -- (results);
+\end{tikzpicture}
+
+\vspace{0.42cm}
+\begin{beamercolorbox}[sep=0.55em,rounded=true]{palette highlight}
+  \small
+  Text and images become comparable vectors in one shared space.
+\end{beamercolorbox}
+\end{frame}

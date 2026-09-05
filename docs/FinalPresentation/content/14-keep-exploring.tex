@@ -1,0 +1,42 @@
+% 14-keep-exploring
+\begin{frame}[c]{Keep exploring}
+\centering
+\begin{tikzpicture}[node distance=0.50cm,every node/.style={font=\scriptsize}]
+  \node[greybox,minimum width=1.85cm,minimum height=0.82cm]
+    (query) {text query};
+  \node[bluebox,right=of query,minimum width=2.10cm,minimum height=0.82cm]
+    (search) {semantic\\search};
+  \node[mintbox,right=of search,minimum width=2.10cm,minimum height=0.82cm]
+    (results) {related\\media};
+  \node[redbox,right=of results,minimum width=2.20cm,minimum height=0.82cm]
+    (exhibition) {spatial\\exhibition};
+  \node[bluebox,right=of exhibition,minimum width=2.10cm,minimum height=0.82cm]
+    (select) {select an\\exhibit};
+
+  \foreach \a/\b in {query/search,search/results,results/exhibition,exhibition/select}
+    \draw[flow] (\a) -- (\b);
+
+  \draw[flow]
+    (select.south) .. controls +(0,-1.05) and +(2.0,-1.05) ..
+    node[below=4pt,tinylabel] {use the exhibit as the next query}
+    (search.south);
+\end{tikzpicture}
+
+\vspace{0.45cm}
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.44\textwidth}
+    \centering
+    \textcolor{unimint!80!black}{\large\bfseries FIRST ENTRY}
+
+    \vspace{0.08cm}
+    \small Start with a text query.
+  \end{column}
+  \begin{column}{0.44\textwidth}
+    \centering
+    \textcolor{unimint!80!black}{\large\bfseries CONTINUATION}
+
+    \vspace{0.08cm}
+    \small Select an exhibit and choose \emph{Similar}.
+  \end{column}
+\end{columns}
+\end{frame}

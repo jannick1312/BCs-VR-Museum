@@ -1,0 +1,45 @@
+% 15-separation-in-code
+\section{Implementation}
+\begin{frame}[c]{Separation in code}
+\centering
+\begin{tikzpicture}[every node/.style={font=\scriptsize}]
+  % Godot
+  \node[bluebox,minimum width=2.55cm] (ui) at (-4.35,1.05) {UI + OpenXR input};
+  \node[bluebox,minimum width=2.55cm] (controller) at (-4.35,0.00) {SearchController};
+  \node[bluebox,minimum width=2.55cm] (placement) at (-4.35,-1.05) {MediaPlacementController};
+
+  % Application libraries
+  \node[mintbox,minimum width=2.70cm] (app) at (0,1.05) {MuseumApplication};
+  \node[mintbox,minimum width=2.70cm] (search) at (0,0.00) {SearchMedia};
+  \node[mintbox,minimum width=2.70cm] (adapters) at (0,-1.05) {VitrivrSearchService\\+ MediaLoader};
+
+  % Server
+  \node[redbox,minimum width=2.65cm] (engine) at (4.35,1.05) {vitrivr-engine};
+  \node[greybox,minimum width=2.65cm] (database) at (4.35,0.00) {PostgreSQL + pgvector};
+  \node[greybox,minimum width=2.65cm] (media) at (4.35,-1.05) {Nginx + media files};
+
+  % Runtime path
+  \draw[flowsoft] (ui) -- (controller);
+  \draw[flowsoft] (controller) -- (placement);
+  \draw[flow] (controller.east) -- (app.west);
+  \draw[flow] (app) -- (search);
+  \draw[flow] (search) -- (adapters);
+  \draw[flow] (adapters.east) to[out=20,in=200] (engine.west);
+  \draw[flowsoft] (engine) -- (database);
+  \draw[flow] (adapters.east) to[out=-20,in=180] (media.west);
+
+  \begin{scope}[on background layer]
+    \node[groupbox,fit=(ui)(controller)(placement),inner sep=9pt] {};
+    \node[groupbox,fit=(app)(search)(adapters),inner sep=9pt] {};
+    \node[groupbox,fit=(engine)(database)(media),inner sep=9pt] {};
+  \end{scope}
+
+  \node[font=\small\bfseries,text=unired,above=0.24cm of ui] {GODOT};
+  \node[font=\small\bfseries,text=unired,above=0.24cm of app] {.NET LIBRARIES};
+  \node[font=\small\bfseries,text=unired,above=0.24cm of engine] {SERVER};
+\end{tikzpicture}
+
+\vspace{0.38cm}
+\small
+Search and loading stay separate from scenes. Media are loaded locally first and from Nginx if missing.
+\end{frame}

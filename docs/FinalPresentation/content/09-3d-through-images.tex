@@ -1,0 +1,26 @@
+% 09-3d-through-images
+\begin{frame}[c]{3D through images}
+\centering
+
+\begin{tikzpicture}[node distance=0.52cm, every node/.style={font=\scriptsize}]
+  \node[redbox, minimum width=1.7cm, minimum height=0.8cm] (mesh) {3D mesh};
+  \node[bluebox, right=of mesh, minimum width=2.0cm, minimum height=0.8cm] (views) {multiple\\camera views};
+  \node[mintbox, right=of views, minimum width=2.0cm, minimum height=0.8cm] (renders) {2D renders};
+  \node[bluebox, right=of renders, minimum width=2.0cm, minimum height=0.8cm] (clip) {CLIP image\\encoder};
+  \node[greybox, right=of clip, minimum width=2.0cm, minimum height=0.8cm] (vectors) {image\\vectors};
+
+  \draw[flow] (mesh) -- (views);
+  \draw[flow] (views) -- (renders);
+  \draw[flow] (renders) -- (clip);
+  \draw[flow] (clip) -- (vectors);
+
+  \node[mintbox, below=0.95cm of vectors, minimum width=2.0cm] (parent) {linked GLB model};
+  \draw[flow] (vectors) -- node[right,tinylabel] {linked to} (parent);
+
+\end{tikzpicture}
+
+\vspace{0.65cm}
+\begin{beamercolorbox}[sep=0.65em,rounded=true]{palette highlight}
+\centering A matching view leads back to the original 3D model.
+\end{beamercolorbox}
+\end{frame}

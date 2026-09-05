@@ -1,0 +1,34 @@
+% 10-three-media-pipelines
+\begin{frame}[c]{Three media pipelines}
+\centering
+\begin{tikzpicture}[every node/.style={font=\scriptsize}]
+  \node[anchor=east,font=\small\bfseries,text=unired] at (-4.55,1.55) {IMAGE};
+  \node[greybox,minimum width=1.75cm] (image) at (-3.30,1.55) {image};
+  \node[bluebox,minimum width=2.0cm] (imageclip) at (-0.45,1.55) {CLIP image encoder};
+  \node[mintbox,minimum width=1.75cm] (imagevec) at (2.25,1.55) {image vector};
+  \draw[flow] (image) -- (imageclip);
+  \draw[flow] (imageclip) -- (imagevec);
+
+  \node[anchor=east,font=\small\bfseries,text=unired] at (-4.55,0) {VIDEO};
+  \node[greybox,minimum width=1.75cm] (video) at (-3.30,0) {video};
+  \node[bluebox,minimum width=2.0cm] (frames) at (-0.45,0) {segment frames};
+  \node[mintbox,minimum width=1.75cm] (videovec) at (2.25,0) {CLIP vectors};
+  \node[greybox,minimum width=1.75cm] (time) at (4.85,0) {linked start time};
+  \draw[flow] (video) -- (frames);
+  \draw[flow] (frames) -- (videovec);
+  \draw[flow] (videovec) -- (time);
+
+  \node[anchor=east,font=\small\bfseries,text=unired] at (-4.55,-1.55) {3D MODEL};
+  \node[greybox,minimum width=1.75cm] (model) at (-3.30,-1.55) {3D model};
+  \node[bluebox,minimum width=2.0cm] (views) at (-0.45,-1.55) {rendered views};
+  \node[mintbox,minimum width=1.75cm] (viewvec) at (2.25,-1.55) {CLIP view vectors};
+  \node[greybox,minimum width=1.75cm] (glb) at (4.85,-1.55) {linked GLB};
+  \draw[flow] (model) -- (views);
+  \draw[flow] (views) -- (viewvec);
+  \draw[flow] (viewvec) -- (glb);
+\end{tikzpicture}
+
+\vspace{0.30cm}
+\small
+Selected video frames and rendered 3D views share the same vector space as images.
+\end{frame}
